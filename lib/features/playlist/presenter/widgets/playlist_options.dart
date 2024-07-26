@@ -41,39 +41,6 @@ class PlaylistOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String playlistHash(List<TrackEntity> tracks) {
-    //   return tracks.map((track) => track.hash).join('');
-    // }
-
-    // Future<List<TrackEntity>> getTracks() async {
-    //   late final List<TrackEntity> tracks;
-    //   if (album.tracks.isNotEmpty) {
-    //     tracks = album.tracks;
-    //   } else {
-    //     final albumWithTracks = await getAlbumUsecase.exec(album.id);
-    //     tracks = albumWithTracks.tracks;
-    //   }
-    //   return tracks;
-    // }
-
-    // bool albumIsInLibrary(AlbumEntity album) {
-    //   final libraryItems = libraryController.data.items;
-    //   final entities = libraryItems.map((element) => element.value);
-    //   final albums = entities.whereType<AlbumEntity>();
-    //   final albumIds = albums.map((element) => element.id);
-    //   return albumIds.contains(album.id);
-    // }
-
-    // String libraryItemId(AlbumEntity album) {
-    //   final libraryItems = libraryController.data.items;
-    //   final libraryItem =
-    //       libraryItems.where((element) => element.value.id == album.id);
-    //   if (libraryItem.isNotEmpty) {
-    //     return libraryItem.first.id;
-    //   }
-    //   return '';
-    // }
-
     return Scaffold(
       body: Column(
         children: [
