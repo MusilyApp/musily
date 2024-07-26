@@ -17,6 +17,7 @@ void main() async {
       androidNotificationChannelName: 'Musily',
       androidNotificationIcon: 'drawable/ic_launcher_foreground',
       androidShowNotificationBadge: true,
+      androidStopForegroundOnPause: false,
     ),
   );
   if (Platform.isAndroid) {
