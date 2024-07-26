@@ -115,40 +115,44 @@ class SectionsPage extends StatelessWidget {
                                   .colorScheme
                                   .primary
                                   .withOpacity(.01),
-                              child: AppFlex(
-                                maxItemsPerRow: 2,
-                                children: [
-                                  ...(data.items
-                                        ..sort(
-                                          (a, b) => b.lastTimePlayed.compareTo(
-                                            a.lastTimePlayed,
-                                          ),
-                                        ))
-                                      .sublist(0, 4)
-                                      .map(
-                                        (item) => LibraryTile(
-                                          coreController: coreController,
-                                          playerController: playerController,
-                                          downloaderController:
-                                              downloaderController,
-                                          getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
-                                          item: item,
-                                          getAlbumUsecase: getAlbumUsecase,
-                                          getPlaylistUsecase:
-                                              getPlaylistUsecase,
-                                          getArtistUsecase: getArtistUsecase,
-                                          getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
-                                          getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
-                                          getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
-                                        ),
+                              child: Builder(builder: (context) {
+                                final items = data.items.length < 4
+                                    ? data.items
+                                    : data.items.sublist(0, 4);
+                                return AppFlex(
+                                  maxItemsPerRow: 2,
+                                  children: [
+                                    ...(items
+                                          ..sort(
+                                            (a, b) =>
+                                                b.lastTimePlayed.compareTo(
+                                              a.lastTimePlayed,
+                                            ),
+                                          ))
+                                        .map(
+                                      (item) => LibraryTile(
+                                        coreController: coreController,
+                                        playerController: playerController,
+                                        downloaderController:
+                                            downloaderController,
+                                        getPlayableItemUsecase:
+                                            getPlayableItemUsecase,
+                                        libraryController: libraryController,
+                                        item: item,
+                                        getAlbumUsecase: getAlbumUsecase,
+                                        getPlaylistUsecase: getPlaylistUsecase,
+                                        getArtistUsecase: getArtistUsecase,
+                                        getArtistAlbumsUsecase:
+                                            getArtistAlbumsUsecase,
+                                        getArtistTracksUsecase:
+                                            getArtistTracksUsecase,
+                                        getArtistSinglesUsecase:
+                                            getArtistSinglesUsecase,
                                       ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                );
+                              }),
                             ),
                           );
                         }
