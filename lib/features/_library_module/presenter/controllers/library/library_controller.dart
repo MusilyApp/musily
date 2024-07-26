@@ -191,6 +191,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
                 ..add(
                   track.hash,
                 ),
+              addingToFavorites: false,
             ),
           );
           await methods.getLibrary();
