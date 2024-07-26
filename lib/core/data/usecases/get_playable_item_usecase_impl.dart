@@ -17,18 +17,15 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
     late final String url;
 
     final downloadedItem = await downloaderController.methods.getFile(
-      track.hash ?? '',
+      'media/audios/${track.hash}',
     );
-
     if (downloadedItem != null && downloadedItem.filePath != null) {
-      print('tentando reproduzir localmente ${downloadedItem.filePath}');
       url = downloadedItem.filePath!;
       ytId = track.id;
     } else {
       if (track.ytId == track.id) {
         ytId = track.id;
       } else {
-        print('GETPLAYABLE buscando o ID de ${track.title}...');
         final searchResults = await yt.search.search(
           '${track.title} ${track.artist?.name}',
         );
@@ -43,14 +40,10 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
         ytId = searchResults.first.id.toString();
       }
 
-      print('GETPLAYABLE buscando a URL de ${track.title}...');
-
       final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId));
       final audioSteamInfo = manifest.audioOnly.withHighestBitrate();
 
       url = audioSteamInfo.url.toString();
-
-      print('GETPLAYABLE busca completa de $ytId!');
     }
 
     return MusilyTrack(
