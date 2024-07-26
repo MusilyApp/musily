@@ -118,18 +118,18 @@ class SectionsPage extends StatelessWidget {
                               child: Builder(builder: (context) {
                                 final items = data.items.length < 4
                                     ? data.items
-                                    : data.items.sublist(0, 4);
-                                return AppFlex(
-                                  maxItemsPerRow: 2,
-                                  children: [
-                                    ...(items
+                                    : (data.items
                                           ..sort(
                                             (a, b) =>
                                                 b.lastTimePlayed.compareTo(
                                               a.lastTimePlayed,
                                             ),
                                           ))
-                                        .map(
+                                        .sublist(0, 4);
+                                return AppFlex(
+                                  maxItemsPerRow: 2,
+                                  children: [
+                                    ...items.map(
                                       (item) => LibraryTile(
                                         coreController: coreController,
                                         playerController: playerController,
