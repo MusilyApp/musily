@@ -148,6 +148,7 @@ class _SearchPageState extends State<SearchPage> {
                           getSearchSuggestions();
                         },
                         onSubmitted: submitSearch,
+                        autofocus: true,
                         decoration: InputDecoration(
                           hintText: 'Buscar música, albúm ou artista',
                           border: InputBorder.none,
@@ -157,23 +158,25 @@ class _SearchPageState extends State<SearchPage> {
                               Icons.search,
                             ),
                           ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: IconButton(
-                              onPressed: () {
-                                searchTextController.text = '';
-                                setState(() {
-                                  searchSuggestions = [];
-                                });
-                              },
-                              style: const ButtonStyle(
-                                visualDensity: VisualDensity.compact,
-                              ),
-                              icon: const Icon(
-                                Icons.close,
-                              ),
-                            ),
-                          ),
+                          suffixIcon: searchTextController.text.isEmpty
+                              ? null
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      searchTextController.text = '';
+                                      setState(() {
+                                        searchSuggestions = [];
+                                      });
+                                    },
+                                    style: const ButtonStyle(
+                                      visualDensity: VisualDensity.compact,
+                                    ),
+                                    icon: const Icon(
+                                      Icons.close,
+                                    ),
+                                  ),
+                                ),
                         ),
                       ),
                     ),
