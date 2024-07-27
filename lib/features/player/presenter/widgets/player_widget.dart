@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
-import 'package:musily/features/album/presenter/pages/album_page.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
@@ -19,6 +17,8 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/downloader/presenter/widgets/track_downloader_widget.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily/features/player/presenter/widgets/player_background.dart';
+import 'package:musily/features/player/presenter/widgets/player_banner.dart';
 import 'package:musily/features/player/presenter/widgets/queue_widget.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
@@ -59,61 +59,13 @@ class PlayerWidget extends StatefulWidget {
   State<PlayerWidget> createState() => _PlayerWidgetState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _animation;
+class _PlayerWidgetState extends State<PlayerWidget> {
   Duration _seekDuration = Duration.zero;
   bool _useSeekDuration = false;
   bool loadingAlbum = true;
 
   @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 10),
-      vsync: this,
-    )
-      ..forward()
-      ..addListener(() {
-        setState(() {
-          _animation = Tween<Offset>(
-            begin: Offset.zero,
-            end: const Offset(0.08, 0),
-          ).animate(
-            CurvedAnimation(
-              parent: _controller,
-              curve: Curves.easeInOut,
-            ),
-          );
-        });
-        if (_controller.isCompleted) {
-          _controller.repeat(reverse: true);
-        }
-      });
-    _animation = Tween<Offset>(
-      begin: Offset.zero,
-      end: const Offset(0.2, 0),
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final maxWidth = MediaQuery.of(context).size.width;
-    final maxHeight = MediaQuery.of(context).size.height;
-    final brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
     return widget.coreController.builder(
       eventListener: (context, event, data) {
         if (event.id == 'closePlayer') {
@@ -143,31 +95,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   children: [
                     if (currentPlayingItem.highResImg != null &&
                         currentPlayingItem.highResImg!.isNotEmpty)
-                      AnimatedPositioned(
-                        duration: const Duration(
-                          milliseconds: 500,
-                        ),
-                        curve: Curves.easeInOut,
-                        left: _animation.value.dx * maxWidth,
-                        top: _animation.value.dy * maxHeight,
-                        child: SizedBox(
-                          width: maxWidth,
-                          height: maxHeight,
-                          child: ImageFiltered(
-                            imageFilter:
-                                ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: AppImage(
-                              currentPlayingItem.highResImg!,
-                              fit: BoxFit.cover,
-                              color: Theme.of(context)
-                                  .scaffoldBackgroundColor
-                                  .withOpacity(0.8),
-                              colorBlendMode: isDarkMode
-                                  ? BlendMode.darken
-                                  : BlendMode.lighten,
-                            ),
-                          ),
-                        ),
+                      PlayerBackground(
+                        imageUrl: currentPlayingItem.highResImg!,
+                        playerController: widget.playerController,
                       ),
                     SafeArea(
                       child: Column(
@@ -236,94 +166,22 @@ class _PlayerWidgetState extends State<PlayerWidget>
                               ],
                             ),
                           ),
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: GestureDetector(
-                              onTap: currentPlayingItem.album != null
-                                  ? () {
-                                      if (widget.playerController.data
-                                              .currentPlayingItem?.album !=
-                                          null) {
-                                        Navigator.pop(context);
-                                        widget.coreController.methods
-                                            .pushWidget(
-                                          AsyncAlbumPage(
-                                            albumId:
-                                                currentPlayingItem.album!.id,
-                                            coreController:
-                                                widget.coreController,
-                                            playerController:
-                                                widget.playerController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  : null,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                child: Builder(
-                                  builder: (context) {
-                                    if (currentPlayingItem.highResImg != null &&
-                                        currentPlayingItem
-                                            .highResImg!.isNotEmpty) {
-                                      return ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: AppImage(
-                                          currentPlayingItem.highResImg!,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      );
-                                    }
-                                    return Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        side: BorderSide(
-                                          width: 1,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .outline
-                                              .withOpacity(.2),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 350,
-                                            child: Icon(
-                                              Icons.music_note,
-                                              size: 75,
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color
-                                                  ?.withOpacity(.8),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
+                          PlayerBanner(
+                            track: currentPlayingItem,
+                            playerController: widget.playerController,
+                            coreController: widget.coreController,
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            downloaderController: widget.downloaderController,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
+                            libraryController: widget.libraryController,
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                            getArtistUsecase: widget.getArtistUsecase,
                           ),
                           Column(
                             children: [
@@ -683,6 +541,19 @@ class _PlayerWidgetState extends State<PlayerWidget>
                                     icon: const Icon(
                                       Icons.share_rounded,
                                       size: 20,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () => widget
+                                        .playerController.methods
+                                        .toggleLyrics(
+                                      currentPlayingItem.id,
+                                    ),
+                                    iconSize: 20,
+                                    icon: Icon(
+                                      !data.showLyrics
+                                          ? Icons.lyrics_rounded
+                                          : Icons.album_rounded,
                                     ),
                                   ),
                                   IconButton(

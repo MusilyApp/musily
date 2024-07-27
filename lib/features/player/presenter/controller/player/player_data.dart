@@ -2,6 +2,16 @@ import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily_player/musily_entities.dart';
 import 'package:musily_player/musily_player.dart';
 
+class Lyrics {
+  final String trackId;
+  final String? lyrics;
+
+  Lyrics({
+    required this.trackId,
+    required this.lyrics,
+  });
+}
+
 class PlayerData extends BaseControllerData {
   List<MusilyTrack> queue;
   String playingId;
@@ -13,6 +23,10 @@ class PlayerData extends BaseControllerData {
   bool shuffleEnabled;
   MusilyRepeatMode repeatMode;
   bool isBuffering;
+
+  bool showLyrics;
+  bool loadingLyrics;
+  Lyrics lyrics;
 
   bool mediaAvailable;
 
@@ -28,6 +42,9 @@ class PlayerData extends BaseControllerData {
     required this.shuffleEnabled,
     required this.repeatMode,
     required this.isBuffering,
+    required this.showLyrics,
+    required this.loadingLyrics,
+    required this.lyrics,
   });
 
   @override
@@ -43,6 +60,9 @@ class PlayerData extends BaseControllerData {
     MusilyRepeatMode? repeatMode,
     bool? isBuffering,
     String? playingId,
+    bool? showLyrics,
+    bool? loadingLyrics,
+    Lyrics? lyrics,
   }) {
     return PlayerData(
       playingId: playingId ?? this.playingId,
@@ -56,6 +76,9 @@ class PlayerData extends BaseControllerData {
       shuffleEnabled: shuffleEnabled ?? this.shuffleEnabled,
       repeatMode: repeatMode ?? this.repeatMode,
       isBuffering: isBuffering ?? this.isBuffering,
+      showLyrics: showLyrics ?? this.showLyrics,
+      loadingLyrics: loadingLyrics ?? this.loadingLyrics,
+      lyrics: lyrics ?? this.lyrics,
     );
   }
 }

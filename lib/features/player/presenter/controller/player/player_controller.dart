@@ -2,14 +2,17 @@ import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/features/player/presenter/controller/player/player_data.dart';
 import 'package:musily/features/player/presenter/controller/player/player_methods.dart';
+import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.dart';
 import 'package:musily_player/musily_player.dart';
 
 class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   late final MusilyPlayer _musilyPlayer;
+  final GetTrackLyricsUsecase getTrackLyricsUsecase;
 
   PlayerController({
     required MusilyPlayer musilyPlayer,
     required GetPlayableItemUsecase getPlayableItemUsecase,
+    required this.getTrackLyricsUsecase,
   }) {
     _musilyPlayer = musilyPlayer;
 
@@ -102,6 +105,9 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           data: data.currentPlayingItem,
         ),
       );
+      if (data.showLyrics) {
+        methods.getLyrics(data.currentPlayingItem?.id ?? '');
+      }
     });
   }
   @override
@@ -117,12 +123,54 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       shuffleEnabled: false,
       repeatMode: MusilyRepeatMode.noRepeat,
       isBuffering: false,
+      showLyrics: false,
+      loadingLyrics: false,
+      lyrics: Lyrics(
+        trackId: '',
+        lyrics: null,
+      ),
     );
   }
 
   @override
   PlayerMethods defineMethods() {
     return PlayerMethods(
+      getLyrics: (trackId) async {
+        if (data.loadingLyrics) {
+          return null;
+        }
+        if (data.lyrics.trackId == trackId) {
+          return data.lyrics.lyrics;
+        }
+        updateData(
+          data.copyWith(
+            loadingLyrics: true,
+          ),
+        );
+        try {
+          final lyrics = await getTrackLyricsUsecase.exec(trackId);
+          updateData(
+            data.copyWith(
+              lyrics: Lyrics(
+                trackId: trackId,
+                lyrics: lyrics,
+              ),
+              loadingLyrics: false,
+            ),
+          );
+        } catch (e) {
+          print(e);
+        }
+        return data.lyrics.lyrics;
+      },
+      toggleLyrics: (id) {
+        updateData(
+          data.copyWith(
+            showLyrics: !data.showLyrics,
+          ),
+        );
+        methods.getLyrics(id);
+      },
       play: () async {
         await _musilyPlayer.playPlaylist();
       },

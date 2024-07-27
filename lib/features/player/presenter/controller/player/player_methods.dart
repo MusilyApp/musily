@@ -18,6 +18,8 @@ class PlayerMethods {
   Future<void> Function(List<MusilyTrack> items) addToQueue;
   Future<void> Function(int index) queueJumpTo;
   Future<void> Function(int newIndex, int oldIndex) reorderQueue;
+  void Function(String trackId) toggleLyrics;
+  Future<String?> Function(String trackId) getLyrics;
 
   Future<void> Function(
     List<MusilyTrack> items,
@@ -40,5 +42,7 @@ class PlayerMethods {
     required this.queueJumpTo,
     required this.reorderQueue,
     required this.playPlaylist,
+    required this.toggleLyrics,
+    required this.getLyrics,
   });
 }

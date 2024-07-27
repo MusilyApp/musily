@@ -18,4 +18,10 @@ class TrackRespositoryImpl implements TrackRepository {
     final tracks = await trackDatasource.getTracks(query);
     return tracks;
   }
+
+  @override
+  Future<String?> getTrackLyrics(String id) async {
+    final lyrics = await trackDatasource.getTrackLyrics(id);
+    return lyrics;
+  }
 }

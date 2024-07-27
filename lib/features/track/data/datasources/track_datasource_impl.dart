@@ -48,4 +48,14 @@ class TrackDatasourceImpl implements TrackDatasource {
       return [];
     }
   }
+
+  @override
+  Future<String?> getTrackLyrics(String id) async {
+    try {
+      final lyrics = await repo.getTrackLyrics(id);
+      return lyrics;
+    } catch (e) {
+      return null;
+    }
+  }
 }
