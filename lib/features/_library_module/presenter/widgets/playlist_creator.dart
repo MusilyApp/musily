@@ -26,6 +26,22 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
   final TextEditingController playlistNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  submitNameTextField(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      final playlist = PlaylistEntity(
+        id: idGenerator(),
+        title: playlistNameController.text,
+        tracks: [],
+      );
+      widget.libraryController.methods.addToLibrary<PlaylistEntity>(
+        playlist,
+      );
+      Navigator.pop(context);
+      playlistNameController.text = '';
+      widget.onCreated?.call(playlist);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.builder(context, () {
@@ -37,6 +53,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
             child: AlertDialog(
               title: const Text('Criar playlist'),
               content: TextFormField(
+                autofocus: true,
                 controller: playlistNameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -48,6 +65,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
                   border: OutlineInputBorder(),
                   labelText: 'Nome da playlist',
                 ),
+                onFieldSubmitted: (value) => submitNameTextField(context),
               ),
               actions: [
                 FilledButton(
@@ -58,21 +76,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
                   child: const Text('Cancelar'),
                 ),
                 FilledButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final playlist = PlaylistEntity(
-                        id: idGenerator(),
-                        title: playlistNameController.text,
-                        tracks: [],
-                      );
-                      widget.libraryController.methods
-                          .addToLibrary<PlaylistEntity>(
-                        playlist,
-                      );
-                      Navigator.pop(context);
-                      widget.onCreated?.call(playlist);
-                    }
-                  },
+                  onPressed: () => submitNameTextField(context),
                   child: const Text('Criar'),
                 )
               ],
