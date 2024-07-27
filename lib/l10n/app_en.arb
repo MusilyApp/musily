@@ -49,5 +49,6 @@
   "songsNotFound": "No songs found.",
   "playlistNotFound": "Playlist not found.",
   "requiredField": "This field is required.",
-  "deleteDownload": "Delete Download"
+  "deleteDownload": "Delete Download",
+  "noPlaylists": "You have no playlists."
 }
