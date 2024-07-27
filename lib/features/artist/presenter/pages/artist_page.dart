@@ -28,6 +28,7 @@ import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/musily_entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArtistPage extends StatefulWidget {
   final CoreController coreController;
@@ -300,15 +301,17 @@ class _ArtistPageState extends State<ArtistPage> {
                             notInLibraryWidget: (context, addToLibrary) {
                               return FilledButton.tonal(
                                 onPressed: addToLibrary,
-                                child: const Text(
-                                  'Seguir',
+                                child: Text(
+                                  AppLocalizations.of(context)!.follow,
                                 ),
                               );
                             },
                             inLibraryWidget: (context, removeFromLibrary) {
                               return FilledButton.tonalIcon(
                                 onPressed: removeFromLibrary,
-                                label: const Text('Seguindo'),
+                                label: Text(
+                                  AppLocalizations.of(context)!.following,
+                                ),
                                 icon: const Icon(
                                   Icons.check_rounded,
                                 ),
@@ -332,7 +335,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              'Top músicas',
+                              AppLocalizations.of(context)!.topSongs,
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -379,7 +382,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                   ),
                                 );
                               },
-                              child: const Text('Ver mais'),
+                              child: Text(AppLocalizations.of(context)!.more),
                             ),
                           ),
                         ],
@@ -444,7 +447,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              'Top álbuns',
+                              AppLocalizations.of(context)!.topAlbums,
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -489,7 +492,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                   ),
                                 );
                               },
-                              child: const Text('Ver mais'),
+                              child: Text(AppLocalizations.of(context)!.more),
                             ),
                           ),
                         ],
@@ -541,7 +544,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              'Top singles',
+                              AppLocalizations.of(context)!.topSingles,
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -588,9 +591,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                   ),
                                 );
                               },
-                              child: const Text(
-                                'Ver mais',
-                              ),
+                              child: Text(AppLocalizations.of(context)!.more),
                             ),
                           ),
                         ],
@@ -641,7 +642,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              'Artistas similares',
+                              AppLocalizations.of(context)!.similarArtists,
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall
@@ -796,7 +797,7 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
                     size: 50,
                     color: Theme.of(context).iconTheme.color?.withOpacity(.7),
                   ),
-                  const Text('Artista não encontrado.')
+                  Text(AppLocalizations.of(context)!.artistNotFound),
                 ],
               ),
             );

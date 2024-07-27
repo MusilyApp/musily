@@ -14,6 +14,7 @@ import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_static_tile.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistOptions extends StatelessWidget {
   final PlaylistEntity playlistEntity;
@@ -79,7 +80,9 @@ class PlaylistOptions extends StatelessWidget {
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
                       title: Text(
-                        isPlaylistDownloading ? 'Cancelar download' : 'Baixar',
+                        isPlaylistDownloading
+                            ? AppLocalizations.of(context)!.cancelDownload
+                            : AppLocalizations.of(context)!.download,
                       ),
                     );
                   },
@@ -124,8 +127,8 @@ class PlaylistOptions extends StatelessWidget {
                           ),
                           title: Text(
                             isPlaylistPlaying && data.isPlaying
-                                ? 'Pausar'
-                                : 'Tocar',
+                                ? AppLocalizations.of(context)!.pause
+                                : AppLocalizations.of(context)!.play,
                           ),
                         ),
                         ListTile(
@@ -162,8 +165,8 @@ class PlaylistOptions extends StatelessWidget {
                                 .colorScheme
                                 ?.primary,
                           ),
-                          title: const Text(
-                            'Tocar aleatoriamente',
+                          title: Text(
+                            AppLocalizations.of(context)!.shufflePlay,
                           ),
                         ),
                         ListTile(
@@ -184,9 +187,9 @@ class PlaylistOptions extends StatelessWidget {
                                 .colorScheme
                                 ?.primary,
                           ),
-                          title: const Text(
-                            'Adicionar à fila',
-                            style: TextStyle(
+                          title: Text(
+                            AppLocalizations.of(context)!.addToQueue,
+                            style: const TextStyle(
                               color: null,
                             ),
                           ),
@@ -212,8 +215,8 @@ class PlaylistOptions extends StatelessWidget {
                       Icons.queue_music,
                       color: Theme.of(context).buttonTheme.colorScheme?.primary,
                     ),
-                    title: const Text(
-                      'Adicionar à playlist',
+                    title: Text(
+                      AppLocalizations.of(context)!.addToPlaylist,
                     ),
                   ),
                 ),
@@ -231,9 +234,13 @@ class PlaylistOptions extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Deseja apagar a playlist?'),
-                              content: const Text(
-                                'A ação não poderá ser desfeita.',
+                              title: Text(
+                                AppLocalizations.of(context)!
+                                    .doYouWantToDeleteThePlaylist,
+                              ),
+                              content: Text(
+                                AppLocalizations.of(context)!
+                                    .theActionCannotBeUndone,
                               ),
                               actions: [
                                 TextButton(
@@ -243,8 +250,8 @@ class PlaylistOptions extends StatelessWidget {
                                       false,
                                     );
                                   },
-                                  child: const Text(
-                                    'Cancelar',
+                                  child: Text(
+                                    AppLocalizations.of(context)!.cancel,
                                   ),
                                 ),
                                 TextButton(
@@ -259,8 +266,8 @@ class PlaylistOptions extends StatelessWidget {
                                       true,
                                     );
                                   },
-                                  child: const Text(
-                                    'Apagar',
+                                  child: Text(
+                                    AppLocalizations.of(context)!.delete,
                                   ),
                                 ),
                               ],
@@ -279,8 +286,8 @@ class PlaylistOptions extends StatelessWidget {
                         color:
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
-                      title: const Text(
-                        'Apagar playlist',
+                      title: Text(
+                        AppLocalizations.of(context)!.deletePlaylist,
                       ),
                     );
                   },

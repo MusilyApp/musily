@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistEditor extends StatefulWidget {
   final Widget Function(
@@ -41,18 +42,18 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
           return Form(
             key: _formKey,
             child: AlertDialog(
-              title: const Text('Editar playlist'),
+              title: Text(AppLocalizations.of(context)!.editPlaylist),
               content: TextFormField(
                 controller: playlistNameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Insira um nome';
+                    return AppLocalizations.of(context)!.requiredField;
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Nome da playlist',
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.playlistName,
                 ),
               ),
               actions: [
@@ -74,7 +75,7 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
                       widget.onFinished?.call(playlistNameController.text);
                     }
                   },
-                  child: const Text('Confirmar'),
+                  child: Text(AppLocalizations.of(context)!.confirm),
                 ),
               ],
             ),

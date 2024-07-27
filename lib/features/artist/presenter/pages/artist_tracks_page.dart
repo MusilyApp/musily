@@ -16,6 +16,7 @@ import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/musily_entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArtistTracksPage extends StatefulWidget {
   final List<TrackEntity> tracks;
@@ -95,7 +96,9 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
       coreController: widget.coreController,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Músicas'),
+          title: Text(
+            AppLocalizations.of(context)!.songs,
+          ),
         ),
         body: Builder(
           builder: (context) {
@@ -117,7 +120,9 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
                       size: 50,
                       color: Theme.of(context).iconTheme.color?.withOpacity(.7),
                     ),
-                    const Text('Músicas não encontradas.')
+                    Text(
+                      AppLocalizations.of(context)!.songsNotFound,
+                    )
                   ],
                 ),
               );

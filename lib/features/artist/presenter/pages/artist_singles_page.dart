@@ -14,6 +14,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArtistSinglesPage extends StatefulWidget {
   final List<AlbumEntity> singles;
@@ -93,7 +94,9 @@ class _ArtistSinglesPageState extends State<ArtistSinglesPage> {
       coreController: widget.coreController,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Singles'),
+          title: Text(
+            AppLocalizations.of(context)!.singles,
+          ),
         ),
         body: Builder(
           builder: (context) {
@@ -115,7 +118,9 @@ class _ArtistSinglesPageState extends State<ArtistSinglesPage> {
                       size: 50,
                       color: Theme.of(context).iconTheme.color?.withOpacity(.7),
                     ),
-                    const Text('Sem mais singles.')
+                    Text(
+                      AppLocalizations.of(context)!.noMoreSingles,
+                    ),
                   ],
                 ),
               );

@@ -17,6 +17,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlbumOptionsWidget extends StatelessWidget {
   final AlbumEntity album;
@@ -96,7 +97,9 @@ class AlbumOptionsWidget extends StatelessWidget {
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
                       title: Text(
-                        isAlbumDownloading ? 'Cancelar download' : 'Baixar',
+                        isAlbumDownloading
+                            ? AppLocalizations.of(context)!.cancelDownload
+                            : AppLocalizations.of(context)!.download,
                       ),
                     );
                   },
@@ -140,8 +143,8 @@ class AlbumOptionsWidget extends StatelessWidget {
                           ),
                           title: Text(
                             isAlbumPlaying && data.isPlaying
-                                ? 'Pausar'
-                                : 'Tocar',
+                                ? AppLocalizations.of(context)!.pause
+                                : AppLocalizations.of(context)!.play,
                           ),
                         ),
                         ListTile(
@@ -178,8 +181,8 @@ class AlbumOptionsWidget extends StatelessWidget {
                                 .colorScheme
                                 ?.primary,
                           ),
-                          title: const Text(
-                            'Tocar aleatoriamente',
+                          title: Text(
+                            AppLocalizations.of(context)!.shufflePlay,
                           ),
                         ),
                         ListTile(
@@ -200,9 +203,9 @@ class AlbumOptionsWidget extends StatelessWidget {
                                 .colorScheme
                                 ?.primary,
                           ),
-                          title: const Text(
-                            'Adicionar à fila',
-                            style: TextStyle(
+                          title: Text(
+                            AppLocalizations.of(context)!.addToQueue,
+                            style: const TextStyle(
                               color: null,
                             ),
                           ),
@@ -228,8 +231,8 @@ class AlbumOptionsWidget extends StatelessWidget {
                       Icons.queue_music,
                       color: Theme.of(context).buttonTheme.colorScheme?.primary,
                     ),
-                    title: const Text(
-                      'Adicionar à playlist',
+                    title: Text(
+                      AppLocalizations.of(context)!.addToPlaylist,
                     ),
                   ),
                 ),
@@ -247,8 +250,8 @@ class AlbumOptionsWidget extends StatelessWidget {
                         color:
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
-                      title: const Text(
-                        'Adicionar à bibilioteca',
+                      title: Text(
+                        AppLocalizations.of(context)!.addToLibrary,
                       ),
                     );
                   },
@@ -263,8 +266,8 @@ class AlbumOptionsWidget extends StatelessWidget {
                         color:
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
-                      title: const Text(
-                        'Remover da bibilioteca',
+                      title: Text(
+                        AppLocalizations.of(context)!.removeFromLibrary,
                       ),
                     );
                   },
@@ -274,8 +277,8 @@ class AlbumOptionsWidget extends StatelessWidget {
                     Icons.share_rounded,
                     color: Theme.of(context).buttonTheme.colorScheme?.primary,
                   ),
-                  title: const Text(
-                    'Compartilhar',
+                  title: Text(
+                    AppLocalizations.of(context)!.share,
                   ),
                 ),
               ],

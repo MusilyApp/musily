@@ -22,6 +22,7 @@ import 'package:musily/features/player/presenter/controller/player/player_contro
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LibraryTile extends StatelessWidget {
   final LibraryItemEntity<dynamic> item;
@@ -163,7 +164,7 @@ class LibraryTile extends StatelessWidget {
               child: InfinityMarquee(
                 child: Text(
                   (item.value as PlaylistEntity).id == 'favorites'
-                      ? 'Favoritos'
+                      ? AppLocalizations.of(context)!.favorites
                       : item.value.title,
                 ),
               ),

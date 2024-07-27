@@ -14,6 +14,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArtistAlbumsPage extends StatefulWidget {
   final List<AlbumEntity> albums;
@@ -93,7 +94,7 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
       coreController: widget.coreController,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Álbuns'),
+          title: Text(AppLocalizations.of(context)!.albums),
         ),
         body: Builder(
           builder: (context) {
@@ -118,7 +119,9 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
                     const SizedBox(
                       height: 12,
                     ),
-                    const Text('Sem mais álbuns.')
+                    Text(
+                      AppLocalizations.of(context)!.noMoreAlbums,
+                    ),
                   ],
                 ),
               );

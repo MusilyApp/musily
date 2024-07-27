@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/mini_player_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CorePage extends StatefulWidget {
   final CoreController coreController;
@@ -98,19 +99,19 @@ class _CorePageState extends State<CorePage> {
           bottomNavigationBar: BottomNavigationBar(
             items: [
               BottomNavigationBarItem(
-                label: 'Início',
+                label: AppLocalizations.of(context)!.home,
                 icon: Icon(
                   _selected == 0 ? Icons.home_rounded : Icons.home_rounded,
                 ),
               ),
               BottomNavigationBarItem(
-                label: 'Buscar',
+                label: AppLocalizations.of(context)!.search,
                 icon: Icon(
                   _selected == 1 ? Icons.search_rounded : Icons.search_rounded,
                 ),
               ),
               BottomNavigationBarItem(
-                label: 'Bibilioteca',
+                label: AppLocalizations.of(context)!.library,
                 icon: Icon(
                   _selected == 2
                       ? Icons.library_music_rounded

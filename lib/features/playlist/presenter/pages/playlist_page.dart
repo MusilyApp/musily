@@ -22,6 +22,7 @@ import 'package:musily/features/playlist/presenter/widgets/playlist_options.dart
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/musily_entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistPage extends StatefulWidget {
   final PlaylistEntity playlist;
@@ -85,7 +86,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         appBar: AppBar(
           title: Text(
             widget.playlist.id == 'favorites'
-                ? 'Favoritos'
+                ? AppLocalizations.of(context)!.favorites
                 : widget.playlist.title,
           ),
         ),
@@ -117,7 +118,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   ),
                   child: Text(
                     widget.playlist.id == 'favorites'
-                        ? 'Favoritos'
+                        ? AppLocalizations.of(context)!.favorites
                         : widget.playlist.title,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -409,7 +410,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                   });
                                   Navigator.pop(context);
                                 },
-                                title: const Text('Apagar da playlist'),
+                                title: Text(AppLocalizations.of(context)!
+                                    .deletePlaylist),
                                 leading: Icon(
                                   Icons.delete_rounded,
                                   color: Theme.of(context)
@@ -532,7 +534,7 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
                     size: 50,
                     color: Theme.of(context).iconTheme.color?.withOpacity(.7),
                   ),
-                  const Text('Playlist não encontrada.')
+                  Text(AppLocalizations.of(context)!.playlistNotFound)
                 ],
               ),
             );

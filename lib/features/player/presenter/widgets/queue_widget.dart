@@ -6,6 +6,7 @@ import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QueueWidget extends StatelessWidget {
   final PlayerController playerController;
@@ -28,7 +29,7 @@ class QueueWidget extends StatelessWidget {
                   vertical: 8,
                 ),
                 child: Text(
-                  'Tocando Agora',
+                  AppLocalizations.of(context)!.playingNow,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),

@@ -20,6 +20,7 @@ import 'package:musily/features/player/presenter/controller/player/player_contro
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/musily_entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlbumPage extends StatelessWidget {
   final CoreController coreController;
@@ -502,7 +503,9 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
                     size: 50,
                     color: Theme.of(context).iconTheme.color?.withOpacity(.7),
                   ),
-                  const Text('Album não encontrado.')
+                  Text(
+                    AppLocalizations.of(context)!.albumNotFound,
+                  )
                 ],
               ),
             );

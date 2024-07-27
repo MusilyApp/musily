@@ -18,6 +18,7 @@ import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrackOptionsBuilder extends StatelessWidget {
   final TrackEntity track;
@@ -146,7 +147,7 @@ class TrackOptions extends StatelessWidget {
                             Icons.download_rounded,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          title: const Text('Baixar'),
+                          title: Text(AppLocalizations.of(context)!.download),
                         );
                       }
                       if (progress == 1) {
@@ -159,8 +160,8 @@ class TrackOptions extends StatelessWidget {
                             Icons.delete_rounded,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          title: const Text(
-                            'Excluir download',
+                          title: Text(
+                            AppLocalizations.of(context)!.deleteDownload,
                           ),
                         );
                       }
@@ -173,7 +174,8 @@ class TrackOptions extends StatelessWidget {
                           Icons.cancel_rounded,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        title: const Text('Cancelar download'),
+                        title:
+                            Text(AppLocalizations.of(context)!.cancelDownload),
                       );
                     },
                   ),
@@ -192,7 +194,8 @@ class TrackOptions extends StatelessWidget {
                     builder: (context, showAdder) {
                       return ListTile(
                         onTap: showAdder,
-                        title: const Text('Adicionar à playlist'),
+                        title:
+                            Text(AppLocalizations.of(context)!.addToPlaylist),
                         leading: Icon(
                           Icons.playlist_add_rounded,
                           color: Theme.of(context)
@@ -216,8 +219,8 @@ class TrackOptions extends StatelessWidget {
                         ),
                       );
                     },
-                    title: const Text(
-                      'Adicionar à fila',
+                    title: Text(
+                      AppLocalizations.of(context)!.addToQueue,
                     ),
                     leading: Icon(
                       Icons.queue_music_rounded,
@@ -250,7 +253,7 @@ class TrackOptions extends StatelessWidget {
                           ),
                         );
                       },
-                      title: const Text('Ver albúm'),
+                      title: Text(AppLocalizations.of(context)!.goToAlbum),
                       leading: Icon(
                         Icons.album_rounded,
                         color:
@@ -282,7 +285,7 @@ class TrackOptions extends StatelessWidget {
                         ),
                       );
                     },
-                    title: const Text('Ver artista'),
+                    title: Text(AppLocalizations.of(context)!.goToArtist),
                     leading: Icon(
                       Icons.person_rounded,
                       color: Theme.of(context).buttonTheme.colorScheme?.primary,
@@ -290,7 +293,7 @@ class TrackOptions extends StatelessWidget {
                   ),
                 if (!(hideOptions ?? []).contains(TrackTileOptions.share))
                   ListTile(
-                    title: const Text('Compartilhar'),
+                    title: Text(AppLocalizations.of(context)!.share),
                     leading: Icon(
                       Icons.share_rounded,
                       color: Theme.of(context).buttonTheme.colorScheme?.primary,

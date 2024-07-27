@@ -13,6 +13,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SquareAlbumTile extends StatelessWidget {
   final AlbumEntity album;
@@ -96,7 +97,7 @@ class SquareAlbumTile extends StatelessWidget {
                 child: Text(album.title),
               ),
               subtitle: Text(
-                'Álbum${album.year != 0 ? ' - ${album.year}' : ''}',
+                '${AppLocalizations.of(context)!.album}${album.year != 0 ? ' - ${album.year}' : ''}',
               ),
             ),
           ],
