@@ -6,6 +6,7 @@ import 'package:musily/features/_library_module/domain/entities/library_item_ent
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_creator.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_tile_thumb.dart';
+import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
@@ -129,62 +130,68 @@ class _PlaylistAdderWidget extends StatelessWidget {
                       ),
                     );
                   }
-                  return SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: playlist
-                          .map(
-                            (item) => ListTile(
-                              onTap: trackIsAlreadyInPlaylist(item.value.tracks)
-                                  ? null
-                                  : () async {
-                                      Navigator.pop(context);
-                                      late final List<TrackEntity> tracksToAdd;
-                                      if (tracks.isEmpty) {
-                                        tracksToAdd =
-                                            await asyncTracks?.call() ?? [];
-                                      } else {
-                                        tracksToAdd = tracks;
-                                      }
-                                      libraryController.methods.addToPlaylist(
-                                        tracksToAdd,
-                                        item.id,
-                                      );
-                                      onAdded?.call();
-                                    },
-                              leading: PlaylistTileThumb(
-                                urls: item.value.tracks
-                                    .map((track) => track.lowResImg
-                                        ?.replaceAll('w60-h60', 'w40-h40'))
-                                    .whereType<String>()
-                                    .toSet()
-                                    .toList()
-                                  ..shuffle(
-                                    Random(),
+                  return ListView(
+                    children: playlist
+                        .map(
+                          (item) => ListTile(
+                            onTap: trackIsAlreadyInPlaylist(item.value.tracks)
+                                ? null
+                                : () async {
+                                    Navigator.pop(context);
+                                    late final List<TrackEntity> tracksToAdd;
+                                    if (tracks.isEmpty) {
+                                      tracksToAdd =
+                                          await asyncTracks?.call() ?? [];
+                                    } else {
+                                      tracksToAdd = tracks;
+                                    }
+                                    libraryController.methods.addToPlaylist(
+                                      tracksToAdd,
+                                      item.id,
+                                    );
+                                    onAdded?.call();
+                                  },
+                            leading: item.value.id == 'favorites'
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: const FavoriteIcon(
+                                      iconSize: 30,
+                                    ),
+                                  )
+                                : PlaylistTileThumb(
+                                    urls: item.value.tracks
+                                        .map((track) => track.lowResImg
+                                            ?.replaceAll('w60-h60', 'w40-h40'))
+                                        .whereType<String>()
+                                        .toSet()
+                                        .toList()
+                                      ..shuffle(
+                                        Random(),
+                                      ),
                                   ),
-                              ),
-                              title: Text(
-                                item.value.title,
-                                style: TextStyle(
-                                  color: trackIsAlreadyInPlaylist(
-                                          item.value.tracks)
-                                      ? Theme.of(context).disabledColor
-                                      : null,
-                                ),
-                              ),
-                              subtitle: Text(
-                                'Playlist · ${item.value.tracks.length} músicas',
-                                style: TextStyle(
-                                  color: trackIsAlreadyInPlaylist(
-                                          item.value.tracks)
-                                      ? Theme.of(context).disabledColor
-                                      : null,
-                                ),
+                            title: Text(
+                              item.value.id == 'favorites'
+                                  ? 'Favoritos'
+                                  : item.value.title,
+                              style: TextStyle(
+                                color:
+                                    trackIsAlreadyInPlaylist(item.value.tracks)
+                                        ? Theme.of(context).disabledColor
+                                        : null,
                               ),
                             ),
-                          )
-                          .toList(),
-                    ),
+                            subtitle: Text(
+                              'Playlist · ${item.value.tracks.length} músicas',
+                              style: TextStyle(
+                                color:
+                                    trackIsAlreadyInPlaylist(item.value.tracks)
+                                        ? Theme.of(context).disabledColor
+                                        : null,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
                   );
                 },
               ),
