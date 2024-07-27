@@ -121,149 +121,111 @@ class TrackOptions extends StatelessWidget {
           ),
           const Divider(),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (customActions != null) ...customActions!.call(context),
-                  if (!(hideOptions ?? []).contains(TrackTileOptions.download))
-                    TrackDownloaderBuilder(
-                      track: track,
-                      downloaderController: downloaderController,
-                      getPlayableItemUsecase: getPlayableItemUsecase,
-                      builder: (
-                        context,
-                        progress,
-                        startDownload,
-                        removeDownloadedFile,
-                        cancelDownload,
-                      ) {
-                        if (progress == 0) {
-                          return ListTile(
-                            onTap: () {
-                              Navigator.pop(context);
-                              startDownload();
-                            },
-                            leading: Icon(
-                              Icons.download_rounded,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            title: const Text('Baixar'),
-                          );
-                        }
-                        if (progress == 1) {
-                          return ListTile(
-                            onTap: () {
-                              Navigator.pop(context);
-                              removeDownloadedFile();
-                            },
-                            leading: Icon(
-                              Icons.delete_rounded,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            title: const Text(
-                              'Excluir download',
-                            ),
-                          );
-                        }
+            child: ListView(
+              children: [
+                if (customActions != null) ...customActions!.call(context),
+                if (!(hideOptions ?? []).contains(TrackTileOptions.download))
+                  TrackDownloaderBuilder(
+                    track: track,
+                    downloaderController: downloaderController,
+                    getPlayableItemUsecase: getPlayableItemUsecase,
+                    builder: (
+                      context,
+                      progress,
+                      startDownload,
+                      removeDownloadedFile,
+                      cancelDownload,
+                    ) {
+                      if (progress == 0) {
                         return ListTile(
                           onTap: () {
                             Navigator.pop(context);
-                            cancelDownload();
+                            startDownload();
                           },
                           leading: Icon(
-                            Icons.cancel_rounded,
+                            Icons.download_rounded,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          title: const Text('Cancelar download'),
+                          title: const Text('Baixar'),
                         );
-                      },
-                    ),
-                  if (!(hideOptions ?? [])
-                      .contains(TrackTileOptions.addToPlaylist))
-                    PlaylistAdder(
-                      libraryController,
-                      onAdded: () {
-                        Navigator.pop(context);
-                        coreController.updateData(
-                          coreController.data.copyWith(
-                            isShowingDialog: false,
-                          ),
-                        );
-                      },
-                      builder: (context, showAdder) {
+                      }
+                      if (progress == 1) {
                         return ListTile(
-                          onTap: showAdder,
-                          title: const Text('Adicionar à playlist'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            removeDownloadedFile();
+                          },
                           leading: Icon(
-                            Icons.playlist_add_rounded,
-                            color: Theme.of(context)
-                                .buttonTheme
-                                .colorScheme
-                                ?.primary,
+                            Icons.delete_rounded,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          title: const Text(
+                            'Excluir download',
                           ),
                         );
-                      },
-                      tracks: [track],
-                    ),
-                  if (!(hideOptions ?? [])
-                      .contains(TrackTileOptions.addToQueue))
-                    ListTile(
-                      onTap: () {
-                        playerController.methods
-                            .addToQueue([TrackModel.toMusilyTrack(track)]);
-                        Navigator.pop(context);
-                        coreController.updateData(
-                          coreController.data.copyWith(
-                            isShowingDialog: false,
-                          ),
-                        );
-                      },
-                      title: const Text(
-                        'Adicionar à fila',
-                      ),
-                      leading: Icon(
-                        Icons.queue_music_rounded,
-                        color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
-                      ),
-                    ),
-                  if (!(hideOptions ?? []).contains(TrackTileOptions.seeAlbum))
-                    if (track.album.id.isNotEmpty)
-                      ListTile(
+                      }
+                      return ListTile(
                         onTap: () {
                           Navigator.pop(context);
-                          coreController.updateData(
-                            coreController.data.copyWith(
-                              isShowingDialog: false,
-                            ),
-                          );
-                          coreController.methods.pushWidget(
-                            AsyncAlbumPage(
-                              albumId: track.album.id,
-                              coreController: coreController,
-                              playerController: playerController,
-                              getAlbumUsecase: getAlbumUsecase,
-                              downloaderController: downloaderController,
-                              getPlayableItemUsecase: getPlayableItemUsecase,
-                              libraryController: libraryController,
-                              getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                              getArtistSinglesUsecase: getArtistSinglesUsecase,
-                              getArtistTracksUsecase: getArtistTracksUsecase,
-                              getArtistUsecase: getArtistUsecase,
-                            ),
-                          );
+                          cancelDownload();
                         },
-                        title: const Text('Ver albúm'),
                         leading: Icon(
-                          Icons.album_rounded,
+                          Icons.cancel_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        title: const Text('Cancelar download'),
+                      );
+                    },
+                  ),
+                if (!(hideOptions ?? [])
+                    .contains(TrackTileOptions.addToPlaylist))
+                  PlaylistAdder(
+                    libraryController,
+                    onAdded: () {
+                      Navigator.pop(context);
+                      coreController.updateData(
+                        coreController.data.copyWith(
+                          isShowingDialog: false,
+                        ),
+                      );
+                    },
+                    builder: (context, showAdder) {
+                      return ListTile(
+                        onTap: showAdder,
+                        title: const Text('Adicionar à playlist'),
+                        leading: Icon(
+                          Icons.playlist_add_rounded,
                           color: Theme.of(context)
                               .buttonTheme
                               .colorScheme
                               ?.primary,
                         ),
-                      ),
-                  if (!(hideOptions ?? []).contains(TrackTileOptions.seeArtist))
+                      );
+                    },
+                    tracks: [track],
+                  ),
+                if (!(hideOptions ?? []).contains(TrackTileOptions.addToQueue))
+                  ListTile(
+                    onTap: () {
+                      playerController.methods
+                          .addToQueue([TrackModel.toMusilyTrack(track)]);
+                      Navigator.pop(context);
+                      coreController.updateData(
+                        coreController.data.copyWith(
+                          isShowingDialog: false,
+                        ),
+                      );
+                    },
+                    title: const Text(
+                      'Adicionar à fila',
+                    ),
+                    leading: Icon(
+                      Icons.queue_music_rounded,
+                      color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                    ),
+                  ),
+                if (!(hideOptions ?? []).contains(TrackTileOptions.seeAlbum))
+                  if (track.album.id.isNotEmpty)
                     ListTile(
                       onTap: () {
                         Navigator.pop(context);
@@ -273,39 +235,68 @@ class TrackOptions extends StatelessWidget {
                           ),
                         );
                         coreController.methods.pushWidget(
-                          AsyncArtistPage(
-                            artistId: track.artist.id,
+                          AsyncAlbumPage(
+                            albumId: track.album.id,
                             coreController: coreController,
                             playerController: playerController,
+                            getAlbumUsecase: getAlbumUsecase,
                             downloaderController: downloaderController,
                             getPlayableItemUsecase: getPlayableItemUsecase,
                             libraryController: libraryController,
-                            getAlbumUsecase: getAlbumUsecase,
-                            getArtistUsecase: getArtistUsecase,
                             getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                            getArtistTracksUsecase: getArtistTracksUsecase,
                             getArtistSinglesUsecase: getArtistSinglesUsecase,
+                            getArtistTracksUsecase: getArtistTracksUsecase,
+                            getArtistUsecase: getArtistUsecase,
                           ),
                         );
                       },
-                      title: const Text('Ver artista'),
+                      title: const Text('Ver albúm'),
                       leading: Icon(
-                        Icons.person_rounded,
+                        Icons.album_rounded,
                         color:
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
                     ),
-                  if (!(hideOptions ?? []).contains(TrackTileOptions.share))
-                    ListTile(
-                      title: const Text('Compartilhar'),
-                      leading: Icon(
-                        Icons.share_rounded,
-                        color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
-                      ),
+                if (!(hideOptions ?? []).contains(TrackTileOptions.seeArtist))
+                  ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      coreController.updateData(
+                        coreController.data.copyWith(
+                          isShowingDialog: false,
+                        ),
+                      );
+                      coreController.methods.pushWidget(
+                        AsyncArtistPage(
+                          artistId: track.artist.id,
+                          coreController: coreController,
+                          playerController: playerController,
+                          downloaderController: downloaderController,
+                          getPlayableItemUsecase: getPlayableItemUsecase,
+                          libraryController: libraryController,
+                          getAlbumUsecase: getAlbumUsecase,
+                          getArtistUsecase: getArtistUsecase,
+                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                          getArtistTracksUsecase: getArtistTracksUsecase,
+                          getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        ),
+                      );
+                    },
+                    title: const Text('Ver artista'),
+                    leading: Icon(
+                      Icons.person_rounded,
+                      color: Theme.of(context).buttonTheme.colorScheme?.primary,
                     ),
-                ],
-              ),
+                  ),
+                if (!(hideOptions ?? []).contains(TrackTileOptions.share))
+                  ListTile(
+                    title: const Text('Compartilhar'),
+                    leading: Icon(
+                      Icons.share_rounded,
+                      color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
