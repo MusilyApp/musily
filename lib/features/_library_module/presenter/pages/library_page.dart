@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -156,92 +157,136 @@ class LibraryPage extends StatelessWidget {
                       );
                     },
                   ),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        ...data.items
-                            .where((item) => item.id != 'favorites')
-                            .map(
-                              (item) => Builder(
-                                builder: (context) {
-                                  if (item.value is AlbumEntity) {
-                                    return AlbumTile(
-                                      album: item.value,
-                                      coreController: coreController,
-                                      playerController: playerController,
-                                      getAlbumUsecase: getAlbumUsecase,
-                                      downloaderController:
-                                          downloaderController,
-                                      getPlayableItemUsecase:
-                                          getPlayableItemUsecase,
-                                      libraryController: libraryController,
-                                      getArtistAlbumsUsecase:
-                                          getArtistAlbumsUsecase,
-                                      getArtistSinglesUsecase:
-                                          getArtistSinglesUsecase,
-                                      getArtistTracksUsecase:
-                                          getArtistTracksUsecase,
-                                      getArtistUsecase: getArtistUsecase,
-                                    );
-                                  }
-                                  if (item.value is PlaylistEntity) {
-                                    return PlaylistTile(
-                                      playlist: item.value,
-                                      libraryController: libraryController,
-                                      playerController: playerController,
-                                      getAlbumUsecase: getAlbumUsecase,
-                                      coreController: coreController,
-                                      downloaderController:
-                                          downloaderController,
-                                      getPlayableItemUsecase:
-                                          getPlayableItemUsecase,
-                                      getPlaylistUsecase: getPlaylistUsecase,
-                                      getArtistAlbumsUsecase:
-                                          getArtistAlbumsUsecase,
-                                      getArtistSinglesUsecase:
-                                          getArtistSinglesUsecase,
-                                      getArtistTracksUsecase:
-                                          getArtistTracksUsecase,
-                                      getArtistUsecase: getArtistUsecase,
-                                    );
-                                  }
-                                  if (item.value is ArtistEntity) {
-                                    return ArtistTile(
-                                      artist: item.value,
-                                      getAlbumUsecase: getAlbumUsecase,
-                                      coreController: coreController,
-                                      downloaderController:
-                                          downloaderController,
-                                      getPlayableItemUsecase:
-                                          getPlayableItemUsecase,
-                                      libraryController: libraryController,
-                                      playerController: playerController,
-                                      getArtistUsecase: getArtistUsecase,
-                                      getArtistAlbumsUsecase:
-                                          getArtistAlbumsUsecase,
-                                      getArtistTracksUsecase:
-                                          getArtistTracksUsecase,
-                                      getArtistSinglesUsecase:
-                                          getArtistSinglesUsecase,
-                                    );
-                                  }
-                                  return Container();
-                                },
-                              ),
+                  if (data.items
+                      .where((item) => item.id != 'favorites')
+                      .isEmpty)
+                    playerController.builder(builder: (context, data) {
+                      return DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: const Radius.circular(12),
+                        padding: const EdgeInsets.all(12),
+                        color:
+                            Theme.of(context).colorScheme.outline.withOpacity(
+                                  .6,
+                                ),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * .9,
+                          height: MediaQuery.of(context).size.height -
+                              (data.currentPlayingItem != null ? 373 : 305),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.library_music_rounded,
+                                  size: 70,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .outline
+                                      .withOpacity(.9),
+                                ),
+                                Text(
+                                  'Bibilioteca vazia',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .outline
+                                        .withOpacity(.9),
+                                  ),
+                                ),
+                              ],
                             ),
-                        playerController.builder(
-                          builder: (context, data) {
-                            if (data.isPlaying) {
-                              return const SizedBox(
-                                height: 70,
-                              );
-                            }
-                            return const SizedBox();
-                          },
+                          ),
                         ),
-                      ],
+                      );
+                    })
+                  else
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          ...data.items
+                              .where((item) => item.id != 'favorites')
+                              .map(
+                                (item) => Builder(
+                                  builder: (context) {
+                                    if (item.value is AlbumEntity) {
+                                      return AlbumTile(
+                                        album: item.value,
+                                        coreController: coreController,
+                                        playerController: playerController,
+                                        getAlbumUsecase: getAlbumUsecase,
+                                        downloaderController:
+                                            downloaderController,
+                                        getPlayableItemUsecase:
+                                            getPlayableItemUsecase,
+                                        libraryController: libraryController,
+                                        getArtistAlbumsUsecase:
+                                            getArtistAlbumsUsecase,
+                                        getArtistSinglesUsecase:
+                                            getArtistSinglesUsecase,
+                                        getArtistTracksUsecase:
+                                            getArtistTracksUsecase,
+                                        getArtistUsecase: getArtistUsecase,
+                                      );
+                                    }
+                                    if (item.value is PlaylistEntity) {
+                                      return PlaylistTile(
+                                        playlist: item.value,
+                                        libraryController: libraryController,
+                                        playerController: playerController,
+                                        getAlbumUsecase: getAlbumUsecase,
+                                        coreController: coreController,
+                                        downloaderController:
+                                            downloaderController,
+                                        getPlayableItemUsecase:
+                                            getPlayableItemUsecase,
+                                        getPlaylistUsecase: getPlaylistUsecase,
+                                        getArtistAlbumsUsecase:
+                                            getArtistAlbumsUsecase,
+                                        getArtistSinglesUsecase:
+                                            getArtistSinglesUsecase,
+                                        getArtistTracksUsecase:
+                                            getArtistTracksUsecase,
+                                        getArtistUsecase: getArtistUsecase,
+                                      );
+                                    }
+                                    if (item.value is ArtistEntity) {
+                                      return ArtistTile(
+                                        artist: item.value,
+                                        getAlbumUsecase: getAlbumUsecase,
+                                        coreController: coreController,
+                                        downloaderController:
+                                            downloaderController,
+                                        getPlayableItemUsecase:
+                                            getPlayableItemUsecase,
+                                        libraryController: libraryController,
+                                        playerController: playerController,
+                                        getArtistUsecase: getArtistUsecase,
+                                        getArtistAlbumsUsecase:
+                                            getArtistAlbumsUsecase,
+                                        getArtistTracksUsecase:
+                                            getArtistTracksUsecase,
+                                        getArtistSinglesUsecase:
+                                            getArtistSinglesUsecase,
+                                      );
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ),
+                          playerController.builder(
+                            builder: (context, data) {
+                              if (data.isPlaying) {
+                                return const SizedBox(
+                                  height: 70,
+                                );
+                              }
+                              return const SizedBox();
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             );
