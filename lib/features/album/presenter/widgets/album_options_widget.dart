@@ -48,39 +48,6 @@ class AlbumOptionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String playlistHash(List<TrackEntity> tracks) {
-    //   return tracks.map((track) => track.hash).join('');
-    // }
-
-    // Future<List<TrackEntity>> getTracks() async {
-    //   late final List<TrackEntity> tracks;
-    //   if (album.tracks.isNotEmpty) {
-    //     tracks = album.tracks;
-    //   } else {
-    //     final albumWithTracks = await getAlbumUsecase.exec(album.id);
-    //     tracks = albumWithTracks.tracks;
-    //   }
-    //   return tracks;
-    // }
-
-    // bool albumIsInLibrary(AlbumEntity album) {
-    //   final libraryItems = libraryController.data.items;
-    //   final entities = libraryItems.map((element) => element.value);
-    //   final albums = entities.whereType<AlbumEntity>();
-    //   final albumIds = albums.map((element) => element.id);
-    //   return albumIds.contains(album.id);
-    // }
-
-    // String libraryItemId(AlbumEntity album) {
-    //   final libraryItems = libraryController.data.items;
-    //   final libraryItem =
-    //       libraryItems.where((element) => element.value.id == album.id);
-    //   if (libraryItem.isNotEmpty) {
-    //     return libraryItem.first.id;
-    //   }
-    //   return '';
-    // }
-
     return Scaffold(
       body: Column(
         children: [
@@ -100,229 +67,218 @@ class AlbumOptionsWidget extends StatelessWidget {
           ),
           const Divider(),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  downloaderController.builder(
-                    builder: (context, data) {
-                      final isAlbumDownloading =
-                          data.downloadQueue.isNotEmpty &&
-                              data.downloadingId == album.id;
-                      return ListTile(
-                        onTap: () {
-                          if (isAlbumDownloading) {
-                            libraryController.methods.cancelCollectionDownload(
-                              album.tracks,
-                              album.id,
-                            );
-                          } else {
-                            libraryController.methods.downloadCollection(
-                              album.tracks,
-                              album.id,
-                            );
-                          }
-                          Navigator.pop(context);
-                        },
-                        leading: Icon(
-                          isAlbumDownloading
-                              ? Icons.cancel_rounded
-                              : Icons.download_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
-                        ),
-                        title: Text(
-                          isAlbumDownloading ? 'Cancelar download' : 'Baixar',
-                        ),
-                      );
-                    },
-                  ),
-                  playerController.builder(
-                    builder: (context, data) {
-                      final isAlbumPlaying = data.playingId == album.id;
-                      return Column(
-                        children: [
-                          ListTile(
-                            onTap: () async {
-                              if (isAlbumPlaying) {
-                                if (data.isPlaying) {
-                                  await playerController.methods.pause();
-                                } else {
-                                  await playerController.methods.resume();
-                                }
+            child: ListView(
+              children: [
+                downloaderController.builder(
+                  builder: (context, data) {
+                    final isAlbumDownloading = data.downloadQueue.isNotEmpty &&
+                        data.downloadingId == album.id;
+                    return ListTile(
+                      onTap: () {
+                        if (isAlbumDownloading) {
+                          libraryController.methods.cancelCollectionDownload(
+                            album.tracks,
+                            album.id,
+                          );
+                        } else {
+                          libraryController.methods.downloadCollection(
+                            album.tracks,
+                            album.id,
+                          );
+                        }
+                        Navigator.pop(context);
+                      },
+                      leading: Icon(
+                        isAlbumDownloading
+                            ? Icons.cancel_rounded
+                            : Icons.download_rounded,
+                        color:
+                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                      ),
+                      title: Text(
+                        isAlbumDownloading ? 'Cancelar download' : 'Baixar',
+                      ),
+                    );
+                  },
+                ),
+                playerController.builder(
+                  builder: (context, data) {
+                    final isAlbumPlaying = data.playingId == album.id;
+                    return Column(
+                      children: [
+                        ListTile(
+                          onTap: () async {
+                            if (isAlbumPlaying) {
+                              if (data.isPlaying) {
+                                await playerController.methods.pause();
                               } else {
-                                await playerController.methods.playPlaylist(
-                                  [
-                                    ...album.tracks.map(
-                                      (track) =>
-                                          TrackModel.toMusilyTrack(track),
-                                    ),
-                                  ],
-                                  album.id,
-                                  startFrom: 0,
-                                );
-                                libraryController.methods.updateLastTimePlayed(
-                                  album.id,
-                                );
+                                await playerController.methods.resume();
                               }
-                            },
-                            leading: Icon(
-                              isAlbumPlaying && data.isPlaying
-                                  ? Icons.pause_rounded
-                                  : Icons.play_arrow_rounded,
-                              color: Theme.of(context)
-                                  .buttonTheme
-                                  .colorScheme
-                                  ?.primary,
-                            ),
-                            title: Text(
-                              isAlbumPlaying && data.isPlaying
-                                  ? 'Pausar'
-                                  : 'Tocar',
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () async {
-                              final random = Random();
-                              final randomIndex = random.nextInt(
-                                album.tracks.length,
-                              );
-                              playerController.methods.playPlaylist(
-                                [
-                                  ...album.tracks.map(
-                                    (element) =>
-                                        TrackModel.toMusilyTrack(element),
-                                  ),
-                                ],
-                                album.id,
-                                startFrom: randomIndex,
-                              );
-                              Navigator.pop(context);
-                              if (!data.shuffleEnabled) {
-                                playerController.methods.toggleShuffle();
-                              } else {
-                                await playerController.methods.toggleShuffle();
-                                playerController.methods.toggleShuffle();
-                              }
-                              libraryController.methods.updateLastTimePlayed(
-                                album.id,
-                              );
-                            },
-                            leading: Icon(
-                              Icons.shuffle_rounded,
-                              color: Theme.of(context)
-                                  .buttonTheme
-                                  .colorScheme
-                                  ?.primary,
-                            ),
-                            title: const Text(
-                              'Tocar aleatoriamente',
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              playerController.methods.addToQueue(
+                            } else {
+                              await playerController.methods.playPlaylist(
                                 [
                                   ...album.tracks.map(
                                     (track) => TrackModel.toMusilyTrack(track),
                                   ),
                                 ],
+                                album.id,
+                                startFrom: 0,
                               );
-                              Navigator.pop(context);
-                            },
-                            leading: Icon(
-                              Icons.playlist_add,
-                              color: Theme.of(context)
-                                  .buttonTheme
-                                  .colorScheme
-                                  ?.primary,
-                            ),
-                            title: const Text(
-                              'Adicionar à fila',
-                              style: TextStyle(
-                                color: null,
-                              ),
+                              libraryController.methods.updateLastTimePlayed(
+                                album.id,
+                              );
+                            }
+                          },
+                          leading: Icon(
+                            isAlbumPlaying && data.isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
+                          title: Text(
+                            isAlbumPlaying && data.isPlaying
+                                ? 'Pausar'
+                                : 'Tocar',
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () async {
+                            final random = Random();
+                            final randomIndex = random.nextInt(
+                              album.tracks.length,
+                            );
+                            playerController.methods.playPlaylist(
+                              [
+                                ...album.tracks.map(
+                                  (element) =>
+                                      TrackModel.toMusilyTrack(element),
+                                ),
+                              ],
+                              album.id,
+                              startFrom: randomIndex,
+                            );
+                            Navigator.pop(context);
+                            if (!data.shuffleEnabled) {
+                              playerController.methods.toggleShuffle();
+                            } else {
+                              await playerController.methods.toggleShuffle();
+                              playerController.methods.toggleShuffle();
+                            }
+                            libraryController.methods.updateLastTimePlayed(
+                              album.id,
+                            );
+                          },
+                          leading: Icon(
+                            Icons.shuffle_rounded,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
+                          title: const Text(
+                            'Tocar aleatoriamente',
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            playerController.methods.addToQueue(
+                              [
+                                ...album.tracks.map(
+                                  (track) => TrackModel.toMusilyTrack(track),
+                                ),
+                              ],
+                            );
+                            Navigator.pop(context);
+                          },
+                          leading: Icon(
+                            Icons.playlist_add,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
+                          title: const Text(
+                            'Adicionar à fila',
+                            style: TextStyle(
+                              color: null,
                             ),
                           ),
-                        ],
-                      );
-                    },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                PlaylistAdder(
+                  libraryController,
+                  asyncTracks: () async {
+                    if (album.tracks.isNotEmpty) {
+                      return album.tracks;
+                    }
+                    final fetechedAlbum = await getAlbumUsecase.exec(
+                      album.id,
+                    );
+                    return fetechedAlbum?.tracks ?? [];
+                  },
+                  builder: (context, showAdder) => ListTile(
+                    onTap: showAdder,
+                    leading: Icon(
+                      Icons.queue_music,
+                      color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                    ),
+                    title: const Text(
+                      'Adicionar à playlist',
+                    ),
                   ),
-                  PlaylistAdder(
-                    libraryController,
-                    asyncTracks: () async {
-                      if (album.tracks.isNotEmpty) {
-                        return album.tracks;
-                      }
-                      final fetechedAlbum = await getAlbumUsecase.exec(
-                        album.id,
-                      );
-                      return fetechedAlbum?.tracks ?? [];
-                    },
-                    builder: (context, showAdder) => ListTile(
-                      onTap: showAdder,
+                ),
+                LibraryToggler(
+                  item: album,
+                  libraryController: libraryController,
+                  notInLibraryWidget: (context, addToLibrary) {
+                    return ListTile(
+                      onTap: () {
+                        Navigator.pop(context);
+                        addToLibrary();
+                      },
                       leading: Icon(
-                        Icons.queue_music,
+                        Icons.library_add_rounded,
                         color:
                             Theme.of(context).buttonTheme.colorScheme?.primary,
                       ),
                       title: const Text(
-                        'Adicionar à playlist',
+                        'Adicionar à bibilioteca',
                       ),
-                    ),
+                    );
+                  },
+                  inLibraryWidget: (context, removeFromLibrary) {
+                    return ListTile(
+                      onTap: () {
+                        Navigator.pop(context);
+                        removeFromLibrary();
+                      },
+                      leading: Icon(
+                        Icons.delete,
+                        color:
+                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                      ),
+                      title: const Text(
+                        'Remover da bibilioteca',
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.share_rounded,
+                    color: Theme.of(context).buttonTheme.colorScheme?.primary,
                   ),
-                  LibraryToggler(
-                    item: album,
-                    libraryController: libraryController,
-                    notInLibraryWidget: (context, addToLibrary) {
-                      return ListTile(
-                        onTap: () {
-                          Navigator.pop(context);
-                          addToLibrary();
-                        },
-                        leading: Icon(
-                          Icons.library_add_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
-                        ),
-                        title: const Text(
-                          'Adicionar à bibilioteca',
-                        ),
-                      );
-                    },
-                    inLibraryWidget: (context, removeFromLibrary) {
-                      return ListTile(
-                        onTap: () {
-                          Navigator.pop(context);
-                          removeFromLibrary();
-                        },
-                        leading: Icon(
-                          Icons.delete,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
-                        ),
-                        title: const Text(
-                          'Remover da bibilioteca',
-                        ),
-                      );
-                    },
+                  title: const Text(
+                    'Compartilhar',
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.share_rounded,
-                      color: Theme.of(context).buttonTheme.colorScheme?.primary,
-                    ),
-                    title: const Text(
-                      'Compartilhar',
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

@@ -157,91 +157,89 @@ class LibraryPage extends StatelessWidget {
                     },
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ...data.items
-                              .where((item) => item.id != 'favorites')
-                              .map(
-                                (item) => Builder(
-                                  builder: (context) {
-                                    if (item.value is AlbumEntity) {
-                                      return AlbumTile(
-                                        album: item.value,
-                                        coreController: coreController,
-                                        playerController: playerController,
-                                        getAlbumUsecase: getAlbumUsecase,
-                                        downloaderController:
-                                            downloaderController,
-                                        getPlayableItemUsecase:
-                                            getPlayableItemUsecase,
-                                        libraryController: libraryController,
-                                        getArtistAlbumsUsecase:
-                                            getArtistAlbumsUsecase,
-                                        getArtistSinglesUsecase:
-                                            getArtistSinglesUsecase,
-                                        getArtistTracksUsecase:
-                                            getArtistTracksUsecase,
-                                        getArtistUsecase: getArtistUsecase,
-                                      );
-                                    }
-                                    if (item.value is PlaylistEntity) {
-                                      return PlaylistTile(
-                                        playlist: item.value,
-                                        libraryController: libraryController,
-                                        playerController: playerController,
-                                        getAlbumUsecase: getAlbumUsecase,
-                                        coreController: coreController,
-                                        downloaderController:
-                                            downloaderController,
-                                        getPlayableItemUsecase:
-                                            getPlayableItemUsecase,
-                                        getPlaylistUsecase: getPlaylistUsecase,
-                                        getArtistAlbumsUsecase:
-                                            getArtistAlbumsUsecase,
-                                        getArtistSinglesUsecase:
-                                            getArtistSinglesUsecase,
-                                        getArtistTracksUsecase:
-                                            getArtistTracksUsecase,
-                                        getArtistUsecase: getArtistUsecase,
-                                      );
-                                    }
-                                    if (item.value is ArtistEntity) {
-                                      return ArtistTile(
-                                        artist: item.value,
-                                        getAlbumUsecase: getAlbumUsecase,
-                                        coreController: coreController,
-                                        downloaderController:
-                                            downloaderController,
-                                        getPlayableItemUsecase:
-                                            getPlayableItemUsecase,
-                                        libraryController: libraryController,
-                                        playerController: playerController,
-                                        getArtistUsecase: getArtistUsecase,
-                                        getArtistAlbumsUsecase:
-                                            getArtistAlbumsUsecase,
-                                        getArtistTracksUsecase:
-                                            getArtistTracksUsecase,
-                                        getArtistSinglesUsecase:
-                                            getArtistSinglesUsecase,
-                                      );
-                                    }
-                                    return Container();
-                                  },
-                                ),
+                    child: ListView(
+                      children: [
+                        ...data.items
+                            .where((item) => item.id != 'favorites')
+                            .map(
+                              (item) => Builder(
+                                builder: (context) {
+                                  if (item.value is AlbumEntity) {
+                                    return AlbumTile(
+                                      album: item.value,
+                                      coreController: coreController,
+                                      playerController: playerController,
+                                      getAlbumUsecase: getAlbumUsecase,
+                                      downloaderController:
+                                          downloaderController,
+                                      getPlayableItemUsecase:
+                                          getPlayableItemUsecase,
+                                      libraryController: libraryController,
+                                      getArtistAlbumsUsecase:
+                                          getArtistAlbumsUsecase,
+                                      getArtistSinglesUsecase:
+                                          getArtistSinglesUsecase,
+                                      getArtistTracksUsecase:
+                                          getArtistTracksUsecase,
+                                      getArtistUsecase: getArtistUsecase,
+                                    );
+                                  }
+                                  if (item.value is PlaylistEntity) {
+                                    return PlaylistTile(
+                                      playlist: item.value,
+                                      libraryController: libraryController,
+                                      playerController: playerController,
+                                      getAlbumUsecase: getAlbumUsecase,
+                                      coreController: coreController,
+                                      downloaderController:
+                                          downloaderController,
+                                      getPlayableItemUsecase:
+                                          getPlayableItemUsecase,
+                                      getPlaylistUsecase: getPlaylistUsecase,
+                                      getArtistAlbumsUsecase:
+                                          getArtistAlbumsUsecase,
+                                      getArtistSinglesUsecase:
+                                          getArtistSinglesUsecase,
+                                      getArtistTracksUsecase:
+                                          getArtistTracksUsecase,
+                                      getArtistUsecase: getArtistUsecase,
+                                    );
+                                  }
+                                  if (item.value is ArtistEntity) {
+                                    return ArtistTile(
+                                      artist: item.value,
+                                      getAlbumUsecase: getAlbumUsecase,
+                                      coreController: coreController,
+                                      downloaderController:
+                                          downloaderController,
+                                      getPlayableItemUsecase:
+                                          getPlayableItemUsecase,
+                                      libraryController: libraryController,
+                                      playerController: playerController,
+                                      getArtistUsecase: getArtistUsecase,
+                                      getArtistAlbumsUsecase:
+                                          getArtistAlbumsUsecase,
+                                      getArtistTracksUsecase:
+                                          getArtistTracksUsecase,
+                                      getArtistSinglesUsecase:
+                                          getArtistSinglesUsecase,
+                                    );
+                                  }
+                                  return Container();
+                                },
                               ),
-                          playerController.builder(
-                            builder: (context, data) {
-                              if (data.isPlaying) {
-                                return const SizedBox(
-                                  height: 70,
-                                );
-                              }
-                              return const SizedBox();
-                            },
-                          ),
-                        ],
-                      ),
+                            ),
+                        playerController.builder(
+                          builder: (context, data) {
+                            if (data.isPlaying) {
+                              return const SizedBox(
+                                height: 70,
+                              );
+                            }
+                            return const SizedBox();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],

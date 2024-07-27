@@ -104,585 +104,581 @@ class _ArtistPageState extends State<ArtistPage> {
         body: Builder(builder: (context) {
           return Stack(
             children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: 450,
-                          child: widget.artist.highResImg == null
-                              ? const SizedBox()
-                              : AppImage(
-                                  widget.artist.highResImg!,
-                                  fit: BoxFit.cover,
-                                ),
+              ListView(
+                children: [
+                  Stack(
+                    children: [
+                      SizedBox(
+                        height: 450,
+                        child: widget.artist.highResImg == null
+                            ? const SizedBox()
+                            : AppImage(
+                                widget.artist.highResImg!,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Theme.of(context).scaffoldBackgroundColor,
+                                Theme.of(context)
+                                    .scaffoldBackgroundColor
+                                    .withOpacity(
+                                      .45,
+                                    ),
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ),
                         ),
-                        Positioned.fill(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Theme.of(context).scaffoldBackgroundColor,
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(
-                                        .45,
-                                      ),
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
+                      ),
+                      Positioned(
+                        top: 370,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: InfinityMarquee(
+                              child: Text(
+                                widget.artist.name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                               ),
                             ),
                           ),
                         ),
-                        Positioned(
-                          top: 370,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: InfinityMarquee(
-                                child: Text(
-                                  widget.artist.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
+                  widget.playerController.builder(builder: (context, data) {
+                    final isArtistPlaying = data.playingId == widget.artist.id;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton.filledTonal(
+                          onPressed: loadingTracks
+                              ? null
+                              : () async {
+                                  if (allTracks.isEmpty) {
+                                    await loadTracks();
+                                  }
+                                  final random = Random();
+                                  final randomIndex = random.nextInt(
+                                    allTracks.length,
+                                  );
+                                  widget.playerController.methods.playPlaylist(
+                                    [
+                                      ...allTracks.map(
+                                        (element) =>
+                                            TrackModel.toMusilyTrack(element),
                                       ),
+                                    ],
+                                    widget.artist.id,
+                                    startFrom: randomIndex,
+                                  );
+                                  if (!data.shuffleEnabled) {
+                                    widget.playerController.methods
+                                        .toggleShuffle();
+                                  } else {
+                                    await widget.playerController.methods
+                                        .toggleShuffle();
+                                    widget.playerController.methods
+                                        .toggleShuffle();
+                                  }
+                                  widget.libraryController.methods
+                                      .updateLastTimePlayed(
+                                    widget.artist.id,
+                                  );
+                                },
+                          style: const ButtonStyle(
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(50, 50),
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.shuffle,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        IconButton.filled(
+                          onPressed: loadingTracks
+                              ? null
+                              : () async {
+                                  if (allTracks.isEmpty) {
+                                    await loadTracks();
+                                  }
+                                  if (isArtistPlaying) {
+                                    if (data.isPlaying) {
+                                      await widget.playerController.methods
+                                          .pause();
+                                    } else {
+                                      await widget.playerController.methods
+                                          .resume();
+                                    }
+                                  } else {
+                                    await widget.playerController.methods
+                                        .playPlaylist(
+                                      [
+                                        ...allTracks.map(
+                                          (track) =>
+                                              TrackModel.toMusilyTrack(track),
+                                        ),
+                                      ],
+                                      widget.artist.id,
+                                      startFrom: 0,
+                                    );
+                                    widget.libraryController.methods
+                                        .updateLastTimePlayed(
+                                      widget.artist.id,
+                                    );
+                                  }
+                                },
+                          style: const ButtonStyle(
+                            iconSize: WidgetStatePropertyAll(40),
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(60, 60),
+                            ),
+                          ),
+                          icon: loadingTracks
+                              ? CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                )
+                              : Icon(
+                                  isArtistPlaying && data.isPlaying
+                                      ? Icons.pause_rounded
+                                      : Icons.play_arrow_rounded,
                                 ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        IconButton.filledTonal(
+                          onPressed: () {},
+                          style: const ButtonStyle(
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(50, 50),
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.share_rounded,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 12,
+                        ),
+                        child: LibraryToggler(
+                          libraryController: widget.libraryController,
+                          loadingWidget: (context) {
+                            return FilledButton.tonal(
+                              onPressed: null,
+                              child: LoadingAnimationWidget.halfTriangleDot(
+                                color: Theme.of(context).iconTheme.color ??
+                                    Colors.white,
+                                size: 16,
                               ),
+                            );
+                          },
+                          notInLibraryWidget: (context, addToLibrary) {
+                            return FilledButton.tonal(
+                              onPressed: addToLibrary,
+                              child: const Text(
+                                'Seguir',
+                              ),
+                            );
+                          },
+                          inLibraryWidget: (context, removeFromLibrary) {
+                            return FilledButton.tonalIcon(
+                              onPressed: removeFromLibrary,
+                              label: const Text('Seguindo'),
+                              icon: const Icon(
+                                Icons.check_rounded,
+                              ),
+                            );
+                          },
+                          item: widget.artist,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (widget.artist.topTracks.isNotEmpty) ...[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            'Top músicas',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 16,
+                            bottom: 16,
+                          ),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                DownupRouter(
+                                  builder: (context) => ArtistTracksPage(
+                                    tracks: allTracks,
+                                    artist: widget.artist,
+                                    getArtistSinglesUsecase:
+                                        widget.getArtistSinglesUsecase,
+                                    getArtistUsecase: widget.getArtistUsecase,
+                                    getArtistAlbumsUsecase:
+                                        widget.getArtistAlbumsUsecase,
+                                    getArtistTracksUsecase:
+                                        widget.getArtistTracksUsecase,
+                                    coreController: widget.coreController,
+                                    playerController: widget.playerController,
+                                    getPlayableItemUsecase:
+                                        widget.getPlayableItemUsecase,
+                                    libraryController: widget.libraryController,
+                                    downloaderController:
+                                        widget.downloaderController,
+                                    getAlbumUsecase: widget.getAlbumUsecase,
+                                    onLoadedTracks: (tracks) {
+                                      setState(() {
+                                        allTracks = tracks;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text('Ver mais'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    ...widget.artist.topTracks.map(
+                      (track) => TrackTile(
+                        getAlbumUsecase: widget.getAlbumUsecase,
+                        track: track,
+                        coreController: widget.coreController,
+                        playerController: widget.playerController,
+                        downloaderController: widget.downloaderController,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        libraryController: widget.libraryController,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                        customAction: () async {
+                          if (allTracks.isEmpty) {
+                            await loadTracks();
+                          }
+
+                          late final List<MusilyTrack> queueToPlay;
+                          if (widget.playerController.data.playingId ==
+                              widget.artist.id) {
+                            queueToPlay = widget.playerController.data.queue;
+                          } else {
+                            queueToPlay = [
+                              ...allTracks.map((element) =>
+                                  TrackModel.toMusilyTrack(element))
+                            ];
+                          }
+
+                          final startIndex = queueToPlay.indexWhere(
+                            (element) => element.hash == track.hash,
+                          );
+
+                          widget.playerController.methods.playPlaylist(
+                            queueToPlay,
+                            widget.artist.id,
+                            startFrom: startIndex == -1 ? 0 : startIndex,
+                          );
+                          widget.libraryController.methods.updateLastTimePlayed(
+                            widget.artist.id,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                  if (widget.artist.topAlbums.isNotEmpty) ...[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            'Top álbuns',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 16,
+                            bottom: 16,
+                          ),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                DownupRouter(
+                                  builder: (context) => ArtistAlbumsPage(
+                                    albums: allAlbums,
+                                    artist: widget.artist,
+                                    getArtistAlbumsUsecase:
+                                        widget.getArtistAlbumsUsecase,
+                                    getArtistTracksUsecase:
+                                        widget.getArtistTracksUsecase,
+                                    coreController: widget.coreController,
+                                    playerController: widget.playerController,
+                                    getPlayableItemUsecase:
+                                        widget.getPlayableItemUsecase,
+                                    libraryController: widget.libraryController,
+                                    downloaderController:
+                                        widget.downloaderController,
+                                    getAlbumUsecase: widget.getAlbumUsecase,
+                                    getArtistSinglesUsecase:
+                                        widget.getArtistSinglesUsecase,
+                                    getArtistUsecase: widget.getArtistUsecase,
+                                    onLoadedAlbums: (albums) {
+                                      allAlbums = albums;
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text('Ver mais'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 275,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ...widget.artist.topAlbums.map(
+                            (album) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              child: SquareAlbumTile(
+                                album: album,
+                                coreController: widget.coreController,
+                                playerController: widget.playerController,
+                                getAlbumUsecase: widget.getAlbumUsecase,
+                                downloaderController:
+                                    widget.downloaderController,
+                                getPlayableItemUsecase:
+                                    widget.getPlayableItemUsecase,
+                                libraryController: widget.libraryController,
+                                getArtistAlbumsUsecase:
+                                    widget.getArtistAlbumsUsecase,
+                                getArtistSinglesUsecase:
+                                    widget.getArtistSinglesUsecase,
+                                getArtistTracksUsecase:
+                                    widget.getArtistTracksUsecase,
+                                getArtistUsecase: widget.getArtistUsecase,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  if (widget.artist.topSingles.isNotEmpty) ...[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            'Top singles',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 16,
+                            bottom: 16,
+                          ),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                DownupRouter(
+                                  builder: (context) => ArtistSinglesPage(
+                                    singles: allSingles,
+                                    artist: widget.artist,
+                                    getArtistSinglesUsecase:
+                                        widget.getArtistSinglesUsecase,
+                                    getArtistTracksUsecase:
+                                        widget.getArtistTracksUsecase,
+                                    coreController: widget.coreController,
+                                    playerController: widget.playerController,
+                                    getPlayableItemUsecase:
+                                        widget.getPlayableItemUsecase,
+                                    libraryController: widget.libraryController,
+                                    downloaderController:
+                                        widget.downloaderController,
+                                    getAlbumUsecase: widget.getAlbumUsecase,
+                                    getArtistAlbumsUsecase:
+                                        widget.getArtistAlbumsUsecase,
+                                    getArtistUsecase: widget.getArtistUsecase,
+                                    onLoadedSingles: (singles) {
+                                      setState(() {
+                                        allSingles = singles;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'Ver mais',
                             ),
                           ),
                         ),
                       ],
                     ),
-                    widget.playerController.builder(builder: (context, data) {
-                      final isArtistPlaying =
-                          data.playingId == widget.artist.id;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton.filledTonal(
-                            onPressed: loadingTracks
-                                ? null
-                                : () async {
-                                    if (allTracks.isEmpty) {
-                                      await loadTracks();
-                                    }
-                                    final random = Random();
-                                    final randomIndex = random.nextInt(
-                                      allTracks.length,
-                                    );
-                                    widget.playerController.methods
-                                        .playPlaylist(
-                                      [
-                                        ...allTracks.map(
-                                          (element) =>
-                                              TrackModel.toMusilyTrack(element),
-                                        ),
-                                      ],
-                                      widget.artist.id,
-                                      startFrom: randomIndex,
-                                    );
-                                    if (!data.shuffleEnabled) {
-                                      widget.playerController.methods
-                                          .toggleShuffle();
-                                    } else {
-                                      await widget.playerController.methods
-                                          .toggleShuffle();
-                                      widget.playerController.methods
-                                          .toggleShuffle();
-                                    }
-                                    widget.libraryController.methods
-                                        .updateLastTimePlayed(
-                                      widget.artist.id,
-                                    );
-                                  },
-                            style: const ButtonStyle(
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(50, 50),
-                              ),
-                            ),
-                            icon: const Icon(
-                              Icons.shuffle,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          IconButton.filled(
-                            onPressed: loadingTracks
-                                ? null
-                                : () async {
-                                    if (allTracks.isEmpty) {
-                                      await loadTracks();
-                                    }
-                                    if (isArtistPlaying) {
-                                      if (data.isPlaying) {
-                                        await widget.playerController.methods
-                                            .pause();
-                                      } else {
-                                        await widget.playerController.methods
-                                            .resume();
-                                      }
-                                    } else {
-                                      await widget.playerController.methods
-                                          .playPlaylist(
-                                        [
-                                          ...allTracks.map(
-                                            (track) =>
-                                                TrackModel.toMusilyTrack(track),
-                                          ),
-                                        ],
-                                        widget.artist.id,
-                                        startFrom: 0,
-                                      );
-                                      widget.libraryController.methods
-                                          .updateLastTimePlayed(
-                                        widget.artist.id,
-                                      );
-                                    }
-                                  },
-                            style: const ButtonStyle(
-                              iconSize: WidgetStatePropertyAll(40),
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(60, 60),
-                              ),
-                            ),
-                            icon: loadingTracks
-                                ? CircularProgressIndicator(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  )
-                                : Icon(
-                                    isArtistPlaying && data.isPlaying
-                                        ? Icons.pause_rounded
-                                        : Icons.play_arrow_rounded,
-                                  ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          IconButton.filledTonal(
-                            onPressed: () {},
-                            style: const ButtonStyle(
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(50, 50),
-                              ),
-                            ),
-                            icon: const Icon(
-                              Icons.share_rounded,
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 12,
-                      ),
-                      child: LibraryToggler(
-                        libraryController: widget.libraryController,
-                        loadingWidget: (context) {
-                          return FilledButton.tonal(
-                            onPressed: null,
-                            child: LoadingAnimationWidget.halfTriangleDot(
-                              color: Theme.of(context).iconTheme.color ??
-                                  Colors.white,
-                              size: 16,
-                            ),
-                          );
-                        },
-                        notInLibraryWidget: (context, addToLibrary) {
-                          return FilledButton.tonal(
-                            onPressed: addToLibrary,
-                            child: const Text(
-                              'Seguir',
-                            ),
-                          );
-                        },
-                        inLibraryWidget: (context, removeFromLibrary) {
-                          return FilledButton.tonalIcon(
-                            onPressed: removeFromLibrary,
-                            label: const Text('Seguindo'),
-                            icon: const Icon(
-                              Icons.check_rounded,
-                            ),
-                          );
-                        },
-                        item: widget.artist,
-                      ),
-                    ),
-                    if (widget.artist.topTracks.isNotEmpty) ...[
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              bottom: 16,
-                            ),
-                            child: Text(
-                              'Top músicas',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 16,
-                              bottom: 16,
-                            ),
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  DownupRouter(
-                                    builder: (context) => ArtistTracksPage(
-                                      tracks: allTracks,
-                                      artist: widget.artist,
-                                      getArtistSinglesUsecase:
-                                          widget.getArtistSinglesUsecase,
-                                      getArtistUsecase: widget.getArtistUsecase,
-                                      getArtistAlbumsUsecase:
-                                          widget.getArtistAlbumsUsecase,
-                                      getArtistTracksUsecase:
-                                          widget.getArtistTracksUsecase,
-                                      coreController: widget.coreController,
-                                      playerController: widget.playerController,
-                                      getPlayableItemUsecase:
-                                          widget.getPlayableItemUsecase,
-                                      libraryController:
-                                          widget.libraryController,
-                                      downloaderController:
-                                          widget.downloaderController,
-                                      getAlbumUsecase: widget.getAlbumUsecase,
-                                      onLoadedTracks: (tracks) {
-                                        setState(() {
-                                          allTracks = tracks;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Text('Ver mais'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      ...widget.artist.topTracks.map(
-                        (track) => TrackTile(
-                          getAlbumUsecase: widget.getAlbumUsecase,
-                          track: track,
-                          coreController: widget.coreController,
-                          playerController: widget.playerController,
-                          downloaderController: widget.downloaderController,
-                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                          libraryController: widget.libraryController,
-                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase:
-                              widget.getArtistSinglesUsecase,
-                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                          getArtistUsecase: widget.getArtistUsecase,
-                          customAction: () async {
-                            if (allTracks.isEmpty) {
-                              await loadTracks();
-                            }
-
-                            late final List<MusilyTrack> queueToPlay;
-                            if (widget.playerController.data.playingId ==
-                                widget.artist.id) {
-                              queueToPlay = widget.playerController.data.queue;
-                            } else {
-                              queueToPlay = [
-                                ...allTracks.map((element) =>
-                                    TrackModel.toMusilyTrack(element))
-                              ];
-                            }
-
-                            final startIndex = queueToPlay.indexWhere(
-                              (element) => element.hash == track.hash,
-                            );
-
-                            widget.playerController.methods.playPlaylist(
-                              queueToPlay,
-                              widget.artist.id,
-                              startFrom: startIndex == -1 ? 0 : startIndex,
-                            );
-                            widget.libraryController.methods
-                                .updateLastTimePlayed(
-                              widget.artist.id,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                    if (widget.artist.topAlbums.isNotEmpty) ...[
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              bottom: 16,
-                            ),
-                            child: Text(
-                              'Top álbuns',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 16,
-                              bottom: 16,
-                            ),
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  DownupRouter(
-                                    builder: (context) => ArtistAlbumsPage(
-                                      albums: allAlbums,
-                                      artist: widget.artist,
-                                      getArtistAlbumsUsecase:
-                                          widget.getArtistAlbumsUsecase,
-                                      getArtistTracksUsecase:
-                                          widget.getArtistTracksUsecase,
-                                      coreController: widget.coreController,
-                                      playerController: widget.playerController,
-                                      getPlayableItemUsecase:
-                                          widget.getPlayableItemUsecase,
-                                      libraryController:
-                                          widget.libraryController,
-                                      downloaderController:
-                                          widget.downloaderController,
-                                      getAlbumUsecase: widget.getAlbumUsecase,
-                                      getArtistSinglesUsecase:
-                                          widget.getArtistSinglesUsecase,
-                                      getArtistUsecase: widget.getArtistUsecase,
-                                      onLoadedAlbums: (albums) {
-                                        allAlbums = albums;
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Text('Ver mais'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SingleChildScrollView(
+                    SizedBox(
+                      height: 275,
+                      child: ListView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ...widget.artist.topAlbums.map(
-                              (album) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
-                                child: SquareAlbumTile(
-                                  album: album,
-                                  coreController: widget.coreController,
-                                  playerController: widget.playerController,
-                                  getAlbumUsecase: widget.getAlbumUsecase,
-                                  downloaderController:
-                                      widget.downloaderController,
-                                  getPlayableItemUsecase:
-                                      widget.getPlayableItemUsecase,
-                                  libraryController: widget.libraryController,
-                                  getArtistAlbumsUsecase:
-                                      widget.getArtistAlbumsUsecase,
-                                  getArtistSinglesUsecase:
-                                      widget.getArtistSinglesUsecase,
-                                  getArtistTracksUsecase:
-                                      widget.getArtistTracksUsecase,
-                                  getArtistUsecase: widget.getArtistUsecase,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    if (widget.artist.topSingles.isNotEmpty) ...[
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              bottom: 16,
-                            ),
-                            child: Text(
-                              'Top singles',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 16,
-                              bottom: 16,
-                            ),
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  DownupRouter(
-                                    builder: (context) => ArtistSinglesPage(
-                                      singles: allSingles,
-                                      artist: widget.artist,
-                                      getArtistSinglesUsecase:
-                                          widget.getArtistSinglesUsecase,
-                                      getArtistTracksUsecase:
-                                          widget.getArtistTracksUsecase,
-                                      coreController: widget.coreController,
-                                      playerController: widget.playerController,
-                                      getPlayableItemUsecase:
-                                          widget.getPlayableItemUsecase,
-                                      libraryController:
-                                          widget.libraryController,
-                                      downloaderController:
-                                          widget.downloaderController,
-                                      getAlbumUsecase: widget.getAlbumUsecase,
-                                      getArtistAlbumsUsecase:
-                                          widget.getArtistAlbumsUsecase,
-                                      getArtistUsecase: widget.getArtistUsecase,
-                                      onLoadedSingles: (singles) {
-                                        setState(() {
-                                          allSingles = singles;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                'Ver mais',
+                          ...widget.artist.topSingles.map(
+                            (album) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              child: SquareAlbumTile(
+                                album: album,
+                                coreController: widget.coreController,
+                                playerController: widget.playerController,
+                                getAlbumUsecase: widget.getAlbumUsecase,
+                                downloaderController:
+                                    widget.downloaderController,
+                                getPlayableItemUsecase:
+                                    widget.getPlayableItemUsecase,
+                                libraryController: widget.libraryController,
+                                getArtistAlbumsUsecase:
+                                    widget.getArtistAlbumsUsecase,
+                                getArtistSinglesUsecase:
+                                    widget.getArtistSinglesUsecase,
+                                getArtistTracksUsecase:
+                                    widget.getArtistTracksUsecase,
+                                getArtistUsecase: widget.getArtistUsecase,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ...widget.artist.topSingles.map(
-                              (album) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
-                                child: SquareAlbumTile(
-                                  album: album,
-                                  coreController: widget.coreController,
-                                  playerController: widget.playerController,
-                                  getAlbumUsecase: widget.getAlbumUsecase,
-                                  downloaderController:
-                                      widget.downloaderController,
-                                  getPlayableItemUsecase:
-                                      widget.getPlayableItemUsecase,
-                                  libraryController: widget.libraryController,
-                                  getArtistAlbumsUsecase:
-                                      widget.getArtistAlbumsUsecase,
-                                  getArtistSinglesUsecase:
-                                      widget.getArtistSinglesUsecase,
-                                  getArtistTracksUsecase:
-                                      widget.getArtistTracksUsecase,
-                                  getArtistUsecase: widget.getArtistUsecase,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    if (widget.artist.similarArtists.isNotEmpty) ...[
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              bottom: 16,
-                            ),
-                            child: Text(
-                              'Artistas similares',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          ...widget.artist.similarArtists.map(
-                            (similarArtist) => ArtistTile(
-                              getArtistAlbumsUsecase:
-                                  widget.getArtistAlbumsUsecase,
-                              getArtistTracksUsecase:
-                                  widget.getArtistTracksUsecase,
-                              artist: similarArtist,
-                              getArtistUsecase: widget.getArtistUsecase,
-                              getAlbumUsecase: widget.getAlbumUsecase,
-                              coreController: widget.coreController,
-                              downloaderController: widget.downloaderController,
-                              getPlayableItemUsecase:
-                                  widget.getPlayableItemUsecase,
-                              libraryController: widget.libraryController,
-                              playerController: widget.playerController,
-                              getArtistSinglesUsecase:
-                                  widget.getArtistSinglesUsecase,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    widget.playerController.builder(
-                      builder: (context, data) {
-                        if (data.currentPlayingItem != null) {
-                          return const SizedBox(
-                            height: 75,
-                          );
-                        }
-                        return Container();
-                      },
                     ),
                   ],
-                ),
+                  if (widget.artist.similarArtists.isNotEmpty) ...[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            'Artistas similares',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        ...widget.artist.similarArtists.map(
+                          (similarArtist) => ArtistTile(
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            artist: similarArtist,
+                            getArtistUsecase: widget.getArtistUsecase,
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            coreController: widget.coreController,
+                            downloaderController: widget.downloaderController,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
+                            libraryController: widget.libraryController,
+                            playerController: widget.playerController,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  widget.playerController.builder(
+                    builder: (context, data) {
+                      if (data.currentPlayingItem != null) {
+                        return const SizedBox(
+                          height: 75,
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
               Positioned(
                 top: 0,

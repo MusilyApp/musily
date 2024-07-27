@@ -63,342 +63,345 @@ class AlbumPage extends StatelessWidget {
               builder: (context, data) {
                 final isAlbumPlaying = data.playingId == album.id;
 
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (album.highResImg != null &&
-                          album.highResImg!.isNotEmpty) ...[
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        SizedBox(
-                          height: 250,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: AppImage(
-                                  album.highResImg!,
-                                  width: 250,
-                                ),
+                return ListView(
+                  children: [
+                    if (album.highResImg != null &&
+                        album.highResImg!.isNotEmpty) ...[
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        height: 250,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: AppImage(
+                                album.highResImg!,
+                                width: 250,
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 26,
                           ),
-                        )
+                          child: Text(
+                            album.title,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ),
                       ],
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 26,
-                        ),
-                        child: Text(
-                          album.title,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 16,
-                        ),
-                        child: Text(
-                          album.year.toString(),
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          downloaderController.builder(
-                            builder: (context, data) {
-                              final isAlbumDownloading =
-                                  data.downloadQueue.isNotEmpty &&
-                                      data.downloadingId == album.id;
-                              return IconButton.filledTonal(
-                                onPressed: () {
-                                  if (isAlbumDownloading) {
-                                    libraryController.methods
-                                        .cancelCollectionDownload(
-                                      album.tracks,
-                                      album.id,
-                                    );
-                                  } else {
-                                    libraryController.methods
-                                        .downloadCollection(
-                                      album.tracks,
-                                      album.id,
-                                    );
-                                  }
-                                },
-                                style: const ButtonStyle(
-                                  fixedSize: WidgetStatePropertyAll(
-                                    Size(50, 50),
-                                  ),
-                                ),
-                                icon: Icon(
-                                  isAlbumDownloading
-                                      ? Icons.close
-                                      : Icons.download_rounded,
-                                ),
-                              );
-                            },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 16,
                           ),
-                          const SizedBox(
-                            width: 8,
+                          child: Text(
+                            album.year.toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                ),
                           ),
-                          LibraryToggler(
-                            item: album,
-                            libraryController: libraryController,
-                            notInLibraryWidget: (context, addToLibrary) {
-                              return IconButton.filledTonal(
-                                onPressed: addToLibrary,
-                                style: const ButtonStyle(
-                                  fixedSize: WidgetStatePropertyAll(
-                                    Size(50, 50),
-                                  ),
-                                ),
-                                icon: const Icon(
-                                  Icons.library_add,
-                                ),
-                              );
-                            },
-                            inLibraryWidget: (context, removeFromLibrary) {
-                              return IconButton.filledTonal(
-                                onPressed: removeFromLibrary,
-                                style: const ButtonStyle(
-                                  fixedSize: WidgetStatePropertyAll(
-                                    Size(50, 50),
-                                  ),
-                                ),
-                                icon: const Icon(
-                                  Icons.library_add_check_rounded,
-                                ),
-                              );
-                            },
-                            loadingWidget: (context) {
-                              return const IconButton.filledTonal(
-                                onPressed: null,
-                                style: ButtonStyle(
-                                  fixedSize: WidgetStatePropertyAll(
-                                    Size(50, 50),
-                                  ),
-                                ),
-                                icon: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          IconButton.filled(
-                            onPressed: () async {
-                              if (isAlbumPlaying) {
-                                if (data.isPlaying) {
-                                  await playerController.methods.pause();
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        downloaderController.builder(
+                          builder: (context, data) {
+                            final isAlbumDownloading =
+                                data.downloadQueue.isNotEmpty &&
+                                    data.downloadingId == album.id;
+                            return IconButton.filledTonal(
+                              onPressed: () {
+                                if (isAlbumDownloading) {
+                                  libraryController.methods
+                                      .cancelCollectionDownload(
+                                    album.tracks,
+                                    album.id,
+                                  );
                                 } else {
-                                  await playerController.methods.resume();
+                                  libraryController.methods.downloadCollection(
+                                    album.tracks,
+                                    album.id,
+                                  );
                                 }
-                              } else {
-                                await playerController.methods.playPlaylist(
-                                  [
-                                    ...album.tracks.map(
-                                      (track) =>
-                                          TrackModel.toMusilyTrack(track),
-                                    ),
-                                  ],
-                                  album.id,
-                                  startFrom: 0,
-                                );
-                                libraryController.methods.updateLastTimePlayed(
-                                  album.id,
-                                );
-                              }
-                            },
-                            style: const ButtonStyle(
-                              iconSize: WidgetStatePropertyAll(40),
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(60, 60),
+                              },
+                              style: const ButtonStyle(
+                                fixedSize: WidgetStatePropertyAll(
+                                  Size(50, 50),
+                                ),
                               ),
-                            ),
-                            icon: Icon(
-                              isAlbumPlaying && data.isPlaying
-                                  ? Icons.pause_rounded
-                                  : Icons.play_arrow_rounded,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          IconButton.filledTonal(
-                            onPressed: () async {
-                              final random = Random();
-                              final randomIndex = random.nextInt(
-                                album.tracks.length,
-                              );
-                              playerController.methods.playPlaylist(
-                                [
-                                  ...album.tracks.map(
-                                    (element) =>
-                                        TrackModel.toMusilyTrack(element),
-                                  ),
-                                ],
-                                album.id,
-                                startFrom: randomIndex,
-                              );
-                              if (!data.shuffleEnabled) {
-                                playerController.methods.toggleShuffle();
-                              } else {
-                                await playerController.methods.toggleShuffle();
-                                playerController.methods.toggleShuffle();
-                              }
-                              libraryController.methods.updateLastTimePlayed(
-                                album.id,
-                              );
-                            },
-                            style: const ButtonStyle(
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(50, 50),
+                              icon: Icon(
+                                isAlbumDownloading
+                                    ? Icons.close
+                                    : Icons.download_rounded,
                               ),
-                            ),
-                            icon: const Icon(
-                              Icons.shuffle_rounded,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          AlbumOptionsBuilder(
-                            album: album,
-                            coreController: coreController,
-                            playerController: playerController,
-                            getAlbumUsecase: getAlbumUsecase,
-                            downloaderController: downloaderController,
-                            getPlayableItemUsecase: getPlayableItemUsecase,
-                            libraryController: libraryController,
-                            getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                            getArtistSinglesUsecase: getArtistSinglesUsecase,
-                            getArtistTracksUsecase: getArtistTracksUsecase,
-                            getArtistUsecase: getArtistUsecase,
-                            builder: (context, showOptions) =>
-                                IconButton.filledTonal(
-                              onPressed: showOptions,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        LibraryToggler(
+                          item: album,
+                          libraryController: libraryController,
+                          notInLibraryWidget: (context, addToLibrary) {
+                            return IconButton.filledTonal(
+                              onPressed: addToLibrary,
                               style: const ButtonStyle(
                                 fixedSize: WidgetStatePropertyAll(
                                   Size(50, 50),
                                 ),
                               ),
                               icon: const Icon(
-                                Icons.more_vert_outlined,
+                                Icons.library_add,
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      playerController.builder(
-                        builder: (context, data) {
-                          return Column(
-                            children: [
-                              ...album.tracks.map(
-                                (track) => TrackTile(
-                                  getAlbumUsecase: getAlbumUsecase,
-                                  leading: isAlbumPlaying &&
-                                          data.currentPlayingItem?.hash ==
-                                              track.hash
-                                      ? LoadingAnimationWidget
-                                          .staggeredDotsWave(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          size: 20,
-                                        )
-                                      : SizedBox(
-                                          width: 20,
-                                          child: Center(
-                                            child: Text(
-                                              '${album.tracks.indexOf(track) + 1}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge
-                                                  ?.copyWith(
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                  hideOptions: const [
-                                    TrackTileOptions.seeAlbum,
-                                  ],
-                                  downloaderController: downloaderController,
-                                  getArtistAlbumsUsecase:
-                                      getArtistAlbumsUsecase,
-                                  getArtistSinglesUsecase:
-                                      getArtistSinglesUsecase,
-                                  getArtistTracksUsecase:
-                                      getArtistTracksUsecase,
-                                  getArtistUsecase: getArtistUsecase,
-                                  getPlayableItemUsecase:
-                                      getPlayableItemUsecase,
-                                  libraryController: libraryController,
-                                  customAction: () {
-                                    late final List<MusilyTrack> queueToPlay;
-                                    if (data.playingId == album.id) {
-                                      queueToPlay = data.queue;
-                                    } else {
-                                      queueToPlay = [
-                                        ...album.tracks.map((element) =>
-                                            TrackModel.toMusilyTrack(element))
-                                      ];
-                                    }
-
-                                    final startIndex = queueToPlay.indexWhere(
-                                      (element) => element.hash == track.hash,
-                                    );
-
-                                    playerController.methods.playPlaylist(
-                                      queueToPlay,
-                                      album.id,
-                                      startFrom:
-                                          startIndex == -1 ? 0 : startIndex,
-                                    );
-                                    libraryController.methods
-                                        .updateLastTimePlayed(
-                                      album.id,
-                                    );
-                                  },
-                                  track: track,
-                                  coreController: coreController,
-                                  playerController: playerController,
+                            );
+                          },
+                          inLibraryWidget: (context, removeFromLibrary) {
+                            return IconButton.filledTonal(
+                              onPressed: removeFromLibrary,
+                              style: const ButtonStyle(
+                                fixedSize: WidgetStatePropertyAll(
+                                  Size(50, 50),
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                      ),
-                      playerController.builder(
-                        builder: (context, data) {
-                          if (data.currentPlayingItem != null) {
-                            return const SizedBox(
-                              height: 75,
+                              icon: const Icon(
+                                Icons.library_add_check_rounded,
+                              ),
                             );
-                          }
-                          return Container();
-                        },
-                      ),
-                    ],
-                  ),
+                          },
+                          loadingWidget: (context) {
+                            return const IconButton.filledTonal(
+                              onPressed: null,
+                              style: ButtonStyle(
+                                fixedSize: WidgetStatePropertyAll(
+                                  Size(50, 50),
+                                ),
+                              ),
+                              icon: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        IconButton.filled(
+                          onPressed: () async {
+                            if (isAlbumPlaying) {
+                              if (data.isPlaying) {
+                                await playerController.methods.pause();
+                              } else {
+                                await playerController.methods.resume();
+                              }
+                            } else {
+                              await playerController.methods.playPlaylist(
+                                [
+                                  ...album.tracks.map(
+                                    (track) => TrackModel.toMusilyTrack(track),
+                                  ),
+                                ],
+                                album.id,
+                                startFrom: 0,
+                              );
+                              libraryController.methods.updateLastTimePlayed(
+                                album.id,
+                              );
+                            }
+                          },
+                          style: const ButtonStyle(
+                            iconSize: WidgetStatePropertyAll(40),
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(60, 60),
+                            ),
+                          ),
+                          icon: Icon(
+                            isAlbumPlaying && data.isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        IconButton.filledTonal(
+                          onPressed: () async {
+                            final random = Random();
+                            final randomIndex = random.nextInt(
+                              album.tracks.length,
+                            );
+                            playerController.methods.playPlaylist(
+                              [
+                                ...album.tracks.map(
+                                  (element) =>
+                                      TrackModel.toMusilyTrack(element),
+                                ),
+                              ],
+                              album.id,
+                              startFrom: randomIndex,
+                            );
+                            if (!data.shuffleEnabled) {
+                              playerController.methods.toggleShuffle();
+                            } else {
+                              await playerController.methods.toggleShuffle();
+                              playerController.methods.toggleShuffle();
+                            }
+                            libraryController.methods.updateLastTimePlayed(
+                              album.id,
+                            );
+                          },
+                          style: const ButtonStyle(
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(50, 50),
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.shuffle_rounded,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        AlbumOptionsBuilder(
+                          album: album,
+                          coreController: coreController,
+                          playerController: playerController,
+                          getAlbumUsecase: getAlbumUsecase,
+                          downloaderController: downloaderController,
+                          getPlayableItemUsecase: getPlayableItemUsecase,
+                          libraryController: libraryController,
+                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase: getArtistSinglesUsecase,
+                          getArtistTracksUsecase: getArtistTracksUsecase,
+                          getArtistUsecase: getArtistUsecase,
+                          builder: (context, showOptions) =>
+                              IconButton.filledTonal(
+                            onPressed: showOptions,
+                            style: const ButtonStyle(
+                              fixedSize: WidgetStatePropertyAll(
+                                Size(50, 50),
+                              ),
+                            ),
+                            icon: const Icon(
+                              Icons.more_vert_outlined,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    playerController.builder(
+                      builder: (context, data) {
+                        return Column(
+                          children: [
+                            ...album.tracks.map(
+                              (track) => TrackTile(
+                                getAlbumUsecase: getAlbumUsecase,
+                                leading: isAlbumPlaying &&
+                                        data.currentPlayingItem?.hash ==
+                                            track.hash
+                                    ? LoadingAnimationWidget.staggeredDotsWave(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        size: 20,
+                                      )
+                                    : SizedBox(
+                                        width: 20,
+                                        child: Center(
+                                          child: Text(
+                                            '${album.tracks.indexOf(track) + 1}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                hideOptions: const [
+                                  TrackTileOptions.seeAlbum,
+                                ],
+                                downloaderController: downloaderController,
+                                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                                getArtistSinglesUsecase:
+                                    getArtistSinglesUsecase,
+                                getArtistTracksUsecase: getArtistTracksUsecase,
+                                getArtistUsecase: getArtistUsecase,
+                                getPlayableItemUsecase: getPlayableItemUsecase,
+                                libraryController: libraryController,
+                                customAction: () {
+                                  late final List<MusilyTrack> queueToPlay;
+                                  if (data.playingId == album.id) {
+                                    queueToPlay = data.queue;
+                                  } else {
+                                    queueToPlay = [
+                                      ...album.tracks.map((element) =>
+                                          TrackModel.toMusilyTrack(element))
+                                    ];
+                                  }
+
+                                  final startIndex = queueToPlay.indexWhere(
+                                    (element) => element.hash == track.hash,
+                                  );
+
+                                  playerController.methods.playPlaylist(
+                                    queueToPlay,
+                                    album.id,
+                                    startFrom:
+                                        startIndex == -1 ? 0 : startIndex,
+                                  );
+                                  libraryController.methods
+                                      .updateLastTimePlayed(
+                                    album.id,
+                                  );
+                                },
+                                track: track,
+                                coreController: coreController,
+                                playerController: playerController,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    playerController.builder(
+                      builder: (context, data) {
+                        if (data.currentPlayingItem != null) {
+                          return const SizedBox(
+                            height: 75,
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ],
                 );
               },
             ),

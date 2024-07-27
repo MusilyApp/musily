@@ -180,31 +180,29 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ...searchSuggestions.map(
-                          (suggestion) => ListTile(
-                            onTap: () {
-                              submitSearch(suggestion);
+                  child: ListView(
+                    children: [
+                      ...searchSuggestions.map(
+                        (suggestion) => ListTile(
+                          onTap: () {
+                            submitSearch(suggestion);
+                            searchTextController.text = suggestion;
+                            getSearchSuggestions();
+                          },
+                          leading: const Icon(Icons.search_rounded),
+                          title: Text(suggestion),
+                          trailing: IconButton(
+                            onPressed: () {
                               searchTextController.text = suggestion;
                               getSearchSuggestions();
                             },
-                            leading: const Icon(Icons.search_rounded),
-                            title: Text(suggestion),
-                            trailing: IconButton(
-                              onPressed: () {
-                                searchTextController.text = suggestion;
-                                getSearchSuggestions();
-                              },
-                              icon: const Icon(
-                                Icons.north_west,
-                              ),
+                            icon: const Icon(
+                              Icons.north_west,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
