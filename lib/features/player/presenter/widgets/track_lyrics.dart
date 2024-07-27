@@ -4,12 +4,14 @@ class TrackLyrics extends StatefulWidget {
   final Duration totalDuration;
   final Duration currentPosition;
   final String lyrics;
+  final bool synced;
 
   const TrackLyrics({
     super.key,
     required this.totalDuration,
     required this.currentPosition,
     required this.lyrics,
+    required this.synced,
   });
 
   @override
@@ -28,13 +30,15 @@ class _TrackLyricsState extends State<TrackLyrics> {
   @override
   void didUpdateWidget(covariant TrackLyrics oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _updateScrollPosition();
+    if (widget.synced) {
+      _updateScrollPosition();
+    }
   }
 
   void _updateScrollPosition() {
-    if (widget.totalDuration.inMilliseconds == 0 ||
+    if (!widget.synced ||
+        widget.totalDuration.inMilliseconds == 0 ||
         widget.currentPosition.inMilliseconds == 0) {
-      _scrollController!.jumpTo(0);
       return;
     }
 

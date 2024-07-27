@@ -125,6 +125,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       isBuffering: false,
       showLyrics: false,
       loadingLyrics: false,
+      syncedLyrics: true,
       lyrics: Lyrics(
         trackId: '',
         lyrics: null,
@@ -135,6 +136,13 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   @override
   PlayerMethods defineMethods() {
     return PlayerMethods(
+      toggleSyncedLyrics: () {
+        updateData(
+          data.copyWith(
+            syncedLyrics: !data.syncedLyrics,
+          ),
+        );
+      },
       getLyrics: (trackId) async {
         if (data.loadingLyrics) {
           return null;
@@ -290,14 +298,20 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         String playingId, {
         int startFrom = 1,
       }) async {
+        await _musilyPlayer.stop();
+        await _musilyPlayer.setQueue(items);
+        _musilyPlayer.skipToTrack(startFrom);
+        if (data.shuffleEnabled) {
+          if (playingId != data.playingId) {
+            await methods.toggleShuffle();
+            await methods.toggleShuffle();
+          }
+        }
         updateData(
           data.copyWith(
             playingId: playingId,
           ),
         );
-        await _musilyPlayer.stop();
-        await _musilyPlayer.setQueue(items);
-        await _musilyPlayer.skipToTrack(startFrom);
       },
     );
   }

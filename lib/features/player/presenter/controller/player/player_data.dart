@@ -27,6 +27,7 @@ class PlayerData extends BaseControllerData {
   bool showLyrics;
   bool loadingLyrics;
   Lyrics lyrics;
+  bool syncedLyrics;
 
   bool mediaAvailable;
 
@@ -45,6 +46,7 @@ class PlayerData extends BaseControllerData {
     required this.showLyrics,
     required this.loadingLyrics,
     required this.lyrics,
+    required this.syncedLyrics,
   });
 
   @override
@@ -63,6 +65,7 @@ class PlayerData extends BaseControllerData {
     bool? showLyrics,
     bool? loadingLyrics,
     Lyrics? lyrics,
+    bool? syncedLyrics,
   }) {
     return PlayerData(
       playingId: playingId ?? this.playingId,
@@ -79,6 +82,7 @@ class PlayerData extends BaseControllerData {
       showLyrics: showLyrics ?? this.showLyrics,
       loadingLyrics: loadingLyrics ?? this.loadingLyrics,
       lyrics: lyrics ?? this.lyrics,
+      syncedLyrics: syncedLyrics ?? this.syncedLyrics,
     );
   }
 }

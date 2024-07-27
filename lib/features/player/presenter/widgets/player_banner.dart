@@ -96,6 +96,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                   return TrackLyrics(
                     totalDuration: widget.track.duration,
                     currentPosition: widget.track.position,
+                    synced: data.syncedLyrics,
                     lyrics: data.lyrics.lyrics!,
                   );
                 }),
