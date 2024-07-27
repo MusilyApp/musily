@@ -691,11 +691,15 @@ class _PlayerWidgetState extends State<PlayerWidget>
                                         : () {
                                             showModalBottomSheet(
                                               context: context,
-                                              builder: (context) => QueueWidget(
-                                                playerController:
-                                                    widget.playerController,
-                                                coreController:
-                                                    widget.coreController,
+                                              builder: (context) => Scaffold(
+                                                body: SafeArea(
+                                                  child: QueueWidget(
+                                                    playerController:
+                                                        widget.playerController,
+                                                    coreController:
+                                                        widget.coreController,
+                                                  ),
+                                                ),
                                               ),
                                             );
                                           },
