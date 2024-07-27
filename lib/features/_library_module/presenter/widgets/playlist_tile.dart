@@ -16,6 +16,7 @@ import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_options.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistTile extends StatelessWidget {
   final PlaylistEntity playlist;
@@ -88,7 +89,7 @@ class PlaylistTile extends StatelessWidget {
         playlist.title,
       ),
       subtitle: Text(
-        'Playlist · ${playlist.tracks.length} músicas',
+        '${AppLocalizations.of(context)!.playlist} · ${playlist.tracks.length} ${AppLocalizations.of(context)!.songs}',
       ),
       trailing: PlaylistOptionsBuilder(
         playlistEntity: playlist,

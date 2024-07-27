@@ -9,6 +9,7 @@ import 'package:musily/features/_library_module/presenter/widgets/playlist_tile_
 import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistAdder extends StatefulWidget {
   final LibraryController libraryController;
@@ -70,7 +71,7 @@ class _PlaylistAdderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar à playlist'),
+        title: Text(AppLocalizations.of(context)!.addToPlaylist),
         automaticallyImplyLeading: false,
       ),
       floatingActionButton: PlaylistCreator(
@@ -115,7 +116,7 @@ class _PlaylistAdderWidget extends StatelessWidget {
                                 ?.withOpacity(.7),
                           ),
                           Text(
-                            'Você não tem playlists.',
+                            AppLocalizations.of(context)!.noPlaylists,
                             style: TextStyle(
                               color: Theme.of(context)
                                   .iconTheme
@@ -171,7 +172,7 @@ class _PlaylistAdderWidget extends StatelessWidget {
                                   ),
                             title: Text(
                               item.value.id == 'favorites'
-                                  ? 'Favoritos'
+                                  ? AppLocalizations.of(context)!.favorites
                                   : item.value.title,
                               style: TextStyle(
                                 color:
@@ -181,7 +182,7 @@ class _PlaylistAdderWidget extends StatelessWidget {
                               ),
                             ),
                             subtitle: Text(
-                              'Playlist · ${item.value.tracks.length} músicas',
+                              '${AppLocalizations.of(context)!.playlist} · ${item.value.tracks.length} ${AppLocalizations.of(context)!.songs}',
                               style: TextStyle(
                                 color:
                                     trackIsAlreadyInPlaylist(item.value.tracks)

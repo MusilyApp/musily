@@ -21,6 +21,7 @@ import 'package:musily/features/player/presenter/controller/player/player_contro
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LibraryPage extends StatelessWidget {
   final PlayerController playerController;
@@ -67,7 +68,7 @@ class LibraryPage extends StatelessWidget {
           builder: (context, data) {
             return Scaffold(
               appBar: AppBar(
-                title: const Text('Bibilioteca'),
+                title: Text(AppLocalizations.of(context)!.library),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 actions: [
@@ -147,9 +148,10 @@ class LibraryPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            title: const Text('Favoritos'),
+                            title:
+                                Text(AppLocalizations.of(context)!.favorites),
                             subtitle: Text(
-                              '${favoritesPlaylist.value.tracks.length} músicas',
+                              '${favoritesPlaylist.value.tracks.length} ${AppLocalizations.of(context)!.songs}',
                             ),
                           ),
                           const Divider(),
@@ -186,7 +188,7 @@ class LibraryPage extends StatelessWidget {
                                       .withOpacity(.9),
                                 ),
                                 Text(
-                                  'Bibilioteca vazia',
+                                  AppLocalizations.of(context)!.emptyLibrary,
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme

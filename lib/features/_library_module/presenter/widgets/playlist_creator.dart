@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/utils/id_generator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistCreator extends StatefulWidget {
   final LibraryController libraryController;
@@ -51,19 +52,19 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
           return Form(
             key: _formKey,
             child: AlertDialog(
-              title: const Text('Criar playlist'),
+              title: Text(AppLocalizations.of(context)!.createPlaylist),
               content: TextFormField(
                 autofocus: true,
                 controller: playlistNameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Insira um nome';
+                    return AppLocalizations.of(context)!.requiredField;
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Nome da playlist',
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.playlistName,
                 ),
                 onFieldSubmitted: (value) => submitNameTextField(context),
               ),
@@ -73,11 +74,11 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
                     Navigator.pop(context);
                     playlistNameController.text = '';
                   },
-                  child: const Text('Cancelar'),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 FilledButton(
                   onPressed: () => submitNameTextField(context),
-                  child: const Text('Criar'),
+                  child: Text(AppLocalizations.of(context)!.create),
                 )
               ],
             ),
