@@ -14,6 +14,9 @@ class AppMaterial extends StatelessWidget {
           seedColor: Colors.deepPurple,
         ),
         useMaterial3: true,
+        cardTheme: const CardTheme(
+          shadowColor: Colors.transparent,
+        ),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
