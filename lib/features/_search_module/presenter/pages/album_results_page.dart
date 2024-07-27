@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -12,6 +13,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AlbumResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -66,8 +68,23 @@ class _AlbumResultsPageState extends State<AlbumResultsPage> {
         body: widget.resultsPageController.builder(
           builder: (context, data) {
             if (data.searchingAlbums) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Skeletonizer(
+                child: ListView.builder(
+                  itemCount: 15,
+                  itemBuilder: (context, index) => ListTile(
+                    leading: const Icon(
+                      Icons.music_note,
+                    ),
+                    title: Text(generatePlaceholderString()),
+                    subtitle: Text(generatePlaceholderString()),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.music_note,
+                      ),
+                    ),
+                  ),
+                ),
               );
             }
             if (data.albumsResult.items.isEmpty) {

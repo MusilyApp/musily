@@ -4,6 +4,7 @@ import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -14,6 +15,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ArtistResultsPage extends StatefulWidget {
   final ResultsPageController resultsPageController;
@@ -68,8 +70,17 @@ class _ArtistResultsPageState extends State<ArtistResultsPage> {
         body: widget.resultsPageController.builder(
           builder: (context, data) {
             if (data.searchingArtists) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Skeletonizer(
+                child: ListView.builder(
+                  itemCount: 15,
+                  itemBuilder: (context, index) => ListTile(
+                    leading: const Icon(
+                      Icons.music_note,
+                    ),
+                    title: Text(generatePlaceholderString()),
+                    subtitle: Text(generatePlaceholderString()),
+                  ),
+                ),
               );
             }
             if (data.artistsResult.items.isEmpty) {
