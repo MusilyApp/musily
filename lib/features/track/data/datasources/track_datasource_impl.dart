@@ -33,7 +33,16 @@ class TrackDatasourceImpl implements TrackDatasource {
       final tracks = [
         ...(data as List).map((element) => TrackModel.fromMap(element))
       ];
-      return tracks;
+      final offlineTracks = <TrackEntity>[];
+
+      for (final item in tracks) {
+        final offlineItem = await TrackModel.toOffline(
+          item,
+          downloaderController,
+        );
+        offlineTracks.add(offlineItem);
+      }
+      return offlineTracks;
     } catch (e) {
       print(e);
       return [];
