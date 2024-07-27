@@ -103,7 +103,7 @@ class _TrackTileState extends State<TrackTile> {
                   if (widget.track.lowResImg != null &&
                       widget.track.highResImg!.isNotEmpty) {
                     return ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(8),
                       child: AppImage(
                         widget.track.lowResImg!,
                         width: 40,
