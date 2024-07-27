@@ -6,6 +6,7 @@ import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_flex.dart';
+import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_controller.dart';
@@ -239,18 +240,7 @@ class SectionsPage extends StatelessWidget {
                                       bottom: 16,
                                     ),
                                     child: Text(
-                                      () {
-                                        final random = Random();
-                                        final titleLength = max(
-                                          10,
-                                          random.nextInt(20),
-                                        );
-                                        final titleList = List.filled(
-                                          titleLength,
-                                          '0',
-                                        );
-                                        return titleList.join('');
-                                      }(),
+                                      generatePlaceholderString(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineSmall
