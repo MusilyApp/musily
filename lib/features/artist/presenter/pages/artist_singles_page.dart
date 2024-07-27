@@ -143,6 +143,16 @@ class _ArtistSinglesPageState extends State<ArtistSinglesPage> {
                     },
                   ),
                 ),
+                widget.playerController.builder(
+                  builder: (context, data) {
+                    if (data.currentPlayingItem != null) {
+                      return const SizedBox(
+                        height: 70,
+                      );
+                    }
+                    return Container();
+                  },
+                ),
               ],
             );
           },
