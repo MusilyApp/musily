@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
@@ -67,9 +68,33 @@ class SectionsPage extends StatelessWidget {
         }
       },
       builder: (context, data) {
+        final brightness = MediaQuery.of(context).platformBrightness;
+        bool isDarkMode = brightness == Brightness.dark;
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Musily'),
+            title: Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/musily_appbar_icon${isDarkMode ? '_dark' : ''}.svg',
+                  width: 40,
+                ),
+                const SizedBox(
+                  width: 12,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    'Musily',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: isDarkMode
+                              ? const Color(0xffe8def7)
+                              : const Color(0xff68548f),
+                        ),
+                  ),
+                ),
+              ],
+            ),
           ),
           body: sectionsController.builder(
             builder: (context, dataSections) {
