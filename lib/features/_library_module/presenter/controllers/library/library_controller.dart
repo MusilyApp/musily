@@ -74,6 +74,11 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         }
       },
       removeFromPlaylist: (playlistId, track) async {
+        if (playlistId == 'favorites') {
+          methods.toggleFavorite(track);
+          methods.getLibrary();
+          return;
+        }
         final playlist = await _getLibraryItemUsecase.exec<PlaylistEntity>(
           playlistId,
         );
@@ -137,6 +142,12 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         );
       },
       addToPlaylist: (tracks, playlistId) async {
+        if (playlistId == 'favorites') {
+          for (final track in tracks) {
+            await methods.toggleFavorite(track);
+          }
+          return;
+        }
         final playlist = await _getLibraryItemUsecase.exec<PlaylistEntity>(
           playlistId,
         );
@@ -160,6 +171,13 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         }
       },
       deleteLibraryItem: (id) async {
+        if (id == 'favorites') {
+          updateData(
+            data.copyWith(
+              loadedFavoritesHash: [],
+            ),
+          );
+        }
         await _deleteLibraryItemUsecase.exec(id);
         dispatchEvent(
           BaseControllerEvent(
@@ -242,7 +260,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
           'favorites',
           favoritesPlaylist,
         );
-        await methods.getLibrary();
+        methods.getLibrary();
         updateData(
           data.copyWith(
             addingToFavorites: false,
