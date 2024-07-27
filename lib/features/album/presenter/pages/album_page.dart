@@ -87,6 +87,7 @@ class AlbumPage extends StatelessWidget {
                       )
                     ],
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
@@ -94,15 +95,18 @@ class AlbumPage extends StatelessWidget {
                             vertical: 12,
                             horizontal: 26,
                           ),
-                          child: Text(
-                            album.title,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * .85,
+                            child: Text(
+                              album.title,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
                           ),
                         ),
                       ],
