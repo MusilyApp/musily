@@ -114,18 +114,19 @@ class QueueWidget extends StatelessWidget {
                                   return ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: SizedBox(
-                                      width: 42,
+                                      width: 40,
                                       child: AppImage(
                                         data.queue[index].lowResImg!,
-                                        width: 42,
-                                        height: 45,
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   );
                                 }
                                 return SizedBox(
-                                  height: 45,
-                                  width: 42,
+                                  height: 40,
+                                  width: 40,
                                   child: Icon(
                                     Icons.music_note,
                                     color: Theme.of(context)
