@@ -147,20 +147,16 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
             loadingLyrics: true,
           ),
         );
-        try {
-          final lyrics = await getTrackLyricsUsecase.exec(trackId);
-          updateData(
-            data.copyWith(
-              lyrics: Lyrics(
-                trackId: trackId,
-                lyrics: lyrics,
-              ),
-              loadingLyrics: false,
+        final lyrics = await getTrackLyricsUsecase.exec(trackId);
+        updateData(
+          data.copyWith(
+            lyrics: Lyrics(
+              trackId: trackId,
+              lyrics: lyrics,
             ),
-          );
-        } catch (e) {
-          print(e);
-        }
+            loadingLyrics: false,
+          ),
+        );
         return data.lyrics.lyrics;
       },
       toggleLyrics: (id) {
