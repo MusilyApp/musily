@@ -9,6 +9,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
     return CoreData(
       isShowingDialog: false,
       isPlayerExpanded: false,
+      page: null,
     );
   }
 
@@ -41,6 +42,11 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
           BaseControllerEvent<Widget>(
             id: 'pushWidget',
             data: widget,
+          ),
+        );
+        updateData(
+          data.copyWith(
+            page: widget,
           ),
         );
       },

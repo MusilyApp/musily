@@ -95,64 +95,69 @@ class _CorePageState extends State<CorePage> {
         }
       },
       builder: (context, data) {
-        return Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.home,
-                icon: Icon(
-                  _selected == 0 ? Icons.home_rounded : Icons.home_rounded,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.search,
-                icon: Icon(
-                  _selected == 1 ? Icons.search_rounded : Icons.search_rounded,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.library,
-                icon: Icon(
-                  _selected == 2
-                      ? Icons.library_music_rounded
-                      : Icons.library_music_rounded,
-                ),
-              ),
-            ],
-            currentIndex: _selected,
-            onTap: (value) {
-              setState(() {
-                _selected = value;
-                AppNavigator.navigateTo(
-                  routes[value],
-                );
-              });
-            },
-          ),
-          body: widget.coreController.builder(
-            builder: (context, data) {
-              return Stack(
-                children: [
-                  const RouterOutlet(),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: MiniPlayerWidget(
-                      downloaderController: widget.downloaderController,
-                      playerController: widget.playerController,
-                      getAlbumUsecase: widget.getAlbumUsecase,
-                      coreController: widget.coreController,
-                      libraryController: widget.libraryController,
-                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                      getArtistUsecase: widget.getArtistUsecase,
-                      resultsPageController: widget.resultsPageController,
-                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                    ),
+        return PopScope(
+          canPop: data.page == null,
+          child: Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  label: AppLocalizations.of(context)!.home,
+                  icon: Icon(
+                    _selected == 0 ? Icons.home_rounded : Icons.home_rounded,
                   ),
-                ],
-              );
-            },
+                ),
+                BottomNavigationBarItem(
+                  label: AppLocalizations.of(context)!.search,
+                  icon: Icon(
+                    _selected == 1
+                        ? Icons.search_rounded
+                        : Icons.search_rounded,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  label: AppLocalizations.of(context)!.library,
+                  icon: Icon(
+                    _selected == 2
+                        ? Icons.library_music_rounded
+                        : Icons.library_music_rounded,
+                  ),
+                ),
+              ],
+              currentIndex: _selected,
+              onTap: (value) {
+                setState(() {
+                  _selected = value;
+                  AppNavigator.navigateTo(
+                    routes[value],
+                  );
+                });
+              },
+            ),
+            body: widget.coreController.builder(
+              builder: (context, data) {
+                return Stack(
+                  children: [
+                    const RouterOutlet(),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: MiniPlayerWidget(
+                        downloaderController: widget.downloaderController,
+                        playerController: widget.playerController,
+                        getAlbumUsecase: widget.getAlbumUsecase,
+                        coreController: widget.coreController,
+                        libraryController: widget.libraryController,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                        resultsPageController: widget.resultsPageController,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         );
       },

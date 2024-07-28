@@ -33,6 +33,10 @@ class CoreBaseWidget extends StatelessWidget {
               ),
             );
           }
+          if (!data.isPlayerExpanded && !data.isShowingDialog) {
+            data.page = null;
+            coreController.updateData(data);
+          }
         },
         child: child,
       ),
