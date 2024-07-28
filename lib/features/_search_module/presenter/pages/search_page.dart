@@ -15,6 +15,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchPage extends StatefulWidget {
   final CoreController coreController;
@@ -150,7 +151,8 @@ class _SearchPageState extends State<SearchPage> {
                         onSubmitted: submitSearch,
                         autofocus: true,
                         decoration: InputDecoration(
-                          hintText: 'Buscar música, albúm ou artista',
+                          hintText: AppLocalizations.of(context)!
+                              .searchMusicAlbumOrArtist,
                           border: InputBorder.none,
                           prefixIcon: const Padding(
                             padding: EdgeInsets.only(bottom: 4),

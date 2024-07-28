@@ -50,5 +50,6 @@
   "playlistNotFound": "Playlist not found.",
   "requiredField": "This field is required.",
   "deleteDownload": "Delete Download",
-  "noPlaylists": "You have no playlists."
+  "noPlaylists": "You have no playlists.",
+  "removeFromPlaylist": "Remove from Playlist"
 }
