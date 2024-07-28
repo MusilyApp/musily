@@ -143,7 +143,9 @@ class SharedModule extends Module {
     // Album dependencies
     i.addLazySingleton(
       () => AlbumDatasourceImpl(
-          downloaderController: i.get<DownloaderController>()),
+        downloaderController: i.get<DownloaderController>(),
+        libraryDatasource: i.get<LibraryDatasourceImpl>(),
+      ),
     );
     i.addLazySingleton(
       () => AlbumRepositoryImpl(
@@ -236,7 +238,10 @@ class SharedModule extends Module {
 
     // Playlist dependencies
     i.addLazySingleton(
-      PlaylistDatasourceImpl.new,
+      () => PlaylistDatasourceImpl(
+        libraryDatasource: i.get<LibraryDatasourceImpl>(),
+        downloaderController: i.get<DownloaderController>(),
+      ),
     );
     i.addLazySingleton(
       () => PlaylistRepositoryImpl(
