@@ -8,7 +8,6 @@ class SearchDatasourceImpl implements SearchDatasource {
       final suggestions = await repo.getSearchSuggestions(query);
       return suggestions;
     } catch (e) {
-      print(e);
       return [];
     }
   }

@@ -22,7 +22,6 @@ class AlbumDatasourceImpl implements AlbumDatasource {
       );
       return offlineAlbum;
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -43,7 +42,6 @@ class AlbumDatasourceImpl implements AlbumDatasource {
       }
       return offlineAlbums;
     } catch (e) {
-      print(e);
       return [];
     }
   }

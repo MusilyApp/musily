@@ -21,7 +21,6 @@ class TrackDatasourceImpl implements TrackDatasource {
       );
       return offlineTrack;
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -44,7 +43,6 @@ class TrackDatasourceImpl implements TrackDatasource {
       }
       return offlineTracks;
     } catch (e) {
-      print(e);
       return [];
     }
   }

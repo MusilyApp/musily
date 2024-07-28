@@ -54,7 +54,6 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
             ),
           );
         } catch (e) {
-          print(e);
           catchError(e);
         }
         updateData(

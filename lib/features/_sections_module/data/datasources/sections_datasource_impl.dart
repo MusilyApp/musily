@@ -15,7 +15,6 @@ class SectionsDatasourceImpl implements SectionsDatasource {
         ),
       ];
     } catch (e) {
-      print(e);
       throw AppError(
         code: 500,
         error: 'home_sections_error',

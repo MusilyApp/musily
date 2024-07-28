@@ -129,7 +129,6 @@ class ResultsPageController
               ),
             ),
           );
-          print(e);
           catchError(e);
         }
         updateData(
@@ -166,7 +165,6 @@ class ResultsPageController
               ),
             ),
           );
-          print(e);
           catchError(e);
         }
         updateData(
