@@ -59,19 +59,12 @@ class LibraryDatasourceImpl implements LibraryDatasource {
     final items = await _modelAdapter.getAll();
     final offlineItems = <LibraryItemEntity>[];
     for (final item in items) {
-      late final LibraryItemMapper mapper;
-      switch (item['type']) {
-        case 'album':
-          mapper = AlbumMapper() as LibraryItemMapper;
-          break;
-        case 'playlist':
-          mapper = PlaylistMapper();
-          break;
-        default:
-          mapper = ArtistMapper();
-          break;
-      }
-      offlineItems.add(mapper.fromMap(item));
+      final LibraryItemMapper mapper = _getMapperFromKey(item);
+      final offlineItem = await mapper.toOffline(
+        mapper.fromMap(item),
+        downloaderController,
+      );
+      offlineItems.add(offlineItem);
     }
     return offlineItems;
   }
