@@ -13,7 +13,10 @@ class LibraryMethods {
     TrackEntity track,
   ) removeFromPlaylist;
   final Future<void> Function(String id) deleteLibraryItem;
-  final Future<void> Function(TrackEntity track) toggleFavorite;
+  final Future<void> Function(
+    TrackEntity track, {
+    bool ignoreIfAdded,
+  }) toggleFavorite;
   bool Function(TrackEntity track) isFavorite;
   Future<void> Function() loadFavorites;
   Future<void> Function(

@@ -8,12 +8,19 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class PlaylistMapper implements LibraryItemMapper<PlaylistEntity> {
   @override
-  LibraryItemEntity<PlaylistEntity> fromMap(Map<String, dynamic> map) {
+  LibraryItemEntity<PlaylistEntity> fromMap(
+    Map<String, dynamic> map, {
+    bool full = false,
+  }) {
+    final trackCount = ((map['value']['tracks'] ?? []) as List).length;
     return LibraryItemEntity(
       id: map['id'],
       lastTimePlayed:
           DateTime.tryParse(map['lastTimePlayed']) ?? DateTime.now(),
-      value: PlaylistModel.fromMap(map['value']),
+      value: PlaylistModel.fromMap(
+        map['value']..['tracks'] = full ? map['value']['tracks'] : [],
+        trackCount: trackCount,
+      ),
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:musily/core/presenter/widgets/image_collection.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/_library_module/presenter/widgets/playlist_tile_thumb.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
@@ -121,20 +122,35 @@ class LibraryTile extends StatelessWidget {
           return ListTile(
             onTap: () {
               coreController.methods.pushWidget(
-                PlaylistPage(
-                  playlist: item.value,
-                  coreController: coreController,
-                  playerController: playerController,
-                  downloaderController: downloaderController,
-                  getPlayableItemUsecase: getPlayableItemUsecase,
-                  libraryController: libraryController,
-                  getAlbumUsecase: getAlbumUsecase,
-                  getPlaylistUsecase: getPlaylistUsecase,
-                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                  getArtistSinglesUsecase: getArtistSinglesUsecase,
-                  getArtistTracksUsecase: getArtistTracksUsecase,
-                  getArtistUsecase: getArtistUsecase,
-                ),
+                item.value.tracks.isEmpty
+                    ? AsyncPlaylistPage(
+                        getPlaylistUsecase: getPlaylistUsecase,
+                        playlistId: item.value.id,
+                        coreController: coreController,
+                        playerController: playerController,
+                        downloaderController: downloaderController,
+                        getPlayableItemUsecase: getPlayableItemUsecase,
+                        libraryController: libraryController,
+                        getAlbumUsecase: getAlbumUsecase,
+                        getArtistUsecase: getArtistUsecase,
+                        getArtistTracksUsecase: getArtistTracksUsecase,
+                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                      )
+                    : PlaylistPage(
+                        playlist: item.value,
+                        coreController: coreController,
+                        playerController: playerController,
+                        downloaderController: downloaderController,
+                        getPlayableItemUsecase: getPlayableItemUsecase,
+                        libraryController: libraryController,
+                        getAlbumUsecase: getAlbumUsecase,
+                        getPlaylistUsecase: getPlaylistUsecase,
+                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        getArtistTracksUsecase: getArtistTracksUsecase,
+                        getArtistUsecase: getArtistUsecase,
+                      ),
               );
             },
             minTileHeight: 60,
@@ -148,13 +164,12 @@ class LibraryTile extends StatelessWidget {
               ),
               child: item.value.id == 'favorites'
                   ? const FavoriteIcon()
-                  : ImageCollection(
-                      size: 48,
-                      urls: [
-                        ...(item.value as PlaylistEntity).tracks.map(
-                              (track) => track.lowResImg ?? '',
-                            ),
-                      ],
+                  : const SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: Icon(
+                        Icons.playlist_play_rounded,
+                      ),
                     ),
             ),
             title: Padding(

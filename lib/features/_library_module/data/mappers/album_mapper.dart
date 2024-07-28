@@ -6,12 +6,17 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 
 class AlbumMapper implements LibraryItemMapper<AlbumEntity> {
   @override
-  LibraryItemEntity<AlbumEntity> fromMap(Map<String, dynamic> map) {
+  LibraryItemEntity<AlbumEntity> fromMap(
+    Map<String, dynamic> map, {
+    bool full = false,
+  }) {
     return LibraryItemEntity(
       id: map['id'],
       lastTimePlayed:
           DateTime.tryParse(map['lastTimePlayed']) ?? DateTime.now(),
-      value: AlbumModel.fromMap(map['value'] ?? {}),
+      value: AlbumModel.fromMap(
+        (map['value'])..['tracks'] = full ? map['value']['tracks'] : [],
+      ),
     );
   }
 

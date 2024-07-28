@@ -93,33 +93,52 @@ class LibraryPage extends StatelessWidget {
                       }
                       final favoritesPlaylist = (favoritesPlaylistFiltered.first
                           as LibraryItemEntity<PlaylistEntity>);
-                      if (favoritesPlaylist.value.tracks.isEmpty) {
-                        return Container();
-                      }
                       return Column(
                         children: [
                           ListTile(
                             onTap: () => Navigator.push(
                               context,
                               DownupRouter(
-                                builder: (context) => PlaylistPage(
-                                  playlist: favoritesPlaylist.value,
-                                  playerController: playerController,
-                                  coreController: coreController,
-                                  downloaderController: downloaderController,
-                                  getPlayableItemUsecase:
-                                      getPlayableItemUsecase,
-                                  libraryController: libraryController,
-                                  getAlbumUsecase: getAlbumUsecase,
-                                  getPlaylistUsecase: getPlaylistUsecase,
-                                  getArtistAlbumsUsecase:
-                                      getArtistAlbumsUsecase,
-                                  getArtistSinglesUsecase:
-                                      getArtistSinglesUsecase,
-                                  getArtistTracksUsecase:
-                                      getArtistTracksUsecase,
-                                  getArtistUsecase: getArtistUsecase,
-                                ),
+                                builder: (context) => favoritesPlaylist
+                                        .value.tracks.isNotEmpty
+                                    ? PlaylistPage(
+                                        playlist: favoritesPlaylist.value,
+                                        playerController: playerController,
+                                        coreController: coreController,
+                                        downloaderController:
+                                            downloaderController,
+                                        getPlayableItemUsecase:
+                                            getPlayableItemUsecase,
+                                        libraryController: libraryController,
+                                        getAlbumUsecase: getAlbumUsecase,
+                                        getPlaylistUsecase: getPlaylistUsecase,
+                                        getArtistAlbumsUsecase:
+                                            getArtistAlbumsUsecase,
+                                        getArtistSinglesUsecase:
+                                            getArtistSinglesUsecase,
+                                        getArtistTracksUsecase:
+                                            getArtistTracksUsecase,
+                                        getArtistUsecase: getArtistUsecase,
+                                      )
+                                    : AsyncPlaylistPage(
+                                        getPlaylistUsecase: getPlaylistUsecase,
+                                        playlistId: favoritesPlaylist.id,
+                                        coreController: coreController,
+                                        playerController: playerController,
+                                        downloaderController:
+                                            downloaderController,
+                                        getPlayableItemUsecase:
+                                            getPlayableItemUsecase,
+                                        libraryController: libraryController,
+                                        getAlbumUsecase: getAlbumUsecase,
+                                        getArtistUsecase: getArtistUsecase,
+                                        getArtistTracksUsecase:
+                                            getArtistTracksUsecase,
+                                        getArtistAlbumsUsecase:
+                                            getArtistAlbumsUsecase,
+                                        getArtistSinglesUsecase:
+                                            getArtistSinglesUsecase,
+                                      ),
                               ),
                             ),
                             leading: Container(
@@ -150,7 +169,7 @@ class LibraryPage extends StatelessWidget {
                             title:
                                 Text(AppLocalizations.of(context)!.favorites),
                             subtitle: Text(
-                              '${favoritesPlaylist.value.tracks.length} ${AppLocalizations.of(context)!.songs}',
+                              '${favoritesPlaylist.value.trackCount} ${AppLocalizations.of(context)!.songs}',
                             ),
                           ),
                           const Divider(),

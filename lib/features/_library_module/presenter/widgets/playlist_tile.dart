@@ -59,20 +59,35 @@ class PlaylistTile extends StatelessWidget {
           return;
         }
         coreController.methods.pushWidget(
-          PlaylistPage(
-            coreController: coreController,
-            playlist: playlist,
-            playerController: playerController,
-            downloaderController: downloaderController,
-            getPlayableItemUsecase: getPlayableItemUsecase,
-            libraryController: libraryController,
-            getAlbumUsecase: getAlbumUsecase,
-            getPlaylistUsecase: getPlaylistUsecase,
-            getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-            getArtistSinglesUsecase: getArtistSinglesUsecase,
-            getArtistTracksUsecase: getArtistTracksUsecase,
-            getArtistUsecase: getArtistUsecase,
-          ),
+          playlist.tracks.isNotEmpty
+              ? PlaylistPage(
+                  coreController: coreController,
+                  playlist: playlist,
+                  playerController: playerController,
+                  downloaderController: downloaderController,
+                  getPlayableItemUsecase: getPlayableItemUsecase,
+                  libraryController: libraryController,
+                  getAlbumUsecase: getAlbumUsecase,
+                  getPlaylistUsecase: getPlaylistUsecase,
+                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                  getArtistSinglesUsecase: getArtistSinglesUsecase,
+                  getArtistTracksUsecase: getArtistTracksUsecase,
+                  getArtistUsecase: getArtistUsecase,
+                )
+              : AsyncPlaylistPage(
+                  getPlaylistUsecase: getPlaylistUsecase,
+                  playlistId: playlist.id,
+                  coreController: coreController,
+                  playerController: playerController,
+                  downloaderController: downloaderController,
+                  getPlayableItemUsecase: getPlayableItemUsecase,
+                  libraryController: libraryController,
+                  getAlbumUsecase: getAlbumUsecase,
+                  getArtistUsecase: getArtistUsecase,
+                  getArtistTracksUsecase: getArtistTracksUsecase,
+                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                  getArtistSinglesUsecase: getArtistSinglesUsecase,
+                ),
         );
       },
       leading: PlaylistTileThumb(
@@ -89,7 +104,7 @@ class PlaylistTile extends StatelessWidget {
         playlist.title,
       ),
       subtitle: Text(
-        '${AppLocalizations.of(context)!.playlist} · ${playlist.tracks.length} ${AppLocalizations.of(context)!.songs}',
+        '${AppLocalizations.of(context)!.playlist} · ${playlist.trackCount} ${AppLocalizations.of(context)!.songs}',
       ),
       trailing: PlaylistOptionsBuilder(
         playlistEntity: playlist,

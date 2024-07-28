@@ -3,8 +3,10 @@ import 'package:musily/core/presenter/widgets/app_image.dart';
 
 class PlaylistTileThumb extends StatelessWidget {
   final List<String> urls;
+  final double size;
   const PlaylistTileThumb({
     required this.urls,
+    this.size = 40,
     super.key,
   });
 
@@ -21,8 +23,8 @@ class PlaylistTileThumb extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: SizedBox(
-          width: 40,
-          height: 40,
+          width: size,
+          height: size,
           child: Builder(
             builder: (context) {
               if (urls.length >= 4) {

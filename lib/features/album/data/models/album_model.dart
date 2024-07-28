@@ -76,7 +76,7 @@ class AlbumModel {
       title: album.title,
       id: album.id,
       artist: album.artist,
-      tracks: libraryTracks,
+      tracks: offlineTracks,
       highResImg: offlineHighResImg?.filePath ?? album.highResImg,
       lowResImg: offlineLowResImg?.filePath ?? album.lowResImg,
       year: album.year,

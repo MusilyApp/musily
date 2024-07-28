@@ -32,6 +32,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
       final playlist = PlaylistEntity(
         id: idGenerator(),
         title: playlistNameController.text,
+        trackCount: 0,
         tracks: [],
       );
       widget.libraryController.methods.addToLibrary<PlaylistEntity>(

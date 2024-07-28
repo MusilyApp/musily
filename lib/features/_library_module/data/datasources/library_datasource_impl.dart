@@ -57,16 +57,13 @@ class LibraryDatasourceImpl implements LibraryDatasource {
   @override
   Future<List<LibraryItemEntity>> getLibrary() async {
     final items = await _modelAdapter.getAll();
-    final offlineItems = <LibraryItemEntity>[];
+    final libraryItems = <LibraryItemEntity>[];
     for (final item in items) {
       final LibraryItemMapper mapper = _getMapperFromKey(item);
-      final offlineItem = await mapper.toOffline(
-        mapper.fromMap(item),
-        downloaderController,
-      );
-      offlineItems.add(offlineItem);
+      final libraryItem = mapper.fromMap(item);
+      libraryItems.add(libraryItem);
     }
-    return offlineItems;
+    return libraryItems;
   }
 
   @override
@@ -76,9 +73,9 @@ class LibraryDatasourceImpl implements LibraryDatasource {
     final item = await _modelAdapter.findById(id);
     if (item != null) {
       final mapper = _getMapperFromKey<T>(item);
-      return mapper.toOffline(
-        mapper.fromMap(item),
-        downloaderController,
+      return mapper.fromMap(
+        item,
+        full: true,
       );
     }
     return null;

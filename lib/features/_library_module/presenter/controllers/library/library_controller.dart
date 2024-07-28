@@ -144,7 +144,10 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
       addToPlaylist: (tracks, playlistId) async {
         if (playlistId == 'favorites') {
           for (final track in tracks) {
-            await methods.toggleFavorite(track);
+            await methods.toggleFavorite(
+              track,
+              ignoreIfAdded: true,
+            );
           }
           return;
         }
@@ -187,7 +190,10 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         );
         methods.getLibrary();
       },
-      toggleFavorite: (track) async {
+      toggleFavorite: (
+        track, {
+        ignoreIfAdded = false,
+      }) async {
         updateData(
           data.copyWith(
             addingToFavorites: true,
@@ -200,6 +206,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
             PlaylistEntity(
               id: 'favorites',
               title: 'favorites',
+              trackCount: 1,
               tracks: [track],
             ),
           );
@@ -212,13 +219,21 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
               addingToFavorites: false,
             ),
           );
-          await methods.getLibrary();
+          methods.getLibrary();
           return;
         }
         final itemsFiltered = favoritesPlaylist.value.tracks.where(
           (element) => element.hash == track.hash,
         );
         if (itemsFiltered.isNotEmpty) {
+          if (ignoreIfAdded) {
+            updateData(
+              data.copyWith(
+                addingToFavorites: false,
+              ),
+            );
+            return;
+          }
           final index = favoritesPlaylist.value.tracks.indexOf(
             itemsFiltered.first,
           );

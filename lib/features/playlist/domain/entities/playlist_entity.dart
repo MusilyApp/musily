@@ -6,6 +6,7 @@ class PlaylistEntity implements Identifiable {
   @override
   final String id;
   String title;
+  int trackCount;
   ShortArtist? artist;
   String? highResImg;
   String? lowResImg;
@@ -15,6 +16,7 @@ class PlaylistEntity implements Identifiable {
     required this.id,
     required this.title,
     required this.tracks,
+    required this.trackCount,
     this.highResImg,
     this.lowResImg,
     this.artist,

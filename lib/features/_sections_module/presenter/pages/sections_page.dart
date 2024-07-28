@@ -112,6 +112,7 @@ class SectionsPage extends StatelessWidget {
                               value: PlaylistEntity(
                                 id: 'id',
                                 title: 'title',
+                                trackCount: 0,
                                 tracks: [],
                               ),
                             ),

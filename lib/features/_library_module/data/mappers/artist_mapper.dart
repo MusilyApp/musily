@@ -6,7 +6,10 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 
 class ArtistMapper implements LibraryItemMapper<ArtistEntity> {
   @override
-  LibraryItemEntity<ArtistEntity> fromMap(Map<String, dynamic> map) {
+  LibraryItemEntity<ArtistEntity> fromMap(
+    Map<String, dynamic> map, {
+    bool full = false,
+  }) {
     return LibraryItemEntity(
       id: map['id'],
       lastTimePlayed:

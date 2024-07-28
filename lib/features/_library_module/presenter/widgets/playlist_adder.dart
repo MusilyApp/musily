@@ -86,16 +86,6 @@ class _PlaylistAdderWidget extends StatelessWidget {
       body: libraryController.builder(builder: (context, data) {
         final playlist =
             data.items.whereType<LibraryItemEntity<PlaylistEntity>>().toList();
-        bool trackIsAlreadyInPlaylist(List<TrackEntity> tracks) {
-          if (this.tracks.length == 1) {
-            return tracks
-                .where(
-                  (element) => element.hash == this.tracks.first.hash,
-                )
-                .isNotEmpty;
-          }
-          return false;
-        }
 
         return Column(
           children: [
@@ -135,23 +125,20 @@ class _PlaylistAdderWidget extends StatelessWidget {
                     children: playlist
                         .map(
                           (item) => ListTile(
-                            onTap: trackIsAlreadyInPlaylist(item.value.tracks)
-                                ? null
-                                : () async {
-                                    Navigator.pop(context);
-                                    late final List<TrackEntity> tracksToAdd;
-                                    if (tracks.isEmpty) {
-                                      tracksToAdd =
-                                          await asyncTracks?.call() ?? [];
-                                    } else {
-                                      tracksToAdd = tracks;
-                                    }
-                                    libraryController.methods.addToPlaylist(
-                                      tracksToAdd,
-                                      item.id,
-                                    );
-                                    onAdded?.call();
-                                  },
+                            onTap: () async {
+                              Navigator.pop(context);
+                              late final List<TrackEntity> tracksToAdd;
+                              if (tracks.isEmpty) {
+                                tracksToAdd = await asyncTracks?.call() ?? [];
+                              } else {
+                                tracksToAdd = tracks;
+                              }
+                              libraryController.methods.addToPlaylist(
+                                tracksToAdd,
+                                item.id,
+                              );
+                              onAdded?.call();
+                            },
                             leading: item.value.id == 'favorites'
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
@@ -174,21 +161,9 @@ class _PlaylistAdderWidget extends StatelessWidget {
                               item.value.id == 'favorites'
                                   ? AppLocalizations.of(context)!.favorites
                                   : item.value.title,
-                              style: TextStyle(
-                                color:
-                                    trackIsAlreadyInPlaylist(item.value.tracks)
-                                        ? Theme.of(context).disabledColor
-                                        : null,
-                              ),
                             ),
                             subtitle: Text(
-                              '${AppLocalizations.of(context)!.playlist} · ${item.value.tracks.length} ${AppLocalizations.of(context)!.songs}',
-                              style: TextStyle(
-                                color:
-                                    trackIsAlreadyInPlaylist(item.value.tracks)
-                                        ? Theme.of(context).disabledColor
-                                        : null,
-                              ),
+                              '${AppLocalizations.of(context)!.playlist} · ${item.value.trackCount} ${AppLocalizations.of(context)!.songs}',
                             ),
                           ),
                         )
