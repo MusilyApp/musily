@@ -402,7 +402,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
             ),
             widget.playerController.builder(
               builder: (context, data) {
-                final isPlaylistPlaying = data.playingId == widget.playlist.id;
                 return Column(
                   children: [
                     widget.playerController.builder(
