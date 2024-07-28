@@ -63,7 +63,6 @@ class AlbumPage extends StatelessWidget {
             body: playerController.builder(
               builder: (context, data) {
                 final isAlbumPlaying = data.playingId == album.id;
-
                 return ListView(
                   children: [
                     if (album.highResImg != null &&
@@ -320,92 +319,72 @@ class AlbumPage extends StatelessWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    playerController.builder(
-                      builder: (context, data) {
-                        return Column(
-                          children: [
-                            ...album.tracks.map(
-                              (track) => TrackTile(
-                                getAlbumUsecase: getAlbumUsecase,
-                                leading: isAlbumPlaying &&
-                                        data.currentPlayingItem?.hash ==
-                                            track.hash
-                                    ? LoadingAnimationWidget.staggeredDotsWave(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: 20,
-                                      )
-                                    : SizedBox(
-                                        width: 20,
-                                        child: Center(
-                                          child: Text(
-                                            '${album.tracks.indexOf(track) + 1}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge
-                                                ?.copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
+                    ...album.tracks.map(
+                      (track) => TrackTile(
+                        getAlbumUsecase: getAlbumUsecase,
+                        leading: isAlbumPlaying &&
+                                data.currentPlayingItem?.hash == track.hash
+                            ? LoadingAnimationWidget.staggeredDotsWave(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 20,
+                              )
+                            : SizedBox(
+                                width: 20,
+                                child: Center(
+                                  child: Text(
+                                    '${album.tracks.indexOf(track) + 1}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                      ),
-                                hideOptions: const [
-                                  TrackTileOptions.seeAlbum,
-                                ],
-                                downloaderController: downloaderController,
-                                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                                getArtistSinglesUsecase:
-                                    getArtistSinglesUsecase,
-                                getArtistTracksUsecase: getArtistTracksUsecase,
-                                getArtistUsecase: getArtistUsecase,
-                                getPlayableItemUsecase: getPlayableItemUsecase,
-                                libraryController: libraryController,
-                                customAction: () {
-                                  late final List<MusilyTrack> queueToPlay;
-                                  if (data.playingId == album.id) {
-                                    queueToPlay = data.queue;
-                                  } else {
-                                    queueToPlay = [
-                                      ...album.tracks.map((element) =>
-                                          TrackModel.toMusilyTrack(element))
-                                    ];
-                                  }
-
-                                  final startIndex = queueToPlay.indexWhere(
-                                    (element) => element.hash == track.hash,
-                                  );
-
-                                  playerController.methods.playPlaylist(
-                                    queueToPlay,
-                                    album.id,
-                                    startFrom:
-                                        startIndex == -1 ? 0 : startIndex,
-                                  );
-                                  libraryController.methods
-                                      .updateLastTimePlayed(
-                                    album.id,
-                                  );
-                                },
-                                track: track,
-                                coreController: coreController,
-                                playerController: playerController,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    playerController.builder(
-                      builder: (context, data) {
-                        if (data.currentPlayingItem != null) {
-                          return const SizedBox(
-                            height: 75,
+                        hideOptions: const [
+                          TrackTileOptions.seeAlbum,
+                        ],
+                        downloaderController: downloaderController,
+                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        getArtistTracksUsecase: getArtistTracksUsecase,
+                        getArtistUsecase: getArtistUsecase,
+                        getPlayableItemUsecase: getPlayableItemUsecase,
+                        libraryController: libraryController,
+                        customAction: () {
+                          late final List<MusilyTrack> queueToPlay;
+                          if (data.playingId == album.id) {
+                            queueToPlay = data.queue;
+                          } else {
+                            queueToPlay = [
+                              ...album.tracks.map((element) =>
+                                  TrackModel.toMusilyTrack(element))
+                            ];
+                          }
+
+                          final startIndex = queueToPlay.indexWhere(
+                            (element) => element.hash == track.hash,
                           );
-                        }
-                        return Container();
-                      },
+
+                          playerController.methods.playPlaylist(
+                            queueToPlay,
+                            album.id,
+                            startFrom: startIndex == -1 ? 0 : startIndex,
+                          );
+                          libraryController.methods.updateLastTimePlayed(
+                            album.id,
+                          );
+                        },
+                        track: track,
+                        coreController: coreController,
+                        playerController: playerController,
+                      ),
                     ),
+                    if (data.currentPlayingItem != null)
+                      const SizedBox(
+                        height: 75,
+                      ),
                   ],
                 );
               },
