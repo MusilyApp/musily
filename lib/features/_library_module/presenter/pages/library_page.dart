@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -163,41 +162,32 @@ class LibraryPage extends StatelessWidget {
                       .where((item) => item.id != 'favorites')
                       .isEmpty)
                     playerController.builder(builder: (context, data) {
-                      return DottedBorder(
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(12),
-                        padding: const EdgeInsets.all(12),
-                        color:
-                            Theme.of(context).colorScheme.outline.withOpacity(
-                                  .6,
-                                ),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * .9,
-                          height: MediaQuery.of(context).size.height -
-                              (data.currentPlayingItem != null ? 373 : 305),
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.library_music_rounded,
-                                  size: 70,
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * .9,
+                        height: MediaQuery.of(context).size.height -
+                            (data.currentPlayingItem != null ? 373 : 305),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.library_music_rounded,
+                                size: 70,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .outline
+                                    .withOpacity(.9),
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.emptyLibrary,
+                                style: TextStyle(
                                   color: Theme.of(context)
                                       .colorScheme
                                       .outline
                                       .withOpacity(.9),
                                 ),
-                                Text(
-                                  AppLocalizations.of(context)!.emptyLibrary,
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .outline
-                                        .withOpacity(.9),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       );
