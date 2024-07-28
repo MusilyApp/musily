@@ -103,7 +103,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height - 321,
+              height: MediaQuery.of(context).size.height - 414,
               child: Center(
                 child: AnimatedOpacity(
                   opacity: data.showLyrics ? 0.0 : 1.0,
