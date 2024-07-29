@@ -126,6 +126,26 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                     return Container();
                                   },
                                 ),
+                                AnimatedOpacity(
+                                  duration: const Duration(
+                                    milliseconds: 200,
+                                  ),
+                                  opacity: data.showLyrics ? 1 : 0,
+                                  child: Switch(
+                                    activeColor:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    thumbIcon: const WidgetStatePropertyAll(
+                                      Icon(Icons.sync_rounded),
+                                    ),
+                                    value: data.syncedLyrics,
+                                    onChanged: data.showLyrics
+                                        ? (value) {
+                                            widget.playerController.methods
+                                                .toggleSyncedLyrics();
+                                          }
+                                        : null,
+                                  ),
+                                ),
                                 TrackOptionsBuilder(
                                   getAlbumUsecase: widget.getAlbumUsecase,
                                   track: TrackModel.fromMusilyTrack(
