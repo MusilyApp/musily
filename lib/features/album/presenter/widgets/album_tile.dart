@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -52,36 +51,34 @@ class AlbumTile extends StatelessWidget {
       onTap: staticTile
           ? null
           : () {
-              Navigator.of(context).push(
-                DownupRouter(
-                  builder: (context) => album.tracks.isNotEmpty
-                      ? AlbumPage(
-                          album: album,
-                          coreController: coreController,
-                          playerController: playerController,
-                          getAlbumUsecase: getAlbumUsecase,
-                          downloaderController: downloaderController,
-                          getPlayableItemUsecase: getPlayableItemUsecase,
-                          libraryController: libraryController,
-                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase: getArtistSinglesUsecase,
-                          getArtistTracksUsecase: getArtistTracksUsecase,
-                          getArtistUsecase: getArtistUsecase,
-                        )
-                      : AsyncAlbumPage(
-                          albumId: album.id,
-                          coreController: coreController,
-                          playerController: playerController,
-                          getAlbumUsecase: getAlbumUsecase,
-                          downloaderController: downloaderController,
-                          getPlayableItemUsecase: getPlayableItemUsecase,
-                          libraryController: libraryController,
-                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase: getArtistSinglesUsecase,
-                          getArtistTracksUsecase: getArtistTracksUsecase,
-                          getArtistUsecase: getArtistUsecase,
-                        ),
-                ),
+              coreController.methods.pushWidget(
+                album.tracks.isNotEmpty
+                    ? AlbumPage(
+                        album: album,
+                        coreController: coreController,
+                        playerController: playerController,
+                        getAlbumUsecase: getAlbumUsecase,
+                        downloaderController: downloaderController,
+                        getPlayableItemUsecase: getPlayableItemUsecase,
+                        libraryController: libraryController,
+                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        getArtistTracksUsecase: getArtistTracksUsecase,
+                        getArtistUsecase: getArtistUsecase,
+                      )
+                    : AsyncAlbumPage(
+                        albumId: album.id,
+                        coreController: coreController,
+                        playerController: playerController,
+                        getAlbumUsecase: getAlbumUsecase,
+                        downloaderController: downloaderController,
+                        getPlayableItemUsecase: getPlayableItemUsecase,
+                        libraryController: libraryController,
+                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        getArtistTracksUsecase: getArtistTracksUsecase,
+                        getArtistUsecase: getArtistUsecase,
+                      ),
               );
             },
       leading: Card(
