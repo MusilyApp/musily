@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/widgets/artist_tile.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
@@ -96,74 +97,51 @@ class LibraryPage extends StatelessWidget {
                       return Column(
                         children: [
                           ListTile(
-                            onTap: () => Navigator.push(
-                              context,
-                              DownupRouter(
-                                builder: (context) => favoritesPlaylist
-                                        .value.tracks.isNotEmpty
-                                    ? PlaylistPage(
-                                        playlist: favoritesPlaylist.value,
-                                        playerController: playerController,
-                                        coreController: coreController,
-                                        downloaderController:
-                                            downloaderController,
-                                        getPlayableItemUsecase:
-                                            getPlayableItemUsecase,
-                                        libraryController: libraryController,
-                                        getAlbumUsecase: getAlbumUsecase,
-                                        getPlaylistUsecase: getPlaylistUsecase,
-                                        getArtistAlbumsUsecase:
-                                            getArtistAlbumsUsecase,
-                                        getArtistSinglesUsecase:
-                                            getArtistSinglesUsecase,
-                                        getArtistTracksUsecase:
-                                            getArtistTracksUsecase,
-                                        getArtistUsecase: getArtistUsecase,
-                                      )
-                                    : AsyncPlaylistPage(
-                                        getPlaylistUsecase: getPlaylistUsecase,
-                                        playlistId: favoritesPlaylist.id,
-                                        coreController: coreController,
-                                        playerController: playerController,
-                                        downloaderController:
-                                            downloaderController,
-                                        getPlayableItemUsecase:
-                                            getPlayableItemUsecase,
-                                        libraryController: libraryController,
-                                        getAlbumUsecase: getAlbumUsecase,
-                                        getArtistUsecase: getArtistUsecase,
-                                        getArtistTracksUsecase:
-                                            getArtistTracksUsecase,
-                                        getArtistAlbumsUsecase:
-                                            getArtistAlbumsUsecase,
-                                        getArtistSinglesUsecase:
-                                            getArtistSinglesUsecase,
-                                      ),
-                              ),
+                            onTap: () => coreController.methods.pushWidget(
+                              favoritesPlaylist.value.tracks.isNotEmpty
+                                  ? PlaylistPage(
+                                      playlist: favoritesPlaylist.value,
+                                      playerController: playerController,
+                                      coreController: coreController,
+                                      downloaderController:
+                                          downloaderController,
+                                      getPlayableItemUsecase:
+                                          getPlayableItemUsecase,
+                                      libraryController: libraryController,
+                                      getAlbumUsecase: getAlbumUsecase,
+                                      getPlaylistUsecase: getPlaylistUsecase,
+                                      getArtistAlbumsUsecase:
+                                          getArtistAlbumsUsecase,
+                                      getArtistSinglesUsecase:
+                                          getArtistSinglesUsecase,
+                                      getArtistTracksUsecase:
+                                          getArtistTracksUsecase,
+                                      getArtistUsecase: getArtistUsecase,
+                                    )
+                                  : AsyncPlaylistPage(
+                                      getPlaylistUsecase: getPlaylistUsecase,
+                                      playlistId: favoritesPlaylist.id,
+                                      coreController: coreController,
+                                      playerController: playerController,
+                                      downloaderController:
+                                          downloaderController,
+                                      getPlayableItemUsecase:
+                                          getPlayableItemUsecase,
+                                      libraryController: libraryController,
+                                      getAlbumUsecase: getAlbumUsecase,
+                                      getArtistUsecase: getArtistUsecase,
+                                      getArtistTracksUsecase:
+                                          getArtistTracksUsecase,
+                                      getArtistAlbumsUsecase:
+                                          getArtistAlbumsUsecase,
+                                      getArtistSinglesUsecase:
+                                          getArtistSinglesUsecase,
+                                    ),
                             ),
-                            leading: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.transparent,
-                                    Theme.of(context)
-                                            .buttonTheme
-                                            .colorScheme
-                                            ?.primary ??
-                                        Colors.white,
-                                  ],
-                                ),
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.favorite_rounded,
-                                  color: Colors.white,
-                                ),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: const FavoriteIcon(
+                                size: 50,
                               ),
                             ),
                             title:
