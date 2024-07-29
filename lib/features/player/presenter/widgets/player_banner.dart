@@ -108,83 +108,92 @@ class _PlayerBannerState extends State<PlayerBanner> {
                 child: AnimatedOpacity(
                   opacity: data.showLyrics ? 0.0 : 1.0,
                   duration: const Duration(milliseconds: 200),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      onTap: widget.track.album != null && !data.showLyrics
-                          ? () {
-                              if (widget.track.album != null) {
-                                Navigator.pop(context);
-                                widget.coreController.methods.pushWidget(
-                                  AsyncAlbumPage(
-                                    albumId: widget.track.album!.id,
-                                    coreController: widget.coreController,
-                                    playerController: widget.playerController,
-                                    getAlbumUsecase: widget.getAlbumUsecase,
-                                    downloaderController:
-                                        widget.downloaderController,
-                                    getPlayableItemUsecase:
-                                        widget.getPlayableItemUsecase,
-                                    libraryController: widget.libraryController,
-                                    getArtistAlbumsUsecase:
-                                        widget.getArtistAlbumsUsecase,
-                                    getArtistSinglesUsecase:
-                                        widget.getArtistSinglesUsecase,
-                                    getArtistTracksUsecase:
-                                        widget.getArtistTracksUsecase,
-                                    getArtistUsecase: widget.getArtistUsecase,
-                                  ),
-                                );
-                              }
-                            }
-                          : null,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Builder(
-                          builder: (context) {
-                            if (widget.track.highResImg != null &&
-                                widget.track.highResImg!.isNotEmpty) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: AppImage(
-                                  widget.track.highResImg!,
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            }
-                            return Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: BorderSide(
-                                  width: 1,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .outline
-                                      .withOpacity(.2),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 350,
-                                    child: Icon(
-                                      Icons.music_note,
-                                      size: 75,
-                                      color: Theme.of(context)
-                                          .iconTheme
-                                          .color
-                                          ?.withOpacity(.8),
+                  child: data.showLyrics
+                      ? const SizedBox.shrink()
+                      : MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: widget.track.album != null &&
+                                    !data.showLyrics
+                                ? () {
+                                    if (widget.track.album != null) {
+                                      Navigator.pop(context);
+                                      widget.coreController.methods.pushWidget(
+                                        AsyncAlbumPage(
+                                          albumId: widget.track.album!.id,
+                                          coreController: widget.coreController,
+                                          playerController:
+                                              widget.playerController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
+                                          downloaderController:
+                                              widget.downloaderController,
+                                          getPlayableItemUsecase:
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
+                                          getArtistAlbumsUsecase:
+                                              widget.getArtistAlbumsUsecase,
+                                          getArtistSinglesUsecase:
+                                              widget.getArtistSinglesUsecase,
+                                          getArtistTracksUsecase:
+                                              widget.getArtistTracksUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                : null,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Builder(
+                                builder: (context) {
+                                  if (widget.track.highResImg != null &&
+                                      widget.track.highResImg!.isNotEmpty) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: AppImage(
+                                        widget.track.highResImg!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  }
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide(
+                                        width: 1,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .outline
+                                            .withOpacity(.2),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 350,
+                                          child: Icon(
+                                            Icons.music_note,
+                                            size: 75,
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color
+                                                ?.withOpacity(.8),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ),
