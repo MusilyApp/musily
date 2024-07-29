@@ -64,24 +64,29 @@ class _TrackLyricsState extends State<TrackLyrics> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SingleChildScrollView(
-          controller: _scrollController,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const SizedBox(height: 180),
-                Text(
-                  widget.lyrics,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color:
-                            Theme.of(context).iconTheme.color?.withOpacity(.7),
-                      ),
-                ),
-                const SizedBox(height: 180),
-              ],
+        Align(
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 180),
+                  Text(
+                    widget.lyrics,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context)
+                              .iconTheme
+                              .color
+                              ?.withOpacity(.7),
+                        ),
+                  ),
+                  const SizedBox(height: 180),
+                ],
+              ),
             ),
           ),
         ),
