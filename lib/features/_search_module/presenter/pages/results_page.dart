@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -130,16 +131,16 @@ class _ResultsPageState extends State<ResultsPage> {
                 ),
               ),
             ),
-            bottom: const TabBar(
+            bottom: TabBar(
               tabs: [
                 Tab(
-                  child: Text('Músicas'),
+                  child: Text(AppLocalizations.of(context)!.songs),
                 ),
                 Tab(
-                  child: Text('Albúms'),
+                  child: Text(AppLocalizations.of(context)!.albums),
                 ),
                 Tab(
-                  child: Text('Artistas'),
+                  child: Text(AppLocalizations.of(context)!.artists),
                 ),
               ],
             ),
