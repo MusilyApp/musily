@@ -312,6 +312,28 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                         getPlayableItemUsecase:
                                             widget.getPlayableItemUsecase,
                                       ),
+                                      if (data.tracksFromSmartQueue.contains(
+                                              currentPlayingItem.hash) &&
+                                          data.playingId != 'favorites')
+                                        IconButton(
+                                          onPressed: () {
+                                            widget.libraryController.methods
+                                                .addToPlaylist(
+                                              [
+                                                TrackModel.fromMusilyTrack(
+                                                  currentPlayingItem,
+                                                ),
+                                              ],
+                                              data.playingId,
+                                            );
+                                          },
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          icon: const Icon(
+                                            Icons.add_circle_rounded,
+                                          ),
+                                        ),
                                       FavoriteButton(
                                         libraryController:
                                             widget.libraryController,

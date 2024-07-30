@@ -1,3 +1,4 @@
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily_player/musily_player.dart';
 
 class PlayerMethods {
@@ -22,7 +23,7 @@ class PlayerMethods {
   Future<String?> Function(String trackId) getLyrics;
   void Function() toggleSyncedLyrics;
 
-  Future<void> Function() getSmartQueue;
+  Future<void> Function({List<TrackEntity>? customItems}) getSmartQueue;
   void Function() toggleSmartQueue;
 
   Future<void> Function(

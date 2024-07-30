@@ -220,6 +220,14 @@ class DownloaderController extends BaseController<DownloaderControllerData,
         return validFiles;
       },
       getFile: (id) async {
+        final existingFile = data.downloadQueue
+            .where(
+              (file) => file.filePath == id,
+            )
+            .firstOrNull;
+        if (existingFile != null) {
+          return existingFile;
+        }
         final directory = await getApplicationSupportDirectory();
         final filePath = '${directory.path}/$id';
         final md5FilePath = '$filePath.md5';

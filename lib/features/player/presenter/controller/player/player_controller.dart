@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/features/player/domain/usecases/get_smart_queue_usecase.dart';
@@ -142,13 +144,20 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   @override
   PlayerMethods defineMethods() {
     return PlayerMethods(
-      toggleSmartQueue: () async {
+      toggleSmartQueue: () {
         if (data.tracksFromSmartQueue.isEmpty) {
           methods.getSmartQueue();
         } else {
           if (data.tracksFromSmartQueue
               .contains(data.currentPlayingItem?.hash)) {
-            await _musilyPlayer.skipToTrack(0);
+            updateData(
+              data.copyWith(
+                currentPlayingItem: data.queue.firstOrNull,
+              ),
+            );
+            if (data.queue.isNotEmpty) {
+              _musilyPlayer.skipToTrack(0);
+            }
           }
           _musilyPlayer.setQueue(
             [
@@ -167,12 +176,41 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           );
         }
       },
-      getSmartQueue: () async {
+      getSmartQueue: ({customItems}) async {
         updateData(
           data.copyWith(
             loadingSmartQueue: true,
           ),
         );
+        if (customItems?.isNotEmpty ?? false) {
+          final smartItems = await getSmartQueueUsecase.exec(customItems!);
+          smartItems.removeWhere(
+            (item) => data.queue.map((track) => track.hash).contains(item.hash),
+          );
+          final List<MusilyTrack> queueClone = List.from(data.queue);
+          final random = Random();
+          for (final item in smartItems) {
+            final indexToInsert = random.nextInt(queueClone.length - 1);
+            queueClone.insert(
+              indexToInsert,
+              TrackModel.toMusilyTrack(item),
+            );
+          }
+          _musilyPlayer.setQueue(queueClone);
+          updateData(
+            data.copyWith(
+              loadingSmartQueue: false,
+              tracksFromSmartQueue: data.tracksFromSmartQueue
+                ..addAll(
+                  smartItems.map(
+                    (item) => item.hash,
+                  ),
+                ),
+            ),
+          );
+          return;
+        }
+
         final smartQueue = await getSmartQueueUsecase.exec(
           [
             ...data.queue.map(
@@ -276,6 +314,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
               data.copyWith(
                 loadRequested: false,
                 playingId: playingId,
+                tracksFromSmartQueue: [],
               ),
             );
             await methods.loadAndPlay(track, playingId);
@@ -292,6 +331,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           data.copyWith(
             loadingTrackData: false,
             playingId: playingId,
+            tracksFromSmartQueue: [],
           ),
         );
         await _musilyPlayer.playTrack(track);
@@ -379,6 +419,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         updateData(
           data.copyWith(
             playingId: playingId,
+            tracksFromSmartQueue: [],
           ),
         );
       },
