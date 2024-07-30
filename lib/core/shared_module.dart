@@ -28,6 +28,9 @@ import 'package:musily/features/artist/data/usecases/get_artist_tracks_usecase_i
 import 'package:musily/features/artist/data/usecases/get_artist_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artists_usecase_impl.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/data/datasources/player_datasource_impl.dart';
+import 'package:musily/features/player/data/repositories/player_repository_impl.dart';
+import 'package:musily/features/player/data/usecases/get_smart_queue_usecase_impl.dart';
 import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
 import 'package:musily/features/playlist/data/datasources/playlist_datasource_impl.dart';
 import 'package:musily/features/playlist/data/repositories/playlist_repository_impl.dart';
@@ -45,11 +48,24 @@ class SharedModule extends Module {
     super.exportedBinds(i);
     i.addLazySingleton(CoreController.new);
 
+    // Player dependencies
+    i.addLazySingleton(PlayerDatasourceImpl.new);
+    i.addLazySingleton(
+      () => PlayerRepositoryImpl(
+        playerDatasource: i.get<PlayerDatasourceImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => GetSmartQueueUsecaseImpl(
+        playerRepository: i.get<PlayerRepositoryImpl>(),
+      ),
+    );
     i.addLazySingleton(
       () => PlayerController(
         musilyPlayer: MusilyPlayer(),
         getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
         getTrackLyricsUsecase: i.get<GetTrackLyricsUsecaseImpl>(),
+        getSmartQueueUsecase: i.get<GetSmartQueueUsecaseImpl>(),
       ),
     );
 
@@ -127,6 +143,7 @@ class SharedModule extends Module {
         getLibraryItemUsecase: i.get<GetLibraryItemUsecaseImpl>(),
         deleteLibraryItemUsecase: i.get<DeleteLibraryItemUsecaseImpl>(),
         downloaderController: i.get<DownloaderController>(),
+        playerController: i.get<PlayerController>(),
       ),
     );
 
