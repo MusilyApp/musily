@@ -1,3 +1,10 @@
+## 1.2.0
+
+- **Feature**: Option to disable lyrics sync
+- **Feature**: Magic Queue - Discover new music with automatic recommendations added to your current playlist.
+- **Localization:** Added Russian language support
+- **Performance:** Optimizations in the Library section
+
 ## 1.1.0
 
 ### New Features
