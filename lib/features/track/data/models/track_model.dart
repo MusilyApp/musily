@@ -21,6 +21,7 @@ class TrackModel {
       highResImg: map['highResImg'],
       lowResImg: map['lowResImg'],
       source: map['source'],
+      fromSmartQueue: map['fromSmartQueue'] ?? false,
     );
   }
 
@@ -79,6 +80,7 @@ class TrackModel {
       ),
       highResImg: track.highResImg,
       lowResImg: track.lowResImg,
+      fromSmartQueue: false,
       source: track.ytId != null ? 'YouTube' : 'unknown',
     );
   }
@@ -105,6 +107,7 @@ class TrackModel {
       url: offlineAudio?.filePath ?? track.url,
       highResImg: offlineHighResImg?.filePath ?? track.highResImg,
       lowResImg: offlineLowResImg?.filePath ?? track.lowResImg,
+      fromSmartQueue: false,
       source: track.source,
     );
   }

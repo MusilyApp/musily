@@ -59,6 +59,7 @@ class PlaylistDatasourceImpl implements PlaylistDatasource {
               highResImg: video.thumbnails.highResUrl,
               lowResImg: video.thumbnails.lowResUrl,
               source: 'YouTube',
+              fromSmartQueue: false,
             ),
           ),
         ],

@@ -30,6 +30,8 @@ class PlayerData extends BaseControllerData {
   bool syncedLyrics;
 
   bool mediaAvailable;
+  List<String> tracksFromSmartQueue;
+  bool loadingSmartQueue;
 
   PlayerData({
     required this.queue,
@@ -47,6 +49,8 @@ class PlayerData extends BaseControllerData {
     required this.loadingLyrics,
     required this.lyrics,
     required this.syncedLyrics,
+    required this.tracksFromSmartQueue,
+    required this.loadingSmartQueue,
   });
 
   @override
@@ -66,6 +70,8 @@ class PlayerData extends BaseControllerData {
     bool? loadingLyrics,
     Lyrics? lyrics,
     bool? syncedLyrics,
+    List<String>? tracksFromSmartQueue,
+    bool? loadingSmartQueue,
   }) {
     return PlayerData(
       playingId: playingId ?? this.playingId,
@@ -83,6 +89,8 @@ class PlayerData extends BaseControllerData {
       loadingLyrics: loadingLyrics ?? this.loadingLyrics,
       lyrics: lyrics ?? this.lyrics,
       syncedLyrics: syncedLyrics ?? this.syncedLyrics,
+      tracksFromSmartQueue: tracksFromSmartQueue ?? this.tracksFromSmartQueue,
+      loadingSmartQueue: loadingSmartQueue ?? this.loadingSmartQueue,
     );
   }
 }

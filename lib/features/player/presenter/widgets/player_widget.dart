@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
+import 'package:musily/core/utils/format_duration.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -126,25 +128,74 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                     return Container();
                                   },
                                 ),
-                                AnimatedOpacity(
-                                  duration: const Duration(
-                                    milliseconds: 200,
-                                  ),
-                                  opacity: data.showLyrics ? 1 : 0,
-                                  child: Switch(
-                                    activeColor:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    thumbIcon: const WidgetStatePropertyAll(
-                                      Icon(Icons.sync_rounded),
+                                Stack(
+                                  children: [
+                                    AnimatedOpacity(
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      opacity: data.showLyrics ? 1 : 0,
+                                      child: Switch(
+                                        activeColor: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        thumbIcon: const WidgetStatePropertyAll(
+                                          Icon(Icons.sync_rounded),
+                                        ),
+                                        value: data.syncedLyrics,
+                                        onChanged: data.showLyrics
+                                            ? (value) {
+                                                widget.playerController.methods
+                                                    .toggleSyncedLyrics();
+                                              }
+                                            : null,
+                                      ),
                                     ),
-                                    value: data.syncedLyrics,
-                                    onChanged: data.showLyrics
-                                        ? (value) {
-                                            widget.playerController.methods
-                                                .toggleSyncedLyrics();
-                                          }
-                                        : null,
-                                  ),
+                                    AnimatedOpacity(
+                                      opacity: data.showLyrics ? 0 : 1,
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      child: data.showLyrics
+                                          ? const SizedBox.shrink()
+                                          : IconButton(
+                                              onPressed: data.loadingSmartQueue
+                                                  ? null
+                                                  : () {
+                                                      widget.playerController
+                                                          .methods
+                                                          .toggleSmartQueue();
+                                                    },
+                                              icon: data.loadingSmartQueue
+                                                  ? LoadingAnimationWidget
+                                                      .threeRotatingDots(
+                                                      color:
+                                                          IconTheme.of(context)
+                                                                  .color ??
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                      size: 20,
+                                                    )
+                                                  : Icon(
+                                                      data.tracksFromSmartQueue
+                                                              .isEmpty
+                                                          ? CupertinoIcons
+                                                              .wand_rays_inverse
+                                                          : CupertinoIcons
+                                                              .wand_stars,
+                                                      color: data
+                                                              .tracksFromSmartQueue
+                                                              .isEmpty
+                                                          ? IconTheme.of(
+                                                                  context)
+                                                              .color
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
+                                                    ),
+                                            ),
+                                    ),
+                                  ],
                                 ),
                                 TrackOptionsBuilder(
                                   getAlbumUsecase: widget.getAlbumUsecase,
@@ -328,10 +379,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                         duration = currentPlayingItem.position;
                                       }
                                       return Text(
-                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}');
+                                        formatDuration(duration),
+                                      );
                                     }),
                                     Text(
-                                        '${currentPlayingItem.duration.inMinutes}:${(currentPlayingItem.duration.inSeconds % 60).toString().padLeft(2, '0')}'),
+                                      formatDuration(
+                                        currentPlayingItem.duration,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -575,23 +630,21 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: data.queue.length < 2
-                                        ? null
-                                        : () {
-                                            showModalBottomSheet(
-                                              context: context,
-                                              builder: (context) => Scaffold(
-                                                body: SafeArea(
-                                                  child: QueueWidget(
-                                                    playerController:
-                                                        widget.playerController,
-                                                    coreController:
-                                                        widget.coreController,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) => Scaffold(
+                                          body: SafeArea(
+                                            child: QueueWidget(
+                                              playerController:
+                                                  widget.playerController,
+                                              coreController:
+                                                  widget.coreController,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     icon: const Icon(
                                       Icons.queue_music_rounded,
                                       size: 25,

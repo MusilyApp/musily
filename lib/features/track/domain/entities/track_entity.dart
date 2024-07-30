@@ -17,6 +17,7 @@ class TrackEntity {
   String? lowResImg;
   String? url;
   String source;
+  bool fromSmartQueue;
 
   TrackEntity({
     required this.id,
@@ -27,6 +28,7 @@ class TrackEntity {
     required this.highResImg,
     required this.lowResImg,
     required this.source,
+    required this.fromSmartQueue,
     this.url,
   });
 }

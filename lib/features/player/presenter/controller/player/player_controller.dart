@@ -1,18 +1,22 @@
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/features/player/domain/usecases/get_smart_queue_usecase.dart';
 import 'package:musily/features/player/presenter/controller/player/player_data.dart';
 import 'package:musily/features/player/presenter/controller/player/player_methods.dart';
+import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.dart';
 import 'package:musily_player/musily_player.dart';
 
 class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   late final MusilyPlayer _musilyPlayer;
   final GetTrackLyricsUsecase getTrackLyricsUsecase;
+  final GetSmartQueueUsecase getSmartQueueUsecase;
 
   PlayerController({
     required MusilyPlayer musilyPlayer,
     required GetPlayableItemUsecase getPlayableItemUsecase,
     required this.getTrackLyricsUsecase,
+    required this.getSmartQueueUsecase,
   }) {
     _musilyPlayer = musilyPlayer;
 
@@ -130,12 +134,77 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         trackId: '',
         lyrics: null,
       ),
+      tracksFromSmartQueue: [],
+      loadingSmartQueue: false,
     );
   }
 
   @override
   PlayerMethods defineMethods() {
     return PlayerMethods(
+      toggleSmartQueue: () async {
+        if (data.tracksFromSmartQueue.isEmpty) {
+          methods.getSmartQueue();
+        } else {
+          if (data.tracksFromSmartQueue
+              .contains(data.currentPlayingItem?.hash)) {
+            await _musilyPlayer.skipToTrack(0);
+          }
+          _musilyPlayer.setQueue(
+            [
+              ...data.queue
+                ..removeWhere(
+                  (item) => data.tracksFromSmartQueue.contains(
+                    item.hash,
+                  ),
+                ),
+            ],
+          );
+          updateData(
+            data.copyWith(
+              tracksFromSmartQueue: [],
+            ),
+          );
+        }
+      },
+      getSmartQueue: () async {
+        updateData(
+          data.copyWith(
+            loadingSmartQueue: true,
+          ),
+        );
+        final smartQueue = await getSmartQueueUsecase.exec(
+          [
+            ...data.queue.map(
+              (track) => TrackModel.fromMusilyTrack(track),
+            ),
+          ],
+        );
+        final tracksFromSmartQueue = smartQueue.where(
+          (track) => track.fromSmartQueue,
+        );
+        updateData(
+          data.copyWith(
+            tracksFromSmartQueue: [
+              ...tracksFromSmartQueue.map(
+                (track) => track.hash,
+              )
+            ],
+          ),
+        );
+        _musilyPlayer.setQueue(
+          [
+            ...smartQueue.map(
+              (track) => TrackModel.toMusilyTrack(track),
+            ),
+          ],
+        );
+        updateData(
+          data.copyWith(
+            loadingSmartQueue: false,
+          ),
+        );
+      },
       toggleSyncedLyrics: () {
         updateData(
           data.copyWith(

@@ -22,6 +22,9 @@ class PlayerMethods {
   Future<String?> Function(String trackId) getLyrics;
   void Function() toggleSyncedLyrics;
 
+  Future<void> Function() getSmartQueue;
+  void Function() toggleSmartQueue;
+
   Future<void> Function(
     List<MusilyTrack> items,
     String playingId, {
@@ -46,5 +49,7 @@ class PlayerMethods {
     required this.toggleLyrics,
     required this.getLyrics,
     required this.toggleSyncedLyrics,
+    required this.getSmartQueue,
+    required this.toggleSmartQueue,
   });
 }

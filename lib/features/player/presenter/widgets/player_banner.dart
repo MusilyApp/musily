@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
@@ -145,52 +146,96 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                     }
                                   }
                                 : null,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Builder(
-                                builder: (context) {
-                                  if (widget.track.highResImg != null &&
-                                      widget.track.highResImg!.isNotEmpty) {
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: AppImage(
-                                        widget.track.highResImg!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    );
-                                  }
-                                  return Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: BorderSide(
-                                        width: 1,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .outline
-                                            .withOpacity(.2),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          height: 350,
-                                          child: Icon(
-                                            Icons.music_note,
-                                            size: 75,
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Builder(
+                                    builder: (context) {
+                                      if (widget.track.highResImg != null &&
+                                          widget.track.highResImg!.isNotEmpty) {
+                                        return ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: AppImage(
+                                            height: 350,
+                                            widget.track.highResImg!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      }
+                                      return Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            width: 1,
                                             color: Theme.of(context)
-                                                .iconTheme
-                                                .color
-                                                ?.withOpacity(.8),
+                                                .colorScheme
+                                                .outline
+                                                .withOpacity(.2),
                                           ),
                                         ),
-                                      ],
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 350,
+                                              child: Icon(
+                                                Icons.music_note,
+                                                size: 75,
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color
+                                                    ?.withOpacity(.8),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                if (data.tracksFromSmartQueue.contains(
+                                  widget.track.hash,
+                                ))
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
                                     ),
-                                  );
-                                },
-                              ),
+                                    child: Container(
+                                      height: 350,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .withOpacity(.2),
+                                          ],
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          CupertinoIcons.wand_stars,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
+                                          size: 60,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                              ],
                             ),
                           ),
                         ),
