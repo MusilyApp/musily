@@ -8,6 +8,7 @@ import 'package:musily/features/_library_module/presenter/controllers/library/li
 import 'package:musily/features/_library_module/presenter/controllers/library/library_methods.dart';
 import 'package:musily/features/downloader/domain/entities/item_queue_entity.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 
 class LibraryController extends BaseController<LibraryData, LibraryMethods> {
@@ -17,6 +18,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   late final GetLibraryItemUsecase _getLibraryItemUsecase;
   late final DeleteLibraryItemUsecase _deleteLibraryItemUsecase;
   late final DownloaderController _downloaderController;
+  late final PlayerController _playerController;
 
   LibraryController({
     required GetLibraryItemsUsecase getLibraryUsecase,
@@ -25,6 +27,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     required GetLibraryItemUsecase getLibraryItemUsecase,
     required DeleteLibraryItemUsecase deleteLibraryItemUsecase,
     required DownloaderController downloaderController,
+    required PlayerController playerController,
   }) {
     _getLibraryItemsUsecase = getLibraryUsecase;
     _addToLibraryUsecase = addToLibraryUsecase;
@@ -32,6 +35,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     _getLibraryItemUsecase = getLibraryItemUsecase;
     _deleteLibraryItemUsecase = deleteLibraryItemUsecase;
     _downloaderController = downloaderController;
+    _playerController = playerController;
     methods.getLibrary();
     if (data.loadedFavoritesHash.isEmpty) {
       methods.loadFavorites();
@@ -199,6 +203,18 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
             addingToFavorites: true,
           ),
         );
+        if (_playerController.data.tracksFromSmartQueue.contains(
+          track.hash,
+        )) {
+          _playerController.updateData(
+            _playerController.data.copyWith(
+              tracksFromSmartQueue: _playerController.data.tracksFromSmartQueue
+                ..removeWhere(
+                  (item) => item == track.hash,
+                ),
+            ),
+          );
+        }
         final favoritesPlaylist =
             await _getLibraryItemUsecase.exec<PlaylistEntity>('favorites');
         if (favoritesPlaylist == null) {
