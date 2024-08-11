@@ -12,9 +12,10 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_editor.dart';
@@ -87,7 +88,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
           title: Text(
             widget.playlist.id == 'favorites'
                 ? AppLocalizations.of(context)!.favorites
-                : widget.playlist.title,
+                : widget.playlist.id == 'offline'
+                    ? AppLocalizations.of(context)!.offline
+                    : widget.playlist.title,
           ),
         ),
         body: ListView(
@@ -102,10 +105,15 @@ class _PlaylistPageState extends State<PlaylistPage> {
                           size: 250,
                           iconSize: 150,
                         )
-                      : ImageCollection(
-                          urls: imageUrls,
-                          size: 250,
-                        ),
+                      : widget.playlist.id == 'offline'
+                          ? const OfflineIcon(
+                              size: 250,
+                              iconSize: 150,
+                            )
+                          : ImageCollection(
+                              urls: imageUrls,
+                              size: 250,
+                            ),
                 ),
               ],
             ),
@@ -117,7 +125,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
               child: Text(
                 widget.playlist.id == 'favorites'
                     ? AppLocalizations.of(context)!.favorites
-                    : widget.playlist.title,
+                    : widget.playlist.id == 'offline'
+                        ? AppLocalizations.of(context)!.offline
+                        : widget.playlist.title,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w500,
@@ -130,36 +140,38 @@ class _PlaylistPageState extends State<PlaylistPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                widget.downloaderController.builder(builder: (context, data) {
-                  final isPlaylistDownloading = data.downloadQueue.isNotEmpty &&
-                      data.downloadingId == widget.playlist.id;
-                  return IconButton.filledTonal(
-                    onPressed: () {
-                      if (isPlaylistDownloading) {
-                        widget.libraryController.methods
-                            .cancelCollectionDownload(
-                          widget.playlist.tracks,
-                          widget.playlist.id,
-                        );
-                      } else {
-                        widget.libraryController.methods.downloadCollection(
-                          widget.playlist.tracks,
-                          widget.playlist.id,
-                        );
-                      }
-                    },
-                    style: const ButtonStyle(
-                      fixedSize: WidgetStatePropertyAll(
-                        Size(50, 50),
+                widget.downloaderController.builder(
+                  builder: (context, data) {
+                    final isPlaylistDownloading = data.queue.isNotEmpty &&
+                        data.downloadingKey == widget.playlist.id;
+                    return IconButton.filledTonal(
+                      onPressed: () {
+                        if (isPlaylistDownloading) {
+                          widget.libraryController.methods
+                              .cancelCollectionDownload(
+                            widget.playlist.tracks,
+                            widget.playlist.id,
+                          );
+                        } else {
+                          widget.libraryController.methods.downloadCollection(
+                            widget.playlist.tracks,
+                            widget.playlist.id,
+                          );
+                        }
+                      },
+                      style: const ButtonStyle(
+                        fixedSize: WidgetStatePropertyAll(
+                          Size(50, 50),
+                        ),
                       ),
-                    ),
-                    icon: Icon(
-                      isPlaylistDownloading
-                          ? Icons.close
-                          : Icons.download_rounded,
-                    ),
-                  );
-                }),
+                      icon: Icon(
+                        isPlaylistDownloading
+                            ? Icons.close
+                            : Icons.download_rounded,
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(
                   width: 8,
                 ),
@@ -169,8 +181,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   },
                   builder: (context, showEditor) {
                     return IconButton.filledTonal(
-                      onPressed:
-                          widget.playlist.id == 'favorites' ? null : showEditor,
+                      onPressed: widget.playlist.id == 'favorites' ||
+                              widget.playlist.id == 'offline'
+                          ? null
+                          : showEditor,
                       style: const ButtonStyle(
                         fixedSize: WidgetStatePropertyAll(
                           Size(50, 50),
@@ -493,6 +507,7 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: playlist == null ? AppBar() : null,
       body: Builder(
         builder: (context) {
           if (loadingPlaylist) {

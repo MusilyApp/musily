@@ -7,9 +7,9 @@ import 'package:musily/features/_library_module/domain/usecases/get_library_item
 import 'package:musily/features/_library_module/domain/usecases/update_library_item_usecase.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_data.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_methods.dart';
-import 'package:musily/features/downloader/domain/entities/item_queue_entity.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 
 class LibraryController extends BaseController<LibraryData, LibraryMethods> {
@@ -168,7 +168,9 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
             ),
           );
           _playerController.methods.getSmartQueue(
-            customItems: tracks,
+            customItems: [
+              ...tracks.map((e) => TrackModel.toMusilyTrack(e)),
+            ],
           );
         }
         late final LibraryItemEntity<PlaylistEntity>? playlist;
@@ -245,7 +247,9 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
             ),
           );
           _playerController.methods.getSmartQueue(
-            customItems: [track],
+            customItems: [
+              TrackModel.toMusilyTrack(track),
+            ],
           );
         }
         final favoritesPlaylist =
@@ -356,45 +360,22 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         methods.getLibrary();
       },
       downloadCollection: (tracks, downloadingId) async {
+        _downloaderController.methods.setDownloadingKey(
+          downloadingId,
+        );
         for (final track in tracks) {
           _downloaderController.methods.addDownload(
-            ItemQueueEntity(
-              id: 'media/images/${track.album.id}',
-              url: track.highResImg ?? '',
-              fileName: 'media/images/${track.album.id}-600x600',
+            TrackModel.toMusilyTrack(
+              track,
             ),
-            downloadingId: track.album.id,
-          );
-          _downloaderController.methods.addDownload(
-            ItemQueueEntity(
-              id: 'media/images/${track.album.id}',
-              url: track.lowResImg ?? '',
-              fileName: 'media/images/${track.album.id}-60x60',
-            ),
-            downloadingId: track.album.id,
-          );
-          _downloaderController.methods.addDownload(
-            ItemQueueEntity(
-              id: 'media/audios/${track.hash}',
-              url: track.url ?? '',
-              fileName: 'media/audios/${track.hash}',
-            ),
-            ytId: track.id,
-            downloadingId: downloadingId,
           );
         }
       },
       cancelCollectionDownload: (tracks, downloadingId) async {
-        for (final track in tracks) {
-          _downloaderController.updateData(
-            _downloaderController.data.copyWith(
-              downloadingId: '',
-            ),
-          );
-          await _downloaderController.methods.cancelDownload(
-            'media/audios/${track.hash}',
-          );
-        }
+        _downloaderController.methods.setDownloadingKey('');
+        await _downloaderController.methods.cancelDownloadCollection(
+          tracks.map((e) => TrackModel.toMusilyTrack(e)).toList(),
+        );
       },
     );
   }
