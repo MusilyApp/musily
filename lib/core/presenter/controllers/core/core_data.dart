@@ -4,23 +4,23 @@ import 'package:musily/core/domain/presenter/app_controller.dart';
 class CoreData extends BaseControllerData {
   bool isShowingDialog;
   bool isPlayerExpanded;
-  Widget? page;
+  List<Widget> pages;
   CoreData({
     required this.isShowingDialog,
     required this.isPlayerExpanded,
-    required this.page,
+    required this.pages,
   });
 
   @override
   CoreData copyWith({
     bool? isShowingDialog,
     bool? isPlayerExpanded,
-    Widget? page,
+    List<Widget>? pages,
   }) {
     return CoreData(
       isShowingDialog: isShowingDialog ?? this.isShowingDialog,
       isPlayerExpanded: isPlayerExpanded ?? this.isPlayerExpanded,
-      page: page ?? this.page,
+      pages: pages ?? this.pages,
     );
   }
 }

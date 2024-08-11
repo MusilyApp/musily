@@ -9,7 +9,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
     return CoreData(
       isShowingDialog: false,
       isPlayerExpanded: false,
-      page: null,
+      pages: [],
     );
   }
 
@@ -46,7 +46,10 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
         );
         updateData(
           data.copyWith(
-            page: widget,
+            pages: data.pages
+              ..add(
+                widget,
+              ),
           ),
         );
       },
