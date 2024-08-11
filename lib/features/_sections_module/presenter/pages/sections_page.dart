@@ -5,6 +5,7 @@ import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_flex.dart';
+import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -17,8 +18,8 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/square_playlist_tile.dart';
@@ -60,11 +61,23 @@ class SectionsPage extends StatelessWidget {
     return coreController.builder(
       eventListener: (context, event, data) {
         if (event.id == 'pushWidget') {
+          if (data.pages.length > 1) {
+            if (DisplayHelper(context).isDesktop) {
+              Navigator.pop(context);
+            }
+          }
           Navigator.of(context).push(
             DownupRouter(
               builder: (context) => event.data,
             ),
           );
+          if (DisplayHelper(context).isDesktop) {
+            coreController.updateData(
+              data.copyWith(
+                pages: [event.data],
+              ),
+            );
+          }
         }
       },
       builder: (context, data) {
@@ -209,7 +222,9 @@ class SectionsPage extends StatelessWidget {
                                 .primary
                                 .withOpacity(.01),
                             child: Builder(builder: (context) {
-                              final items = data.items.length < 4
+                              final displayHelper = DisplayHelper(context);
+                              final limit = displayHelper.isDesktop ? 6 : 4;
+                              final items = data.items.length < limit
                                   ? data.items
                                   : (data.items
                                         ..sort(
@@ -217,9 +232,9 @@ class SectionsPage extends StatelessWidget {
                                             a.lastTimePlayed,
                                           ),
                                         ))
-                                      .sublist(0, 4);
+                                      .sublist(0, limit);
                               return AppFlex(
-                                maxItemsPerRow: 2,
+                                maxItemsPerRow: displayHelper.isDesktop ? 3 : 2,
                                 children: [
                                   ...items.map(
                                     (item) => LibraryTile(

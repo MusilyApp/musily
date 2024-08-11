@@ -58,4 +58,7 @@ class DisplayHelper {
 
   /// Indicates whether the screen width is less than the 'xxl' breakpoint.
   bool get lessThanXxl => width <= 2560;
+
+  // Specific Musily Breakpoint
+  bool get isDesktop => width >= 1100;
 }

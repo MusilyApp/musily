@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/widgets/core_base_dialog.dart';
+import 'package:musily/core/presenter/widgets/menu_entry.dart';
+import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -11,14 +13,15 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/downloader/presenter/widgets/track_downloader_widget.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/widgets/downloader_menu_entry.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily_player/presenter/widgets/download_button.dart';
 
 class TrackOptionsBuilder extends StatelessWidget {
   final TrackEntity track;
@@ -34,8 +37,10 @@ class TrackOptionsBuilder extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
-  final Widget Function(BuildContext context, void Function() showOptions)
-      builder;
+  final Widget Function(
+    BuildContext context,
+    void Function()? showOptions,
+  ) builder;
   const TrackOptionsBuilder({
     required this.track,
     required this.builder,
@@ -56,6 +61,186 @@ class TrackOptionsBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDesktop = DisplayHelper(context).isDesktop;
+    if (isDesktop) {
+      return downloaderController.builder(
+        builder: (context, data) {
+          return MenuBar(
+            style: const MenuStyle(
+              padding: WidgetStatePropertyAll(
+                EdgeInsets.zero,
+              ),
+              backgroundColor: WidgetStatePropertyAll(
+                Colors.transparent,
+              ),
+            ),
+            children: [
+              ...MenuEntry.build([
+                MenuEntry(
+                  child: const Icon(
+                    Icons.more_horiz_rounded,
+                  ),
+                  menuChildren: [
+                    // TODO custom actions
+                    if (!(hideOptions ?? [])
+                        .contains(TrackTileOptions.download))
+                      (DownloaderMenuEntry(
+                        downloaderController: downloaderController,
+                      )).builder(
+                        context,
+                        TrackModel.toMusilyTrack(track),
+                      ),
+                    if (!(hideOptions ?? [])
+                        .contains(TrackTileOptions.addToPlaylist))
+                      MenuEntry(
+                        leading: Icon(
+                          Icons.playlist_add_rounded,
+                          color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.primary,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Center(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * .5,
+                                height: MediaQuery.of(context).size.height * .6,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: BorderSide(
+                                      color: Theme.of(context)
+                                          .dividerColor
+                                          .withOpacity(.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: PlaylistAdderWidget(
+                                    libraryController: libraryController,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.addToPlaylist,
+                        ),
+                      ),
+                    if (!(hideOptions ?? [])
+                        .contains(TrackTileOptions.addToQueue))
+                      MenuEntry(
+                        onPressed: () {
+                          playerController.methods
+                              .addToQueue([TrackModel.toMusilyTrack(track)]);
+                          coreController.updateData(
+                            coreController.data.copyWith(
+                              isShowingDialog: false,
+                            ),
+                          );
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.addToQueue,
+                        ),
+                        leading: Icon(
+                          Icons.queue_music_rounded,
+                          color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.primary,
+                        ),
+                      ),
+                    if (!(hideOptions ?? [])
+                        .contains(TrackTileOptions.seeAlbum))
+                      if (track.album.id.isNotEmpty)
+                        MenuEntry(
+                          onPressed: () {
+                            coreController.updateData(
+                              coreController.data.copyWith(
+                                isShowingDialog: false,
+                              ),
+                            );
+                            coreController.methods.pushWidget(
+                              AsyncAlbumPage(
+                                albumId: track.album.id,
+                                coreController: coreController,
+                                playerController: playerController,
+                                getAlbumUsecase: getAlbumUsecase,
+                                downloaderController: downloaderController,
+                                getPlayableItemUsecase: getPlayableItemUsecase,
+                                libraryController: libraryController,
+                                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                                getArtistSinglesUsecase:
+                                    getArtistSinglesUsecase,
+                                getArtistTracksUsecase: getArtistTracksUsecase,
+                                getArtistUsecase: getArtistUsecase,
+                              ),
+                            );
+                          },
+                          child: Text(AppLocalizations.of(context)!.goToAlbum),
+                          leading: Icon(
+                            Icons.album_rounded,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
+                        ),
+                    if (!(hideOptions ?? [])
+                        .contains(TrackTileOptions.seeArtist))
+                      MenuEntry(
+                        onPressed: () {
+                          coreController.updateData(
+                            coreController.data.copyWith(
+                              isShowingDialog: false,
+                            ),
+                          );
+                          coreController.methods.pushWidget(
+                            AsyncArtistPage(
+                              artistId: track.artist.id,
+                              coreController: coreController,
+                              playerController: playerController,
+                              downloaderController: downloaderController,
+                              getPlayableItemUsecase: getPlayableItemUsecase,
+                              libraryController: libraryController,
+                              getAlbumUsecase: getAlbumUsecase,
+                              getArtistUsecase: getArtistUsecase,
+                              getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                              getArtistTracksUsecase: getArtistTracksUsecase,
+                              getArtistSinglesUsecase: getArtistSinglesUsecase,
+                            ),
+                          );
+                        },
+                        child: Text(AppLocalizations.of(context)!.goToArtist),
+                        leading: Icon(
+                          Icons.person_rounded,
+                          color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.primary,
+                        ),
+                      ),
+                    if (!(hideOptions ?? []).contains(TrackTileOptions.share))
+                      MenuEntry(
+                        child: Text(AppLocalizations.of(context)!.share),
+                        leading: Icon(
+                          Icons.share_rounded,
+                          color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.primary,
+                        ),
+                      ),
+                  ],
+                ),
+              ]),
+            ],
+          );
+        },
+      );
+    }
     return builder(context, () {
       coreController.methods.pushModal(
         CoreBaseDialog(
@@ -126,22 +311,22 @@ class TrackOptions extends StatelessWidget {
               children: [
                 if (customActions != null) ...customActions!.call(context),
                 if (!(hideOptions ?? []).contains(TrackTileOptions.download))
-                  TrackDownloaderBuilder(
-                    track: track,
-                    downloaderController: downloaderController,
-                    getPlayableItemUsecase: getPlayableItemUsecase,
-                    builder: (
-                      context,
-                      progress,
-                      startDownload,
-                      removeDownloadedFile,
-                      cancelDownload,
-                    ) {
-                      if (progress == 0) {
+                  DownloadButtonBuilder(
+                    track: TrackModel.toMusilyTrack(track),
+                    controller: downloaderController,
+                    builder: (context, item) {
+                      if (item == null) {
                         return ListTile(
                           onTap: () {
                             Navigator.pop(context);
-                            startDownload();
+                            downloaderController.methods.addDownload(
+                              TrackModel.toMusilyTrack(
+                                track,
+                              ),
+                            );
+                            downloaderController.methods.setDownloadingKey(
+                              track.hash,
+                            );
                           },
                           leading: Icon(
                             Icons.download_rounded,
@@ -150,11 +335,15 @@ class TrackOptions extends StatelessWidget {
                           title: Text(AppLocalizations.of(context)!.download),
                         );
                       }
-                      if (progress == 1) {
+                      if (item.status == item.downloadCompleted) {
                         return ListTile(
                           onTap: () {
                             Navigator.pop(context);
-                            removeDownloadedFile();
+                            downloaderController.methods.deleteDownloadedFile(
+                              track: TrackModel.toMusilyTrack(
+                                track,
+                              ),
+                            );
                           },
                           leading: Icon(
                             Icons.delete_rounded,
@@ -168,7 +357,16 @@ class TrackOptions extends StatelessWidget {
                       return ListTile(
                         onTap: () {
                           Navigator.pop(context);
-                          cancelDownload();
+                          final item = downloaderController.methods.getItem(
+                            TrackModel.toMusilyTrack(
+                              track,
+                            ),
+                          );
+                          if (item?.track.url != null) {
+                            downloaderController.methods.cancelDownload(
+                              item!.track.url!,
+                            );
+                          }
                         },
                         leading: Icon(
                           Icons.cancel_rounded,
