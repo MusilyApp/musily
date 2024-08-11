@@ -1,7 +1,7 @@
 name: musily
-description: "A new Flutter project."
+description: "A great music app."
 publish_to: 'none'
-version: 1.2.0
+version: 2.0.0
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
