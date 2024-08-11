@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:musily/core/presenter/routers/eighty_router.dart';
+import 'package:musily/core/presenter/routers/sized_router.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_creator.dart';
@@ -42,7 +42,7 @@ class _PlaylistAdderState extends State<PlaylistAdder> {
         Navigator.push(
           context,
           SizedRouter(
-            builder: (context) => _PlaylistAdderWidget(
+            builder: (context) => PlaylistAdderWidget(
               onAdded: widget.onAdded,
               libraryController: widget.libraryController,
               tracks: widget.tracks,
@@ -55,12 +55,13 @@ class _PlaylistAdderState extends State<PlaylistAdder> {
   }
 }
 
-class _PlaylistAdderWidget extends StatelessWidget {
+class PlaylistAdderWidget extends StatelessWidget {
   final List<TrackEntity> tracks;
   final Future<List<TrackEntity>> Function()? asyncTracks;
   final LibraryController libraryController;
   final void Function()? onAdded;
-  const _PlaylistAdderWidget({
+  const PlaylistAdderWidget({
+    super.key,
     required this.libraryController,
     this.tracks = const [],
     this.asyncTracks,
