@@ -22,8 +22,8 @@ import 'package:musily/features/artist/presenter/pages/artist_albums_page.dart';
 import 'package:musily/features/artist/presenter/pages/artist_singles_page.dart';
 import 'package:musily/features/artist/presenter/pages/artist_tracks_page.dart';
 import 'package:musily/features/artist/presenter/widgets/artist_tile.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
@@ -71,9 +71,13 @@ class _ArtistPageState extends State<ArtistPage> {
   Future<void> loadTracks() async {
     if (widget.playerController.data.playingId == widget.artist.id) {
       allTracks = [
-        ...widget.playerController.data.queue.map(
-          (track) => TrackModel.fromMusilyTrack(track),
-        ),
+        ...widget.playerController.data.queue
+            .map(
+              (track) => TrackModel.fromMusilyTrack(track),
+            )
+            .where(
+              (e) => e.artist.id == widget.artist.id,
+            ),
       ];
       return;
     }
@@ -780,25 +784,31 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
       body: Builder(
         builder: (context) {
           if (loadingArtist) {
-            return Center(
-              child: LoadingAnimationWidget.halfTriangleDot(
-                color: Theme.of(context).colorScheme.primary,
-                size: 50,
+            return CoreBaseWidget(
+              coreController: widget.coreController,
+              child: Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 50,
+                ),
               ),
             );
           }
           if (artist == null) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.error_rounded,
-                    size: 50,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(.7),
-                  ),
-                  Text(AppLocalizations.of(context)!.artistNotFound),
-                ],
+            return CoreBaseWidget(
+              coreController: widget.coreController,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.error_rounded,
+                      size: 50,
+                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+                    ),
+                    Text(AppLocalizations.of(context)!.artistNotFound),
+                  ],
+                ),
               ),
             );
           }

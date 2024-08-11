@@ -15,7 +15,7 @@ class CoreBaseDialog extends StatelessWidget {
     return coreController.builder(
       eventListener: (context, event, data) {
         if (event.id == 'closeDialog') {
-          Navigator.pop(context);
+          Navigator.canPop(context);
           coreController.updateData(
             coreController.data.copyWith(
               isShowingDialog: false,

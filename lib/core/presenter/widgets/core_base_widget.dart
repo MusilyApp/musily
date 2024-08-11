@@ -17,6 +17,15 @@ class CoreBaseWidget extends StatelessWidget {
       builder: (context, data) => PopScope(
         canPop: !data.isShowingDialog && !data.isPlayerExpanded,
         onPopInvoked: (didPop) {
+          if (data.isShowingDialog && data.isPlayerExpanded) {
+            coreController.dispatchEvent(
+              BaseControllerEvent(
+                id: 'closeDialog',
+                data: data,
+              ),
+            );
+            return;
+          }
           if (data.isShowingDialog) {
             coreController.dispatchEvent(
               BaseControllerEvent(
@@ -34,7 +43,7 @@ class CoreBaseWidget extends StatelessWidget {
             );
           }
           if (!data.isPlayerExpanded && !data.isShowingDialog) {
-            data.page = null;
+            data.pages.removeLast();
             coreController.updateData(data);
           }
         },

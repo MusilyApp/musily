@@ -6,7 +6,9 @@ enum NavigatorPages {
   sectionsPage,
   libraryPage,
   searchPage,
-  searchResultsPage;
+  searchResultsPage,
+  downloaderPage,
+  blankPage;
 
   static getRoute(NavigatorPages page) {
     switch (page) {
@@ -18,6 +20,10 @@ enum NavigatorPages {
         return '/search/';
       case NavigatorPages.searchResultsPage:
         return '/searcher/results_page/';
+      case NavigatorPages.downloaderPage:
+        return '/downloader/';
+      case NavigatorPages.blankPage:
+        return '/blank/';
     }
   }
 }
