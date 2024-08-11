@@ -8,9 +8,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/downloader/presenter/widgets/track_downloader_widget.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/widgets/download_button.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
@@ -131,10 +131,11 @@ class _TrackTileState extends State<TrackTile> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TrackDownloaderWidget(
-              downloaderController: widget.downloaderController,
-              track: widget.track,
-              getPlayableItemUsecase: widget.getPlayableItemUsecase,
+            DownloadButton(
+              controller: widget.downloaderController,
+              track: TrackModel.toMusilyTrack(
+                widget.track,
+              ),
             ),
             TrackOptionsBuilder(
               hideOptions: widget.hideOptions,
@@ -152,7 +153,7 @@ class _TrackTileState extends State<TrackTile> {
               getArtistUsecase: widget.getArtistUsecase,
               builder: (
                 BuildContext context,
-                void Function() showOptions,
+                void Function()? showOptions,
               ) {
                 return IconButton(
                   onPressed: showOptions,

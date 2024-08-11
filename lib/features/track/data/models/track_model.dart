@@ -1,6 +1,6 @@
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily_player/musily_entities.dart';
 
@@ -61,6 +61,7 @@ class TrackModel {
       lowResImg: track.lowResImg,
       title: track.title,
       url: track.url,
+      fromSmartQueue: track.fromSmartQueue,
       ytId: track.id,
     );
   }
@@ -80,7 +81,7 @@ class TrackModel {
       ),
       highResImg: track.highResImg,
       lowResImg: track.lowResImg,
-      fromSmartQueue: false,
+      fromSmartQueue: track.fromSmartQueue,
       source: track.ytId != null ? 'YouTube' : 'unknown',
     );
   }
@@ -89,24 +90,25 @@ class TrackModel {
     TrackEntity track,
     DownloaderController downloaderController,
   ) async {
-    final offlineAudio = await downloaderController.methods.getFile(
-      'media/audios/${track.hash}',
+    final item = downloaderController.methods.getItem(
+      TrackModel.toMusilyTrack(
+        track,
+      ),
     );
-    final offlineHighResImg = await downloaderController.methods.getFile(
-      'media/images/${track.album.id}-600x600',
-    );
-    final offlineLowResImg = await downloaderController.methods.getFile(
-      'media/images/${track.album.id}-60x60',
-    );
+
+    final offlineAudio = item?.track.url;
+    final offlineHighResImg = item?.track.highResImg;
+    final offlineLowResImg = item?.track.lowResImg;
+
     return TrackEntity(
       id: track.id,
       title: track.title,
       hash: track.hash,
       album: track.album,
       artist: track.artist,
-      url: offlineAudio?.filePath ?? track.url,
-      highResImg: offlineHighResImg?.filePath ?? track.highResImg,
-      lowResImg: offlineLowResImg?.filePath ?? track.lowResImg,
+      url: offlineAudio ?? track.url,
+      highResImg: offlineHighResImg ?? track.highResImg,
+      lowResImg: offlineLowResImg ?? track.lowResImg,
       fromSmartQueue: false,
       source: track.source,
     );

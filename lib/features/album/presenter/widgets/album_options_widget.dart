@@ -14,8 +14,8 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -72,8 +72,8 @@ class AlbumOptionsWidget extends StatelessWidget {
               children: [
                 downloaderController.builder(
                   builder: (context, data) {
-                    final isAlbumDownloading = data.downloadQueue.isNotEmpty &&
-                        data.downloadingId == album.id;
+                    final isAlbumDownloading = data.queue.isNotEmpty &&
+                        data.downloadingKey == album.id;
                     return ListTile(
                       onTap: () {
                         if (isAlbumDownloading) {

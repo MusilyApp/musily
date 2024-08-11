@@ -8,8 +8,8 @@ import 'package:musily/features/_library_module/presenter/controllers/library/li
 import 'package:musily/features/_library_module/presenter/widgets/library_toggler.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_static_tile.dart';
@@ -54,9 +54,8 @@ class PlaylistOptions extends StatelessWidget {
               children: [
                 downloaderController.builder(
                   builder: (context, data) {
-                    final isPlaylistDownloading =
-                        data.downloadQueue.isNotEmpty &&
-                            data.downloadingId == playlistEntity.id;
+                    final isPlaylistDownloading = data.queue.isNotEmpty &&
+                        data.downloadingKey == playlistEntity.id;
                     return ListTile(
                       onTap: () {
                         if (isPlaylistDownloading) {

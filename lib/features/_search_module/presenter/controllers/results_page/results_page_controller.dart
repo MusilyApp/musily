@@ -4,7 +4,7 @@ import 'package:musily/features/_search_module/presenter/controllers/results_pag
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_methods.dart';
 import 'package:musily/features/album/domain/usecases/get_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artists_usecase.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_tracks_usecase.dart';
 import 'package:musily_player/musily_player.dart';

@@ -1,4 +1,4 @@
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/datasources/track_datasource.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';

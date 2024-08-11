@@ -1,7 +1,7 @@
 import 'package:musily/core/data/database/library_database.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
@@ -48,12 +48,9 @@ class AlbumModel {
   ) async {
     final db = LibraryDatabase();
     final libraryTracks = <TrackEntity>[];
-    final offlineHighResImg = await downloaderController.methods.getFile(
-      'media/images/${album.id}-600x600',
-    );
-    final offlineLowResImg = await downloaderController.methods.getFile(
-      'media/images/${album.id}-60x60',
-    );
+    String? offlineHighResImg;
+    String? offlineLowResImg;
+
     if (album.tracks.isEmpty) {
       final libraryAlbumMap = await db.findById(album.id);
       if (libraryAlbumMap != null) {
@@ -66,19 +63,21 @@ class AlbumModel {
 
     final offlineTracks = <TrackEntity>[];
     for (final track in libraryTracks) {
-      final offilineTrack = await TrackModel.toOffline(
+      final offlineTrack = await TrackModel.toOffline(
         track,
         downloaderController,
       );
-      offlineTracks.add(offilineTrack);
+      offlineHighResImg ??= offlineTrack.highResImg;
+      offlineLowResImg ??= offlineTrack.lowResImg;
+      offlineTracks.add(offlineTrack);
     }
     return AlbumEntity(
       title: album.title,
       id: album.id,
       artist: album.artist,
       tracks: offlineTracks,
-      highResImg: offlineHighResImg?.filePath ?? album.highResImg,
-      lowResImg: offlineLowResImg?.filePath ?? album.lowResImg,
+      highResImg: offlineHighResImg ?? album.highResImg,
+      lowResImg: offlineLowResImg ?? album.lowResImg,
       year: album.year,
     );
   }

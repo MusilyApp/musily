@@ -6,7 +6,7 @@ import 'package:musily/features/_library_module/domain/datasources/library_datas
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/domain/mappers/library_item_mapper.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 
 class LibraryDatasourceImpl implements LibraryDatasource {

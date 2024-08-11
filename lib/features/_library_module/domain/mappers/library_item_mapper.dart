@@ -1,5 +1,5 @@
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 
 abstract class LibraryItemMapper<T> {
   LibraryItemEntity<T> fromMap(

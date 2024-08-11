@@ -15,8 +15,8 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/musily_entities.dart';
@@ -96,7 +96,7 @@ class AlbumPage extends StatelessWidget {
                             horizontal: 26,
                           ),
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width * .85,
+                            width: 200,
                             child: Text(
                               album.title,
                               textAlign: TextAlign.center,
@@ -135,9 +135,8 @@ class AlbumPage extends StatelessWidget {
                       children: [
                         downloaderController.builder(
                           builder: (context, data) {
-                            final isAlbumDownloading =
-                                data.downloadQueue.isNotEmpty &&
-                                    data.downloadingId == album.id;
+                            final isAlbumDownloading = data.queue.isNotEmpty &&
+                                data.downloadingKey == album.id;
                             return IconButton.filledTonal(
                               onPressed: () {
                                 if (isAlbumDownloading) {
@@ -465,27 +464,33 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
       body: Builder(
         builder: (context) {
           if (loadingAlbum) {
-            return Center(
-              child: LoadingAnimationWidget.halfTriangleDot(
-                color: Theme.of(context).colorScheme.primary,
-                size: 50,
+            return CoreBaseWidget(
+              coreController: widget.coreController,
+              child: Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 50,
+                ),
               ),
             );
           }
           if (album == null) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.error_rounded,
-                    size: 50,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(.7),
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.albumNotFound,
-                  )
-                ],
+            return CoreBaseWidget(
+              coreController: widget.coreController,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.error_rounded,
+                      size: 50,
+                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.albumNotFound,
+                    )
+                  ],
+                ),
               ),
             );
           }

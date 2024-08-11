@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/domain/usecases/get_search_suggestions_usecase.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
@@ -13,8 +14,8 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/presenter/controller/player/player_controller.dart';
+import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchPage extends StatefulWidget {
@@ -118,11 +119,23 @@ class _SearchPageState extends State<SearchPage> {
     return widget.coreController.builder(
       eventListener: (context, event, data) {
         if (event.id == 'pushWidget') {
+          if (data.pages.length > 1) {
+            if (DisplayHelper(context).isDesktop) {
+              Navigator.pop(context);
+            }
+          }
           Navigator.of(context).push(
             DownupRouter(
               builder: (context) => event.data,
             ),
           );
+          if (DisplayHelper(context).isDesktop) {
+            widget.coreController.updateData(
+              data.copyWith(
+                pages: [event.data],
+              ),
+            );
+          }
         }
       },
       builder: (context, data) {
