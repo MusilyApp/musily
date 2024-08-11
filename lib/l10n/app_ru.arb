@@ -51,5 +51,8 @@
   "requiredField": "Это поле обязательно.",
   "deleteDownload": "Удалить загрузку",
   "noPlaylists": "У вас нет плейлистов.",
-  "removeFromPlaylist": "Удалить из плейлиста"
+  "removeFromPlaylist": "Удалить из плейлиста",
+  "downloads": "Загрузки",
+  "downloadManager": "Менеджер Загрузок",
+  "offline": "Оффлайн"
 }

@@ -51,5 +51,8 @@
   "requiredField": "Este campo é obrigatório.",
   "deleteDownload": "Excluir download",
   "noPlaylists": "Você não tem playlists.",
-  "removeFromPlaylist": "Remover da Playlist"
+  "removeFromPlaylist": "Remover da Playlist",
+  "downloadManager": "Gerenciador de downloads",
+  "downloads": "Downloads",
+  "offline": "Offline"
 }
