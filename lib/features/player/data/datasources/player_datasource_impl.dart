@@ -20,7 +20,6 @@ class PlayerDatasourceImpl implements PlayerDatasource {
         ),
       ];
     } catch (e) {
-      print(e);
       return [];
     }
   }
