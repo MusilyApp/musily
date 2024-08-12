@@ -1,3 +1,22 @@
+## 2.0.0
+
+**Features**
+- Download Manager: Introduced a new download manager for better control and tracking of files.
+- Library Filters: Apply filters to your library for easier organization.
+- Search in Playlists and Albums: Added the ability to search within playlists and albums for more precise navigation.
+
+**Localization**
+- Improved Language Support: Added new translation entries for improved localization.
+- Added Spanish Support: Full support for the Spanish language has been added.
+
+**Improvements**
+- Offline Mode Optimization: Improved performance in offline mode, providing a smoother and more efficient experience.
+- Faster Library Loading: The library now loads faster, reducing wait times when browsing through your music and content.
+- Increased Player Stability: Improved the stability of the player.
+
+**Breaking change**
+- Download Manager Incompatibility: The new download manager is not compatible with the previous version. As a result, all downloaded music will need to be re-downloaded.
+
 ## 1.2.0
 
 - **Feature**: Option to disable lyrics sync
