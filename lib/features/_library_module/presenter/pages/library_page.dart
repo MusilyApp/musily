@@ -91,6 +91,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   id: 'offline',
                   title: 'offline',
                   tracks: dlData.queue
+                      .where((e) => e.status == e.downloadCompleted)
                       .map((e) => TrackModel.fromMusilyTrack(e.track))
                       .toList(),
                   trackCount: dlData.queue.length,
@@ -113,6 +114,10 @@ class _LibraryPageState extends State<LibraryPage> {
                   ...playlists,
                 if (filters.contains('artist') || filters.isEmpty) ...artists,
               ];
+
+              final itemList = (filters.isEmpty || filters.length == 3)
+                  ? listClone
+                  : filteredList;
 
               return Scaffold(
                 appBar: AppBar(
@@ -316,14 +321,15 @@ class _LibraryPageState extends State<LibraryPage> {
                               },
                               multiSelectionEnabled: true,
                             ),
-                            const SizedBox(
-                              height: 12,
-                            ),
+                            const Divider(),
+                            // const SizedBox(
+                            //   height: 12,
+                            // ),
                           ],
                         );
                       },
                     ),
-                    if (filteredList
+                    if (itemList
                         .where((item) =>
                             item.id != 'favorites' || item.id != 'offline')
                         .isEmpty)
@@ -362,7 +368,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       Expanded(
                         child: ListView(
                           children: [
-                            ...filteredList
+                            ...itemList
                                 .where((item) =>
                                     item.id != 'favorites' &&
                                     item.id != 'offline')
