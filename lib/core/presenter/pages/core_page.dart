@@ -186,12 +186,6 @@ class _CorePageState extends State<CorePage> {
                                             children: [
                                               ListTile(
                                                 onTap: () {
-                                                  setState(() {
-                                                    _selected = 0;
-                                                    AppNavigator.navigateTo(
-                                                      routes[0],
-                                                    );
-                                                  });
                                                   if (_selected != 0) {
                                                     widget.coreController
                                                         .updateData(
@@ -201,6 +195,12 @@ class _CorePageState extends State<CorePage> {
                                                       ),
                                                     );
                                                   }
+                                                  setState(() {
+                                                    _selected = 0;
+                                                    AppNavigator.navigateTo(
+                                                      routes[0],
+                                                    );
+                                                  });
                                                 },
                                                 leading: Icon(
                                                   Icons.home_rounded,
@@ -224,12 +224,6 @@ class _CorePageState extends State<CorePage> {
                                               ),
                                               ListTile(
                                                 onTap: () {
-                                                  setState(() {
-                                                    _selected = 1;
-                                                    AppNavigator.navigateTo(
-                                                      routes[1],
-                                                    );
-                                                  });
                                                   if (_selected != 1) {
                                                     widget.coreController
                                                         .updateData(
@@ -239,6 +233,12 @@ class _CorePageState extends State<CorePage> {
                                                       ),
                                                     );
                                                   }
+                                                  setState(() {
+                                                    _selected = 1;
+                                                    AppNavigator.navigateTo(
+                                                      routes[1],
+                                                    );
+                                                  });
                                                 },
                                                 leading: Icon(
                                                   Icons.search_rounded,
@@ -262,12 +262,6 @@ class _CorePageState extends State<CorePage> {
                                               ),
                                               ListTile(
                                                 onTap: () {
-                                                  setState(() {
-                                                    _selected = 3;
-                                                    AppNavigator.navigateTo(
-                                                      routes[3],
-                                                    );
-                                                  });
                                                   if (_selected != 3) {
                                                     widget.coreController
                                                         .updateData(
@@ -277,6 +271,12 @@ class _CorePageState extends State<CorePage> {
                                                       ),
                                                     );
                                                   }
+                                                  setState(() {
+                                                    _selected = 3;
+                                                    AppNavigator.navigateTo(
+                                                      routes[3],
+                                                    );
+                                                  });
                                                 },
                                                 leading: Icon(
                                                   Icons.download_rounded,
