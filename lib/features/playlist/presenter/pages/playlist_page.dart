@@ -13,6 +13,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
+import 'package:musily/features/track/presenter/widgets/track_searcher.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
@@ -92,6 +93,53 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     ? AppLocalizations.of(context)!.offline
                     : widget.playlist.title,
           ),
+          actions: [
+            widget.playerController.builder(builder: (context, data) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                ),
+                child: TrackSearcher(
+                  tracks: widget.playlist.tracks,
+                  coreController: widget.coreController,
+                  playerController: widget.playerController,
+                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                  libraryController: widget.libraryController,
+                  downloaderController: widget.downloaderController,
+                  getAlbumUsecase: widget.getAlbumUsecase,
+                  getArtistUsecase: widget.getArtistUsecase,
+                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  clickAction: (track, controller) {
+                    late final List<MusilyTrack> queueToPlay;
+                    if (data.playingId == widget.playlist.id) {
+                      queueToPlay = data.queue;
+                    } else {
+                      queueToPlay = [
+                        ...widget.playlist.tracks
+                            .map((element) => TrackModel.toMusilyTrack(element))
+                      ];
+                    }
+
+                    final startIndex = queueToPlay.indexWhere(
+                      (element) => element.hash == track.hash,
+                    );
+
+                    widget.playerController.methods.playPlaylist(
+                      queueToPlay,
+                      widget.playlist.id,
+                      startFrom: startIndex == -1 ? 0 : startIndex,
+                    );
+                    widget.libraryController.methods.updateLastTimePlayed(
+                      widget.playlist.id,
+                    );
+                    controller.closeView(controller.text);
+                  },
+                ),
+              );
+            }),
+          ],
         ),
         body: ListView(
           children: [
