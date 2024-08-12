@@ -26,7 +26,7 @@ import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.da
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class LibraryPage extends StatelessWidget {
+class LibraryPage extends StatefulWidget {
   final PlayerController playerController;
   final GetAlbumUsecase getAlbumUsecase;
   final CoreController coreController;
@@ -55,8 +55,15 @@ class LibraryPage extends StatelessWidget {
   });
 
   @override
+  State<LibraryPage> createState() => _LibraryPageState();
+}
+
+class _LibraryPageState extends State<LibraryPage> {
+  Set<String> filters = {};
+
+  @override
   Widget build(BuildContext context) {
-    return coreController.builder(
+    return widget.coreController.builder(
       eventListener: (context, event, data) {
         final DisplayHelper displayHelper = DisplayHelper(context);
         if (displayHelper.isDesktop) {
@@ -71,9 +78,10 @@ class LibraryPage extends StatelessWidget {
         }
       },
       builder: (context, d) {
-        return libraryController.builder(
+        return widget.libraryController.builder(
           builder: (context, data) {
-            return downloaderController.builder(builder: (context, dlData) {
+            return widget.downloaderController.builder(
+                builder: (context, dlData) {
               final List<LibraryItemEntity<dynamic>> listClone =
                   List.from(data.items);
               final offlinePlaylist = LibraryItemEntity(
@@ -92,6 +100,20 @@ class LibraryPage extends StatelessWidget {
                 0,
                 offlinePlaylist,
               );
+              final albums =
+                  listClone.whereType<LibraryItemEntity<AlbumEntity>>();
+              final playlists =
+                  listClone.whereType<LibraryItemEntity<PlaylistEntity>>();
+              final artists =
+                  listClone.whereType<LibraryItemEntity<ArtistEntity>>();
+
+              final filteredList = <LibraryItemEntity<dynamic>>[
+                if (filters.contains('album') || filters.isEmpty) ...albums,
+                if (filters.contains('playlist') || filters.isEmpty)
+                  ...playlists,
+                if (filters.contains('artist') || filters.isEmpty) ...artists,
+              ];
+
               return Scaffold(
                 appBar: AppBar(
                   title: Text(AppLocalizations.of(context)!.library),
@@ -99,7 +121,7 @@ class LibraryPage extends StatelessWidget {
                   surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                   actions: [
                     PlaylistCreator(
-                      libraryController,
+                      widget.libraryController,
                       builder: (context, showCreator) => IconButton(
                         onPressed: showCreator,
                         icon: const Icon(
@@ -122,47 +144,56 @@ class LibraryPage extends StatelessWidget {
                           children: [
                             if (favoritesPlaylist != null)
                               ListTile(
-                                onTap: () => coreController.methods.pushWidget(
+                                onTap: () =>
+                                    widget.coreController.methods.pushWidget(
                                   favoritesPlaylist.value.tracks.isNotEmpty
                                       ? PlaylistPage(
                                           playlist: favoritesPlaylist.value,
-                                          playerController: playerController,
-                                          coreController: coreController,
+                                          playerController:
+                                              widget.playerController,
+                                          coreController: widget.coreController,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
-                                          getAlbumUsecase: getAlbumUsecase,
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
                                           getPlaylistUsecase:
-                                              getPlaylistUsecase,
+                                              widget.getPlaylistUsecase,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getArtistTracksUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                         )
                                       : AsyncPlaylistPage(
                                           getPlaylistUsecase:
-                                              getPlaylistUsecase,
+                                              widget.getPlaylistUsecase,
                                           playlistId: favoritesPlaylist.id,
-                                          coreController: coreController,
-                                          playerController: playerController,
+                                          coreController: widget.coreController,
+                                          playerController:
+                                              widget.playerController,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
-                                          getAlbumUsecase: getAlbumUsecase,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
+                                              widget.getArtistTracksUsecase,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                         ),
                                 ),
                                 leading: ClipRRect(
@@ -180,47 +211,56 @@ class LibraryPage extends StatelessWidget {
                               ),
                             if (showOffline)
                               ListTile(
-                                onTap: () => coreController.methods.pushWidget(
+                                onTap: () =>
+                                    widget.coreController.methods.pushWidget(
                                   offlinePlaylist.value.tracks.isNotEmpty
                                       ? PlaylistPage(
                                           playlist: offlinePlaylist.value,
-                                          playerController: playerController,
-                                          coreController: coreController,
+                                          playerController:
+                                              widget.playerController,
+                                          coreController: widget.coreController,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
-                                          getAlbumUsecase: getAlbumUsecase,
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
                                           getPlaylistUsecase:
-                                              getPlaylistUsecase,
+                                              widget.getPlaylistUsecase,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getArtistTracksUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                         )
                                       : AsyncPlaylistPage(
                                           getPlaylistUsecase:
-                                              getPlaylistUsecase,
+                                              widget.getPlaylistUsecase,
                                           playlistId: offlinePlaylist.id,
-                                          coreController: coreController,
-                                          playerController: playerController,
+                                          coreController: widget.coreController,
+                                          playerController:
+                                              widget.playerController,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
-                                          getAlbumUsecase: getAlbumUsecase,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
+                                              widget.getArtistTracksUsecase,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                         ),
                                 ),
                                 leading: ClipRRect(
@@ -237,15 +277,57 @@ class LibraryPage extends StatelessWidget {
                                 ),
                               ),
                             const Divider(),
+                            SegmentedButton(
+                              emptySelectionAllowed: true,
+                              segments: const [
+                                ButtonSegment(
+                                  value: 'album',
+                                  label: Icon(
+                                    Icons.album_rounded,
+                                  ),
+                                  icon: Icon(
+                                    Icons.filter_alt_rounded,
+                                  ),
+                                ),
+                                ButtonSegment(
+                                  value: 'artist',
+                                  label: Icon(
+                                    Icons.person_rounded,
+                                  ),
+                                  icon: Icon(
+                                    Icons.filter_alt_rounded,
+                                  ),
+                                ),
+                                ButtonSegment(
+                                  value: 'playlist',
+                                  label: Icon(
+                                    Icons.playlist_play_rounded,
+                                  ),
+                                  icon: Icon(
+                                    Icons.filter_alt_rounded,
+                                  ),
+                                ),
+                              ],
+                              selected: filters,
+                              onSelectionChanged: (value) {
+                                setState(() {
+                                  filters = value;
+                                });
+                              },
+                              multiSelectionEnabled: true,
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
                           ],
                         );
                       },
                     ),
-                    if (listClone
+                    if (filteredList
                         .where((item) =>
                             item.id != 'favorites' || item.id != 'offline')
                         .isEmpty)
-                      playerController.builder(builder: (context, data) {
+                      widget.playerController.builder(builder: (context, data) {
                         return SizedBox(
                           width: MediaQuery.of(context).size.width * .9,
                           height: MediaQuery.of(context).size.height -
@@ -280,7 +362,7 @@ class LibraryPage extends StatelessWidget {
                       Expanded(
                         child: ListView(
                           children: [
-                            ...listClone
+                            ...filteredList
                                 .where((item) =>
                                     item.id != 'favorites' &&
                                     item.id != 'offline')
@@ -290,70 +372,82 @@ class LibraryPage extends StatelessWidget {
                                       if (item.value is AlbumEntity) {
                                         return AlbumTile(
                                           album: item.value,
-                                          coreController: coreController,
-                                          playerController: playerController,
-                                          getAlbumUsecase: getAlbumUsecase,
+                                          coreController: widget.coreController,
+                                          playerController:
+                                              widget.playerController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getArtistTracksUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                         );
                                       }
                                       if (item.value is PlaylistEntity) {
                                         return PlaylistTile(
                                           playlist: item.value,
-                                          libraryController: libraryController,
-                                          playerController: playerController,
-                                          getAlbumUsecase: getAlbumUsecase,
-                                          coreController: coreController,
+                                          libraryController:
+                                              widget.libraryController,
+                                          playerController:
+                                              widget.playerController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
+                                          coreController: widget.coreController,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
+                                              widget.getPlayableItemUsecase,
                                           getPlaylistUsecase:
-                                              getPlaylistUsecase,
+                                              widget.getPlaylistUsecase,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getArtistTracksUsecase,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                         );
                                       }
                                       if (item.value is ArtistEntity) {
                                         return ArtistTile(
                                           artist: item.value,
-                                          getAlbumUsecase: getAlbumUsecase,
-                                          coreController: coreController,
+                                          getAlbumUsecase:
+                                              widget.getAlbumUsecase,
+                                          coreController: widget.coreController,
                                           downloaderController:
-                                              downloaderController,
+                                              widget.downloaderController,
                                           getPlayableItemUsecase:
-                                              getPlayableItemUsecase,
-                                          libraryController: libraryController,
-                                          playerController: playerController,
-                                          getArtistUsecase: getArtistUsecase,
+                                              widget.getPlayableItemUsecase,
+                                          libraryController:
+                                              widget.libraryController,
+                                          playerController:
+                                              widget.playerController,
+                                          getArtistUsecase:
+                                              widget.getArtistUsecase,
                                           getArtistAlbumsUsecase:
-                                              getArtistAlbumsUsecase,
+                                              widget.getArtistAlbumsUsecase,
                                           getArtistTracksUsecase:
-                                              getArtistTracksUsecase,
+                                              widget.getArtistTracksUsecase,
                                           getArtistSinglesUsecase:
-                                              getArtistSinglesUsecase,
+                                              widget.getArtistSinglesUsecase,
                                         );
                                       }
                                       return Container();
                                     },
                                   ),
                                 ),
-                            playerController.builder(
+                            widget.playerController.builder(
                               builder: (context, data) {
                                 if (data.isPlaying) {
                                   return const SizedBox(
