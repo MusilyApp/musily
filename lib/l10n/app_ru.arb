@@ -54,5 +54,6 @@
   "removeFromPlaylist": "Удалить из плейлиста",
   "downloads": "Загрузки",
   "downloadManager": "Менеджер Загрузок",
-  "offline": "Оффлайн"
+  "offline": "Оффлайн",
+  "lyricsNotFound": "Тексты не найдены"
 }

@@ -54,5 +54,6 @@
   "removeFromPlaylist": "Remove from Playlist",
   "downloadManager": "Download Manager",
   "downloads": "Downloads",
-  "offline": "Offline"
+  "offline": "Offline",
+  "lyricsNotFound": "Lyrics not found"
 }
