@@ -183,10 +183,28 @@ class AlbumPage extends StatelessWidget {
                       children: [
                         downloaderController.builder(
                           builder: (context, data) {
-                            final isAlbumDownloading = data.queue.isNotEmpty &&
+                            final isAlbumDownloading = data.queue
+                                    .where(
+                                      (e) => e.status == e.downloadDownloading,
+                                    )
+                                    .isNotEmpty &&
                                 data.downloadingKey == album.id;
+                            final isDone = data.queue
+                                    .where(
+                                      (e) => album.tracks
+                                          .where((item) =>
+                                              item.hash == e.track.hash)
+                                          .isNotEmpty,
+                                    )
+                                    .where(
+                                        (e) => e.status == e.downloadCompleted)
+                                    .length ==
+                                album.tracks.length;
                             return IconButton.filledTonal(
                               onPressed: () {
+                                if (isDone) {
+                                  return;
+                                }
                                 if (isAlbumDownloading) {
                                   libraryController.methods
                                       .cancelCollectionDownload(
@@ -208,7 +226,9 @@ class AlbumPage extends StatelessWidget {
                               icon: Icon(
                                 isAlbumDownloading
                                     ? Icons.close
-                                    : Icons.download_rounded,
+                                    : isDone
+                                        ? Icons.download_done_rounded
+                                        : Icons.download_rounded,
                               ),
                             );
                           },

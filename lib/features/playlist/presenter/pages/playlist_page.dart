@@ -190,10 +190,26 @@ class _PlaylistPageState extends State<PlaylistPage> {
               children: [
                 widget.downloaderController.builder(
                   builder: (context, data) {
-                    final isPlaylistDownloading = data.queue.isNotEmpty &&
+                    final isPlaylistDownloading = data.queue
+                            .where(
+                              (e) => e.status == e.downloadDownloading,
+                            )
+                            .isNotEmpty &&
                         data.downloadingKey == widget.playlist.id;
+                    final isDone = data.queue
+                            .where(
+                              (e) => widget.playlist.tracks
+                                  .where((item) => item.hash == e.track.hash)
+                                  .isNotEmpty,
+                            )
+                            .where((e) => e.status == e.downloadCompleted)
+                            .length ==
+                        widget.playlist.tracks.length;
                     return IconButton.filledTonal(
                       onPressed: () {
+                        if (isDone) {
+                          return;
+                        }
                         if (isPlaylistDownloading) {
                           widget.libraryController.methods
                               .cancelCollectionDownload(
@@ -215,7 +231,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       icon: Icon(
                         isPlaylistDownloading
                             ? Icons.close
-                            : Icons.download_rounded,
+                            : isDone
+                                ? Icons.download_done_rounded
+                                : Icons.download_rounded,
                       ),
                     );
                   },
