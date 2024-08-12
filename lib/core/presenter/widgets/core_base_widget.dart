@@ -43,7 +43,9 @@ class CoreBaseWidget extends StatelessWidget {
             );
           }
           if (!data.isPlayerExpanded && !data.isShowingDialog) {
-            data.pages.removeLast();
+            if (data.pages.isNotEmpty) {
+              data.pages.removeLast();
+            }
             coreController.updateData(data);
           }
         },
