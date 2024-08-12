@@ -46,11 +46,29 @@ class DownloaderPage extends StatelessWidget {
               AppLocalizations.of(context)!.downloadManager,
             ),
           ),
-          body: DownloadManagerWidget(
-            backgroundItemColor: Colors.transparent,
-            controller: downloaderController,
-            borderLess: true,
-            dense: true,
+          body: Column(
+            children: [
+              Expanded(
+                child: DownloadManagerWidget(
+                  backgroundItemColor: Colors.transparent,
+                  controller: downloaderController,
+                  borderLess: true,
+                  dense: true,
+                ),
+              ),
+              if (downloaderController.playerController != null)
+                downloaderController.playerController!.builder(
+                  builder: (context, data) {
+                    if (data.currentPlayingItem != null &&
+                        !DisplayHelper(context).isDesktop) {
+                      return const SizedBox(
+                        height: 75,
+                      );
+                    }
+                    return Container();
+                  },
+                )
+            ],
           ),
         );
       },
