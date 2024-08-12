@@ -34,6 +34,7 @@ import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/player/data/datasources/player_datasource_impl.dart';
 import 'package:musily/features/player/data/repositories/player_repository_impl.dart';
 import 'package:musily/features/player/data/usecases/get_smart_queue_usecase_impl.dart';
+import 'package:musily_player/domain/entities/player_localization.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart';
 import 'package:musily/features/playlist/data/datasources/playlist_datasource_impl.dart';
@@ -47,6 +48,7 @@ import 'package:musily/features/track/data/usecases/get_track_usecase_impl.dart'
 import 'package:musily/features/track/data/usecases/get_tracks_usecase_impl.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SharedModule extends Module {
   @override
@@ -68,6 +70,10 @@ class SharedModule extends Module {
     );
     i.addLazySingleton(
       () => PlayerController(
+        localization: (context) => PlayerLocalization(
+          playingNow: AppLocalizations.of(context)!.playingNow,
+          lyricsNotFound: AppLocalizations.of(context)!.lyricsNotFound,
+        ),
         loadUrl: (track) async {
           final getPlayableItemUsecase = i.get<GetPlayableItemUsecaseImpl>();
           final item = await getPlayableItemUsecase.exec(track);
