@@ -1,6 +1,6 @@
-<div style="display: flex; align-items: center; justify-content: center">
+<center>
   <img src="assets/icons/ic_launcher_round.png" alt="Descrição da imagem" width="80">
-</div>
+</center>
 
 # Musily: A great music app.
 
@@ -12,11 +12,13 @@ This repository contains the source code for Musily, a music app built with Flut
 - **Powerful search:** Easily find songs, artists, and albums using our advanced search bar.
 - **Offline playback:** Download your favorite songs and listen to them without an internet connection.
 - **Library management:** Create and edit custom playlists.
-
+---
 ### Screenshots
 
-![Home Page](assets/screenshots/home.jpg)![Album Page](assets/screenshots/album.jpg)![Artist Page](assets/screenshots/artist.jpg)![Playlist Page](assets/screenshots/favorites.jpg)![Player](assets/screenshots/player.jpg)![Lyrics](assets/screenshots/lyrics.jpg)
-
+| ![Home Page](assets/screenshots/home.jpg) | ![Album Page](assets/screenshots/album.jpg) | ![Artist Page](assets/screenshots/artist.jpg) |
+|---|---|---|
+| ![Playlist Page](assets/screenshots/favorites.jpg) | ![Player](assets/screenshots/player.jpg) | ![Lyrics](assets/screenshots/lyrics.jpg) |
+---
 ### Technologies
 
 - **Programming Language:** Dart
@@ -51,4 +53,4 @@ Musily is open-source and licensed under the GNU GENERAL PUBLIC LICENSE. You can
 
 ### Contact
 
-For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker) or [E-Mail](mailto:musilyapp@gmail.com).
+For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker) or [E-mail](mailto:musilyapp@gmail.com).
