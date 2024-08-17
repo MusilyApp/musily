@@ -55,5 +55,18 @@
   "downloadManager": "Gerenciador de downloads",
   "downloads": "Downloads",
   "offline": "Offline",
-  "lyricsNotFound": "Letras não encontradas"
+  "lyricsNotFound": "Letras não encontradas",
+  "settings": "Configurações",
+  "accounts": "Contas",
+  "language": "Idioma",
+  "theme": "Tema",
+  "dark": "Escuro",
+  "light": "Claro",
+  "system": "Sistema",
+  "licenses": "Licenças",
+  "about": "Sobre",
+  "application": "Aplicativo",
+  "others": "Outros",
+  "close":"Fechar",
+  "copiedToClipboard":"Copiado para a área de transferência"
 }

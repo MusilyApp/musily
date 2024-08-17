@@ -55,5 +55,18 @@
   "downloads": "Загрузки",
   "downloadManager": "Менеджер Загрузок",
   "offline": "Оффлайн",
-  "lyricsNotFound": "Тексты не найдены"
+  "lyricsNotFound": "Тексты не найдены",
+  "settings": "Настройки",
+  "accounts": "Аккаунты",
+  "language": "Язык",
+  "theme": "Тема",
+  "dark": "Темная",
+  "light": "Светлая",
+  "system": "Система",
+  "licenses": "Лицензии",
+  "about": "О приложении",
+  "application": "Приложение",
+  "others": "Прочие",
+  "close":"Закрыть",
+  "copiedToClipboard":"Скопировано в буфер обмена"
 }

@@ -55,5 +55,18 @@
   "downloadManager": "Download Manager",
   "downloads": "Downloads",
   "offline": "Offline",
-  "lyricsNotFound": "Lyrics not found"
+  "lyricsNotFound": "Lyrics not found",
+  "settings": "Settings",
+  "accounts": "Accounts",
+  "language": "Language",
+  "theme": "Theme",
+  "dark": "Dark",
+  "light": "Light",
+  "system": "System",
+  "licenses": "Licenses",
+  "about": "About",
+  "application": "Application",
+  "others": "Others",
+  "close":"Close",
+  "copiedToClipboard":"Copied to the clipboard"
 }

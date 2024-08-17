@@ -55,5 +55,18 @@
   "downloadManager": "Gestor de Descargas",
   "downloads": "Descargas",
   "offline": "Desconectado",
-  "lyricsNotFound": "Letras no encontradas"
+  "lyricsNotFound": "Letras no encontradas",
+  "settings": "Configuración",
+  "accounts": "Cuentas",
+  "language": "Idioma",
+  "theme": "Tema",
+  "dark": "Oscuro",
+  "light": "Claro",
+  "system": "Sistema",
+  "licenses": "Licencias",
+  "about": "Acerca de",
+  "application": "Aplicación",
+  "others": "Otros",
+  "close":"Cerrar",
+  "copiedToClipboard":"Copiado al portapapeles"
 }
