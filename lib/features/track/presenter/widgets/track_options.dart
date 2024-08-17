@@ -65,96 +65,139 @@ class TrackOptionsBuilder extends StatelessWidget {
     if (isDesktop) {
       return downloaderController.builder(
         builder: (context, data) {
-          return MenuBar(
-            style: const MenuStyle(
-              padding: WidgetStatePropertyAll(
-                EdgeInsets.zero,
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: MenuBar(
+              style: const MenuStyle(
+                padding: WidgetStatePropertyAll(
+                  EdgeInsets.zero,
+                ),
+                backgroundColor: WidgetStatePropertyAll(
+                  Colors.transparent,
+                ),
+                elevation: WidgetStatePropertyAll(0),
               ),
-              backgroundColor: WidgetStatePropertyAll(
-                Colors.transparent,
-              ),
-            ),
-            children: [
-              ...MenuEntry.build([
-                MenuEntry(
-                  child: const Icon(
-                    Icons.more_horiz_rounded,
-                  ),
-                  menuChildren: [
-                    // TODO custom actions
-                    if (!(hideOptions ?? [])
-                        .contains(TrackTileOptions.download))
-                      (DownloaderMenuEntry(
-                        downloaderController: downloaderController,
-                      )).builder(
-                        context,
-                        TrackModel.toMusilyTrack(track),
-                      ),
-                    if (!(hideOptions ?? [])
-                        .contains(TrackTileOptions.addToPlaylist))
-                      MenuEntry(
-                        leading: Icon(
-                          Icons.playlist_add_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
+              children: [
+                ...MenuEntry.build(context, [
+                  MenuEntry(
+                    child: const Icon(
+                      Icons.more_horiz_rounded,
+                    ),
+                    menuChildren: [
+                      // TODO custom actions
+                      if (!(hideOptions ?? [])
+                          .contains(TrackTileOptions.download))
+                        (DownloaderMenuEntry(
+                          downloaderController: downloaderController,
+                        )).builder(
+                          context,
+                          TrackModel.toMusilyTrack(track),
                         ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => Center(
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * .5,
-                                height: MediaQuery.of(context).size.height * .6,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    side: BorderSide(
-                                      color: Theme.of(context)
-                                          .dividerColor
-                                          .withOpacity(.3),
-                                      width: 1,
+                      if (!(hideOptions ?? [])
+                          .contains(TrackTileOptions.addToPlaylist))
+                        MenuEntry(
+                          leading: Icon(
+                            Icons.playlist_add_rounded,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => Center(
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  height:
+                                      MediaQuery.of(context).size.height * .6,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      side: BorderSide(
+                                        color: Theme.of(context)
+                                            .dividerColor
+                                            .withOpacity(.3),
+                                        width: 1,
+                                      ),
                                     ),
-                                  ),
-                                  child: PlaylistAdderWidget(
-                                    libraryController: libraryController,
+                                    child: PlaylistAdderWidget(
+                                      libraryController: libraryController,
+                                    ),
                                   ),
                                 ),
                               ),
+                            );
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.addToPlaylist,
+                          ),
+                        ),
+                      if (!(hideOptions ?? [])
+                          .contains(TrackTileOptions.addToQueue))
+                        MenuEntry(
+                          onPressed: () {
+                            playerController.methods
+                                .addToQueue([TrackModel.toMusilyTrack(track)]);
+                            coreController.updateData(
+                              coreController.data.copyWith(
+                                isShowingDialog: false,
+                              ),
+                            );
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.addToQueue,
+                          ),
+                          leading: Icon(
+                            Icons.queue_music_rounded,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
+                        ),
+                      if (!(hideOptions ?? [])
+                          .contains(TrackTileOptions.seeAlbum))
+                        if (track.album.id.isNotEmpty)
+                          MenuEntry(
+                            onPressed: () {
+                              coreController.updateData(
+                                coreController.data.copyWith(
+                                  isShowingDialog: false,
+                                ),
+                              );
+                              coreController.methods.pushWidget(
+                                AsyncAlbumPage(
+                                  albumId: track.album.id,
+                                  coreController: coreController,
+                                  playerController: playerController,
+                                  getAlbumUsecase: getAlbumUsecase,
+                                  downloaderController: downloaderController,
+                                  getPlayableItemUsecase:
+                                      getPlayableItemUsecase,
+                                  libraryController: libraryController,
+                                  getArtistAlbumsUsecase:
+                                      getArtistAlbumsUsecase,
+                                  getArtistSinglesUsecase:
+                                      getArtistSinglesUsecase,
+                                  getArtistTracksUsecase:
+                                      getArtistTracksUsecase,
+                                  getArtistUsecase: getArtistUsecase,
+                                ),
+                              );
+                            },
+                            child:
+                                Text(AppLocalizations.of(context)!.goToAlbum),
+                            leading: Icon(
+                              Icons.album_rounded,
+                              color: Theme.of(context)
+                                  .buttonTheme
+                                  .colorScheme
+                                  ?.primary,
                             ),
-                          );
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.addToPlaylist,
-                        ),
-                      ),
-                    if (!(hideOptions ?? [])
-                        .contains(TrackTileOptions.addToQueue))
-                      MenuEntry(
-                        onPressed: () {
-                          playerController.methods
-                              .addToQueue([TrackModel.toMusilyTrack(track)]);
-                          coreController.updateData(
-                            coreController.data.copyWith(
-                              isShowingDialog: false,
-                            ),
-                          );
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.addToQueue,
-                        ),
-                        leading: Icon(
-                          Icons.queue_music_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
-                        ),
-                      ),
-                    if (!(hideOptions ?? [])
-                        .contains(TrackTileOptions.seeAlbum))
-                      if (track.album.id.isNotEmpty)
+                          ),
+                      if (!(hideOptions ?? [])
+                          .contains(TrackTileOptions.seeArtist))
                         MenuEntry(
                           onPressed: () {
                             coreController.updateData(
@@ -163,80 +206,47 @@ class TrackOptionsBuilder extends StatelessWidget {
                               ),
                             );
                             coreController.methods.pushWidget(
-                              AsyncAlbumPage(
-                                albumId: track.album.id,
+                              AsyncArtistPage(
+                                artistId: track.artist.id,
                                 coreController: coreController,
                                 playerController: playerController,
-                                getAlbumUsecase: getAlbumUsecase,
                                 downloaderController: downloaderController,
                                 getPlayableItemUsecase: getPlayableItemUsecase,
                                 libraryController: libraryController,
+                                getAlbumUsecase: getAlbumUsecase,
+                                getArtistUsecase: getArtistUsecase,
                                 getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                                getArtistTracksUsecase: getArtistTracksUsecase,
                                 getArtistSinglesUsecase:
                                     getArtistSinglesUsecase,
-                                getArtistTracksUsecase: getArtistTracksUsecase,
-                                getArtistUsecase: getArtistUsecase,
                               ),
                             );
                           },
-                          child: Text(AppLocalizations.of(context)!.goToAlbum),
+                          child: Text(AppLocalizations.of(context)!.goToArtist),
                           leading: Icon(
-                            Icons.album_rounded,
+                            Icons.person_rounded,
                             color: Theme.of(context)
                                 .buttonTheme
                                 .colorScheme
                                 ?.primary,
                           ),
                         ),
-                    if (!(hideOptions ?? [])
-                        .contains(TrackTileOptions.seeArtist))
-                      MenuEntry(
-                        onPressed: () {
-                          coreController.updateData(
-                            coreController.data.copyWith(
-                              isShowingDialog: false,
-                            ),
-                          );
-                          coreController.methods.pushWidget(
-                            AsyncArtistPage(
-                              artistId: track.artist.id,
-                              coreController: coreController,
-                              playerController: playerController,
-                              downloaderController: downloaderController,
-                              getPlayableItemUsecase: getPlayableItemUsecase,
-                              libraryController: libraryController,
-                              getAlbumUsecase: getAlbumUsecase,
-                              getArtistUsecase: getArtistUsecase,
-                              getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                              getArtistTracksUsecase: getArtistTracksUsecase,
-                              getArtistSinglesUsecase: getArtistSinglesUsecase,
-                            ),
-                          );
-                        },
-                        child: Text(AppLocalizations.of(context)!.goToArtist),
-                        leading: Icon(
-                          Icons.person_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
+                      if (!(hideOptions ?? []).contains(TrackTileOptions.share))
+                        MenuEntry(
+                          child: Text(AppLocalizations.of(context)!.share),
+                          leading: Icon(
+                            Icons.share_rounded,
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary,
+                          ),
                         ),
-                      ),
-                    if (!(hideOptions ?? []).contains(TrackTileOptions.share))
-                      MenuEntry(
-                        child: Text(AppLocalizations.of(context)!.share),
-                        leading: Icon(
-                          Icons.share_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
-                        ),
-                      ),
-                  ],
-                ),
-              ]),
-            ],
+                    ],
+                  ),
+                ]),
+              ],
+            ),
           );
         },
       );
