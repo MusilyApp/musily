@@ -34,6 +34,7 @@ import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/player/data/datasources/player_datasource_impl.dart';
 import 'package:musily/features/player/data/repositories/player_repository_impl.dart';
 import 'package:musily/features/player/data/usecases/get_smart_queue_usecase_impl.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily_player/domain/entities/player_localization.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart';
@@ -70,6 +71,7 @@ class SharedModule extends Module {
     );
     i.addLazySingleton(
       () => PlayerController(
+        themeMode: Modular.get<SettingsController>().data.themeMode,
         localization: (context) => PlayerLocalization(
           playingNow: AppLocalizations.of(context)!.playingNow,
           lyricsNotFound: AppLocalizations.of(context)!.lyricsNotFound,
@@ -400,6 +402,19 @@ class SharedModule extends Module {
     i.addLazySingleton(
       () => GetPlaylistUsecaseImpl(
         playlistRepository: i.get<PlaylistRepositoryImpl>(),
+      ),
+    );
+    // Settings dependencies
+    i.addLazySingleton<SettingsController>(
+      () => SettingsController(
+        onThemeModeUpdated: (themeMode) {
+          final playerController = i.get<PlayerController>();
+          playerController.data.themeMode = themeMode;
+          playerController.updateData(playerController.data);
+        },
+      ),
+      config: BindConfig(
+        onDispose: (value) => value.dispose(),
       ),
     );
   }
