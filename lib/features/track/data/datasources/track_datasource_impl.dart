@@ -2,7 +2,8 @@ import 'package:musily_player/presenter/controllers/downloader/downloader_contro
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/datasources/track_datasource.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:musily_repository/musily_repository.dart' as repo;
+import 'package:musily_repository/core/data/mappers/track_mapper.dart';
+import 'package:musily_repository/musily_repository.dart';
 
 class TrackDatasourceImpl implements TrackDatasource {
   final DownloaderController downloaderController;
@@ -14,9 +15,17 @@ class TrackDatasourceImpl implements TrackDatasource {
   @override
   Future<TrackEntity?> getTrack(String id) async {
     try {
-      final track = await repo.getTrack(id);
+      final musilyRepository = MusilyRepository();
+      final track = await musilyRepository.getTrack(id);
+      if (track == null) {
+        return null;
+      }
       final offlineTrack = await TrackModel.toOffline(
-        TrackModel.fromMap(track),
+        TrackModel.fromMap(
+          TrackMapper().toMap(
+            track,
+          ),
+        ),
         downloaderController,
       );
       return offlineTrack;
@@ -28,9 +37,16 @@ class TrackDatasourceImpl implements TrackDatasource {
   @override
   Future<List<TrackEntity>> getTracks(String query) async {
     try {
-      final data = await repo.getTracks(query);
+      final musilyRepository = MusilyRepository();
+      final data = await musilyRepository.searchTracks(query);
       final tracks = [
-        ...(data as List).map((element) => TrackModel.fromMap(element))
+        ...data.map(
+          (element) => TrackModel.fromMap(
+            TrackMapper().toMap(
+              element,
+            ),
+          ),
+        ),
       ];
       final offlineTracks = <TrackEntity>[];
 
@@ -50,7 +66,8 @@ class TrackDatasourceImpl implements TrackDatasource {
   @override
   Future<String?> getTrackLyrics(String id) async {
     try {
-      final lyrics = await repo.getTrackLyrics(id);
+      final musilyRepository = MusilyRepository();
+      final lyrics = await musilyRepository.getTrackLyrics(id);
       return lyrics;
     } catch (e) {
       return null;
