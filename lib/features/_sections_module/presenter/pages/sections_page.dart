@@ -5,8 +5,10 @@ import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_flex.dart';
+import 'package:musily/core/presenter/widgets/user_avatar.dart';
 import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
+import 'package:musily/core/utils/get_theme_mode.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_controller.dart';
@@ -18,6 +20,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
@@ -39,6 +42,7 @@ class SectionsPage extends StatelessWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final SettingsController settingsController;
 
   const SectionsPage({
     required this.sectionsController,
@@ -54,6 +58,7 @@ class SectionsPage extends StatelessWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.settingsController,
   });
 
   @override
@@ -81,8 +86,7 @@ class SectionsPage extends StatelessWidget {
         }
       },
       builder: (context, data) {
-        final brightness = MediaQuery.of(context).platformBrightness;
-        bool isDarkMode = brightness == Brightness.dark;
+        bool isDarkMode = getThemeMode(context) == ThemeMode.dark;
         return Scaffold(
           appBar: AppBar(
             title: Row(
@@ -108,6 +112,18 @@ class SectionsPage extends StatelessWidget {
                 ),
               ],
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 4,
+                  right: 12,
+                ),
+                child: UserAvatar(
+                  coreController: coreController,
+                  settingsController: settingsController,
+                ),
+              ),
+            ],
           ),
           body: sectionsController.builder(
             builder: (context, dataSections) {

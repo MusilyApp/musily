@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/utils/get_theme_mode.dart';
 
 class SizedRouter<T> extends ModalRoute<T> {
   final Widget Function(BuildContext context) builder;
@@ -27,8 +28,7 @@ class SizedRouter<T> extends ModalRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    final brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
+    bool isDarkMode = getThemeMode(context) == ThemeMode.dark;
     return GestureDetector(
       onTap: () {
         Navigator.pop(context);
