@@ -62,7 +62,7 @@ class TrackModel {
       title: track.title,
       url: track.url,
       fromSmartQueue: track.fromSmartQueue,
-      ytId: track.id,
+      ytId: track.source == 'youtube' ? track.id : null,
     );
   }
 
@@ -82,7 +82,7 @@ class TrackModel {
       highResImg: track.highResImg,
       lowResImg: track.lowResImg,
       fromSmartQueue: track.fromSmartQueue,
-      source: track.ytId != null ? 'YouTube' : 'unknown',
+      source: track.ytId != null ? 'youtube' : 'unknown',
     );
   }
 
