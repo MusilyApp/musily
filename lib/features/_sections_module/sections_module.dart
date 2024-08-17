@@ -10,6 +10,7 @@ import 'package:musily/features/artist/data/usecases/get_artist_albums_usecase_i
 import 'package:musily/features/artist/data/usecases/get_artist_singles_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artist_tracks_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artist_usecase_impl.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/data/usecases/get_playlist_usecase_impl.dart';
@@ -36,6 +37,7 @@ class SectionsModule extends Module {
         getArtistAlbumsUsecase: Modular.get<GetArtistAlbumsUsecaseImpl>(),
         getArtistTracksUsecase: Modular.get<GetArtistTracksUsecaseImpl>(),
         getArtistSinglesUsecase: Modular.get<GetArtistSinglesUsecaseImpl>(),
+        settingsController: Modular.get<SettingsController>(),
       ),
     );
   }
