@@ -1,22 +1,29 @@
 import 'package:musily/features/player/domain/datasources/player_datasource.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:musily_repository/musily_repository.dart' as repo;
+import 'package:musily_repository/core/data/mappers/track_mapper.dart';
+import 'package:musily_repository/core/data/repositories/musily_repository.dart';
+import 'package:musily_repository/musily_repository.dart';
 
 class PlayerDatasourceImpl implements PlayerDatasource {
   @override
   Future<List<TrackEntity>> getSmartQueue(List<TrackEntity> queue) async {
     try {
-      final smartQueueTracks = await repo.getSmartQueue(
+      final musilyRepository = MusilyRepository();
+      final smartQueueTracks = await musilyRepository.getRelatedTracks(
         [
           ...queue.map(
-            (track) => TrackModel.toMap(track),
+            (track) => TrackMapper().fromMap(
+              TrackModel.toMap(track),
+            ),
           ),
         ],
       );
       return [
         ...smartQueueTracks.map(
-          (track) => TrackModel.fromMap(track),
+          (track) => TrackModel.fromMap(
+            TrackMapper().toMap(track),
+          ),
         ),
       ];
     } catch (e) {
