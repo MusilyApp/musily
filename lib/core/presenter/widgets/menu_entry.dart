@@ -18,26 +18,21 @@ class MenuEntry {
   final List<MenuEntry>? menuChildren;
   final Widget? leading;
 
-  static List<Widget> build(List<MenuEntry> selections) {
+  static List<Widget> build(BuildContext context, List<MenuEntry> selections) {
     Widget buildSelection(MenuEntry selection) {
       if (selection.menuChildren != null) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(
-            8,
-          ),
-          child: SubmenuButton(
-            leadingIcon: selection.leading,
-            style: const ButtonStyle(
-              padding: WidgetStatePropertyAll(
-                EdgeInsets.zero,
-              ),
-              visualDensity: VisualDensity.compact,
-              alignment: Alignment.center,
-              elevation: WidgetStatePropertyAll(0),
+        return SubmenuButton(
+          leadingIcon: selection.leading,
+          style: const ButtonStyle(
+            padding: WidgetStatePropertyAll(
+              EdgeInsets.zero,
             ),
-            menuChildren: MenuEntry.build(selection.menuChildren!),
-            child: selection.child,
+            visualDensity: VisualDensity.compact,
+            alignment: Alignment.center,
+            elevation: WidgetStatePropertyAll(0),
           ),
+          menuChildren: MenuEntry.build(context, selection.menuChildren!),
+          child: selection.child,
         );
       }
       return MenuItemButton(
