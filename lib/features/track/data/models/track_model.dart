@@ -21,7 +21,7 @@ class TrackModel {
       highResImg: map['highResImg'],
       lowResImg: map['lowResImg'],
       source: map['source'],
-      fromSmartQueue: map['fromSmartQueue'] ?? false,
+      fromSmartQueue: map['fromSmartQueue'] ?? map['recommendedTrack'] ?? false,
     );
   }
 
@@ -40,7 +40,10 @@ class TrackModel {
       },
       'highResImg': track.highResImg,
       'lowResImg': track.lowResImg,
-      'source': track.source,
+      'recommendedTrack': track.fromSmartQueue,
+      'source': track.source.toLowerCase() == 'unknown'
+          ? 'youtube'
+          : track.source.toLowerCase(),
     };
   }
 
