@@ -1,3 +1,23 @@
+## 2.1.0
+
+**Fixes**
+- Resolved an issue where certain search terms resulted in empty search results.
+- Addressed a problem where some artists couldn't be found.
+- Fixed an issue where some albums were not being found.
+- Resolved a bug where downloaded playlists were deleted when the download button was pressed.
+
+**Localization**
+- Added Ukrainian language support.
+
+**Improvements**
+- Enhanced the Magic Queue feature to better discover related tracks.
+
+**Features**
+- Introduced a new settings screen for managing language preferences and switching between dark and light themes.
+
+**Minor Improvements**
+- Various minor improvements and refinements.
+
 ## 2.0.0
 
 **Features**
