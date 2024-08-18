@@ -68,5 +68,8 @@
   "application": "Application",
   "others": "Others",
   "close":"Close",
-  "copiedToClipboard":"Copied to the clipboard"
+  "copiedToClipboard":"Copied to the clipboard",
+  "noDownloads": "No downloads",
+  "noResults": "No results",
+  "downloadCompleted": "Download completed"
 }

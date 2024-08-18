@@ -68,5 +68,8 @@
   "application": "Aplicativo",
   "others": "Outros",
   "close":"Fechar",
-  "copiedToClipboard":"Copiado para a área de transferência"
+  "copiedToClipboard":"Copiado para a área de transferência",
+  "noDownloads": "Nenhum download",
+  "noResults": "Sem resultados",
+  "downloadCompleted": "Download concluído"
 }

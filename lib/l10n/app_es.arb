@@ -68,5 +68,8 @@
   "application": "Aplicación",
   "others": "Otros",
   "close":"Cerrar",
-  "copiedToClipboard":"Copiado al portapapeles"
+  "copiedToClipboard":"Copiado al portapapeles",
+  "noDownloads": "No hay descargas",
+  "noResults": "Sin resultados",
+  "downloadCompleted": "Descarga completada"
 }

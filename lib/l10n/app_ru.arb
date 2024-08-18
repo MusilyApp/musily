@@ -68,5 +68,8 @@
   "application": "Приложение",
   "others": "Прочие",
   "close":"Закрыть",
-  "copiedToClipboard":"Скопировано в буфер обмена"
+  "copiedToClipboard":"Скопировано в буфер обмена",
+  "noDownloads": "Нет загрузок",
+  "noResults": "Нет результатов",
+  "downloadCompleted": "Загрузка завершена"
 }
