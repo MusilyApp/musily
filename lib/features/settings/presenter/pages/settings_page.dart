@@ -27,13 +27,8 @@ class SettingsPage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-              ),
-              child: AppSection(
-                controller: settingsController,
-              ),
+            AppSection(
+              controller: settingsController,
             ),
             const Divider(),
             const OtherSection(),

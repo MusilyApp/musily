@@ -39,77 +39,87 @@ class _AppSectionState extends State<AppSection> {
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
-          AppInputBase(
-            labelText: AppLocalizations.of(context)!.language,
-            child: DropdownButtonFormField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                // hintText: '',
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                ),
-              ),
-              value: data.locale?.languageCode,
-              items: const [
-                DropdownMenuItem(
-                  value: 'en',
-                  child: Text('English'),
-                ),
-                DropdownMenuItem(
-                  value: 'pt',
-                  child: Text('Português'),
-                ),
-                DropdownMenuItem(
-                  value: 'ru',
-                  child: Text('Русский'),
-                ),
-                DropdownMenuItem(
-                  value: 'es',
-                  child: Text('Español'),
-                ),
-                DropdownMenuItem(
-                  value: 'uk',
-                  child: Text('Українська'),
-                ),
-              ],
-              onChanged: (value) {
-                widget.controller.methods.changeLanguage(value);
-              },
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
             ),
-          ),
-          AppInputBase(
-            labelText: AppLocalizations.of(context)!.theme,
-            child: DropdownButtonFormField<ThemeMode>(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                ),
-              ),
-              value: data.themeMode ?? ThemeMode.system,
-              items: [
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: Text(
-                    AppLocalizations.of(context)!.dark,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppInputBase(
+                  labelText: AppLocalizations.of(context)!.language,
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: AppLocalizations.of(context)!.selectALanguage,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                    ),
+                    value: data.locale?.languageCode,
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'en',
+                        child: Text('English'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'pt',
+                        child: Text('Português'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'ru',
+                        child: Text('Русский'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'es',
+                        child: Text('Español'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'uk',
+                        child: Text('Українська'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      widget.controller.methods.changeLanguage(value);
+                    },
                   ),
                 ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: Text(
-                    AppLocalizations.of(context)!.light,
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: Text(
-                    AppLocalizations.of(context)!.system,
+                AppInputBase(
+                  labelText: AppLocalizations.of(context)!.theme,
+                  child: DropdownButtonFormField<ThemeMode>(
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                    ),
+                    value: data.themeMode ?? ThemeMode.system,
+                    items: [
+                      DropdownMenuItem(
+                        value: ThemeMode.dark,
+                        child: Text(
+                          AppLocalizations.of(context)!.dark,
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.light,
+                        child: Text(
+                          AppLocalizations.of(context)!.light,
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.system,
+                        child: Text(
+                          AppLocalizations.of(context)!.system,
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      widget.controller.methods.changeTheme(value);
+                    },
                   ),
                 ),
               ],
-              onChanged: (value) {
-                widget.controller.methods.changeTheme(value);
-              },
             ),
           ),
         ],
