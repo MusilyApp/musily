@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -104,16 +105,8 @@ class TrackSearcher extends StatelessWidget {
               .toList()
             ..addAll(
               [
-                playerController.builder(
-                  builder: (context, data) {
-                    if (data.currentPlayingItem != null &&
-                        !DisplayHelper(context).isDesktop) {
-                      return const SizedBox(
-                        height: 75,
-                      );
-                    }
-                    return Container();
-                  },
+                PlayerSizedBox(
+                  playerController: playerController,
                 ),
               ],
             ),
