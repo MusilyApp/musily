@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CoreMethods {
-  final void Function(Widget widget) pushWidget;
+  final void Function(Widget widget, {bool overlayMainPage}) pushWidget;
   final void Function(Widget widget) pushModal;
   final void Function() closeDialog;
 

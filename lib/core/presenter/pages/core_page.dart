@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/animated_size_widget.dart';
 import 'package:musily/core/utils/app_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -16,6 +18,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily_player/core/utils/display_helper.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
@@ -104,6 +107,23 @@ class _CorePageState extends State<CorePage> {
         }
         if (event.id == 'closePlayer') {
           widget.playerController.methods.closePlayer();
+        }
+        if (event.id == 'pushOverlayingWidget') {
+          if (DisplayHelper(context).isDesktop) {
+            widget.coreController.dispatchEvent(
+              BaseControllerEvent(
+                id: 'pushWidget',
+                data: event.data,
+              ),
+            );
+            return;
+          }
+          Navigator.push(
+            context,
+            DownupRouter(
+              builder: (context) => event.data,
+            ),
+          );
         }
       },
       builder: (context, data) {

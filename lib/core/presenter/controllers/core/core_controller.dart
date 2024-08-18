@@ -37,10 +37,13 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
           ),
         );
       },
-      pushWidget: (widget) {
+      pushWidget: (
+        widget, {
+        overlayMainPage = false,
+      }) {
         dispatchEvent(
           BaseControllerEvent<Widget>(
-            id: 'pushWidget',
+            id: overlayMainPage ? 'pushOverlayingWidget' : 'pushWidget',
             data: widget,
           ),
         );

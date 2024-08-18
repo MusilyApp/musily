@@ -26,6 +26,7 @@ class UserAvatar extends StatelessWidget {
             coreController: coreController,
             settingsController: settingsController,
           ),
+          overlayMainPage: true,
         );
       },
       child: CircleAvatar(
