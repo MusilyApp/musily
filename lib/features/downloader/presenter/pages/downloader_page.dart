@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/widgets/download_manager_widget.dart';
@@ -49,25 +50,43 @@ class DownloaderPage extends StatelessWidget {
           body: Column(
             children: [
               Expanded(
-                child: DownloadManagerWidget(
-                  backgroundItemColor: Colors.transparent,
-                  controller: downloaderController,
-                  borderLess: true,
-                  dense: true,
-                ),
+                child: downloaderController.builder(builder: (context, data) {
+                  if (data.queue.isEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.downloading_rounded,
+                          color: Theme.of(context)
+                              .iconTheme
+                              .color
+                              ?.withOpacity(.5),
+                          size: 50,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.noDownloads,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .iconTheme
+                                .color
+                                ?.withOpacity(.5),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return DownloadManagerWidget(
+                    backgroundItemColor: Colors.transparent,
+                    controller: downloaderController,
+                    borderLess: true,
+                    dense: true,
+                  );
+                }),
               ),
               if (downloaderController.playerController != null)
-                downloaderController.playerController!.builder(
-                  builder: (context, data) {
-                    if (data.currentPlayingItem != null &&
-                        !DisplayHelper(context).isDesktop) {
-                      return const SizedBox(
-                        height: 75,
-                      );
-                    }
-                    return Container();
-                  },
-                )
+                PlayerSizedBox(
+                  playerController: downloaderController.playerController!,
+                ),
             ],
           ),
         );
