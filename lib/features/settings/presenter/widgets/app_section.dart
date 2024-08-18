@@ -44,6 +44,7 @@ class _AppSectionState extends State<AppSection> {
             child: DropdownButtonFormField(
               decoration: const InputDecoration(
                 border: InputBorder.none,
+                // hintText: '',
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 12,
                 ),
@@ -65,6 +66,10 @@ class _AppSectionState extends State<AppSection> {
                 DropdownMenuItem(
                   value: 'es',
                   child: Text('Español'),
+                ),
+                DropdownMenuItem(
+                  value: 'uk',
+                  child: Text('Українська'),
                 ),
               ],
               onChanged: (value) {
