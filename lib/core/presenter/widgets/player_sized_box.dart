@@ -16,7 +16,7 @@ class PlayerSizedBox extends StatelessWidget {
         if (data.currentPlayingItem != null &&
             !DisplayHelper(context).isDesktop) {
           return const SizedBox(
-            height: 75,
+            height: 70,
           );
         }
         return Container();
