@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/routers/sized_router.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_creator.dart';
 import 'package:musily/features/_library_module/presenter/widgets/playlist_tile_thumb.dart';
-import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -140,24 +137,10 @@ class PlaylistAdderWidget extends StatelessWidget {
                               );
                               onAdded?.call();
                             },
-                            leading: item.value.id == 'favorites'
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: const FavoriteIcon(
-                                      iconSize: 30,
-                                    ),
-                                  )
-                                : PlaylistTileThumb(
-                                    urls: item.value.tracks
-                                        .map((track) => track.lowResImg
-                                            ?.replaceAll('w60-h60', 'w40-h40'))
-                                        .whereType<String>()
-                                        .toSet()
-                                        .toList()
-                                      ..shuffle(
-                                        Random(),
-                                      ),
-                                  ),
+                            leading: PlaylistTileThumb(
+                              playlist: item.value,
+                              size: 30,
+                            ),
                             title: Text(
                               item.value.id == 'favorites'
                                   ? AppLocalizations.of(context)!.favorites

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -91,14 +89,7 @@ class PlaylistTile extends StatelessWidget {
         );
       },
       leading: PlaylistTileThumb(
-        urls: playlist.tracks
-            .map((track) => track.lowResImg?.replaceAll('w60-h60', 'w40-h40'))
-            .whereType<String>()
-            .toSet()
-            .toList()
-          ..shuffle(
-            Random(),
-          ),
+        playlist: playlist,
       ),
       title: Text(
         playlist.title,

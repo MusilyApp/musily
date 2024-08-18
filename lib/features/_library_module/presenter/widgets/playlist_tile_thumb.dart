@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/presenter/widgets/app_image.dart';
+import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
+import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
+import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 
 class PlaylistTileThumb extends StatelessWidget {
-  final List<String> urls;
+  final PlaylistEntity playlist;
   final double size;
   const PlaylistTileThumb({
-    required this.urls,
+    required this.playlist,
     this.size = 40,
     super.key,
   });
@@ -22,67 +24,27 @@ class PlaylistTileThumb extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: SizedBox(
-          width: size,
-          height: size,
-          child: Builder(
-            builder: (context) {
-              if (urls.length >= 4) {
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        AppImage(
-                          urls[0],
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.cover,
-                        ),
-                        AppImage(
-                          urls[1],
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
+        child: playlist.id == 'favorites'
+            ? FavoriteIcon(
+                size: size,
+              )
+            : playlist.id == 'offline'
+                ? OfflineIcon(
+                    size: size,
+                  )
+                : SizedBox(
+                    width: size,
+                    height: size,
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Icon(
+                        Icons.playlist_play_rounded,
+                        color:
+                            Theme.of(context).iconTheme.color?.withOpacity(.7),
+                      ),
                     ),
-                    Row(
-                      children: [
-                        AppImage(
-                          urls[2],
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.cover,
-                        ),
-                        AppImage(
-                          urls[3],
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              } else if (urls.isNotEmpty) {
-                return AppImage(
-                  urls[0],
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
-                );
-              }
-              return SizedBox(
-                width: 40,
-                height: 40,
-                child: Icon(
-                  Icons.playlist_play_rounded,
-                  color: Theme.of(context).iconTheme.color?.withOpacity(.7),
-                ),
-              );
-            },
-          ),
-        ),
+                  ),
       ),
     );
   }
