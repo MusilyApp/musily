@@ -27,7 +27,7 @@ class PlayerDatasourceImpl implements PlayerDatasource {
         ),
       ];
     } catch (e) {
-      return [];
+      return queue;
     }
   }
 }
