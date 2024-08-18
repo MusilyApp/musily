@@ -71,5 +71,6 @@
   "copiedToClipboard":"Скопировано в буфер обмена",
   "noDownloads": "Нет загрузок",
   "noResults": "Нет результатов",
-  "downloadCompleted": "Загрузка завершена"
+  "downloadCompleted": "Загрузка завершена",
+  "selectALanguage": "Выберите язык"
 }

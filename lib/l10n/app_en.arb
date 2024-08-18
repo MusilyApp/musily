@@ -71,5 +71,6 @@
   "copiedToClipboard":"Copied to the clipboard",
   "noDownloads": "No downloads",
   "noResults": "No results",
-  "downloadCompleted": "Download completed"
+  "downloadCompleted": "Download completed",
+  "selectALanguage": "Select a language"
 }

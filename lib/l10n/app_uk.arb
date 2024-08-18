@@ -71,5 +71,6 @@
   "copiedToClipboard":"Скопійовано до буфера обміну",
   "noDownloads": "Немає завантажень",
   "noResults": "Немає результатів",
-  "downloadCompleted": "Завантаження завершено"
+  "downloadCompleted": "Завантаження завершено",
+  "selectALanguage": "Виберіть мову"
 }

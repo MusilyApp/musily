@@ -71,5 +71,6 @@
   "copiedToClipboard":"Copiado al portapapeles",
   "noDownloads": "No hay descargas",
   "noResults": "Sin resultados",
-  "downloadCompleted": "Descarga completada"
+  "downloadCompleted": "Descarga completada",
+  "selectALanguage": "Seleccione un idioma"
 }
