@@ -7,6 +7,7 @@ import 'package:musily/features/_library_module/domain/usecases/get_library_item
 import 'package:musily/features/_library_module/domain/usecases/update_library_item_usecase.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_data.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_methods.dart';
+import 'package:musily_player/core/utils/is_valid_directory.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
@@ -364,6 +365,9 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
           downloadingId,
         );
         for (final track in tracks) {
+          if (isValidDirectory(track.url ?? '')) {
+            continue;
+          }
           _downloaderController.methods.addDownload(
             TrackModel.toMusilyTrack(
               track,
