@@ -52,40 +52,59 @@ class PlaylistOptions extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                downloaderController.builder(
-                  builder: (context, data) {
-                    final isPlaylistDownloading = data.queue.isNotEmpty &&
-                        data.downloadingKey == playlistEntity.id;
-                    return ListTile(
-                      onTap: () {
-                        if (isPlaylistDownloading) {
-                          libraryController.methods.cancelCollectionDownload(
-                            playlistEntity.tracks,
-                            playlistEntity.id,
+                if (playlistEntity.id != 'offline')
+                  downloaderController.builder(
+                    builder: (context, data) {
+                      final isPlaylistDownloading = data.queue.isNotEmpty &&
+                          data.downloadingKey == playlistEntity.id;
+                      final isDownloadCompleted = data.queue
+                          .where(
+                            (e) => playlistEntity.tracks
+                                .map((item) => item.hash)
+                                .contains(e.track.hash),
+                          )
+                          .every(
+                            (e) => e.status == e.downloadCompleted,
                           );
-                        } else {
-                          libraryController.methods.downloadCollection(
-                            playlistEntity.tracks,
-                            playlistEntity.id,
-                          );
-                        }
-                        Navigator.pop(context);
-                      },
-                      leading: Icon(
-                        isPlaylistDownloading
-                            ? Icons.cancel_rounded
-                            : Icons.download_rounded,
-                        color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
-                      ),
-                      title: Text(
-                        isPlaylistDownloading
-                            ? AppLocalizations.of(context)!.cancelDownload
-                            : AppLocalizations.of(context)!.download,
-                      ),
-                    );
-                  },
-                ),
+                      return ListTile(
+                        onTap: isDownloadCompleted
+                            ? null
+                            : () {
+                                if (isPlaylistDownloading) {
+                                  libraryController.methods
+                                      .cancelCollectionDownload(
+                                    playlistEntity.tracks,
+                                    playlistEntity.id,
+                                  );
+                                } else {
+                                  libraryController.methods.downloadCollection(
+                                    playlistEntity.tracks,
+                                    playlistEntity.id,
+                                  );
+                                }
+                                Navigator.pop(context);
+                              },
+                        leading: Icon(
+                          isDownloadCompleted
+                              ? Icons.download_done_rounded
+                              : isPlaylistDownloading
+                                  ? Icons.cancel_rounded
+                                  : Icons.download_rounded,
+                          color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.primary,
+                        ),
+                        title: Text(
+                          isDownloadCompleted
+                              ? AppLocalizations.of(context)!.downloadCompleted
+                              : isPlaylistDownloading
+                                  ? AppLocalizations.of(context)!.cancelDownload
+                                  : AppLocalizations.of(context)!.download,
+                        ),
+                      );
+                    },
+                  ),
                 playerController.builder(
                   builder: (context, data) {
                     final isPlaylistPlaying =

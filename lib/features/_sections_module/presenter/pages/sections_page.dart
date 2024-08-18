@@ -5,6 +5,7 @@ import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_flex.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/presenter/widgets/user_avatar.dart';
 import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
@@ -472,16 +473,9 @@ class SectionsPage extends StatelessWidget {
                       );
                     },
                   ),
-                  playerController.builder(
-                    builder: (context, data) {
-                      if (data.currentPlayingItem != null) {
-                        return const SizedBox(
-                          height: 75,
-                        );
-                      }
-                      return Container();
-                    },
-                  )
+                  PlayerSizedBox(
+                    playerController: playerController,
+                  ),
                 ],
               );
             },

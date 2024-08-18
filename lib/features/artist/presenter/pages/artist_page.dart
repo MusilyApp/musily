@@ -8,6 +8,7 @@ import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/library_toggler.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
@@ -681,15 +682,8 @@ class _ArtistPageState extends State<ArtistPage> {
                         ],
                       ),
                     ],
-                    widget.playerController.builder(
-                      builder: (context, data) {
-                        if (data.currentPlayingItem != null) {
-                          return const SizedBox(
-                            height: 75,
-                          );
-                        }
-                        return Container();
-                      },
+                    PlayerSizedBox(
+                      playerController: widget.playerController,
                     ),
                   ],
                 ),

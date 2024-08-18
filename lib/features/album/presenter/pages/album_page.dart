@@ -6,6 +6,7 @@ import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/library_toggler.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
@@ -61,51 +62,53 @@ class AlbumPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(album.artist.name),
               actions: [
-                playerController.builder(builder: (context, data) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
-                    child: TrackSearcher(
-                      tracks: album.tracks,
-                      coreController: coreController,
-                      playerController: playerController,
-                      getPlayableItemUsecase: getPlayableItemUsecase,
-                      libraryController: libraryController,
-                      downloaderController: downloaderController,
-                      getAlbumUsecase: getAlbumUsecase,
-                      getArtistUsecase: getArtistUsecase,
-                      getArtistTracksUsecase: getArtistTracksUsecase,
-                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                      getArtistSinglesUsecase: getArtistSinglesUsecase,
-                      clickAction: (track, controller) {
-                        late final List<MusilyTrack> queueToPlay;
-                        if (data.playingId == album.id) {
-                          queueToPlay = data.queue;
-                        } else {
-                          queueToPlay = [
-                            ...album.tracks.map(
-                                (element) => TrackModel.toMusilyTrack(element))
-                          ];
-                        }
+                playerController.builder(
+                  builder: (context, data) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
+                      child: TrackSearcher(
+                        tracks: album.tracks,
+                        coreController: coreController,
+                        playerController: playerController,
+                        getPlayableItemUsecase: getPlayableItemUsecase,
+                        libraryController: libraryController,
+                        downloaderController: downloaderController,
+                        getAlbumUsecase: getAlbumUsecase,
+                        getArtistUsecase: getArtistUsecase,
+                        getArtistTracksUsecase: getArtistTracksUsecase,
+                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        clickAction: (track, controller) {
+                          late final List<MusilyTrack> queueToPlay;
+                          if (data.playingId == album.id) {
+                            queueToPlay = data.queue;
+                          } else {
+                            queueToPlay = [
+                              ...album.tracks.map((element) =>
+                                  TrackModel.toMusilyTrack(element))
+                            ];
+                          }
 
-                        final startIndex = queueToPlay.indexWhere(
-                          (element) => element.hash == track.hash,
-                        );
+                          final startIndex = queueToPlay.indexWhere(
+                            (element) => element.hash == track.hash,
+                          );
 
-                        playerController.methods.playPlaylist(
-                          queueToPlay,
-                          album.id,
-                          startFrom: startIndex == -1 ? 0 : startIndex,
-                        );
-                        libraryController.methods.updateLastTimePlayed(
-                          album.id,
-                        );
-                        controller.closeView(controller.text);
-                      },
-                    ),
-                  );
-                }),
+                          playerController.methods.playPlaylist(
+                            queueToPlay,
+                            album.id,
+                            startFrom: startIndex == -1 ? 0 : startIndex,
+                          );
+                          libraryController.methods.updateLastTimePlayed(
+                            album.id,
+                          );
+                          controller.closeView(controller.text);
+                        },
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
             body: playerController.builder(
@@ -390,7 +393,8 @@ class AlbumPage extends StatelessWidget {
                       (track) => TrackTile(
                         getAlbumUsecase: getAlbumUsecase,
                         leading: isAlbumPlaying &&
-                                data.currentPlayingItem?.hash == track.hash
+                                data.currentPlayingItem?.hash == track.hash &&
+                                data.isPlaying
                             ? LoadingAnimationWidget.staggeredDotsWave(
                                 color: Theme.of(context).colorScheme.primary,
                                 size: 20,
@@ -448,10 +452,9 @@ class AlbumPage extends StatelessWidget {
                         playerController: playerController,
                       ),
                     ),
-                    if (data.currentPlayingItem != null)
-                      const SizedBox(
-                        height: 75,
-                      ),
+                    PlayerSizedBox(
+                      playerController: playerController,
+                    ),
                   ],
                 );
               },
