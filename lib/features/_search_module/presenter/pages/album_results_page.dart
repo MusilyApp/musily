@@ -14,6 +14,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlbumResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -98,7 +99,7 @@ class _AlbumResultsPageState extends State<AlbumResultsPage> {
                       color: Theme.of(context).iconTheme.color?.withOpacity(.5),
                     ),
                     Text(
-                      'Sem resultados',
+                      AppLocalizations.of(context)!.noResults,
                       style: TextStyle(
                         color:
                             Theme.of(context).iconTheme.color?.withOpacity(.5),

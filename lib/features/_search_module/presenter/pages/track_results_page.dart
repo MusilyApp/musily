@@ -13,6 +13,7 @@ import 'package:musily_player/presenter/controllers/downloader/downloader_contro
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrackResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -108,7 +109,7 @@ class _TrackResultsPageState extends State<TrackResultsPage> {
                     color: Theme.of(context).iconTheme.color?.withOpacity(.5),
                   ),
                   Text(
-                    'Sem resultados',
+                    AppLocalizations.of(context)!.noResults,
                     style: TextStyle(
                       color: Theme.of(context).iconTheme.color?.withOpacity(.5),
                     ),

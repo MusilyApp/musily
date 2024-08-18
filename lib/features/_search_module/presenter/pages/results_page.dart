@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
-import 'package:musily/core/utils/display_helper.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/_search_module/presenter/pages/album_results_page.dart';
@@ -209,17 +209,8 @@ class _ResultsPageState extends State<ResultsPage> {
                   ],
                 ),
               ),
-              widget.resultsPageController.playerController.builder(
-                builder: (context, data) {
-                  final displayHelper = DisplayHelper(context);
-                  if (data.currentPlayingItem != null &&
-                      !displayHelper.isDesktop) {
-                    return const SizedBox(
-                      height: 65,
-                    );
-                  }
-                  return Container();
-                },
+              PlayerSizedBox(
+                playerController: widget.playerController,
               ),
             ],
           ),

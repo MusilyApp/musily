@@ -16,6 +16,7 @@ import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArtistResultsPage extends StatefulWidget {
   final ResultsPageController resultsPageController;
@@ -94,7 +95,7 @@ class _ArtistResultsPageState extends State<ArtistResultsPage> {
                       color: Theme.of(context).iconTheme.color?.withOpacity(.5),
                     ),
                     Text(
-                      'Sem resultados',
+                      AppLocalizations.of(context)!.noResults,
                       style: TextStyle(
                         color:
                             Theme.of(context).iconTheme.color?.withOpacity(.5),
