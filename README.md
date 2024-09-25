@@ -6,19 +6,27 @@
 
 This repository contains the source code for Musily, a music app built with Flutter.
 
+### Download
+
+Get it on [Telegram](https://t.me/MusilyApp).
+
 ### Features
 
 - **User-friendly interface:** Musily has an intuitive and easy-to-use interface.
 - **Powerful search:** Easily find songs, artists, and albums using our advanced search bar.
 - **Offline playback:** Download your favorite songs and listen to them without an internet connection.
 - **Library management:** Create and edit custom playlists.
+
 ---
+
 ### Screenshots
 
-| ![Home Page](assets/screenshots/home.jpg) | ![Album Page](assets/screenshots/album.jpg) | ![Artist Page](assets/screenshots/artist.jpg) |
-|---|---|---|
-| ![Playlist Page](assets/screenshots/favorites.jpg) | ![Player](assets/screenshots/player.jpg) | ![Lyrics](assets/screenshots/lyrics.jpg) |
+| ![Home Page](assets/screenshots/home.jpg)          | ![Album Page](assets/screenshots/album.jpg) | ![Artist Page](assets/screenshots/artist.jpg) |
+| -------------------------------------------------- | ------------------------------------------- | --------------------------------------------- |
+| ![Playlist Page](assets/screenshots/favorites.jpg) | ![Player](assets/screenshots/player.jpg)    | ![Lyrics](assets/screenshots/lyrics.jpg)      |
+
 ---
+
 ### Technologies
 
 - **Programming Language:** Dart
@@ -27,14 +35,19 @@ This repository contains the source code for Musily, a music app built with Flut
 ### Installation
 
 1. **Clone this repository:**
+
 ```shell
 git clone https://github.com/MusilyApp/musily.git
 ```
+
 2. **Install dependencies:**
+
 ```shell
 flutter pub get
 ```
+
 3. **Run the app:**
+
 ```shell
 flutte run
 ```
