@@ -52,27 +52,29 @@ class DownloaderPage extends StatelessWidget {
               Expanded(
                 child: downloaderController.builder(builder: (context, data) {
                   if (data.queue.isEmpty) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.downloading_rounded,
-                          color: Theme.of(context)
-                              .iconTheme
-                              .color
-                              ?.withOpacity(.5),
-                          size: 50,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.noDownloads,
-                          style: TextStyle(
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.downloading_rounded,
                             color: Theme.of(context)
                                 .iconTheme
                                 .color
                                 ?.withOpacity(.5),
+                            size: 50,
                           ),
-                        ),
-                      ],
+                          Text(
+                            AppLocalizations.of(context)!.noDownloads,
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .iconTheme
+                                  .color
+                                  ?.withOpacity(.5),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   }
                   return DownloadManagerWidget(
