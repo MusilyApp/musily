@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -330,40 +331,41 @@ class _LibraryPageState extends State<LibraryPage> {
                       },
                     ),
                     if (itemList
-                        .where((item) =>
-                            item.id != 'favorites' || item.id != 'offline')
+                        .where(
+                          (item) =>
+                              !(['favorites', 'offline'].contains(item.id)),
+                        )
                         .isEmpty)
-                      widget.playerController.builder(builder: (context, data) {
-                        return SizedBox(
-                          width: MediaQuery.of(context).size.width * .9,
-                          height: MediaQuery.of(context).size.height -
-                              (data.currentPlayingItem != null ? 373 : 305),
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.library_music_rounded,
-                                  size: 70,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .outline
-                                      .withOpacity(.9),
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.emptyLibrary,
-                                  style: TextStyle(
+                      widget.playerController.builder(
+                        builder: (context, data) {
+                          return Expanded(
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.library_music_rounded,
+                                    size: 70,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .outline
                                         .withOpacity(.9),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    AppLocalizations.of(context)!.emptyLibrary,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .outline
+                                          .withOpacity(.9),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      })
+                          );
+                        },
+                      )
                     else
                       Expanded(
                         child: ListView(
@@ -453,15 +455,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                     },
                                   ),
                                 ),
-                            widget.playerController.builder(
-                              builder: (context, data) {
-                                if (data.isPlaying) {
-                                  return const SizedBox(
-                                    height: 70,
-                                  );
-                                }
-                                return const SizedBox();
-                              },
+                            PlayerSizedBox(
+                              playerController: widget.playerController,
                             ),
                           ],
                         ),
