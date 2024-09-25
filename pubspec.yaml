@@ -1,10 +1,10 @@
 name: musily
 description: "A great music app."
-publish_to: 'none'
-version: 2.1.0
+publish_to: "none"
+version: 2.1.1
 
 environment:
-  sdk: '>=3.4.1 <4.0.0'
+  sdk: ">=3.4.1 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -54,21 +54,20 @@ flutter:
     - assets/icons/
 
 flutter_native_splash:
-  color: '#ffffff'
+  color: "#ffffff"
   image: assets/icons/ic_launcher_splash.png
-  color_dark: '#151218'
+  color_dark: "#151218"
   image_dark: assets/icons/ic_launcher_splash_dark.png
 
   android_12:
     image: assets/icons/ic_launcher_splash.png
-    icon_background_color: '#ffffff'
+    icon_background_color: "#ffffff"
     image_dark: assets/icons/ic_launcher_splash_dark.png
-    icon_background_color_dark: '#151218'
+    icon_background_color_dark: "#151218"
 
 flutter_launcher_icons:
-  android: 'launcher_icon'
-  adaptive_icon_background: '#e8def7'
-  adaptive_icon_foreground: 'assets/icons/ic_launcher_foreground.png'
-  adaptive_icon_round: 'assets/icons/ic_launcher_round.png'
-  image_path: 'assets/icons/ic_launcher.png'
-
+  android: "launcher_icon"
+  adaptive_icon_background: "#e8def7"
+  adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
+  adaptive_icon_round: "assets/icons/ic_launcher_round.png"
+  image_path: "assets/icons/ic_launcher.png"
