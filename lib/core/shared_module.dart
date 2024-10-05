@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/core/data/database/library_database.dart';
 import 'package:musily/core/data/usecases/get_playable_item_usecase_impl.dart';
@@ -13,6 +12,8 @@ import 'package:musily/features/_library_module/data/usecases/get_library_items_
 import 'package:musily/features/_library_module/data/usecases/get_library_offset_limit_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/update_library_item_usecase_impl.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/_search_module/data/datasources/search_datasource_impl.dart';
+import 'package:musily/features/_search_module/data/usecases/get_search_suggestions_usecase_impl.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/_sections_module/data/datasources/sections_datasource_impl.dart';
 import 'package:musily/features/_sections_module/data/repositories/sections_repository_impl.dart';
@@ -31,10 +32,12 @@ import 'package:musily/features/artist/data/usecases/get_artist_tracks_usecase_i
 import 'package:musily/features/artist/data/usecases/get_artist_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artists_usecase_impl.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
+import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 import 'package:musily/features/player/data/datasources/player_datasource_impl.dart';
 import 'package:musily/features/player/data/repositories/player_repository_impl.dart';
 import 'package:musily/features/player/data/usecases/get_smart_queue_usecase_impl.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
+import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/domain/entities/player_localization.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart';
@@ -50,6 +53,8 @@ import 'package:musily/features/track/data/usecases/get_tracks_usecase_impl.dart
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../features/_search_module/data/repositories/search_repository_impl.dart';
 
 class SharedModule extends Module {
   @override
@@ -178,18 +183,8 @@ class SharedModule extends Module {
           );
         },
         trackOptionsWidget: (context, track) {
-          final displayHelper = DisplayHelper(context);
-          return TrackOptionsBuilder(
+          return TrackOptions(
             track: TrackModel.fromMusilyTrack(track),
-            builder: (context, showOptions) {
-              return IconButton(
-                onPressed: showOptions,
-                icon: Icon(
-                  Icons.more_vert,
-                  size: displayHelper.isDesktop ? 20 : null,
-                ),
-              );
-            },
             playerController: i.get<PlayerController>(),
             getAlbumUsecase: i.get<GetAlbumUsecaseImpl>(),
             downloaderController: i.get<DownloaderController>(),
@@ -200,6 +195,10 @@ class SharedModule extends Module {
             getArtistTracksUsecase: i.get<GetArtistTracksUsecaseImpl>(),
             getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
             coreController: i.get<CoreController>(),
+            hideOptions: const [
+              TrackTileOptions.seeAlbum,
+              TrackTileOptions.seeArtist,
+            ],
           );
         },
       ),
@@ -386,6 +385,17 @@ class SharedModule extends Module {
         playerController: i.get<PlayerController>(),
       ),
     );
+    i.addLazySingleton(
+      () => GetSearchSuggestionsUsecaseImpl(
+        searchRepository: i.get<SearchRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(SearchDatasourceImpl.new);
+    i.addLazySingleton(
+      () => SearchRepositoryImpl(
+        searchDatasource: i.get<SearchDatasourceImpl>(),
+      ),
+    );
 
     // Playlist dependencies
     i.addLazySingleton(
@@ -413,6 +423,14 @@ class SharedModule extends Module {
           playerController.updateData(playerController.data);
         },
       ),
+      config: BindConfig(
+        onDispose: (value) => value.dispose(),
+      ),
+    );
+
+    // Auth dependencies
+    i.addLazySingleton<AuthController>(
+      AuthController.new,
       config: BindConfig(
         onDispose: (value) => value.dispose(),
       ),

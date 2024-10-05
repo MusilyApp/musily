@@ -1,9 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/core/data/usecases/get_playable_item_usecase_impl.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/shared_module.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/_search_module/data/datasources/search_datasource_impl.dart';
-import 'package:musily/features/_search_module/data/repositories/search_repository_impl.dart';
 import 'package:musily/features/_search_module/data/usecases/get_search_suggestions_usecase_impl.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/_search_module/presenter/pages/search_page.dart';
@@ -17,20 +16,7 @@ import 'package:musily_player/presenter/controllers/player/player_controller.dar
 
 class SearchModule extends Module {
   @override
-  void binds(Injector i) {
-    super.binds(i);
-    i.addLazySingleton(SearchDatasourceImpl.new);
-    i.addLazySingleton(
-      () => SearchRepositoryImpl(
-        searchDatasource: i.get<SearchDatasourceImpl>(),
-      ),
-    );
-    i.addLazySingleton(
-      () => GetSearchSuggestionsUsecaseImpl(
-        searchRepository: i.get<SearchRepositoryImpl>(),
-      ),
-    );
-  }
+  List<Module> get imports => [SharedModule()];
 
   @override
   void routes(RouteManager r) {
