@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Musily
+Comment=A great music app.
+Categories=AudioVideo;
+
+Icon=org.app.musily
+Exec=musily
+Terminal=false
+StartupWMClass=musily

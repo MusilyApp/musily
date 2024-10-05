@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Generator for metainfo & .desktop files: 
+    https://www.freedesktop.org/software/appstream/metainfocreator/#/
+-->
+<component type="desktop-application">
+  <id>org.app.musily</id>
+  <name>Musily</name>
+  <summary>A great music app.</summary>
+  <developer_name>Felipe Yslaoker</developer_name>
+  <url type="homepage">https://github.com/MusilyApp/musily</url>
+  <project_license>GPL-3.0-only</project_license>
+  <license>GPL-3.0-only</license>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <description>
+    <p>A great music app.</p>
+    <p>Features</p>
+    <ul>
+      <li>User-friendly interface: Musily has an intuitive and easy-to-use interface.</li>
+      <li>Powerful search: Easily find songs, artists, and albums using our advanced search bar.</li>
+      <li>Offline playback: Download your favorite songs and listen to them without an internet connection.</li>
+      <li>Comets!</li>
+      <li>Dinosaurs!</li>
+      <li>Library management: Create and edit custom playlists.</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">org.app.musily.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/FelipeYslaoker/musily/releases/assets/screenshots/linux_favorites.png</image>
+      <image>https://raw.githubusercontent.com/FelipeYslaoker/musily/releases/assets/screenshots/linux_downloads.png</image>
+      <image>https://raw.githubusercontent.com/FelipeYslaoker/musily/releases/assets/screenshots/linux_playlist.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1">
+    <rating value="teen" />
+  </content_rating>
+  <releases>
+    <release version="2.1.0" date="2024-08-26">
+      <changelog>
+        <h2>2.1.0</h2>
+
+        <h3>Fixes</h3>
+        <item>Resolved an issue where certain search terms resulted in empty search results.</item>
+        <item>Addressed a problem where some artists couldn't be found.</item>
+        <item>Fixed an issue where some albums were not being found.</item>
+        <item>Resolved a bug where downloaded playlists were deleted when the download button was pressed.</item>
+
+        <h3>Localization</h3>
+        <item>Added Ukrainian language support.</item>
+
+        <h3>Improvements</h3>
+        <item>Enhanced the Magic Queue feature to better discover related tracks.</item>
+
+        <h3>Features</h3>
+        <item>Introduced a new settings screen for managing language preferences and switching between dark and light themes.</item>
+
+        <h3>Minor Improvements</h3>
+        <item>Various minor improvements and refinements.</item>
+      </changelog>
+    </release>
+  </releases>
+</component>
