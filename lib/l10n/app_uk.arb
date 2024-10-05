@@ -72,5 +72,16 @@
   "noDownloads": "Немає завантажень",
   "noResults": "Немає результатів",
   "downloadCompleted": "Завантаження завершено",
-  "selectALanguage": "Виберіть мову"
+  "selectALanguage": "Виберіть мову",
+  "account": "Акаунт",
+  "login": "Увійти",
+  "email": "Ел. пошта",
+  "password": "Пароль",
+  "pleaseEnterYourEmail": "Будь ласка, введіть вашу ел. пошту",
+  "pleaseEnterAValidEmail": "Будь ласка, введіть дійсну ел. пошту",
+  "pleaseEnterYourPassword": "Будь ласка, введіть ваш пароль",
+  "passwordMustBeAtLeast8Characters": "Пароль має бути щонайменше 8 символів",
+  "createAccount": "Створити обліковий запис",
+  "name": "Ім''я",
+  "pleaseEnterYourName": "Будь ласка, введіть ваше ім''я"
 }

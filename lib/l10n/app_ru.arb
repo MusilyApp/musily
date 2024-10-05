@@ -72,5 +72,16 @@
   "noDownloads": "Нет загрузок",
   "noResults": "Нет результатов",
   "downloadCompleted": "Загрузка завершена",
-  "selectALanguage": "Выберите язык"
+  "selectALanguage": "Выберите язык",
+  "account": "Аккаунт",
+  "login": "Войти",
+  "email": "Эл. почта",
+  "password": "Пароль",
+  "pleaseEnterYourEmail": "Пожалуйста, введите вашу эл. почту",
+  "pleaseEnterAValidEmail": "Пожалуйста, введите действительную эл. почту",
+  "pleaseEnterYourPassword": "Пожалуйста, введите ваш пароль",
+  "passwordMustBeAtLeast8Characters": "Пароль должен содержать не менее 8 символов",
+  "createAccount": "Создать аккаунт",
+  "name": "Имя",
+  "pleaseEnterYourName": "Пожалуйста, введите ваше имя"
 }

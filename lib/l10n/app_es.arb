@@ -72,5 +72,16 @@
   "noDownloads": "No hay descargas",
   "noResults": "Sin resultados",
   "downloadCompleted": "Descarga completada",
-  "selectALanguage": "Seleccione un idioma"
+  "selectALanguage": "Seleccione un idioma",
+  "account": "Cuenta",
+  "login": "Iniciar sesión",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "pleaseEnterYourEmail": "Por favor, ingrese su correo electrónico",
+  "pleaseEnterAValidEmail": "Por favor, ingrese un correo electrónico válido",
+  "pleaseEnterYourPassword": "Por favor, ingrese su contraseña",
+  "passwordMustBeAtLeast8Characters": "La contraseña debe tener al menos 8 caracteres",
+  "createAccount": "Crear cuenta",
+  "name": "Nombre",
+  "pleaseEnterYourName": "Por favor, ingrese su nombre"
 }
