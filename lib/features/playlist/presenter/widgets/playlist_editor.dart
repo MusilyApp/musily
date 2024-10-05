@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,7 +45,7 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
             key: _formKey,
             child: AlertDialog(
               title: Text(AppLocalizations.of(context)!.editPlaylist),
-              content: TextFormField(
+              content: LyTextField(
                 controller: playlistNameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -51,20 +53,16 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: AppLocalizations.of(context)!.playlistName,
-                ),
               ),
               actions: [
-                FilledButton(
+                LyFilledButton(
                   onPressed: () {
                     Navigator.pop(context);
                     playlistNameController.text = widget.playlistEntity.title;
                   },
                   child: const Text('Cancelar'),
                 ),
-                FilledButton(
+                LyFilledButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       widget.libraryController.methods.updatePlaylistName(

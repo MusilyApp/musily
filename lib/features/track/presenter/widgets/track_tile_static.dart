@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
@@ -22,7 +23,7 @@ class _TrackTileStaticState extends State<TrackTileStatic> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return LyListTile(
       title: InfinityMarquee(
         child: Text(
           widget.track.title,

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/_library_module/presenter/widgets/playlist_creator.dart';
-import 'package:musily/features/_library_module/presenter/widgets/playlist_tile.dart';
+import 'package:musily/features/playlist/presenter/widgets/playlist_creator.dart';
+import 'package:musily/features/playlist/presenter/widgets/playlist_tile.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/widgets/album_tile.dart';
@@ -128,6 +129,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   actions: [
                     PlaylistCreator(
                       widget.libraryController,
+                      coreController: widget.coreController,
                       builder: (context, showCreator) => IconButton(
                         onPressed: showCreator,
                         icon: const Icon(
@@ -149,7 +151,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         return Column(
                           children: [
                             if (favoritesPlaylist != null)
-                              ListTile(
+                              LyListTile(
                                 onTap: () =>
                                     widget.coreController.methods.pushWidget(
                                   favoritesPlaylist.value.tracks.isNotEmpty
@@ -216,7 +218,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                 ),
                               ),
                             if (showOffline)
-                              ListTile(
+                              LyListTile(
                                 onTap: () =>
                                     widget.coreController.methods.pushWidget(
                                   offlinePlaylist.value.tracks.isNotEmpty

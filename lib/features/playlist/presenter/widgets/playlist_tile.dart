@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/_library_module/presenter/widgets/playlist_tile_thumb.dart';
+import 'package:musily/features/playlist/presenter/widgets/playlist_tile_thumb.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/playlist/presenter/widgets/playlist_options.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
-import 'package:musily/features/playlist/presenter/widgets/playlist_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistTile extends StatelessWidget {
@@ -50,7 +51,8 @@ class PlaylistTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return LyListTile(
+      // focusColor: Colors.transparent,
       onTap: () {
         if (customClickAction != null) {
           customClickAction!.call();
@@ -97,8 +99,8 @@ class PlaylistTile extends StatelessWidget {
       subtitle: Text(
         '${AppLocalizations.of(context)!.playlist} · ${playlist.trackCount} ${AppLocalizations.of(context)!.songs}',
       ),
-      trailing: PlaylistOptionsBuilder(
-        playlistEntity: playlist,
+      trailing: PlaylistOptions(
+        playlist: playlist,
         coreController: coreController,
         playerController: playerController,
         getAlbumUsecase: getAlbumUsecase,
@@ -106,12 +108,6 @@ class PlaylistTile extends StatelessWidget {
         getPlayableItemUsecase: getPlayableItemUsecase,
         libraryController: libraryController,
         getPlaylistUsecase: getPlaylistUsecase,
-        builder: (context, showOptions) => IconButton(
-          onPressed: showOptions,
-          icon: const Icon(
-            Icons.more_vert_rounded,
-          ),
-        ),
       ),
     );
   }

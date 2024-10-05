@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/presenter/widgets/app_input_base.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
+import 'package:musily/core/presenter/ui/text_fields/ly_dropdown_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
@@ -46,78 +47,68 @@ class _AppSectionState extends State<AppSection> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppInputBase(
-                  labelText: AppLocalizations.of(context)!.language,
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: AppLocalizations.of(context)!.selectALanguage,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ),
-                    ),
-                    value: data.locale?.languageCode,
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'en',
-                        child: Text('English'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'pt',
-                        child: Text('Português'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'ru',
-                        child: Text('Русский'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'es',
-                        child: Text('Español'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'uk',
-                        child: Text('Українська'),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      widget.controller.methods.changeLanguage(value);
-                    },
-                  ),
+                const SizedBox(
+                  height: 8,
                 ),
-                AppInputBase(
+                LyDropdownButton(
+                  density: LyDensity.dense,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'en',
+                      child: Text('English'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'pt',
+                      child: Text('Português'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'ru',
+                      child: Text('Русский'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'es',
+                      child: Text('Español'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'uk',
+                      child: Text('Українська'),
+                    ),
+                  ],
+                  value: data.locale?.languageCode,
+                  onChanged: (value) {
+                    widget.controller.methods.changeLanguage(value);
+                  },
+                  labelText: AppLocalizations.of(context)!.language,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                LyDropdownButton<ThemeMode>(
                   labelText: AppLocalizations.of(context)!.theme,
-                  child: DropdownButtonFormField<ThemeMode>(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
+                  value: data.themeMode ?? ThemeMode.system,
+                  items: [
+                    DropdownMenuItem(
+                      value: ThemeMode.dark,
+                      child: Text(
+                        AppLocalizations.of(context)!.dark,
                       ),
                     ),
-                    value: data.themeMode ?? ThemeMode.system,
-                    items: [
-                      DropdownMenuItem(
-                        value: ThemeMode.dark,
-                        child: Text(
-                          AppLocalizations.of(context)!.dark,
-                        ),
+                    DropdownMenuItem(
+                      value: ThemeMode.light,
+                      child: Text(
+                        AppLocalizations.of(context)!.light,
                       ),
-                      DropdownMenuItem(
-                        value: ThemeMode.light,
-                        child: Text(
-                          AppLocalizations.of(context)!.light,
-                        ),
+                    ),
+                    DropdownMenuItem(
+                      value: ThemeMode.system,
+                      child: Text(
+                        AppLocalizations.of(context)!.system,
                       ),
-                      DropdownMenuItem(
-                        value: ThemeMode.system,
-                        child: Text(
-                          AppLocalizations.of(context)!.system,
-                        ),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      widget.controller.methods.changeTheme(value);
-                    },
-                  ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    widget.controller.methods.changeTheme(value);
+                  },
                 ),
               ],
             ),

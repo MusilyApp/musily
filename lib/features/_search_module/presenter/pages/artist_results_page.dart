@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
@@ -74,7 +75,7 @@ class _ArtistResultsPageState extends State<ArtistResultsPage> {
               return Skeletonizer(
                 child: ListView.builder(
                   itemCount: 15,
-                  itemBuilder: (context, index) => ListTile(
+                  itemBuilder: (context, index) => LyListTile(
                     leading: const Icon(
                       Icons.music_note,
                     ),
@@ -109,7 +110,7 @@ class _ArtistResultsPageState extends State<ArtistResultsPage> {
               itemCount: data.artistsResult.items.length,
               itemBuilder: (context, index) {
                 final artist = data.artistsResult.items[index];
-                return ListTile(
+                return LyListTile(
                   onTap: () => Navigator.push(
                     context,
                     DownupRouter(

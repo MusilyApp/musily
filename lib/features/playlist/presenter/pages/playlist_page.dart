@@ -2,8 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musily/core/domain/entities/app_menu_entry.dart';
+import 'package:musily/core/domain/entities/identifiable.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/presenter/widgets/image_collection.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
@@ -14,13 +18,14 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
+import 'package:musily/features/playlist/presenter/widgets/playlist_editor.dart';
 import 'package:musily/features/track/presenter/widgets/track_searcher.dart';
+import 'package:musily_player/core/utils/display_helper.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
-import 'package:musily/features/playlist/presenter/widgets/playlist_editor.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_options.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
@@ -206,7 +211,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                             .where((e) => e.status == e.downloadCompleted)
                             .length ==
                         widget.playlist.tracks.length;
-                    return IconButton.filledTonal(
+                    return LyTonalIconButton(
                       onPressed: widget.playlist.id == 'offline'
                           ? null
                           : () {
@@ -227,11 +232,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                 );
                               }
                             },
-                      style: const ButtonStyle(
-                        fixedSize: WidgetStatePropertyAll(
-                          Size(50, 50),
-                        ),
-                      ),
+                      fixedSize: const Size(55, 55),
                       icon: Icon(
                         isPlaylistDownloading
                             ? Icons.close
@@ -250,16 +251,12 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     widget.playlist.title = name;
                   },
                   builder: (context, showEditor) {
-                    return IconButton.filledTonal(
+                    return LyTonalIconButton(
                       onPressed: widget.playlist.id == 'favorites' ||
                               widget.playlist.id == 'offline'
                           ? null
                           : showEditor,
-                      style: const ButtonStyle(
-                        fixedSize: WidgetStatePropertyAll(
-                          Size(50, 50),
-                        ),
-                      ),
+                      fixedSize: const Size(55, 55),
                       icon: const Icon(
                         Icons.edit_rounded,
                       ),
@@ -278,7 +275,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton.filled(
+                        LyFilledIconButton(
                           onPressed: () async {
                             if (isPlaylistPlaying) {
                               if (data.isPlaying) {
@@ -305,12 +302,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
                               );
                             }
                           },
-                          style: const ButtonStyle(
-                            iconSize: WidgetStatePropertyAll(40),
-                            fixedSize: WidgetStatePropertyAll(
-                              Size(60, 60),
-                            ),
-                          ),
+                          iconSize: 40,
+                          fixedSize: const Size(60, 60),
                           icon: Icon(
                             isPlaylistPlaying && data.isPlaying
                                 ? Icons.pause_rounded
@@ -320,7 +313,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                         const SizedBox(
                           width: 8,
                         ),
-                        IconButton.filledTonal(
+                        LyTonalIconButton(
                           onPressed: () async {
                             final random = Random();
                             final randomIndex = random.nextInt(
@@ -348,11 +341,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                               widget.playlist.id,
                             );
                           },
-                          style: const ButtonStyle(
-                            fixedSize: WidgetStatePropertyAll(
-                              Size(50, 50),
-                            ),
-                          ),
+                          fixedSize: const Size(55, 55),
                           icon: const Icon(
                             Icons.shuffle_rounded,
                           ),
@@ -364,29 +353,16 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     );
                   },
                 ),
-                PlaylistOptionsBuilder(
-                  playlistEntity: widget.playlist,
+                PlaylistOptions(
+                  playlist: widget.playlist,
                   coreController: widget.coreController,
                   playerController: widget.playerController,
                   getAlbumUsecase: widget.getAlbumUsecase,
+                  getPlaylistUsecase: widget.getPlaylistUsecase,
                   downloaderController: widget.downloaderController,
                   getPlayableItemUsecase: widget.getPlayableItemUsecase,
                   libraryController: widget.libraryController,
-                  getPlaylistUsecase: widget.getPlaylistUsecase,
-                  onPlaylistDeleted: () => Navigator.pop(context),
-                  builder: (context, showOptions) {
-                    return IconButton.filledTonal(
-                      onPressed: showOptions,
-                      style: const ButtonStyle(
-                        fixedSize: WidgetStatePropertyAll(
-                          Size(50, 50),
-                        ),
-                      ),
-                      icon: const Icon(
-                        Icons.more_vert_outlined,
-                      ),
-                    );
-                  },
+                  tonal: true,
                 ),
               ],
             ),
@@ -394,98 +370,116 @@ class _PlaylistPageState extends State<PlaylistPage> {
               height: 16,
             ),
             ...widget.playlist.tracks.map(
-              (track) =>
-                  widget.playerController.builder(builder: (context, data) {
-                return TrackTile(
-                  track: track,
-                  getAlbumUsecase: widget.getAlbumUsecase,
-                  coreController: widget.coreController,
-                  playerController: widget.playerController,
-                  downloaderController: widget.downloaderController,
-                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                  getArtistUsecase: widget.getArtistUsecase,
-                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                  libraryController: widget.libraryController,
-                  leading: data.playingId == widget.playlist.id &&
-                          data.currentPlayingItem?.hash == track.hash &&
-                          data.isPlaying
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                          ),
-                          child: LoadingAnimationWidget.staggeredDotsWave(
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
-                          ),
-                        )
-                      : null,
-                  customAction: () {
-                    late final List<MusilyTrack> queueToPlay;
-                    if (data.playingId == widget.playlist.id) {
-                      queueToPlay = data.queue;
-                    } else {
-                      queueToPlay = [
-                        ...widget.playlist.tracks
-                            .map((element) => TrackModel.toMusilyTrack(element))
-                      ];
-                    }
+              (track) => widget.playerController.builder(
+                  builder: (context, playerData) {
+                return widget.libraryController.builder(
+                    builder: (context, libraryData) {
+                  return TrackTile(
+                    track: track,
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    coreController: widget.coreController,
+                    playerController: widget.playerController,
+                    downloaderController: widget.downloaderController,
+                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                    getArtistUsecase: widget.getArtistUsecase,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    libraryController: widget.libraryController,
+                    leading: playerData.playingId == widget.playlist.id &&
+                            playerData.currentPlayingItem?.hash == track.hash &&
+                            playerData.isPlaying
+                        ? SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                              ),
+                              child: LoadingAnimationWidget.staggeredDotsWave(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 20,
+                              ),
+                            ),
+                          )
+                        : null,
+                    customAction: () {
+                      late final List<MusilyTrack> queueToPlay;
+                      if (playerData.playingId == widget.playlist.id) {
+                        queueToPlay = playerData.queue;
+                      } else {
+                        queueToPlay = [
+                          ...widget.playlist.tracks.map(
+                              (element) => TrackModel.toMusilyTrack(element))
+                        ];
+                      }
 
-                    final startIndex = queueToPlay.indexWhere(
-                      (element) => element.hash == track.hash,
-                    );
+                      final startIndex = queueToPlay.indexWhere(
+                        (element) => element.hash == track.hash,
+                      );
 
-                    widget.playerController.methods.playPlaylist(
-                      queueToPlay,
-                      widget.playlist.id,
-                      startFrom: startIndex == -1 ? 0 : startIndex,
-                    );
-                    widget.libraryController.methods.updateLastTimePlayed(
-                      widget.playlist.id,
-                    );
-                  },
-                  customOptions: (context) => [
-                    if (widget.playlist.id != 'offline')
-                      ListTile(
-                        onTap: () {
-                          if (widget.playerController.data.currentPlayingItem
-                                  ?.hash ==
-                              track.hash) {
-                            widget.playerController.updateData(
-                              widget.playerController.data
-                                  .copyWith(playingId: ''),
-                            );
-                          }
-                          widget.libraryController.methods.removeFromPlaylist(
-                            widget.playlist.id,
-                            track,
-                          );
-                          setState(() {
-                            if (widget.playlist.tracks
-                                .where(
-                                  (element) => element.hash == track.hash,
-                                )
-                                .isNotEmpty) {
-                              widget.playlist.tracks.removeWhere(
-                                (element) => element.hash == track.hash,
+                      widget.playerController.methods.playPlaylist(
+                        queueToPlay,
+                        widget.playlist.id,
+                        startFrom: startIndex == -1 ? 0 : startIndex,
+                      );
+                      widget.libraryController.methods.updateLastTimePlayed(
+                        widget.playlist.id,
+                      );
+                    },
+                    customOptions: (context) {
+                      final isInLibrary = libraryData.items
+                          .where((element) =>
+                              (element.value as Identifiable).id ==
+                              widget.playlist.id)
+                          .isNotEmpty;
+                      return [
+                        if (widget.playlist.id != 'offline' && isInLibrary)
+                          AppMenuEntry(
+                            onTap: () {
+                              if (widget.playerController.data
+                                      .currentPlayingItem?.hash ==
+                                  track.hash) {
+                                widget.playerController.updateData(
+                                  widget.playerController.data
+                                      .copyWith(playingId: ''),
+                                );
+                              }
+                              widget.libraryController.methods
+                                  .removeFromPlaylist(
+                                widget.playlist.id,
+                                track,
                               );
-                            }
-                          });
-                          Navigator.pop(context);
-                        },
-                        title: Text(
-                            AppLocalizations.of(context)!.removeFromPlaylist),
-                        leading: Icon(
-                          Icons.delete_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
-                        ),
-                      ),
-                  ],
-                );
+                              setState(() {
+                                if (widget.playlist.tracks
+                                    .where(
+                                      (element) => element.hash == track.hash,
+                                    )
+                                    .isNotEmpty) {
+                                  widget.playlist.tracks.removeWhere(
+                                    (element) => element.hash == track.hash,
+                                  );
+                                }
+                              });
+                              if (DisplayHelper(context).isDesktop) {
+                                return;
+                              }
+                              Navigator.pop(context);
+                            },
+                            title: Text(AppLocalizations.of(context)!
+                                .removeFromPlaylist),
+                            leading: Icon(
+                              Icons.delete_rounded,
+                              color: Theme.of(context)
+                                  .buttonTheme
+                                  .colorScheme
+                                  ?.primary,
+                            ),
+                          ),
+                      ];
+                    },
+                  );
+                });
               }),
             ),
             PlayerSizedBox(

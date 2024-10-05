@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -38,7 +40,7 @@ class TrackTile extends StatefulWidget {
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final Widget? leading;
   final void Function()? customAction;
-  final List<Widget> Function(BuildContext context)? customOptions;
+  final List<AppMenuEntry> Function(BuildContext context)? customOptions;
   final List<TrackTileOptions>? hideOptions;
   const TrackTile({
     required this.track,
@@ -72,7 +74,9 @@ class _TrackTileState extends State<TrackTile> {
   @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(builder: (context, data) {
-      return ListTile(
+      return LyListTile(
+        // focusColor: Colors.transparent,
+        minTileHeight: 60,
         onTap: widget.customAction ??
             () async {
               if (data.playingId == widget.track.hash) {
@@ -101,7 +105,7 @@ class _TrackTileState extends State<TrackTile> {
               child: Builder(
                 builder: (context) {
                   if (widget.track.lowResImg != null &&
-                      widget.track.highResImg!.isNotEmpty) {
+                      widget.track.lowResImg!.isNotEmpty) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: AppImage(
@@ -137,7 +141,7 @@ class _TrackTileState extends State<TrackTile> {
                 widget.track,
               ),
             ),
-            TrackOptionsBuilder(
+            TrackOptions(
               hideOptions: widget.hideOptions,
               coreController: widget.coreController,
               track: widget.track,
@@ -151,17 +155,6 @@ class _TrackTileState extends State<TrackTile> {
               getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
               getArtistTracksUsecase: widget.getArtistTracksUsecase,
               getArtistUsecase: widget.getArtistUsecase,
-              builder: (
-                BuildContext context,
-                void Function()? showOptions,
-              ) {
-                return IconButton(
-                  onPressed: showOptions,
-                  icon: const Icon(
-                    Icons.more_vert_outlined,
-                  ),
-                );
-              },
             ),
           ],
         ),

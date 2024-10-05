@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
@@ -24,7 +26,7 @@ import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily_player/musily_entities.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AlbumPage extends StatelessWidget {
+class AlbumPage extends StatefulWidget {
   final CoreController coreController;
   final PlayerController playerController;
   final AlbumEntity album;
@@ -53,40 +55,57 @@ class AlbumPage extends StatelessWidget {
   });
 
   @override
+  State<AlbumPage> createState() => _AlbumPageState();
+}
+
+class _AlbumPageState extends State<AlbumPage> {
+  final ScrollController scrollController = ScrollController();
+
+  void scrollToTop() {
+    if (scrollController.offset > 0) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return coreController.builder(
+    return widget.coreController.builder(
       builder: (context, data) {
         return CoreBaseWidget(
-          coreController: coreController,
+          coreController: widget.coreController,
           child: Scaffold(
             appBar: AppBar(
-              title: Text(album.artist.name),
+              title: Text(widget.album.artist.name),
               actions: [
-                playerController.builder(
+                widget.playerController.builder(
                   builder: (context, data) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
                       ),
                       child: TrackSearcher(
-                        tracks: album.tracks,
-                        coreController: coreController,
-                        playerController: playerController,
-                        getPlayableItemUsecase: getPlayableItemUsecase,
-                        libraryController: libraryController,
-                        downloaderController: downloaderController,
-                        getAlbumUsecase: getAlbumUsecase,
-                        getArtistUsecase: getArtistUsecase,
-                        getArtistTracksUsecase: getArtistTracksUsecase,
-                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                        getArtistSinglesUsecase: getArtistSinglesUsecase,
+                        tracks: widget.album.tracks,
+                        coreController: widget.coreController,
+                        playerController: widget.playerController,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        libraryController: widget.libraryController,
+                        downloaderController: widget.downloaderController,
+                        getAlbumUsecase: widget.getAlbumUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                         clickAction: (track, controller) {
                           late final List<MusilyTrack> queueToPlay;
-                          if (data.playingId == album.id) {
+                          if (data.playingId == widget.album.id) {
                             queueToPlay = data.queue;
                           } else {
                             queueToPlay = [
-                              ...album.tracks.map((element) =>
+                              ...widget.album.tracks.map((element) =>
                                   TrackModel.toMusilyTrack(element))
                             ];
                           }
@@ -95,13 +114,13 @@ class AlbumPage extends StatelessWidget {
                             (element) => element.hash == track.hash,
                           );
 
-                          playerController.methods.playPlaylist(
+                          widget.playerController.methods.playPlaylist(
                             queueToPlay,
-                            album.id,
+                            widget.album.id,
                             startFrom: startIndex == -1 ? 0 : startIndex,
                           );
-                          libraryController.methods.updateLastTimePlayed(
-                            album.id,
+                          widget.libraryController.methods.updateLastTimePlayed(
+                            widget.album.id,
                           );
                           controller.closeView(controller.text);
                         },
@@ -111,13 +130,14 @@ class AlbumPage extends StatelessWidget {
                 ),
               ],
             ),
-            body: playerController.builder(
+            body: widget.playerController.builder(
               builder: (context, data) {
-                final isAlbumPlaying = data.playingId == album.id;
+                final isAlbumPlaying = data.playingId == widget.album.id;
                 return ListView(
+                  controller: scrollController,
                   children: [
-                    if (album.highResImg != null &&
-                        album.highResImg!.isNotEmpty) ...[
+                    if (widget.album.highResImg != null &&
+                        widget.album.highResImg!.isNotEmpty) ...[
                       const SizedBox(
                         height: 50,
                       ),
@@ -129,7 +149,7 @@ class AlbumPage extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: AppImage(
-                                album.highResImg!,
+                                widget.album.highResImg!,
                                 width: 250,
                               ),
                             ),
@@ -149,7 +169,7 @@ class AlbumPage extends StatelessWidget {
                           child: SizedBox(
                             width: 200,
                             child: Text(
-                              album.title,
+                              widget.album.title,
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -170,7 +190,7 @@ class AlbumPage extends StatelessWidget {
                             bottom: 16,
                           ),
                           child: Text(
-                            album.year.toString(),
+                            widget.album.year.toString(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -184,17 +204,17 @@ class AlbumPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        downloaderController.builder(
+                        widget.downloaderController.builder(
                           builder: (context, data) {
                             final isAlbumDownloading = data.queue
                                     .where(
                                       (e) => e.status == e.downloadDownloading,
                                     )
                                     .isNotEmpty &&
-                                data.downloadingKey == album.id;
+                                data.downloadingKey == widget.album.id;
                             final isDone = data.queue
                                     .where(
-                                      (e) => album.tracks
+                                      (e) => widget.album.tracks
                                           .where((item) =>
                                               item.hash == e.track.hash)
                                           .isNotEmpty,
@@ -202,30 +222,30 @@ class AlbumPage extends StatelessWidget {
                                     .where(
                                         (e) => e.status == e.downloadCompleted)
                                     .length ==
-                                album.tracks.length;
-                            return IconButton.filledTonal(
+                                widget.album.tracks.length;
+                            return LyTonalIconButton(
+                              onFocus: () {
+                                scrollToTop();
+                              },
                               onPressed: () {
                                 if (isDone) {
                                   return;
                                 }
                                 if (isAlbumDownloading) {
-                                  libraryController.methods
+                                  widget.libraryController.methods
                                       .cancelCollectionDownload(
-                                    album.tracks,
-                                    album.id,
+                                    widget.album.tracks,
+                                    widget.album.id,
                                   );
                                 } else {
-                                  libraryController.methods.downloadCollection(
-                                    album.tracks,
-                                    album.id,
+                                  widget.libraryController.methods
+                                      .downloadCollection(
+                                    widget.album.tracks,
+                                    widget.album.id,
                                   );
                                 }
                               },
-                              style: const ButtonStyle(
-                                fixedSize: WidgetStatePropertyAll(
-                                  Size(50, 50),
-                                ),
-                              ),
+                              fixedSize: const Size(55, 55),
                               icon: Icon(
                                 isAlbumDownloading
                                     ? Icons.close
@@ -240,78 +260,76 @@ class AlbumPage extends StatelessWidget {
                           width: 8,
                         ),
                         LibraryToggler(
-                          item: album,
-                          libraryController: libraryController,
+                          item: widget.album,
+                          libraryController: widget.libraryController,
                           notInLibraryWidget: (context, addToLibrary) {
-                            return IconButton.filledTonal(
+                            return LyTonalIconButton(
                               onPressed: addToLibrary,
-                              style: const ButtonStyle(
-                                fixedSize: WidgetStatePropertyAll(
-                                  Size(50, 50),
-                                ),
-                              ),
+                              onFocus: () {
+                                scrollToTop();
+                              },
+                              fixedSize: const Size(55, 55),
                               icon: const Icon(
                                 Icons.library_add,
                               ),
                             );
                           },
                           inLibraryWidget: (context, removeFromLibrary) {
-                            return IconButton.filledTonal(
+                            return LyTonalIconButton(
                               onPressed: removeFromLibrary,
-                              style: const ButtonStyle(
-                                fixedSize: WidgetStatePropertyAll(
-                                  Size(50, 50),
-                                ),
-                              ),
+                              onFocus: () {
+                                scrollToTop();
+                              },
+                              fixedSize: const Size(55, 55),
                               icon: const Icon(
                                 Icons.library_add_check_rounded,
                               ),
                             );
                           },
                           loadingWidget: (context) {
-                            return const IconButton.filledTonal(
+                            return LyTonalIconButton(
                               onPressed: null,
-                              style: ButtonStyle(
-                                fixedSize: WidgetStatePropertyAll(
-                                  Size(50, 50),
-                                ),
-                              ),
-                              icon: CircularProgressIndicator(),
+                              onFocus: () {
+                                scrollToTop();
+                              },
+                              fixedSize: const Size(55, 55),
+                              icon: const CircularProgressIndicator(),
                             );
                           },
                         ),
                         const SizedBox(
                           width: 8,
                         ),
-                        IconButton.filled(
+                        LyFilledIconButton(
                           onPressed: () async {
                             if (isAlbumPlaying) {
                               if (data.isPlaying) {
-                                await playerController.methods.pause();
+                                await widget.playerController.methods.pause();
                               } else {
-                                await playerController.methods.resume();
+                                await widget.playerController.methods.resume();
                               }
                             } else {
-                              await playerController.methods.playPlaylist(
+                              await widget.playerController.methods
+                                  .playPlaylist(
                                 [
-                                  ...album.tracks.map(
+                                  ...widget.album.tracks.map(
                                     (track) => TrackModel.toMusilyTrack(track),
                                   ),
                                 ],
-                                album.id,
+                                widget.album.id,
                                 startFrom: 0,
                               );
-                              libraryController.methods.updateLastTimePlayed(
-                                album.id,
+                              widget.libraryController.methods
+                                  .updateLastTimePlayed(
+                                widget.album.id,
                               );
                             }
                           },
-                          style: const ButtonStyle(
-                            iconSize: WidgetStatePropertyAll(40),
-                            fixedSize: WidgetStatePropertyAll(
-                              Size(60, 60),
-                            ),
-                          ),
+                          onFocus: () {
+                            scrollToTop();
+                          },
+                          iconSize: 40,
+                          fixedSize: const Size(60, 60),
                           icon: Icon(
                             isAlbumPlaying && data.isPlaying
                                 ? Icons.pause_rounded
@@ -321,37 +339,38 @@ class AlbumPage extends StatelessWidget {
                         const SizedBox(
                           width: 8,
                         ),
-                        IconButton.filledTonal(
+                        LyTonalIconButton(
+                          onFocus: () {
+                            scrollToTop();
+                          },
                           onPressed: () async {
                             final random = Random();
                             final randomIndex = random.nextInt(
-                              album.tracks.length,
+                              widget.album.tracks.length,
                             );
-                            playerController.methods.playPlaylist(
+                            widget.playerController.methods.playPlaylist(
                               [
-                                ...album.tracks.map(
+                                ...widget.album.tracks.map(
                                   (element) =>
                                       TrackModel.toMusilyTrack(element),
                                 ),
                               ],
-                              album.id,
+                              widget.album.id,
                               startFrom: randomIndex,
                             );
                             if (!data.shuffleEnabled) {
-                              playerController.methods.toggleShuffle();
+                              widget.playerController.methods.toggleShuffle();
                             } else {
-                              await playerController.methods.toggleShuffle();
-                              playerController.methods.toggleShuffle();
+                              await widget.playerController.methods
+                                  .toggleShuffle();
+                              widget.playerController.methods.toggleShuffle();
                             }
-                            libraryController.methods.updateLastTimePlayed(
-                              album.id,
+                            widget.libraryController.methods
+                                .updateLastTimePlayed(
+                              widget.album.id,
                             );
                           },
-                          style: const ButtonStyle(
-                            fixedSize: WidgetStatePropertyAll(
-                              Size(50, 50),
-                            ),
-                          ),
+                          fixedSize: const Size(55, 55),
                           icon: const Icon(
                             Icons.shuffle_rounded,
                           ),
@@ -359,39 +378,30 @@ class AlbumPage extends StatelessWidget {
                         const SizedBox(
                           width: 8,
                         ),
-                        AlbumOptionsBuilder(
-                          album: album,
-                          coreController: coreController,
-                          playerController: playerController,
-                          getAlbumUsecase: getAlbumUsecase,
-                          downloaderController: downloaderController,
-                          getPlayableItemUsecase: getPlayableItemUsecase,
-                          libraryController: libraryController,
-                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase: getArtistSinglesUsecase,
-                          getArtistTracksUsecase: getArtistTracksUsecase,
-                          getArtistUsecase: getArtistUsecase,
-                          builder: (context, showOptions) =>
-                              IconButton.filledTonal(
-                            onPressed: showOptions,
-                            style: const ButtonStyle(
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(50, 50),
-                              ),
-                            ),
-                            icon: const Icon(
-                              Icons.more_vert_outlined,
-                            ),
-                          ),
+                        AlbumOptions(
+                          album: widget.album,
+                          coreController: widget.coreController,
+                          playerController: widget.playerController,
+                          getAlbumUsecase: widget.getAlbumUsecase,
+                          downloaderController: widget.downloaderController,
+                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                          libraryController: widget.libraryController,
+                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase:
+                              widget.getArtistSinglesUsecase,
+                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                          getArtistUsecase: widget.getArtistUsecase,
+                          onFocus: scrollToTop,
+                          tonal: true,
                         ),
                       ],
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    ...album.tracks.map(
+                    ...widget.album.tracks.map(
                       (track) => TrackTile(
-                        getAlbumUsecase: getAlbumUsecase,
+                        getAlbumUsecase: widget.getAlbumUsecase,
                         leading: isAlbumPlaying &&
                                 data.currentPlayingItem?.hash == track.hash &&
                                 data.isPlaying
@@ -403,7 +413,7 @@ class AlbumPage extends StatelessWidget {
                                 width: 20,
                                 child: Center(
                                   child: Text(
-                                    '${album.tracks.indexOf(track) + 1}',
+                                    '${widget.album.tracks.indexOf(track) + 1}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
@@ -416,20 +426,20 @@ class AlbumPage extends StatelessWidget {
                         hideOptions: const [
                           TrackTileOptions.seeAlbum,
                         ],
-                        downloaderController: downloaderController,
-                        getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                        getArtistSinglesUsecase: getArtistSinglesUsecase,
-                        getArtistTracksUsecase: getArtistTracksUsecase,
-                        getArtistUsecase: getArtistUsecase,
-                        getPlayableItemUsecase: getPlayableItemUsecase,
-                        libraryController: libraryController,
+                        downloaderController: widget.downloaderController,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        libraryController: widget.libraryController,
                         customAction: () {
                           late final List<MusilyTrack> queueToPlay;
-                          if (data.playingId == album.id) {
+                          if (data.playingId == widget.album.id) {
                             queueToPlay = data.queue;
                           } else {
                             queueToPlay = [
-                              ...album.tracks.map((element) =>
+                              ...widget.album.tracks.map((element) =>
                                   TrackModel.toMusilyTrack(element))
                             ];
                           }
@@ -438,22 +448,22 @@ class AlbumPage extends StatelessWidget {
                             (element) => element.hash == track.hash,
                           );
 
-                          playerController.methods.playPlaylist(
+                          widget.playerController.methods.playPlaylist(
                             queueToPlay,
-                            album.id,
+                            widget.album.id,
                             startFrom: startIndex == -1 ? 0 : startIndex,
                           );
-                          libraryController.methods.updateLastTimePlayed(
-                            album.id,
+                          widget.libraryController.methods.updateLastTimePlayed(
+                            widget.album.id,
                           );
                         },
                         track: track,
-                        coreController: coreController,
-                        playerController: playerController,
+                        coreController: widget.coreController,
+                        playerController: widget.playerController,
                       ),
                     ),
                     PlayerSizedBox(
-                      playerController: playerController,
+                      playerController: widget.playerController,
                     ),
                   ],
                 );

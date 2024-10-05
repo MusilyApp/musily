@@ -5,6 +5,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_outlined_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_tonal_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
@@ -169,7 +173,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton.filledTonal(
+                          LyTonalIconButton(
                             onPressed: loadingTracks
                                 ? null
                                 : () async {
@@ -205,11 +209,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                       widget.artist.id,
                                     );
                                   },
-                            style: const ButtonStyle(
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(50, 50),
-                              ),
-                            ),
+                            fixedSize: const Size(55, 55),
                             icon: const Icon(
                               Icons.shuffle,
                             ),
@@ -217,7 +217,7 @@ class _ArtistPageState extends State<ArtistPage> {
                           const SizedBox(
                             width: 8,
                           ),
-                          IconButton.filled(
+                          LyFilledIconButton(
                             onPressed: loadingTracks
                                 ? null
                                 : () async {
@@ -250,12 +250,8 @@ class _ArtistPageState extends State<ArtistPage> {
                                       );
                                     }
                                   },
-                            style: const ButtonStyle(
-                              iconSize: WidgetStatePropertyAll(40),
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(60, 60),
-                              ),
-                            ),
+                            fixedSize: const Size(60, 60),
+                            iconSize: 40,
                             icon: loadingTracks
                                 ? CircularProgressIndicator(
                                     color:
@@ -270,13 +266,9 @@ class _ArtistPageState extends State<ArtistPage> {
                           const SizedBox(
                             width: 8,
                           ),
-                          IconButton.filledTonal(
+                          LyTonalIconButton(
                             onPressed: () {},
-                            style: const ButtonStyle(
-                              fixedSize: WidgetStatePropertyAll(
-                                Size(50, 50),
-                              ),
-                            ),
+                            fixedSize: const Size(55, 55),
                             icon: const Icon(
                               Icons.share_rounded,
                             ),
@@ -294,7 +286,7 @@ class _ArtistPageState extends State<ArtistPage> {
                           child: LibraryToggler(
                             libraryController: widget.libraryController,
                             loadingWidget: (context) {
-                              return FilledButton.tonal(
+                              return LyTonalButton(
                                 onPressed: null,
                                 child: LoadingAnimationWidget.halfTriangleDot(
                                   color: Theme.of(context).iconTheme.color ??
@@ -304,15 +296,17 @@ class _ArtistPageState extends State<ArtistPage> {
                               );
                             },
                             notInLibraryWidget: (context, addToLibrary) {
-                              return FilledButton.tonal(
+                              return LyTonalIconButton(
                                 onPressed: addToLibrary,
-                                child: Text(
+                                iconSpacing: 0,
+                                icon: const SizedBox.shrink(),
+                                label: Text(
                                   AppLocalizations.of(context)!.follow,
                                 ),
                               );
                             },
                             inLibraryWidget: (context, removeFromLibrary) {
-                              return FilledButton.tonalIcon(
+                              return LyTonalIconButton(
                                 onPressed: removeFromLibrary,
                                 label: Text(
                                   AppLocalizations.of(context)!.following,
@@ -354,7 +348,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               right: 16,
                               bottom: 16,
                             ),
-                            child: OutlinedButton(
+                            child: LyOutlinedButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -466,7 +460,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               right: 16,
                               bottom: 16,
                             ),
-                            child: OutlinedButton(
+                            child: LyOutlinedButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -563,7 +557,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               right: 16,
                               bottom: 16,
                             ),
-                            child: OutlinedButton(
+                            child: LyOutlinedButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,

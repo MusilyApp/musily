@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -92,7 +93,7 @@ class SquareAlbumTile extends StatelessWidget {
                   ),
                 ),
               ),
-            ListTile(
+            LyListTile(
               title: InfinityMarquee(
                 child: Text(album.title),
               ),

@@ -21,6 +21,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily_player/presenter/controllers/player/player_controller.dart';
@@ -44,6 +45,7 @@ class SectionsPage extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final SettingsController settingsController;
+  final AuthController authController;
 
   const SectionsPage({
     required this.sectionsController,
@@ -60,6 +62,7 @@ class SectionsPage extends StatelessWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.settingsController,
+    required this.authController,
   });
 
   @override
@@ -122,6 +125,7 @@ class SectionsPage extends StatelessWidget {
                 child: UserAvatar(
                   coreController: coreController,
                   settingsController: settingsController,
+                  authController: authController,
                 ),
               ),
             ],

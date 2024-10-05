@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   final void Function(ThemeMode? themeMode)? onThemeModeUpdated;
+
   SettingsController({
     this.onThemeModeUpdated,
   }) {

@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -71,78 +70,34 @@ class _ResultsPageState extends State<ResultsPage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: SizedBox(
-              height: 50,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context, 'edit');
-                },
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return SizedBox(
-                      width: constraints.maxWidth,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 200,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: 8,
-                                        left: 12,
-                                      ),
-                                      child: Icon(
-                                        Icons.search_rounded,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          max(constraints.maxWidth - 1000, 150),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 8,
-                                          bottom: 8,
-                                        ),
-                                        child: Text(
-                                          widget.searchQuery,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  bottom: 8,
-                                ),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context, 'clear');
-                                  },
-                                  icon: const Icon(Icons.close),
-                                  style: const ButtonStyle(
-                                    visualDensity: VisualDensity.compact,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+            title: Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: LyTextField(
+                      prefixIcon: const Icon(
+                        Icons.search_rounded,
                       ),
-                    );
-                  },
-                ),
+                      onFocus: () {
+                        Navigator.pop(context, 'edit');
+                      },
+                      controller: searchTextController,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(300),
+                      onTap: () {
+                        Navigator.pop(context, 'clear');
+                      },
+                      child: const Icon(Icons.close),
+                    ),
+                  ),
+                ],
               ),
             ),
             bottom: TabBar(

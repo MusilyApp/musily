@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/card_outlined.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
@@ -58,7 +59,8 @@ class LibraryTile extends StatelessWidget {
     return CardOutlined(
       child: Builder(builder: (context) {
         if (item.value is AlbumEntity) {
-          return ListTile(
+          return LyListTile(
+            paddingOnFocus: false,
             onTap: () {
               coreController.methods.pushWidget(
                 (item.value as AlbumEntity).tracks.isEmpty
@@ -117,7 +119,8 @@ class LibraryTile extends StatelessWidget {
           );
         }
         if (item.value is PlaylistEntity) {
-          return ListTile(
+          return LyListTile(
+            paddingOnFocus: false,
             onTap: () {
               coreController.methods.pushWidget(
                 item.value.tracks.isEmpty
@@ -185,7 +188,8 @@ class LibraryTile extends StatelessWidget {
           );
         }
         if (item.value is ArtistEntity) {
-          return ListTile(
+          return LyListTile(
+            paddingOnFocus: false,
             onTap: () {
               coreController.methods.pushWidget(
                 (item.value as ArtistEntity).topTracks.isEmpty

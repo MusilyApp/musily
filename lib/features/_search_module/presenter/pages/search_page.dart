@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/domain/usecases/get_search_suggestions_usecase.dart';
@@ -143,65 +145,114 @@ class _SearchPageState extends State<SearchPage> {
           body: SafeArea(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: TextField(
-                        autocorrect: false,
-                        controller: searchTextController,
-                        focusNode: searchFocusNode,
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            setState(() {
-                              searchSuggestions = [];
-                            });
-                            return;
-                          }
-                          getSearchSuggestions();
-                        },
-                        onSubmitted: submitSearch,
-                        autofocus: true,
-                        decoration: InputDecoration(
+                // Padding(
+                //   padding: const EdgeInsets.all(12),
+                //   child: Card(
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(top: 8),
+                //       child: TextField(
+                //         autocorrect: false,
+                //         controller: searchTextController,
+                //         focusNode: searchFocusNode,
+                //         onChanged: (value) {
+                //           if (value.isEmpty) {
+                //             setState(() {
+                //               searchSuggestions = [];
+                //             });
+                //             return;
+                //           }
+                //           getSearchSuggestions();
+                //         },
+                //         onSubmitted: submitSearch,
+                //         autofocus: true,
+                //         decoration: InputDecoration(
+                //           hintText: AppLocalizations.of(context)!
+                //               .searchMusicAlbumOrArtist,
+                //           border: InputBorder.none,
+                //           prefixIcon: const Padding(
+                //             padding: EdgeInsets.only(bottom: 4),
+                //             child: Icon(
+                //               Icons.search,
+                //             ),
+                //           ),
+                //           suffixIcon: searchTextController.text.isEmpty
+                //               ? null
+                //               : Padding(
+                //                   padding: const EdgeInsets.only(bottom: 8),
+                //                   child: IconButton(
+                //                     onPressed: () {
+                //                       searchTextController.text = '';
+                //                       setState(() {
+                //                         searchSuggestions = [];
+                //                       });
+                //                     },
+                //                     style: const ButtonStyle(
+                //                       visualDensity: VisualDensity.compact,
+                //                     ),
+                //                     icon: const Icon(
+                //                       Icons.close,
+                //                     ),
+                //                   ),
+                //                 ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: LyTextField(
                           hintText: AppLocalizations.of(context)!
                               .searchMusicAlbumOrArtist,
-                          border: InputBorder.none,
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.only(bottom: 4),
-                            child: Icon(
-                              Icons.search,
-                            ),
+                          autocorrect: false,
+                          controller: searchTextController,
+                          focusNode: searchFocusNode,
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              setState(() {
+                                searchSuggestions = [];
+                              });
+                              return;
+                            }
+                            getSearchSuggestions();
+                          },
+                          onSubmitted: submitSearch,
+                          autofocus: true,
+                          prefixIcon: const Icon(
+                            Icons.search,
                           ),
-                          suffixIcon: searchTextController.text.isEmpty
-                              ? null
-                              : Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      searchTextController.text = '';
-                                      setState(() {
-                                        searchSuggestions = [];
-                                      });
-                                    },
-                                    style: const ButtonStyle(
-                                      visualDensity: VisualDensity.compact,
-                                    ),
-                                    icon: const Icon(
-                                      Icons.close,
-                                    ),
-                                  ),
-                                ),
                         ),
                       ),
                     ),
-                  ),
+                    if (searchTextController.text.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(300),
+                          onTap: () {
+                            searchTextController.text = '';
+                            searchFocusNode.requestFocus();
+                            setState(
+                              () {
+                                searchSuggestions = [];
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.close,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 Expanded(
                   child: ListView(
                     children: [
                       ...searchSuggestions.map(
-                        (suggestion) => ListTile(
+                        (suggestion) => LyListTile(
                           onTap: () {
                             submitSearch(suggestion);
                             searchTextController.text = suggestion;

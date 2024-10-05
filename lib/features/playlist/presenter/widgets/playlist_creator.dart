@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
+import 'package:musily/core/presenter/ui/utils/show_ly_dialog.dart';
 import 'package:musily/core/utils/id_generator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
@@ -6,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistCreator extends StatefulWidget {
   final LibraryController libraryController;
+  final CoreController coreController;
   final void Function(PlaylistEntity playlist)? onCreated;
   final Widget Function(
     BuildContext context,
@@ -15,6 +20,7 @@ class PlaylistCreator extends StatefulWidget {
   const PlaylistCreator(
     this.libraryController, {
     required this.builder,
+    required this.coreController,
     this.onCreated,
     super.key,
   });
@@ -38,7 +44,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
       widget.libraryController.methods.addToLibrary<PlaylistEntity>(
         playlist,
       );
-      Navigator.pop(context);
+      Navigator.pop(widget.coreController.coreKey.currentContext!);
       playlistNameController.text = '';
       widget.onCreated?.call(playlist);
     }
@@ -47,44 +53,35 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
   @override
   Widget build(BuildContext context) {
     return widget.builder(context, () {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Form(
-            key: _formKey,
-            child: AlertDialog(
-              title: Text(AppLocalizations.of(context)!.createPlaylist),
-              content: TextFormField(
-                autofocus: true,
-                controller: playlistNameController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalizations.of(context)!.requiredField;
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: AppLocalizations.of(context)!.playlistName,
-                ),
-                onFieldSubmitted: (value) => submitNameTextField(context),
-              ),
-              actions: [
-                FilledButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    playlistNameController.text = '';
-                  },
-                  child: Text(AppLocalizations.of(context)!.cancel),
-                ),
-                FilledButton(
-                  onPressed: () => submitNameTextField(context),
-                  child: Text(AppLocalizations.of(context)!.create),
-                )
-              ],
-            ),
-          );
-        },
+      showLyDialog(
+        context: widget.coreController.coreKey.currentContext!,
+        // height: 180,
+        title: Text(AppLocalizations.of(context)!.createPlaylist),
+        content: LyTextField(
+          autofocus: true,
+          controller: playlistNameController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return AppLocalizations.of(context)!.requiredField;
+            }
+            return null;
+          },
+          hintText: AppLocalizations.of(context)!.playlistName,
+          onSubmitted: (value) => submitNameTextField(context),
+        ),
+        actions: [
+          LyFilledButton(
+            onPressed: () {
+              Navigator.pop(widget.coreController.coreKey.currentContext!);
+              playlistNameController.text = '';
+            },
+            child: Text(AppLocalizations.of(context)!.cancel),
+          ),
+          LyFilledButton(
+            onPressed: () => submitNameTextField(context),
+            child: Text(AppLocalizations.of(context)!.create),
+          )
+        ],
       );
     });
   }
