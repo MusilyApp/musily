@@ -7,7 +7,6 @@
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.fvm/flutter_sdk
 .packages
 .pub-cache/
 .pub/
@@ -74,4 +73,14 @@ pubspec.lock
 # Project related
 .oldfiles
 
+# Flatpak
+*.flatpak
+build-dir/
+.flatpak*
+repo/
+
 # End of https://www.toptal.com/developers/gitignore/api/flutter
+
+# FVM Version Cache
+.fvm/
+.fvmrc
