@@ -1,9 +1,10 @@
+import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/_search_module/domain/entities/search_data_entity.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
-class ResultsPageData {
+class ResultsPageData extends BaseControllerData {
   bool searchingTracks;
   bool searchingAlbums;
   bool searchingArtists;
@@ -28,6 +29,7 @@ class ResultsPageData {
     required this.keepSearchArtistState,
   });
 
+  @override
   ResultsPageData copyWith({
     bool? searchingTracks,
     bool? searchingAlbums,
