@@ -2,26 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/errors/app_error.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/utils/show_ly_dialog.dart';
 import 'package:musily/core/presenter/widgets/app_builder.dart';
+import 'package:musily_repository/core/domain/errors/musily_error.dart';
 
 abstract class BaseControllerData {
   copyWith();
 }
 
-abstract class BaseController<BaseControllerData, Methods> {
-  final _dataStreamController =
-      StreamController<BaseControllerData>.broadcast();
+abstract class BaseController<Data extends BaseControllerData, Methods> {
+  final _dataStreamController = StreamController<Data>.broadcast();
   final _eventStreamController =
       StreamController<BaseControllerEvent>.broadcast();
 
-  late BaseControllerData data;
+  late Data data;
   late BaseControllerEvent event;
   late Methods methods;
   final List<BaseControllerEvent> events;
 
-  BaseControllerData defineData();
+  Data defineData();
   Methods defineMethods();
-  void updateData(BaseControllerData data) {
+  void updateData(Data data) {
     this.data = data;
     if (!_dataStreamController.isClosed) {
       _dataStreamController.add(data);
@@ -46,13 +48,19 @@ abstract class BaseController<BaseControllerData, Methods> {
         ),
       );
     }
+    if (error is MusilyError) {
+      dispatchEvent(
+        BaseControllerEvent<MusilyError>(
+          id: 'catch_error',
+          data: error,
+        ),
+      );
+    }
   }
 
-  AppBuilder<BaseControllerData, BaseControllerEvent> builder({
-    required Widget Function(BuildContext context, BaseControllerData data)
-        builder,
-    void Function(BuildContext context, BaseControllerEvent event,
-            BaseControllerData data)?
+  AppBuilder<Data, BaseControllerEvent> builder({
+    required Widget Function(BuildContext context, Data data) builder,
+    void Function(BuildContext context, BaseControllerEvent event, Data data)?
         eventListener,
     bool allowAlertDialog = false,
   }) {
@@ -64,13 +72,17 @@ abstract class BaseController<BaseControllerData, Methods> {
       initialData: data,
       listener: (context, data) {
         if (this.event.id == 'catch_error' && allowAlertDialog) {
-          if (this.event.data is AppError) {
-            showDialog(
+          if (this.event.data is MusilyError) {
+            showLyDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                content: Text(this.event.data.toString()),
+              content: AlertDialog(
+                content: Text(
+                  getErrorStringById(
+                    (this.event.data as MusilyError).id,
+                  ),
+                ),
                 actions: [
-                  TextButton(
+                  LyFilledButton(
                     onPressed: () {
                       dispatchEvent(
                         BaseControllerEvent(

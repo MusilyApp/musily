@@ -16,3 +16,12 @@ class AppError implements Exception {
     return 'error: $error, message: $message, code: $code';
   }
 }
+
+String getErrorStringById(String errorId) {
+  switch (errorId) {
+    case 'loginError':
+      return 'Icorrect e-mail or password.';
+    default:
+      return 'Internal error';
+  }
+}
