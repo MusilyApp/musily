@@ -98,12 +98,6 @@ class _CorePageState extends State<CorePage> {
   Widget build(BuildContext context) {
     return widget.coreController.builder(
       eventListener: (context, event, data) {
-        // if (event.id == 'pushModal') {
-        //   showModalBottomSheet(
-        //     context: context,
-        //     builder: (context) => event.data,
-        //   );
-        // }
         if (event.id == 'closePlayer') {
           widget.playerController.methods.closePlayer();
         }
