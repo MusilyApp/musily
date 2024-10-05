@@ -15,12 +15,14 @@ class CoreBaseDialog extends StatelessWidget {
     return coreController.builder(
       eventListener: (context, event, data) {
         if (event.id == 'closeDialog') {
-          Navigator.pop(context);
-          coreController.updateData(
-            coreController.data.copyWith(
-              isShowingDialog: false,
-            ),
-          );
+          if (data.isShowingDialog) {
+            Navigator.pop(context);
+            coreController.updateData(
+              coreController.data.copyWith(
+                isShowingDialog: false,
+              ),
+            );
+          }
         }
       },
       builder: (context, data) {
