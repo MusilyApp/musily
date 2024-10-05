@@ -5,9 +5,9 @@ import 'package:musily/features/artist/domain/datasources/artist_datasource.dart
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:musily_repository/core/data/mappers/artist_mapper.dart';
-import 'package:musily_repository/core/data/mappers/simplified_album_mapper.dart';
-import 'package:musily_repository/core/data/mappers/track_mapper.dart';
+import 'package:musily_repository/features/data_fetch/data/mappers/artist_mapper.dart';
+import 'package:musily_repository/features/data_fetch/data/mappers/simplified_album_mapper.dart';
+import 'package:musily_repository/features/data_fetch/data/mappers/track_mapper.dart';
 import 'package:musily_repository/musily_repository.dart';
 
 class ArtistsDatasourceImpl extends ArtistDatasource {

@@ -1,5 +1,5 @@
 import 'package:musily/features/_search_module/domain/datasources/search_datasource.dart';
-import 'package:musily_repository/core/data/repositories/musily_repository.dart';
+import 'package:musily_repository/musily_repository.dart';
 
 class SearchDatasourceImpl implements SearchDatasource {
   @override

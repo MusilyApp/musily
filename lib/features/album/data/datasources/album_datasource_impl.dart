@@ -3,9 +3,9 @@ import 'package:musily/features/album/data/models/album_model.dart';
 import 'package:musily/features/album/domain/datasources/album_datasource.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_repository/core/data/mappers/album_mapper.dart';
-import 'package:musily_repository/core/data/mappers/simplified_album_mapper.dart';
-import 'package:musily_repository/core/data/repositories/musily_repository.dart';
+import 'package:musily_repository/features/data_fetch/data/mappers/album_mapper.dart';
+import 'package:musily_repository/features/data_fetch/data/mappers/simplified_album_mapper.dart';
+import 'package:musily_repository/features/data_fetch/data/repositories/musily_repository.dart';
 
 class AlbumDatasourceImpl implements AlbumDatasource {
   final DownloaderController downloaderController;

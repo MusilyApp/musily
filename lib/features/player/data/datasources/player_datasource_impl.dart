@@ -1,8 +1,7 @@
 import 'package:musily/features/player/domain/datasources/player_datasource.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:musily_repository/core/data/mappers/track_mapper.dart';
-import 'package:musily_repository/core/data/repositories/musily_repository.dart';
+import 'package:musily_repository/features/data_fetch/data/mappers/track_mapper.dart';
 import 'package:musily_repository/musily_repository.dart';
 
 class PlayerDatasourceImpl implements PlayerDatasource {
