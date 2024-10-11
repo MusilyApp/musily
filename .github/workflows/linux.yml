@@ -18,6 +18,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Install dependencies required for Linux desktop build
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            curl git unzip xz-utils zip \
+            clang cmake ninja-build pkg-config \
+            libgtk-3-dev liblzma-dev libglu1-mesa \
+            libstdc++-12-dev
+
       # Extract version from pubspec
       - name: Extract version
         id: extract_version
