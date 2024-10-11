@@ -3,12 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  flutter_secure_storage_linux
+  flutter_secure_storage
   gtk
   isar_flutter_libs
   media_kit_libs_linux
   url_launcher_linux
-  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
