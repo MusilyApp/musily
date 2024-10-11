@@ -68,7 +68,7 @@ jobs:
       - name: Release Linux archive
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: FelipeYslaoker/musily
+          repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{env.ARCHIVE_NAME}}
           asset_name: ${{env.ARCHIVE_NAME}}
@@ -81,7 +81,7 @@ jobs:
       - name: Add SHA256 checksum to release
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: FelipeYslaoker/musily
+          repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{env.ARCHIVE_NAME}}.sha256
           asset_name: ${{env.ARCHIVE_NAME}}.sha256

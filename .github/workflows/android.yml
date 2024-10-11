@@ -83,7 +83,7 @@ jobs:
       - name: Release arm64 APK
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: FelipeYslaoker/musily
+          repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
           asset_name: Musily-arm64-v8a.apk
@@ -100,7 +100,7 @@ jobs:
       - name: Release universal APK
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: FelipeYslaoker/musily
+          repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/flutter-apk/app-release.apk
           asset_name: musily-${{steps.extract_version.outputs.version}}.apk
