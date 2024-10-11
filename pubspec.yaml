@@ -18,8 +18,7 @@ dependencies:
     git:
       url: https://github.com/MusilyApp/musily_player
   musily_repository:
-    git:
-      url: https://github.com/MusilyApp/musily_repository
+    path: ./packages/musily_repository
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.3
