@@ -45,13 +45,6 @@ jobs:
           echo "description=${escaped_description}" >> $GITHUB_ENV
           echo "description=${escaped_description}" >> $GITHUB_OUTPUT
 
-      # Setup Java environment in order to build the Android app.
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17.x"
-
       # Setup the Flutter environment.
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
