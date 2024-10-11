@@ -67,7 +67,8 @@ jobs:
       - name: Calculate SHA256 checksum
         id: sha256_checksum
         run: |
-          sha256sum ${{env.ARCHIVE_NAME}} | awk '{print $1}' >> $GITHUB_OUTPUT
+          sha256=$(sha256sum ${{env.ARCHIVE_NAME}} | awk '{print $1}')
+          echo "sha256_checksum=$sha256" >> $GITHUB_OUTPUT
 
       # Release the archive
       - name: Release Linux archive
