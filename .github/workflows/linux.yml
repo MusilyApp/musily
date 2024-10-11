@@ -22,7 +22,7 @@ jobs:
       - name: Extract version
         id: extract_version
         run: |
-          version=$(chmod +x musily_version.sh && ./musily_version.sh)
+          version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
           echo "version=${version}" >> $GITHUB_ENV
           echo "version=${version}" >> $GITHUB_OUTPUT
 
@@ -30,7 +30,7 @@ jobs:
       - name: Extract description
         id: extract_description
         run: |
-          description=$(chmod +x musily_description.sh && ./musily_description.sh)
+          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
           echo "description=${description}" >> $GITHUB_ENV
           echo "description=${description}" >> $GITHUB_OUTPUT
 
