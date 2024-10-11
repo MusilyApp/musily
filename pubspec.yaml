@@ -1,7 +1,7 @@
 name: musily
 description: "A great music app."
 publish_to: "none"
-version: 2.1.1
+version: 2.1.2
 
 environment:
   sdk: ">=3.4.1 <4.0.0"
@@ -12,7 +12,7 @@ dependencies:
   flutter_modular: ^6.3.4
   http: ^1.2.1
   dio: ^5.5.0+1
-  youtube_explode_dart: ^2.2.1
+  youtube_explode_dart: ^2.2.3
   loading_animation_widget: ^1.2.1
   musily_player:
     git:

@@ -1,3 +1,9 @@
+## 2.1.2
+
+**Hot Fixes**
+
+- Fixed an issue where music would load infinitely (again).
+
 ## 2.1.1
 
 **Hot Fixes**
