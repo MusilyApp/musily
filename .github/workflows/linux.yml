@@ -1,0 +1,91 @@
+on:
+  push:
+    # branches:
+    #   - main
+
+name: Build and Release Linux App
+
+env:
+  BUILD_DIR: build/linux/x64/release/bundle
+  ARCHIVE_NAME: musily-linux-x64.tar.gz
+
+jobs:
+  build:
+    name: Build Linux App
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Extract version from pubspec
+      - name: Extract version
+        id: extract_version
+        run: |
+          version=$(chmod +x musily_version.sh && ./musily_version.sh)
+          echo "version=${version}" >> $GITHUB_ENV
+          echo "version=${version}" >> $GITHUB_OUTPUT
+
+      # Extract description from CHANGELOG.md
+      - name: Extract description
+        id: extract_description
+        run: |
+          description=$(chmod +x musily_description.sh && ./musily_description.sh)
+          echo "description=${description}" >> $GITHUB_ENV
+          echo "description=${description}" >> $GITHUB_OUTPUT
+
+      # Setup Java environment in order to build the Android app.
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+
+      # Setup the Flutter environment.
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: 3.22.3
+
+      # Build the Linux app
+      - name: Build Linux app
+        run: flutter build linux --release
+
+      # Create the .tar.gz archive
+      - name: Create tar.gz archive
+        run: |
+          tar -czvf ${{env.ARCHIVE_NAME}} -C ${{env.BUILD_DIR}} .
+          echo "Archive created: ${{env.ARCHIVE_NAME}}"
+
+      # Calculate SHA256 checksum
+      - name: Calculate SHA256 checksum
+        id: sha256_checksum
+        run: |
+          sha256sum ${{env.ARCHIVE_NAME}} | awk '{print $1}' >> $GITHUB_OUTPUT
+
+      # Release the archive
+      - name: Release Linux archive
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: FelipeYslaoker/musily
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{env.ARCHIVE_NAME}}
+          asset_name: ${{env.ARCHIVE_NAME}}
+          tag: ${{ steps.extract_version.outputs.version }}
+          body: "${{ steps.extract_description.outputs.description }}"
+          prerelease: false
+          overwrite: true
+
+      # Add SHA256 checksum to release
+      - name: Add SHA256 checksum to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: FelipeYslaoker/musily
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{env.ARCHIVE_NAME}}.sha256
+          asset_name: ${{env.ARCHIVE_NAME}}.sha256
+          tag: ${{ steps.extract_version.outputs.version }}
+          body: "${{ steps.extract_description.outputs.description }}"
+          prerelease: false
+          overwrite: true
