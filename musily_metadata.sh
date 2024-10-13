@@ -7,7 +7,7 @@ changelog_file="CHANGELOG.md"
 # Function to extract the version from pubspec.yaml
 get_version() {
   version=$(grep 'version:' "$pubspec_file" | awk '{print $2}' | awk -F'+' '{print $1}')
-  echo "$version"
+  echo $version
 }
 
 # Function to extract the description from CHANGELOG.md based on the version
@@ -21,7 +21,7 @@ get_description() {
     exit 1
   fi
 
-  echo "$description"
+  echo $description
 }
 
 # Function to display help
