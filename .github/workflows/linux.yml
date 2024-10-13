@@ -1,7 +1,7 @@
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
 
 name: Build and Release Linux App
 
@@ -68,6 +68,7 @@ jobs:
         id: sha256_checksum
         run: |
           sha256=$(sha256sum ${{env.ARCHIVE_NAME}} | awk '{print $1}')
+          echo "$sha256  ${{env.ARCHIVE_NAME}}" > ${{env.ARCHIVE_NAME}}.sha256
           echo "sha256_checksum=$sha256" >> $GITHUB_OUTPUT
 
       # Release the archive
@@ -87,7 +88,7 @@ jobs:
       - name: Add SHA256 checksum to release
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: MusilyApp/musily
+          repo_name: FelipeYslaoker/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{env.ARCHIVE_NAME}}.sha256
           asset_name: ${{env.ARCHIVE_NAME}}.sha256
