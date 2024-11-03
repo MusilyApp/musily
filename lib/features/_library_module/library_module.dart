@@ -8,8 +8,8 @@ import 'package:musily/features/artist/data/usecases/get_artist_albums_usecase_i
 import 'package:musily/features/artist/data/usecases/get_artist_singles_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artist_tracks_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artist_usecase_impl.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/data/usecases/get_playlist_usecase_impl.dart';
 
 class LibraryModule extends Module {
