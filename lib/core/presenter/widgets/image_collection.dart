@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/ui/boxes/ly_card.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 
 class ImageCollection extends StatelessWidget {
@@ -67,12 +68,16 @@ class ImageCollection extends StatelessWidget {
               fit: BoxFit.cover,
             );
           }
-          return SizedBox(
+          return LyCard(
             width: size,
             height: size,
-            child: Icon(
-              Icons.no_photography_rounded,
-              color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+            content: const Center(
+              child: AppImage(
+                '',
+                width: 210,
+                height: 210,
+                fit: BoxFit.cover,
+              ),
             ),
           );
         },
