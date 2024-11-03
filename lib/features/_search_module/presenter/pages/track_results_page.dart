@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
@@ -10,11 +10,11 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class TrackResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -67,6 +67,7 @@ class _TrackResultsPageState extends State<TrackResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.resultsPageController.builder(
+        allowAlertDialog: true,
         builder: (context, data) {
           if (data.searchingTracks) {
             return Skeletonizer(
@@ -107,12 +108,12 @@ class _TrackResultsPageState extends State<TrackResultsPage> {
                   Icon(
                     Icons.search_off,
                     size: 50,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(.5),
+                    color: context.themeData.iconTheme.color?.withOpacity(.5),
                   ),
                   Text(
-                    AppLocalizations.of(context)!.noResults,
+                    context.localization.noResults,
                     style: TextStyle(
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.5),
+                      color: context.themeData.iconTheme.color?.withOpacity(.5),
                     ),
                   ),
                 ],
