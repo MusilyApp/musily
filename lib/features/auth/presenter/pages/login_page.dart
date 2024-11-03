@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
-import 'package:musily/core/utils/display_helper.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/utils/validate_email.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 
@@ -29,8 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -38,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       await widget.authController.methods.login(
         email: _emailController.text.trim().toLowerCase(),
-        password: _passwordController.text.trim().toLowerCase(),
+        password: _passwordController.text.trim(),
       );
     }
   }
@@ -48,18 +46,18 @@ class _LoginPageState extends State<LoginPage> {
     return widget.authController.builder(
       allowAlertDialog: true,
       builder: (context, data) {
-        return PopScope(
-          canPop: !data.loading,
+        return LyPage(
+          preventPop: data.loading,
           child: Scaffold(
             key: widget.authController.loginPageKey,
             appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.login),
+              title: Text(context.localization.login),
               automaticallyImplyLeading: !data.loading,
             ),
             body: Center(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width *
-                    (DisplayHelper(context).isDesktop ? .3 : .8),
+                    (context.display.isDesktop ? .3 : .8),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -67,17 +65,15 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       LyTextField(
                         enabled: !data.loading,
-                        hintText: AppLocalizations.of(context)!.email,
+                        hintText: context.localization.email,
                         controller: _emailController,
                         focusNode: _emailFocusNode,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .pleaseEnterYourEmail;
+                            return context.localization.pleaseEnterYourEmail;
                           }
                           if (!validateEmail(value)) {
-                            return AppLocalizations.of(context)!
-                                .pleaseEnterAValidEmail;
+                            return context.localization.pleaseEnterAValidEmail;
                           }
                           return null;
                         },
@@ -90,18 +86,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       LyTextField(
                         enabled: !data.loading,
-                        hintText: AppLocalizations.of(context)!.password,
+                        hintText: context.localization.password,
                         obscureText: true,
                         controller: _passwordController,
                         focusNode: _passwordFocusNode,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .pleaseEnterYourPassword;
+                            return context.localization.pleaseEnterYourPassword;
                           }
                           if (value.length < 6) {
-                            return AppLocalizations.of(context)!
-                                .passwordMustBeAtLeast8Characters;
+                            return context
+                                .localization.passwordMustBeAtLeast8Characters;
                           }
                           return null;
                         },
@@ -116,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: _submitForm,
                         fullWidth: true,
                         loading: data.loading,
-                        child: Text(AppLocalizations.of(context)!.login),
+                        child: Text(context.localization.login),
                       ),
                     ],
                   ),

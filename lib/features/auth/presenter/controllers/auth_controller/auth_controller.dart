@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
+import 'package:musily/features/auth/domain/usecases/create_account_usecase.dart';
+import 'package:musily/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:musily/features/auth/domain/usecases/login_usecase.dart';
+import 'package:musily/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_data.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_methods.dart';
-import 'package:musily_repository/musily_repository.dart';
 
 class AuthController extends BaseController<AuthData, AuthMethods> {
-  final musilyRepository = MusilyRepository();
-
   final GlobalKey loginPageKey = GlobalKey();
   final GlobalKey signupPageKey = GlobalKey();
 
-  AuthController() {
+  late final GetCurrentUserUsecase _getCurrentUserUsecase;
+  late final LoginUsecase _loginUsecase;
+  late final CreateAccountUsecase _createAccountUsecase;
+  late final LogoutUsecase _logoutUsecase;
+
+  AuthController({
+    required GetCurrentUserUsecase getCurrentUserUsecase,
+    required LoginUsecase loginUsecase,
+    required CreateAccountUsecase createAccountUsecase,
+    required LogoutUsecase logoutUsecase,
+  }) {
+    _getCurrentUserUsecase = getCurrentUserUsecase;
+    _loginUsecase = loginUsecase;
+    _createAccountUsecase = createAccountUsecase;
+    _logoutUsecase = logoutUsecase;
+
     updateData(
       data.copyWith(
-        user: musilyRepository.currentUser,
+        user: _getCurrentUserUsecase.exec(),
       ),
     );
   }
@@ -29,14 +45,20 @@ class AuthController extends BaseController<AuthData, AuthMethods> {
   @override
   defineMethods() {
     return AuthMethods(
-      login: ({required email, required password}) async {
+      login: ({
+        required email,
+        required password,
+      }) async {
         updateData(
           data.copyWith(
             loading: true,
           ),
         );
         try {
-          final user = await musilyRepository.login(email, password);
+          final user = await _loginUsecase.exec(
+            email: email,
+            password: password,
+          );
           updateData(
             data.copyWith(
               user: user,
@@ -61,7 +83,7 @@ class AuthController extends BaseController<AuthData, AuthMethods> {
           ),
         );
         try {
-          await musilyRepository.logout();
+          await _logoutUsecase.exec();
           data.user = null;
           updateData(data);
         } catch (e) {
@@ -86,10 +108,10 @@ class AuthController extends BaseController<AuthData, AuthMethods> {
           ),
         );
         try {
-          final user = await musilyRepository.createAccount(
-            name.trim().toLowerCase(),
-            email.trim().toLowerCase(),
-            password.trim().toLowerCase(),
+          final user = await _createAccountUsecase.exec(
+            name: name.trim(),
+            email: email.trim().toLowerCase(),
+            password: password.trim(),
           );
           updateData(
             data.copyWith(

@@ -1,8 +1,8 @@
 import 'package:musily/core/domain/presenter/app_controller.dart';
-import 'package:musily_repository/core/data/models/musily_user.dart';
+import 'package:musily/features/auth/domain/entities/user_entity.dart';
 
 class AuthData extends BaseControllerData {
-  MusilyUser? user;
+  UserEntity? user;
   final bool loading;
 
   AuthData({
@@ -12,7 +12,7 @@ class AuthData extends BaseControllerData {
 
   @override
   AuthData copyWith({
-    MusilyUser? user,
+    UserEntity? user,
     bool? loading,
   }) {
     return AuthData(
