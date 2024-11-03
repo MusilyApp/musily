@@ -19,9 +19,9 @@ Get it on [Telegram](https://t.me/MusilyApp).
 
 ### Screenshots
 
-| ![Home Page](assets/screenshots/home.jpg)          | ![Album Page](assets/screenshots/album.jpg) | ![Artist Page](assets/screenshots/artist.jpg) |
-| -------------------------------------------------- | ------------------------------------------- | --------------------------------------------- |
-| ![Playlist Page](assets/screenshots/favorites.jpg) | ![Player](assets/screenshots/player.jpg)    | ![Lyrics](assets/screenshots/lyrics.jpg)      |
+| ![Home Page](assets/screenshots/mobile/home.jpg)          | ![Album Page](assets/screenshots/mobile/album.jpg) | ![Artist Page](assets/screenshots/mobile/artist.jpg) |
+| --------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
+| ![Playlist Page](assets/screenshots/mobile/favorites.jpg) | ![Player](assets/screenshots/mobile/player.jpg)    | ![Lyrics](assets/screenshots/mobile/lyrics.jpg)      |
 
 ---
 
