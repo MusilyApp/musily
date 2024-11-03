@@ -1,79 +1,64 @@
+import 'package:musily/core/domain/datasources/base_datasource.dart';
+import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/features/_library_module/domain/datasources/library_datasource.dart';
 import 'package:musily/features/album/data/models/album_model.dart';
 import 'package:musily/features/album/domain/datasources/album_datasource.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_repository/features/data_fetch/data/mappers/album_mapper.dart';
-import 'package:musily_repository/features/data_fetch/data/mappers/simplified_album_mapper.dart';
-import 'package:musily_repository/features/data_fetch/data/repositories/musily_repository.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 
-class AlbumDatasourceImpl implements AlbumDatasource {
-  final DownloaderController downloaderController;
-  final LibraryDatasource libraryDatasource;
+class AlbumDatasourceImpl extends BaseDatasource implements AlbumDatasource {
+  late final DownloaderController _downloaderController;
+  late final LibraryDatasource _libraryDatasource;
+  late final MusilyRepository _musilyRepository;
 
   AlbumDatasourceImpl({
-    required this.downloaderController,
-    required this.libraryDatasource,
-  });
+    required DownloaderController downloaderController,
+    required LibraryDatasource libraryDatasource,
+    required MusilyRepository musilyRepository,
+  }) {
+    _downloaderController = downloaderController;
+    _libraryDatasource = libraryDatasource;
+    _musilyRepository = musilyRepository;
+  }
 
   @override
   Future<AlbumEntity?> getAlbum(String id) async {
-    final musilyRepository = MusilyRepository();
-    try {
-      final libraryItem = await libraryDatasource.getLibraryItem<AlbumEntity>(
+    return exec<AlbumEntity?>(() async {
+      final libraryItem = await _libraryDatasource.getLibraryItem(
         id,
       );
-      if (libraryItem != null) {
+      if (libraryItem?.album != null) {
         final offlineLibraryItem = await AlbumModel.toOffline(
-          libraryItem.value,
-          downloaderController,
+          libraryItem!.album!,
+          _downloaderController,
         );
         return offlineLibraryItem;
       }
-      final data = await musilyRepository.getAlbum(id);
-      if (data == null) {
+      final album = await _musilyRepository.getAlbum(id);
+      if (album == null) {
         return null;
       }
-      final album = AlbumModel.fromMap(
-        AlbumMapper().toMap(
-          data,
-        ),
-      );
       final offlineAlbum = await AlbumModel.toOffline(
         album,
-        downloaderController,
+        _downloaderController,
       );
       return offlineAlbum;
-    } catch (e) {
-      return null;
-    }
+    });
   }
 
   @override
   Future<List<AlbumEntity>> getAlbums(String query) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final data = await musilyRepository.searchAlbums(query);
-      final albums = data
-          .map(
-            (element) => AlbumModel.fromMap(
-              SimplifiedAlbumMapper().toMap(
-                element,
-              ),
-            ),
-          )
-          .toList();
+    return exec<List<AlbumEntity>>(() async {
+      final albums = await _musilyRepository.searchAlbums(query);
       final offlineAlbums = <AlbumEntity>[];
       for (final album in albums) {
         final offilneAlbum = await AlbumModel.toOffline(
           album,
-          downloaderController,
+          _downloaderController,
         );
         offlineAlbums.add(offilneAlbum);
       }
       return offlineAlbums;
-    } catch (e) {
-      return [];
-    }
+    });
   }
 }

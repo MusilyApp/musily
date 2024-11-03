@@ -12,7 +12,7 @@ class SectionsRepositoryImpl implements SectionsRepository {
   }
 
   @override
-  Future<List<SectionEntity>> getSections() async {
+  Future<List<HomeSectionEntity>> getSections() async {
     final sections = await _sectionsDatasource.getSections();
     return sections;
   }
