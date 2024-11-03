@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - releases
 
 name: Build and Release Linux App
 
