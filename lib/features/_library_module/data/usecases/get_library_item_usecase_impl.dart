@@ -10,9 +10,9 @@ class GetLibraryItemUsecaseImpl implements GetLibraryItemUsecase {
   }) {
     _libraryRepository = libraryRepository;
   }
+
   @override
-  Future<LibraryItemEntity<T>?> exec<T>(String id) async {
-    final item = await _libraryRepository.getLibraryItem<T>(id);
-    return item;
+  Future<LibraryItemEntity?> exec(String itemId) async {
+    return await _libraryRepository.getLibraryItem(itemId);
   }
 }

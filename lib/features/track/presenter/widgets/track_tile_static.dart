@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 
 class TrackTileStatic extends StatefulWidget {
   final TrackEntity track;
+  final Widget? trailing;
   const TrackTileStatic({
     required this.track,
+    this.trailing,
     super.key,
   });
 
@@ -22,7 +26,7 @@ class _TrackTileStaticState extends State<TrackTileStatic> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return LyListTile(
       title: InfinityMarquee(
         child: Text(
           widget.track.title,
@@ -33,7 +37,7 @@ class _TrackTileStaticState extends State<TrackTileStatic> {
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
             width: 1,
-            color: Theme.of(context).colorScheme.outline.withOpacity(.2),
+            color: context.themeData.colorScheme.outline.withOpacity(.2),
           ),
         ),
         child: Builder(
@@ -55,7 +59,7 @@ class _TrackTileStaticState extends State<TrackTileStatic> {
               height: 40,
               child: Icon(
                 Icons.music_note,
-                color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+                color: context.themeData.iconTheme.color?.withOpacity(.7),
               ),
             );
           },
@@ -66,6 +70,7 @@ class _TrackTileStaticState extends State<TrackTileStatic> {
           widget.track.artist.name,
         ),
       ),
+      trailing: widget.trailing,
     );
   }
 }

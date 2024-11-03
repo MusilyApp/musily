@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/widgets/menu_entry.dart';
-import 'package:musily_player/musily_player.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class DownloaderMenuEntry {
   final DownloaderController downloaderController;
 
   MenuEntry builder(
     BuildContext context,
-    MusilyTrack track,
+    TrackEntity track,
   ) {
     final item = downloaderController.methods.getItem(track);
     if (item == null) {
@@ -19,15 +19,15 @@ class DownloaderMenuEntry {
             track,
           );
           downloaderController.methods.setDownloadingKey(
-            track.hash ?? track.id,
+            track.hash,
           );
         },
         leading: Icon(
           Icons.download_rounded,
-          color: Theme.of(context).colorScheme.primary,
+          color: context.themeData.colorScheme.primary,
         ),
         child: Text(
-          AppLocalizations.of(context)!.download,
+          context.localization.download,
         ),
       );
     }
@@ -40,10 +40,10 @@ class DownloaderMenuEntry {
         },
         leading: Icon(
           Icons.delete_rounded,
-          color: Theme.of(context).colorScheme.primary,
+          color: context.themeData.colorScheme.primary,
         ),
         child: Text(
-          AppLocalizations.of(context)!.deleteDownload,
+          context.localization.deleteDownload,
         ),
       );
     }
@@ -60,9 +60,9 @@ class DownloaderMenuEntry {
       },
       leading: Icon(
         Icons.cancel_rounded,
-        color: Theme.of(context).colorScheme.primary,
+        color: context.themeData.colorScheme.primary,
       ),
-      child: Text(AppLocalizations.of(context)!.cancelDownload),
+      child: Text(context.localization.cancelDownload),
     );
   }
 

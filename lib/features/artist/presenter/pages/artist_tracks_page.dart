@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -11,13 +11,11 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
-import 'package:musily_player/musily_entities.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class ArtistTracksPage extends StatefulWidget {
   final List<TrackEntity> tracks;
@@ -93,12 +91,11 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CoreBaseWidget(
-      coreController: widget.coreController,
+    return LyPage(
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context)!.songs,
+            context.localization.songs,
           ),
         ),
         body: Builder(
@@ -106,7 +103,7 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
             if (loadingTracks) {
               return Center(
                 child: LoadingAnimationWidget.halfTriangleDot(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: context.themeData.colorScheme.primary,
                   size: 50,
                 ),
               );
@@ -119,10 +116,10 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
                     Icon(
                       Icons.music_off_rounded,
                       size: 50,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color?.withOpacity(.7),
                     ),
                     Text(
-                      AppLocalizations.of(context)!.songsNotFound,
+                      context.localization.songsNotFound,
                     )
                   ],
                 ),
@@ -148,15 +145,12 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
                         getArtistTracksUsecase: widget.getArtistTracksUsecase,
                         getArtistUsecase: widget.getArtistUsecase,
                         customAction: () {
-                          late final List<MusilyTrack> queueToPlay;
+                          late final List<TrackEntity> queueToPlay;
                           if (widget.playerController.data.playingId ==
                               widget.artist.id) {
                             queueToPlay = widget.playerController.data.queue;
                           } else {
-                            queueToPlay = [
-                              ...allTracks.map((element) =>
-                                  TrackModel.toMusilyTrack(element))
-                            ];
+                            queueToPlay = allTracks;
                           }
 
                           final startIndex = queueToPlay.indexWhere(

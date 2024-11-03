@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_tonal_button.dart';
 import 'package:simple_icons/simple_icons.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {
@@ -22,7 +23,7 @@ class About extends StatelessWidget {
         ),
         Text(
           'by Felipe Yslaoker',
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: context.themeData.textTheme.bodyLarge,
         ),
         const SizedBox(
           height: 12,
@@ -30,7 +31,7 @@ class About extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: FilledButton.tonal(
+              child: LyTonalButton(
                 onPressed: () {
                   Navigator.pop(context);
                   launchUrl(
@@ -46,7 +47,7 @@ class About extends StatelessWidget {
               width: 8,
             ),
             Expanded(
-              child: FilledButton.tonal(
+              child: LyTonalButton(
                 onPressed: () {
                   Clipboard.setData(
                     const ClipboardData(
@@ -60,11 +61,11 @@ class About extends StatelessWidget {
                         seconds: 2,
                       ),
                       backgroundColor:
-                          Theme.of(context).colorScheme.inversePrimary,
+                          context.themeData.colorScheme.inversePrimary,
                       content: Text(
-                        AppLocalizations.of(context)!.copiedToClipboard,
+                        context.localization.copiedToClipboard,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: context.themeData.colorScheme.primary,
                         ),
                       ),
                     ),

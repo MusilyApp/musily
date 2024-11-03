@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:musily/core/domain/presenter/app_controller.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/animated_size_widget.dart';
-import 'package:musily/core/utils/app_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/pages/library_page.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
@@ -18,12 +18,11 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/core/utils/display_helper.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/player/presenter/widgets/mini_player_widget.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily_player/presenter/widgets/mini_player_widget.dart';
 
 class CorePage extends StatefulWidget {
   final CoreController coreController;
@@ -98,60 +97,36 @@ class _CorePageState extends State<CorePage> {
   @override
   Widget build(BuildContext context) {
     return widget.coreController.builder(
-      eventListener: (context, event, data) {
-        if (event.id == 'pushModal') {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => event.data,
-          );
-        }
-        if (event.id == 'closePlayer') {
-          widget.playerController.methods.closePlayer();
-        }
-        if (event.id == 'pushOverlayingWidget') {
-          if (DisplayHelper(context).isDesktop) {
-            widget.coreController.dispatchEvent(
-              BaseControllerEvent(
-                id: 'pushWidget',
-                data: event.data,
-              ),
-            );
-            return;
-          }
-          Navigator.push(
-            context,
-            DownupRouter(
-              builder: (context) => event.data,
-            ),
-          );
-        }
-      },
       builder: (context, data) {
-        final isDesktop = MediaQuery.of(context).size.width > 1100;
         return LayoutBuilder(builder: (context, constraints) {
           final availableHeight = constraints.maxHeight;
-          return PopScope(
-            canPop: data.pages.isEmpty,
+          return LyPage(
+            // canPop: ContextManager().contextStack.length == 1,
+            // onPopInvoked: (didPop) {
+            //   print('abelha top');
+            // },
+            mainPage: true,
             child: Scaffold(
-              bottomNavigationBar: isDesktop
+              key: widget.coreController.coreKey,
+              bottomNavigationBar: context.display.isDesktop
                   ? null
                   : BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
                       items: [
                         BottomNavigationBarItem(
-                          label: AppLocalizations.of(context)!.home,
+                          label: context.localization.home,
                           icon: const Icon(Icons.home_rounded),
                         ),
                         BottomNavigationBarItem(
-                          label: AppLocalizations.of(context)!.search,
+                          label: context.localization.search,
                           icon: const Icon(Icons.search_rounded),
                         ),
                         BottomNavigationBarItem(
-                          label: AppLocalizations.of(context)!.library,
+                          label: context.localization.library,
                           icon: const Icon(Icons.library_music_rounded),
                         ),
                         BottomNavigationBarItem(
-                          label: AppLocalizations.of(context)!.downloads,
+                          label: context.localization.downloads,
                           icon: const Icon(
                             Icons.download_rounded,
                           ),
@@ -162,7 +137,7 @@ class _CorePageState extends State<CorePage> {
                         setState(
                           () {
                             _selected = value;
-                            AppNavigator.navigateTo(
+                            LyNavigator.navigateTo(
                               routes[value],
                             );
                           },
@@ -173,10 +148,11 @@ class _CorePageState extends State<CorePage> {
                 builder: (context, data) {
                   return Stack(
                     children: [
-                      if (!isDesktop)
+                      if (!context.display.isDesktop)
                         const RouterOutlet()
                       else
-                        SizedBox(
+                        AnimatedSizeWidget(
+                          width: context.display.width,
                           height: data.currentPlayingItem != null
                               ? availableHeight - 75
                               : availableHeight,
@@ -188,7 +164,7 @@ class _CorePageState extends State<CorePage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: SizedBox(
                                       height: 144,
-                                      width: 300,
+                                      width: 310,
                                       child: Card(
                                         margin: EdgeInsets.zero,
                                         shape: RoundedRectangleBorder(
@@ -196,15 +172,15 @@ class _CorePageState extends State<CorePage> {
                                               BorderRadius.circular(12),
                                           side: BorderSide(
                                             strokeAlign: 1,
-                                            color: Theme.of(context)
-                                                .dividerColor
+                                            color: context
+                                                .themeData.dividerColor
                                                 .withOpacity(.2),
                                           ),
                                         ),
                                         child: Scaffold(
                                           body: Column(
                                             children: [
-                                              ListTile(
+                                              LyListTile(
                                                 onTap: () {
                                                   if (_selected != 0) {
                                                     widget.coreController
@@ -217,7 +193,7 @@ class _CorePageState extends State<CorePage> {
                                                   }
                                                   setState(() {
                                                     _selected = 0;
-                                                    AppNavigator.navigateTo(
+                                                    LyNavigator.navigateTo(
                                                       routes[0],
                                                     );
                                                   });
@@ -225,24 +201,21 @@ class _CorePageState extends State<CorePage> {
                                                 leading: Icon(
                                                   Icons.home_rounded,
                                                   color: _selected == 0
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
+                                                      ? context.themeData
+                                                          .colorScheme.primary
                                                       : null,
                                                 ),
                                                 title: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .home,
+                                                  context.localization.home,
                                                   style: TextStyle(
                                                     color: _selected == 0
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .primary
+                                                        ? context.themeData
+                                                            .colorScheme.primary
                                                         : null,
                                                   ),
                                                 ),
                                               ),
-                                              ListTile(
+                                              LyListTile(
                                                 onTap: () {
                                                   if (_selected != 1) {
                                                     widget.coreController
@@ -255,7 +228,7 @@ class _CorePageState extends State<CorePage> {
                                                   }
                                                   setState(() {
                                                     _selected = 1;
-                                                    AppNavigator.navigateTo(
+                                                    LyNavigator.navigateTo(
                                                       routes[1],
                                                     );
                                                   });
@@ -263,24 +236,21 @@ class _CorePageState extends State<CorePage> {
                                                 leading: Icon(
                                                   Icons.search_rounded,
                                                   color: _selected == 1
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
+                                                      ? context.themeData
+                                                          .colorScheme.primary
                                                       : null,
                                                 ),
                                                 title: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .search,
+                                                  context.localization.search,
                                                   style: TextStyle(
                                                     color: _selected == 1
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .primary
+                                                        ? context.themeData
+                                                            .colorScheme.primary
                                                         : null,
                                                   ),
                                                 ),
                                               ),
-                                              ListTile(
+                                              LyListTile(
                                                 onTap: () {
                                                   if (_selected != 3) {
                                                     widget.coreController
@@ -293,7 +263,7 @@ class _CorePageState extends State<CorePage> {
                                                   }
                                                   setState(() {
                                                     _selected = 3;
-                                                    AppNavigator.navigateTo(
+                                                    LyNavigator.navigateTo(
                                                       routes[3],
                                                     );
                                                   });
@@ -301,19 +271,17 @@ class _CorePageState extends State<CorePage> {
                                                 leading: Icon(
                                                   Icons.download_rounded,
                                                   color: _selected == 3
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
+                                                      ? context.themeData
+                                                          .colorScheme.primary
                                                       : null,
                                                 ),
                                                 title: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .downloads,
+                                                  context
+                                                      .localization.downloads,
                                                   style: TextStyle(
                                                     color: _selected == 3
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .primary
+                                                        ? context.themeData
+                                                            .colorScheme.primary
                                                         : null,
                                                   ),
                                                 ),
@@ -326,7 +294,7 @@ class _CorePageState extends State<CorePage> {
                                   ),
                                   Expanded(
                                     child: SizedBox(
-                                      width: 300,
+                                      width: 310,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                           bottom: 8,
@@ -338,8 +306,8 @@ class _CorePageState extends State<CorePage> {
                                                 BorderRadius.circular(12),
                                             side: BorderSide(
                                               strokeAlign: 1,
-                                              color: Theme.of(context)
-                                                  .dividerColor
+                                              color: context
+                                                  .themeData.dividerColor
                                                   .withOpacity(.2),
                                             ),
                                           ),
@@ -386,8 +354,7 @@ class _CorePageState extends State<CorePage> {
                                       borderRadius: BorderRadius.circular(12),
                                       side: BorderSide(
                                         strokeAlign: 1,
-                                        color: Theme.of(context)
-                                            .dividerColor
+                                        color: context.themeData.dividerColor
                                             .withOpacity(.2),
                                       ),
                                     ),
@@ -399,9 +366,12 @@ class _CorePageState extends State<CorePage> {
                                 ),
                               ),
                               AnimatedSizeWidget(
-                                key: Key(data.hashCode.toString()),
+                                // key: Key(data.hashCode.toString()),
+                                duration: const Duration(
+                                  milliseconds: 150,
+                                ),
                                 width: (data.showLyrics || data.showQueue)
-                                    ? 395
+                                    ? 345
                                     : 0,
                                 height: 20,
                                 child: Container(),
@@ -414,6 +384,15 @@ class _CorePageState extends State<CorePage> {
                         child: MiniPlayerWidget(
                           playerController: widget.playerController,
                           downloaderController: widget.downloaderController,
+                          coreController: widget.coreController,
+                          getAlbumUsecase: widget.getAlbumUsecase,
+                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                          libraryController: widget.libraryController,
+                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase:
+                              widget.getArtistSinglesUsecase,
+                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                          getArtistUsecase: widget.getArtistUsecase,
                         ),
                       ),
                     ],

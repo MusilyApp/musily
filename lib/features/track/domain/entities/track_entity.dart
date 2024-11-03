@@ -9,26 +9,37 @@ enum TrackFileStatus {
 
 class TrackEntity {
   final String id;
+  int orderIndex;
   String title;
   String hash;
-  ShortArtist artist;
-  ShortAlbum album;
+  SimplifiedArtist artist;
+  SimplifiedAlbum album;
   String? highResImg;
   String? lowResImg;
   String? url;
-  String source;
+  String? source;
   bool fromSmartQueue;
+  Duration duration;
+  Duration position;
 
   TrackEntity({
     required this.id,
+    this.orderIndex = 0,
     required this.title,
     required this.hash,
     required this.artist,
     required this.album,
     required this.highResImg,
     required this.lowResImg,
-    required this.source,
     required this.fromSmartQueue,
+    required this.duration,
+    this.position = Duration.zero,
+    this.source,
     this.url,
   });
+
+  @override
+  String toString() {
+    return 'TrackEntity(id: $id, title: $title, hash: $hash, artist: $artist, album: $album, highResImg: $highResImg, lowResImg: $lowResImg, url: $url, source: $source, fromSmartQueue: $fromSmartQueue)';
+  }
 }

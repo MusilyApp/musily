@@ -3,10 +3,11 @@ import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_methods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   final void Function(ThemeMode? themeMode)? onThemeModeUpdated;
+
   SettingsController({
     this.onThemeModeUpdated,
   }) {
@@ -62,7 +63,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
               ),
             );
           }
-          while (AppLocalizations.of(data.context!) == null) {
+          while (data.context == null) {
             await Future.delayed(
               const Duration(
                 seconds: 1,
@@ -70,8 +71,10 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
             );
           }
           data.locale = Locale(
-            AppLocalizations.of(data.context!)!.localeName,
+            data.context!.localization.localeName,
           );
+          updateData(data);
+          methods.changeLanguage(data.locale.toString());
         }
       },
     );

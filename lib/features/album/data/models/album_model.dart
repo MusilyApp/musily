@@ -1,7 +1,7 @@
 import 'package:musily/core/data/database/library_database.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
@@ -10,13 +10,15 @@ class AlbumModel {
     return AlbumEntity(
       id: map['id'],
       title: map['title'] ?? '',
-      year: map['year'] ?? 0,
-      artist: ShortArtist(
+      year: map['year'] ??
+          DateTime.tryParse(map['releaseDate'] ?? '')?.year ??
+          2000,
+      artist: SimplifiedArtist(
         id: map['artist']?['id'] ?? '',
         name: map['artist']?['name'] ?? '',
       ),
-      highResImg: map['highResImg'],
-      lowResImg: map['lowResImg'],
+      highResImg: map['highResImg'] ?? '',
+      lowResImg: map['lowResImg'] ?? '',
       tracks: [
         ...(map['tracks'] ?? []).map(
           (element) => TrackModel.fromMap(
@@ -31,7 +33,7 @@ class AlbumModel {
     return <String, dynamic>{
       'id': album.id,
       'title': album.title,
-      'year': album.year,
+      'releaseDate': DateTime(album.year).toIso8601String(),
       'artist': {
         'id': album.artist.id,
         'name': album.artist.name,
@@ -48,8 +50,6 @@ class AlbumModel {
   ) async {
     final db = LibraryDatabase();
     final libraryTracks = <TrackEntity>[];
-    String? offlineHighResImg;
-    String? offlineLowResImg;
 
     if (album.tracks.isEmpty) {
       final libraryAlbumMap = await db.findById(album.id);
@@ -67,8 +67,6 @@ class AlbumModel {
         track,
         downloaderController,
       );
-      offlineHighResImg ??= offlineTrack.highResImg;
-      offlineLowResImg ??= offlineTrack.lowResImg;
       offlineTracks.add(offlineTrack);
     }
     return AlbumEntity(
@@ -76,8 +74,8 @@ class AlbumModel {
       id: album.id,
       artist: album.artist,
       tracks: offlineTracks,
-      highResImg: offlineHighResImg ?? album.highResImg,
-      lowResImg: offlineLowResImg ?? album.lowResImg,
+      highResImg: album.highResImg,
+      lowResImg: album.lowResImg,
       year: album.year,
     );
   }

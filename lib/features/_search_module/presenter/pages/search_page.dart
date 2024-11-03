@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
-import 'package:musily/core/utils/display_helper.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/domain/usecases/get_search_suggestions_usecase.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
@@ -14,9 +16,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class SearchPage extends StatefulWidget {
   final CoreController coreController;
@@ -116,39 +118,19 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.coreController.builder(
-      eventListener: (context, event, data) {
-        if (event.id == 'pushWidget') {
-          if (data.pages.length > 1) {
-            if (DisplayHelper(context).isDesktop) {
-              Navigator.pop(context);
-            }
-          }
-          Navigator.of(context).push(
-            DownupRouter(
-              builder: (context) => event.data,
-            ),
-          );
-          if (DisplayHelper(context).isDesktop) {
-            widget.coreController.updateData(
-              data.copyWith(
-                pages: [event.data],
-              ),
-            );
-          }
-        }
-      },
-      builder: (context, data) {
-        return Scaffold(
-          body: SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Card(
+    return LyPage(
+      contextKey: 'SearchPage',
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: TextField(
+                      padding: const EdgeInsets.all(12),
+                      child: LyTextField(
+                        hintText: context.localization.searchMusicAlbumOrArtist,
                         autocorrect: false,
                         controller: searchTextController,
                         focusNode: searchFocusNode,
@@ -163,71 +145,63 @@ class _SearchPageState extends State<SearchPage> {
                         },
                         onSubmitted: submitSearch,
                         autofocus: true,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!
-                              .searchMusicAlbumOrArtist,
-                          border: InputBorder.none,
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.only(bottom: 4),
-                            child: Icon(
-                              Icons.search,
-                            ),
-                          ),
-                          suffixIcon: searchTextController.text.isEmpty
-                              ? null
-                              : Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      searchTextController.text = '';
-                                      setState(() {
-                                        searchSuggestions = [];
-                                      });
-                                    },
-                                    style: const ButtonStyle(
-                                      visualDensity: VisualDensity.compact,
-                                    ),
-                                    icon: const Icon(
-                                      Icons.close,
-                                    ),
-                                  ),
-                                ),
+                        prefixIcon: const Icon(
+                          Icons.search,
                         ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      ...searchSuggestions.map(
-                        (suggestion) => ListTile(
-                          onTap: () {
-                            submitSearch(suggestion);
+                  if (searchTextController.text.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(300),
+                        onTap: () {
+                          searchTextController.text = '';
+                          searchFocusNode.requestFocus();
+                          setState(
+                            () {
+                              searchSuggestions = [];
+                            },
+                          );
+                        },
+                        child: const Icon(
+                          Icons.close,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    ...searchSuggestions.map(
+                      (suggestion) => LyListTile(
+                        onTap: () {
+                          submitSearch(suggestion);
+                          searchTextController.text = suggestion;
+                          getSearchSuggestions();
+                        },
+                        leading: const Icon(Icons.search_rounded),
+                        title: Text(suggestion),
+                        trailing: IconButton(
+                          onPressed: () {
                             searchTextController.text = suggestion;
                             getSearchSuggestions();
                           },
-                          leading: const Icon(Icons.search_rounded),
-                          title: Text(suggestion),
-                          trailing: IconButton(
-                            onPressed: () {
-                              searchTextController.text = suggestion;
-                              getSearchSuggestions();
-                            },
-                            icon: const Icon(
-                              Icons.north_west,
-                            ),
+                          icon: const Icon(
+                            Icons.north_west,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

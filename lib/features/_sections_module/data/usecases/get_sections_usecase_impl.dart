@@ -12,7 +12,7 @@ class GetSectionsUsecaseImpl implements GetSectionsUsecase {
   }
 
   @override
-  Future<List<SectionEntity>> exec() async {
+  Future<List<HomeSectionEntity>> exec() async {
     final sections = await _sectionsRepository.getSections();
     return sections;
   }

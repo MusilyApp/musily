@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/entities/app_menu_entry.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -8,10 +11,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/widgets/download_button.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/downloader/presenter/widgets/download_button.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 
@@ -38,7 +40,7 @@ class TrackTile extends StatefulWidget {
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final Widget? leading;
   final void Function()? customAction;
-  final List<Widget> Function(BuildContext context)? customOptions;
+  final List<AppMenuEntry> Function(BuildContext context)? customOptions;
   final List<TrackTileOptions>? hideOptions;
   const TrackTile({
     required this.track,
@@ -72,14 +74,16 @@ class _TrackTileState extends State<TrackTile> {
   @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(builder: (context, data) {
-      return ListTile(
+      return LyListTile(
+        // focusColor: Colors.transparent,
+        minTileHeight: 60,
         onTap: widget.customAction ??
             () async {
               if (data.playingId == widget.track.hash) {
                 widget.playerController.methods.pause();
               } else {
                 widget.playerController.methods.loadAndPlay(
-                  TrackModel.toMusilyTrack(widget.track),
+                  widget.track,
                   widget.track.hash,
                 );
               }
@@ -95,13 +99,13 @@ class _TrackTileState extends State<TrackTile> {
                 borderRadius: BorderRadius.circular(8),
                 side: BorderSide(
                   width: 1,
-                  color: Theme.of(context).colorScheme.outline.withOpacity(.2),
+                  color: context.themeData.colorScheme.outline.withOpacity(.2),
                 ),
               ),
               child: Builder(
                 builder: (context) {
                   if (widget.track.lowResImg != null &&
-                      widget.track.highResImg!.isNotEmpty) {
+                      widget.track.lowResImg!.isNotEmpty) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: AppImage(
@@ -117,7 +121,7 @@ class _TrackTileState extends State<TrackTile> {
                     height: 40,
                     child: Icon(
                       Icons.music_note,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color?.withOpacity(.7),
                     ),
                   );
                 },
@@ -133,11 +137,9 @@ class _TrackTileState extends State<TrackTile> {
           children: [
             DownloadButton(
               controller: widget.downloaderController,
-              track: TrackModel.toMusilyTrack(
-                widget.track,
-              ),
+              track: widget.track,
             ),
-            TrackOptionsBuilder(
+            TrackOptions(
               hideOptions: widget.hideOptions,
               coreController: widget.coreController,
               track: widget.track,
@@ -151,17 +153,6 @@ class _TrackTileState extends State<TrackTile> {
               getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
               getArtistTracksUsecase: widget.getArtistTracksUsecase,
               getArtistUsecase: widget.getArtistUsecase,
-              builder: (
-                BuildContext context,
-                void Function()? showOptions,
-              ) {
-                return IconButton(
-                  onPressed: showOptions,
-                  icon: const Icon(
-                    Icons.more_vert_outlined,
-                  ),
-                );
-              },
             ),
           ],
         ),

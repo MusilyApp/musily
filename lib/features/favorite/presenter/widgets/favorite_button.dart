@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musily/core/data/services/user_service.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
@@ -22,24 +23,36 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     return widget.libraryController.builder(
       builder: (context, data) {
         return IconButton(
-          onPressed: data.addingToFavorites
+          onPressed: data.itemsAddingToFavorites.contains(widget.track.hash)
               ? null
               : () async {
-                  await widget.libraryController.methods.toggleFavorite(
-                    widget.track,
-                  );
+                  if (!data.loadedFavoritesHash.contains(widget.track.hash)) {
+                    await widget.libraryController.methods.addTracksToPlaylist(
+                      UserService.favoritesId,
+                      [widget.track],
+                    );
+                  } else {
+                    await widget.libraryController.methods
+                        .removeTracksFromPlaylist(
+                      UserService.favoritesId,
+                      [widget.track.id],
+                    );
+                  }
                 },
-          icon: data.addingToFavorites
-              ? LoadingAnimationWidget.threeArchedCircle(
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 20,
+          icon: data.itemsAddingToFavorites.contains(widget.track.hash)
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                  ),
                 )
               : Icon(
                   data.loadedFavoritesHash.contains(widget.track.hash)
                       ? Icons.favorite_rounded
                       : Icons.favorite_border_rounded,
                   color: data.loadedFavoritesHash.contains(widget.track.hash)
-                      ? Theme.of(context).buttonTheme.colorScheme?.primary
+                      ? context.themeData.buttonTheme.colorScheme?.primary
                       : null,
                 ),
         );

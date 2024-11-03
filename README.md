@@ -1,6 +1,4 @@
-<center>
-  <img src="assets/icons/ic_launcher_round.png" alt="Descrição da imagem" width="80">
-</center>
+<img src="assets/icons/ic_launcher_round.png" alt="Descrição da imagem" width="80">
 
 # Musily: A great music app.
 
@@ -31,6 +29,41 @@ Get it on [Telegram](https://t.me/MusilyApp).
 
 - **Programming Language:** Dart
 - **Framework:** Flutter
+
+---
+
+### Tested On
+
+Musily has been tested and works seamlessly on the following platforms:
+
+- **Flutter SDK**: Version 3.22.3
+- **Operating Systems**:
+  - **Ubuntu 24.04 LTS** (GNOME)
+  - **Nobara Linux 40** (GNOME Edition)
+
+Make sure you have the correct Flutter version and system dependencies installed for an optimal experience.
+
+---
+
+### Linux Support
+
+Musily supports Linux-based distributions with the following requirements:
+
+**Dependencies**:  
+To run Musily on Linux, you'll need the following libraries installed:
+
+- **libmpv**: For audio playback using MPV media player.
+- **libsecret**: For secure storage of user credentials and sensitive information.
+
+#### Install Dependencies on Ubuntu/Debian-based Systems
+
+```bash
+sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev
+```
+
+For other Linux distributions, please use the respective package managers (e.g., dnf for Fedora-based systems).
+
+---
 
 ### Installation
 
@@ -66,4 +99,4 @@ Musily is open-source and licensed under the GNU GENERAL PUBLIC LICENSE. You can
 
 ### Contact
 
-For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker) or [E-mail](mailto:musilyapp@gmail.com).
+For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker).

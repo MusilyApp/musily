@@ -3,20 +3,20 @@ import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 
 class PlaylistModel {
-  static fromMap(
+  static PlaylistEntity fromMap(
     Map<String, dynamic> map, {
     int? trackCount,
   }) {
     return PlaylistEntity(
       id: map['id'],
       title: map['title'] ?? map['name'],
-      artist: ShortArtist(
+      artist: SimplifiedArtist(
         id: map['artist']?['id'] ?? '',
         name: map['artist']?['name'] ?? '',
       ),
       highResImg: map['highResImg'],
       lowResImg: map['lowResImg'],
-      trackCount: trackCount ?? ((map['tracks'] ?? []) as List).length,
+      trackCount: trackCount ?? (map['trackCount'] ?? 0),
       tracks: [
         ...(map['tracks'] ?? []).map(
           (track) => TrackModel.fromMap(track),
@@ -35,6 +35,7 @@ class PlaylistModel {
       },
       'highResImg': playlist.highResImg,
       'lowResImg': playlist.lowResImg,
+      'trackCount': playlist.trackCount,
       'tracks': playlist.tracks.map((x) => TrackModel.toMap(x)).toList(),
     };
   }

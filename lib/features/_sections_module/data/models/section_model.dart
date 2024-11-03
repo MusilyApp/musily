@@ -3,8 +3,8 @@ import 'package:musily/features/album/data/models/album_model.dart';
 import 'package:musily/features/playlist/data/models/playlist_model.dart';
 
 class SectionModel {
-  static SectionEntity fromMap(Map<String, dynamic> map) {
-    return SectionEntity(
+  static HomeSectionEntity fromMap(Map<String, dynamic> map) {
+    return HomeSectionEntity(
       id: map['id'],
       title: map['title'],
       content: [

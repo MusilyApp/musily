@@ -1,0 +1,99 @@
+on:
+  push:
+    branches:
+      - releases
+
+name: Test, Build and Release apk
+
+env:
+  PROPERTIES_PATH: "./android/key.properties"
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Extract version from pubspec
+      - name: Extract version
+        id: extract_version
+        run: |
+          version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
+          echo "version=${version}" >> $GITHUB_ENV
+          echo "version=${version}" >> $GITHUB_OUTPUT
+
+      # Extract description from CHANGELOG.md
+      - name: Extract description
+        id: extract_description
+        run: |
+          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
+          escaped_description=$(echo "$description" | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g; s/\*/\\*/g; s/_/\\_/g')
+          echo "description=${escaped_description}" >> $GITHUB_ENV
+          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
+
+      # Setup Java environment in order to build the Android app.
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+
+      # Gradle cache for faster builds
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Setup the Flutter environment.
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: 3.22.3
+
+      # Create key.properties file
+      - name: Create key.properties
+        run: echo "${{ secrets.KEY_PROPERTIES_BASE64 }}" | base64 --decode > ${{env.PROPERTIES_PATH}}
+
+      # Create key.jks file
+      - name: Create key.jks
+        run: echo "${{ secrets.KEY_STORE_BASE64 }}" | base64 --decode > android/app/key.jks
+
+      # Get Flutter dependencies.
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      # Statically analyze the Dart code for any errors.
+      - name: Analyze Dart code
+        run: flutter analyze .
+
+      # Build universal APK
+      - name: Build universal APK
+        run: flutter build apk --release
+
+      # Release universal generated APK
+      - name: Release universal APK
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: MusilyApp/musily
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: musily-${{steps.extract_version.outputs.version}}.apk
+          tag: ${{ steps.extract_version.outputs.version }}
+          body: "${{ steps.extract_description.outputs.description }}"
+          prerelease: false
+          overwrite: true
+
+      # Post on Telegram
+      - name: Post on Telegram
+        run: |
+          chmod +x post_telegram.sh
+          ./post_telegram.sh "${{ secrets.TELEGRAM_BOT_TOKEN }}" "${{ secrets.TELEGRAM_CHAT_ID }}"

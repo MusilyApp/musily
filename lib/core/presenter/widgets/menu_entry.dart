@@ -7,6 +7,7 @@ class MenuEntry {
     this.onPressed,
     this.menuChildren,
     this.leading,
+    this.contentPadding,
   }) : assert(
           menuChildren == null || onPressed == null,
           'onPressed is ignored if menuChildren are provided',
@@ -17,19 +18,20 @@ class MenuEntry {
   final VoidCallback? onPressed;
   final List<MenuEntry>? menuChildren;
   final Widget? leading;
+  final EdgeInsetsGeometry? contentPadding;
 
   static List<Widget> build(BuildContext context, List<MenuEntry> selections) {
     Widget buildSelection(MenuEntry selection) {
       if (selection.menuChildren != null) {
         return SubmenuButton(
           leadingIcon: selection.leading,
-          style: const ButtonStyle(
+          style: ButtonStyle(
             padding: WidgetStatePropertyAll(
-              EdgeInsets.zero,
+              selection.contentPadding,
             ),
             visualDensity: VisualDensity.compact,
             alignment: Alignment.center,
-            elevation: WidgetStatePropertyAll(0),
+            elevation: const WidgetStatePropertyAll(0),
           ),
           menuChildren: MenuEntry.build(context, selection.menuChildren!),
           child: selection.child,
@@ -38,6 +40,14 @@ class MenuEntry {
       return MenuItemButton(
         leadingIcon: selection.leading,
         shortcut: selection.shortcut,
+        style: ButtonStyle(
+          padding: WidgetStatePropertyAll(
+            selection.contentPadding,
+          ),
+          visualDensity: VisualDensity.compact,
+          alignment: Alignment.center,
+          elevation: const WidgetStatePropertyAll(0),
+        ),
         onPressed: selection.onPressed,
         child: selection.child,
       );

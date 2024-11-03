@@ -1,9 +1,9 @@
-class SectionEntity<T> {
+class HomeSectionEntity<T> {
   final String id;
   String title;
   List<T> content;
 
-  SectionEntity({
+  HomeSectionEntity({
     required this.id,
     required this.title,
     required this.content,

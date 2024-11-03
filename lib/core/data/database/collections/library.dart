@@ -1,17 +1,13 @@
 import 'package:isar/isar.dart';
 part 'library.g.dart';
 
-enum LibraryType {
-  album,
-  playlist,
-  artist,
-}
-
 @collection
-class DatabaseLibrary {
-  Id? id;
+class Library {
+  Id id = Isar.autoIncrement;
   String? musilyId;
-  @enumerated
-  LibraryType type = LibraryType.album;
+  bool? anonymous;
+  String? lastTimePlayed;
+  bool? synced;
   String? value;
+  String? createdAt;
 }

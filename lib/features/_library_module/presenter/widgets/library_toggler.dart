@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/entities/identifiable.dart';
+import 'package:musily/features/_library_module/data/dtos/create_playlist_dto.dart';
+import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 
-class LibraryToggler<T> extends StatefulWidget {
-  final T item;
+class LibraryToggler extends StatefulWidget {
+  final LibraryItemEntity item;
   final LibraryController libraryController;
   final Widget Function(
     BuildContext context,
@@ -13,24 +14,20 @@ class LibraryToggler<T> extends StatefulWidget {
     BuildContext context,
     Future<void> Function() removeFromLibrary,
   ) inLibraryWidget;
-  final Widget Function(
-    BuildContext context,
-  )? loadingWidget;
 
   const LibraryToggler({
     required this.libraryController,
     required this.notInLibraryWidget,
     required this.item,
     required this.inLibraryWidget,
-    this.loadingWidget,
     super.key,
   });
 
   @override
-  State<LibraryToggler<T>> createState() => _LibraryTogglerState<T>();
+  State<LibraryToggler> createState() => _LibraryTogglerState();
 }
 
-class _LibraryTogglerState<T> extends State<LibraryToggler<T>> {
+class _LibraryTogglerState extends State<LibraryToggler> {
   bool loading = false;
 
   @override
@@ -42,23 +39,26 @@ class _LibraryTogglerState<T> extends State<LibraryToggler<T>> {
   Widget build(BuildContext context) {
     return widget.libraryController.builder(
       builder: (context, data) {
-        if (loading || data.addingToLibrary) {
-          return widget.loadingWidget?.call(context) ??
-              const Center(
-                child: CircularProgressIndicator(),
-              );
-        }
         if (data.items
-            .where((element) =>
-                (element.value as Identifiable).id ==
-                (widget.item as Identifiable).id)
+            .where((element) => element.id == widget.item.id)
             .isNotEmpty) {
           return widget.inLibraryWidget(
             context,
             () async {
-              if (widget.item is Identifiable) {
-                await widget.libraryController.methods.deleteLibraryItem(
-                  (widget.item as Identifiable).id,
+              if (widget.item.playlist != null) {
+                await widget.libraryController.methods
+                    .removePlaylistFromLibrary(
+                  widget.item.id,
+                );
+              }
+              if (widget.item.album != null) {
+                await widget.libraryController.methods.removeAlbumFromLibrary(
+                  widget.item.id,
+                );
+              }
+              if (widget.item.artist != null) {
+                await widget.libraryController.methods.removeArtistFromLibrary(
+                  widget.item.id,
                 );
               }
             },
@@ -67,8 +67,22 @@ class _LibraryTogglerState<T> extends State<LibraryToggler<T>> {
         return widget.notInLibraryWidget(
           context,
           () async {
-            if (widget.item is Identifiable) {
-              await widget.libraryController.methods.addToLibrary(widget.item);
+            if (widget.item.playlist != null) {
+              await widget.libraryController.methods.createPlaylist(
+                CreatePlaylistDTO(
+                  title: widget.item.playlist!.title,
+                ),
+              );
+            }
+            if (widget.item.album != null) {
+              await widget.libraryController.methods.addAlbumToLibrary(
+                widget.item.album!,
+              );
+            }
+            if (widget.item.artist != null) {
+              await widget.libraryController.methods.addArtistToLibrary(
+                widget.item.artist!,
+              );
             }
           },
         );

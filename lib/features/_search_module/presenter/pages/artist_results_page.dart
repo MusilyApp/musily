@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
-import 'package:musily/core/presenter/widgets/core_base_widget.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
@@ -13,10 +13,10 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class ArtistResultsPage extends StatefulWidget {
   final ResultsPageController resultsPageController;
@@ -65,132 +65,126 @@ class _ArtistResultsPageState extends State<ArtistResultsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CoreBaseWidget(
-      coreController: widget.coreController,
-      child: Scaffold(
-        body: widget.resultsPageController.builder(
-          builder: (context, data) {
-            if (data.searchingArtists) {
-              return Skeletonizer(
-                child: ListView.builder(
-                  itemCount: 15,
-                  itemBuilder: (context, index) => ListTile(
-                    leading: const Icon(
-                      Icons.music_note,
+    return Scaffold(
+      body: widget.resultsPageController.builder(
+        builder: (context, data) {
+          if (data.searchingArtists) {
+            return Skeletonizer(
+              child: ListView.builder(
+                itemCount: 15,
+                itemBuilder: (context, index) => LyListTile(
+                  leading: const Icon(
+                    Icons.music_note,
+                  ),
+                  title: Text(generatePlaceholderString()),
+                  subtitle: Text(generatePlaceholderString()),
+                ),
+              ),
+            );
+          }
+          if (data.artistsResult.items.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.search_off,
+                    size: 50,
+                    color: context.themeData.iconTheme.color?.withOpacity(.5),
+                  ),
+                  Text(
+                    context.localization.noResults,
+                    style: TextStyle(
+                      color: context.themeData.iconTheme.color?.withOpacity(.5),
                     ),
-                    title: Text(generatePlaceholderString()),
-                    subtitle: Text(generatePlaceholderString()),
+                  ),
+                ],
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: data.artistsResult.items.length,
+            itemBuilder: (context, index) {
+              final artist = data.artistsResult.items[index];
+              return LyListTile(
+                onTap: () => Navigator.push(
+                  context,
+                  DownupRouter(
+                    builder: (context) => artist.topTracks.isNotEmpty
+                        ? ArtistPage(
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            artist: artist,
+                            coreController: widget.coreController,
+                            playerController: widget.playerController,
+                            downloaderController: widget.downloaderController,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
+                            libraryController: widget.libraryController,
+                            getArtistUsecase: widget.getArtistUsecase,
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                          )
+                        : AsyncArtistPage(
+                            artistId: artist.id,
+                            coreController: widget.coreController,
+                            playerController: widget.playerController,
+                            downloaderController: widget.downloaderController,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
+                            libraryController: widget.libraryController,
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            getArtistUsecase: widget.getArtistUsecase,
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                          ),
                   ),
                 ),
-              );
-            }
-            if (data.artistsResult.items.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.search_off,
-                      size: 50,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.5),
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.noResults,
-                      style: TextStyle(
-                        color:
-                            Theme.of(context).iconTheme.color?.withOpacity(.5),
-                      ),
-                    ),
-                  ],
+                subtitle: Text(
+                  context.localization.artist,
                 ),
-              );
-            }
-            return ListView.builder(
-              itemCount: data.artistsResult.items.length,
-              itemBuilder: (context, index) {
-                final artist = data.artistsResult.items[index];
-                return ListTile(
-                  onTap: () => Navigator.push(
-                    context,
-                    DownupRouter(
-                      builder: (context) => artist.topTracks.isNotEmpty
-                          ? ArtistPage(
-                              getAlbumUsecase: widget.getAlbumUsecase,
-                              artist: artist,
-                              coreController: widget.coreController,
-                              playerController: widget.playerController,
-                              downloaderController: widget.downloaderController,
-                              getPlayableItemUsecase:
-                                  widget.getPlayableItemUsecase,
-                              libraryController: widget.libraryController,
-                              getArtistUsecase: widget.getArtistUsecase,
-                              getArtistAlbumsUsecase:
-                                  widget.getArtistAlbumsUsecase,
-                              getArtistTracksUsecase:
-                                  widget.getArtistTracksUsecase,
-                              getArtistSinglesUsecase:
-                                  widget.getArtistSinglesUsecase,
-                            )
-                          : AsyncArtistPage(
-                              artistId: artist.id,
-                              coreController: widget.coreController,
-                              playerController: widget.playerController,
-                              downloaderController: widget.downloaderController,
-                              getPlayableItemUsecase:
-                                  widget.getPlayableItemUsecase,
-                              libraryController: widget.libraryController,
-                              getAlbumUsecase: widget.getAlbumUsecase,
-                              getArtistUsecase: widget.getArtistUsecase,
-                              getArtistAlbumsUsecase:
-                                  widget.getArtistAlbumsUsecase,
-                              getArtistTracksUsecase:
-                                  widget.getArtistTracksUsecase,
-                              getArtistSinglesUsecase:
-                                  widget.getArtistSinglesUsecase,
-                            ),
+                leading: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(360),
+                    side: BorderSide(
+                      width: 1,
+                      color:
+                          context.themeData.colorScheme.outline.withOpacity(.2),
                     ),
                   ),
-                  subtitle: const Text(
-                    'Artista',
-                  ),
-                  leading: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(360),
-                      side: BorderSide(
-                        width: 1,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .outline
-                            .withOpacity(.2),
-                      ),
-                    ),
-                    child: Builder(
-                      builder: (context) {
-                        if (artist.lowResImg != null) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(360),
-                            child: AppImage(
-                              artist.lowResImg!,
-                              width: 40,
-                              height: 40,
-                            ),
-                          );
-                        }
-                        return const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.person_rounded,
+                  child: Builder(
+                    builder: (context) {
+                      if (artist.lowResImg != null) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(360),
+                          child: AppImage(
+                            artist.lowResImg!,
+                            width: 40,
+                            height: 40,
                           ),
                         );
-                      },
-                    ),
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.person_rounded,
+                        ),
+                      );
+                    },
                   ),
-                  title: Text(artist.name),
-                );
-              },
-            );
-          },
-        ),
+                ),
+                title: Text(artist.name),
+              );
+            },
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:musily/core/domain/presenter/app_controller.dart';
-import 'package:musily/features/_library_module/domain/usecases/get_library_offset_limit_usecase.dart';
+import 'package:musily/features/_library_module/domain/usecases/get_library_items_usecase.dart';
 import 'package:musily/features/_sections_module/domain/entities/section_entity.dart';
 import 'package:musily/features/_sections_module/domain/usecases/get_sections_usecase.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_data.dart';
@@ -7,14 +7,14 @@ import 'package:musily/features/_sections_module/presenter/controllers/sections/
 
 class SectionsController extends BaseController<SectionsData, SectionsMethods> {
   late final GetSectionsUsecase _getSectionsUsecase;
-  late final GetLibraryOffsetLimitUsecase _getLibraryOffsetLimitUsecase;
+  late final GetLibraryItemsUsecase _getLibraryItemsUsecase;
 
   SectionsController({
     required GetSectionsUsecase getSectionsUsecase,
-    required GetLibraryOffsetLimitUsecase getLibraryOffsetLimitUsecase,
+    required GetLibraryItemsUsecase getLibraryItemsUsecase,
   }) {
     _getSectionsUsecase = getSectionsUsecase;
-    _getLibraryOffsetLimitUsecase = getLibraryOffsetLimitUsecase;
+    _getLibraryItemsUsecase = getLibraryItemsUsecase;
     methods.getSections();
   }
 
@@ -23,7 +23,7 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
     return SectionsData(
       loadingSections: true,
       sections: [],
-      librarySection: SectionEntity(
+      librarySection: HomeSectionEntity(
         id: 'library',
         title: 'library',
         content: [],
@@ -42,11 +42,11 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
         );
         try {
           final sections = await _getSectionsUsecase.exec();
-          final libraryItems = await _getLibraryOffsetLimitUsecase.exec(0, 4);
+          final libraryItems = await _getLibraryItemsUsecase.exec();
           updateData(
             data.copyWith(
               sections: sections,
-              librarySection: SectionEntity(
+              librarySection: HomeSectionEntity(
                 id: 'library',
                 title: 'library',
                 content: libraryItems,

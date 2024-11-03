@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
+import 'package:musily/core/data/database/collections/database_library.dart';
 import 'package:musily/core/data/database/collections/library.dart';
+import 'package:musily/core/data/database/collections/user_tracks.dart';
+import 'package:musily/core/data/services/user_service.dart';
 import 'package:path_provider/path_provider.dart';
 
 enum CollectionType {
   library,
+  legacyLibrary,
 }
 
 class Database {
@@ -19,7 +23,7 @@ class Database {
   Future<void> init() async {
     final databaseDirectory = await getApplicationSupportDirectory();
     isar = await Isar.open(
-      [DatabaseLibrarySchema],
+      [LibrarySchema, DatabaseLibrarySchema, UserTracksSchema],
       directory: databaseDirectory.path,
     );
   }
@@ -29,22 +33,34 @@ class Database {
     Map<String, dynamic> value,
   ) async {
     await isar.writeTxn(() async {
+      final anonymous = !UserService.loggedIn;
       switch (collection) {
         case CollectionType.library:
-          final existingItem = await isar.databaseLibrarys
+          final existingItem = await isar.librarys
               .filter()
               .musilyIdEqualTo(value['id'])
               .findFirst();
           if (existingItem != null) {
-            final updatedItem = existingItem..value = jsonEncode(value);
-            await isar.databaseLibrarys.put(updatedItem);
+            final updatedItem = existingItem
+              ..value = jsonEncode(value)
+              ..lastTimePlayed = value['lasTimePlayed']
+              ..synced = value['synced']
+              ..anonymous = anonymous
+              ..createdAt = value['createdAt'];
+            await isar.librarys.put(updatedItem);
             return;
           }
-          final newLibraryItem = DatabaseLibrary()
+          final newLibraryItem = Library()
             ..musilyId = value['id']
-            ..value = jsonEncode(value);
-          await isar.databaseLibrarys.put(newLibraryItem);
+            ..value = jsonEncode(value)
+            ..synced = value['synced']
+            ..anonymous = anonymous
+            ..lastTimePlayed = value['lasTimePlayed']
+            ..createdAt = value['createdAt'];
+          await isar.librarys.put(newLibraryItem);
           break;
+        case CollectionType.legacyLibrary:
+          return;
       }
     });
   }
@@ -52,6 +68,20 @@ class Database {
   Future<List<Map<String, dynamic>>> getAll(CollectionType collection) async {
     switch (collection) {
       case CollectionType.library:
+        late final List<Library> items;
+        if (UserService.loggedIn) {
+          items =
+              await isar.librarys.filter().anonymousEqualTo(false).findAll();
+        } else {
+          items = await isar.librarys.filter().anonymousEqualTo(true).findAll();
+        }
+        return [
+          ...items.map(
+            (element) =>
+                (jsonDecode(element.value ?? '{}') as Map<String, dynamic>),
+          ),
+        ];
+      case CollectionType.legacyLibrary:
         final items = await isar.databaseLibrarys.where().findAll();
         return items
             .map(
@@ -66,6 +96,15 @@ class Database {
       CollectionType collection, int offset, int limit) async {
     switch (collection) {
       case CollectionType.library:
+        final items =
+            await isar.librarys.where().offset(offset).limit(limit).findAll();
+        return items
+            .map(
+              (element) =>
+                  (jsonDecode(element.value ?? '{}') as Map<String, dynamic>),
+            )
+            .toList();
+      case CollectionType.legacyLibrary:
         final items = await isar.databaseLibrarys
             .where()
             .offset(offset)
@@ -86,6 +125,13 @@ class Database {
   ) async {
     switch (collection) {
       case CollectionType.library:
+        final filteredItem =
+            await isar.librarys.filter().musilyIdEqualTo(id).findFirst();
+        if (filteredItem != null) {
+          return jsonDecode(filteredItem.value ?? '{}') as Map<String, dynamic>;
+        }
+        return null;
+      case CollectionType.legacyLibrary:
         final filteredItem = await isar.databaseLibrarys
             .filter()
             .musilyIdEqualTo(id)
@@ -104,12 +150,18 @@ class Database {
     await isar.writeTxn(() async {
       switch (collection) {
         case CollectionType.library:
-          final itemToDelete = await isar.databaseLibrarys
+          final itemsToDelete =
+              await isar.librarys.filter().musilyIdEqualTo(id).findAll();
+          for (final item in itemsToDelete) {
+            isar.librarys.delete(item.id);
+          }
+        case CollectionType.legacyLibrary:
+          final itemsToDelete = await isar.databaseLibrarys
               .filter()
               .musilyIdEqualTo(id)
-              .findFirst();
-          if (itemToDelete != null) {
-            await isar.databaseLibrarys.delete(itemToDelete.id!);
+              .findAll();
+          for (final item in itemsToDelete) {
+            isar.databaseLibrarys.delete(item.id!);
           }
       }
     });

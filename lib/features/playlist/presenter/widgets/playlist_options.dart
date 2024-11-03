@@ -1,370 +1,322 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/data/services/user_service.dart';
+import 'package:musily/core/domain/entities/app_menu_entry.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/widgets/core_base_dialog.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/core/presenter/widgets/app_menu.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/_library_module/presenter/widgets/library_toggler.dart';
-import 'package:musily/features/_library_module/presenter/widgets/playlist_adder.dart';
+import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
-import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_static_tile.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class PlaylistOptions extends StatelessWidget {
-  final PlaylistEntity playlistEntity;
+  final PlaylistEntity playlist;
   final CoreController coreController;
   final PlayerController playerController;
   final GetAlbumUsecase getAlbumUsecase;
-  final GetPlaylistUsecase getPlaylistUsecase;
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
   final void Function()? onPlaylistDeleted;
+  final bool tonal;
 
   const PlaylistOptions({
-    required this.playlistEntity,
+    super.key,
+    required this.playlist,
     required this.coreController,
     required this.playerController,
     required this.getAlbumUsecase,
-    super.key,
     required this.downloaderController,
     required this.getPlayableItemUsecase,
     required this.libraryController,
-    required this.getPlaylistUsecase,
     this.onPlaylistDeleted,
+    this.tonal = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          PlaylistStaticTile(
-            playlist: playlistEntity,
-          ),
-          const Divider(),
-          Expanded(
-            child: ListView(
-              children: [
-                if (playlistEntity.id != 'offline')
-                  downloaderController.builder(
-                    builder: (context, data) {
-                      final isPlaylistDownloading = data.queue.isNotEmpty &&
-                          data.downloadingKey == playlistEntity.id;
-                      final isDownloadCompleted = data.queue
-                          .where(
-                            (e) => playlistEntity.tracks
-                                .map((item) => item.hash)
-                                .contains(e.track.hash),
-                          )
-                          .every(
-                            (e) => e.status == e.downloadCompleted,
-                          );
-                      return ListTile(
-                        onTap: isDownloadCompleted
-                            ? null
-                            : () {
-                                if (isPlaylistDownloading) {
-                                  libraryController.methods
-                                      .cancelCollectionDownload(
-                                    playlistEntity.tracks,
-                                    playlistEntity.id,
-                                  );
-                                } else {
-                                  libraryController.methods.downloadCollection(
-                                    playlistEntity.tracks,
-                                    playlistEntity.id,
-                                  );
-                                }
-                                Navigator.pop(context);
-                              },
+    return downloaderController.builder(
+      builder: (context, downloaderData) {
+        final isPlaylistDownloading = downloaderData.queue.isNotEmpty &&
+            downloaderData.downloadingKey == playlist.id;
+        final isDownloadCompleted = downloaderData.queue
+                .where(
+                  (e) => playlist.tracks
+                      .where((item) => item.hash == e.track.hash)
+                      .isNotEmpty,
+                )
+                .where((e) => e.status == e.downloadCompleted)
+                .length ==
+            playlist.tracks.length;
+        return playerController.builder(
+          builder: (context, playerData) {
+            final isPlaylistPlaying = playerData.playingId == playlist.id;
+            return libraryController.builder(
+              builder: (context, libraryData) {
+                final isInLibrary = libraryData.items
+                    .where((element) => element.id == playlist.id)
+                    .isNotEmpty;
+                return AppMenu(
+                  coreController: coreController,
+                  modalHeader: PlaylistStaticTile(
+                    playlist: playlist,
+                  ),
+                  toggler: (context, invoke) {
+                    if (tonal) {
+                      return LyTonalIconButton(
+                        onPressed: invoke,
+                        fixedSize: const Size(55, 55),
+                        icon: const Icon(
+                          Icons.more_vert,
+                        ),
+                      );
+                    }
+                    return IconButton(
+                      onPressed: invoke,
+                      icon: const Icon(
+                        Icons.more_vert,
+                      ),
+                    );
+                  },
+                  entries: [
+                    if (playlist.id != 'offline')
+                      AppMenuEntry(
                         leading: Icon(
                           isDownloadCompleted
                               ? Icons.download_done_rounded
                               : isPlaylistDownloading
                                   ? Icons.cancel_rounded
                                   : Icons.download_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
                         ),
+                        onTap: isDownloadCompleted
+                            ? null
+                            : () {
+                                if (isPlaylistDownloading) {
+                                  libraryController.methods
+                                      .cancelCollectionDownload(
+                                    playlist.tracks,
+                                    playlist.id,
+                                  );
+                                } else {
+                                  libraryController.methods.downloadCollection(
+                                    playlist.tracks,
+                                    playlist.id,
+                                  );
+                                }
+                              },
                         title: Text(
                           isDownloadCompleted
-                              ? AppLocalizations.of(context)!.downloadCompleted
+                              ? context.localization.downloadCompleted
                               : isPlaylistDownloading
-                                  ? AppLocalizations.of(context)!.cancelDownload
-                                  : AppLocalizations.of(context)!.download,
+                                  ? context.localization.cancelDownload
+                                  : context.localization.download,
                         ),
-                      );
-                    },
-                  ),
-                playerController.builder(
-                  builder: (context, data) {
-                    final isPlaylistPlaying =
-                        data.playingId == playlistEntity.id;
-                    return Column(
-                      children: [
-                        ListTile(
-                          onTap: () async {
-                            if (isPlaylistPlaying) {
-                              if (data.isPlaying) {
-                                await playerController.methods.pause();
+                      ),
+                    AppMenuEntry(
+                      leading: Icon(
+                        isPlaylistPlaying && playerData.isPlaying
+                            ? Icons.pause_rounded
+                            : Icons.play_arrow_rounded,
+                        color:
+                            context.themeData.buttonTheme.colorScheme?.primary,
+                      ),
+                      onTap: playlist.tracks.isEmpty
+                          ? null
+                          : () async {
+                              if (isPlaylistPlaying) {
+                                if (playerData.isPlaying) {
+                                  await playerController.methods.pause();
+                                } else {
+                                  await playerController.methods.resume();
+                                }
                               } else {
-                                await playerController.methods.resume();
+                                await playerController.methods.playPlaylist(
+                                  playlist.tracks,
+                                  playlist.id,
+                                  startFrom: 0,
+                                );
+                                libraryController.methods.updateLastTimePlayed(
+                                  playlist.id,
+                                );
                               }
-                            } else {
-                              await playerController.methods.playPlaylist(
-                                [
-                                  ...playlistEntity.tracks.map(
-                                    (track) => TrackModel.toMusilyTrack(track),
-                                  ),
-                                ],
-                                playlistEntity.id,
-                                startFrom: 0,
-                              );
-                              libraryController.methods.updateLastTimePlayed(
-                                playlistEntity.id,
-                              );
-                            }
-                          },
-                          leading: Icon(
-                            isPlaylistPlaying && data.isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
-                            color: Theme.of(context)
-                                .buttonTheme
-                                .colorScheme
-                                ?.primary,
-                          ),
-                          title: Text(
-                            isPlaylistPlaying && data.isPlaying
-                                ? AppLocalizations.of(context)!.pause
-                                : AppLocalizations.of(context)!.play,
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () async {
-                            final random = Random();
-                            final randomIndex = random.nextInt(
-                              playlistEntity.tracks.length,
-                            );
-                            playerController.methods.playPlaylist(
-                              [
-                                ...playlistEntity.tracks.map(
-                                  (element) =>
-                                      TrackModel.toMusilyTrack(element),
-                                ),
-                              ],
-                              playlistEntity.id,
-                              startFrom: randomIndex,
-                            );
-                            Navigator.pop(context);
-                            if (!data.shuffleEnabled) {
-                              playerController.methods.toggleShuffle();
-                            } else {
-                              await playerController.methods.toggleShuffle();
-                              playerController.methods.toggleShuffle();
-                            }
-                            libraryController.methods.updateLastTimePlayed(
-                              playlistEntity.id,
-                            );
-                          },
-                          leading: Icon(
-                            Icons.shuffle_rounded,
-                            color: Theme.of(context)
-                                .buttonTheme
-                                .colorScheme
-                                ?.primary,
-                          ),
-                          title: Text(
-                            AppLocalizations.of(context)!.shufflePlay,
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () {
-                            playerController.methods.addToQueue(
-                              [
-                                ...playlistEntity.tracks.map(
-                                  (track) => TrackModel.toMusilyTrack(track),
-                                ),
-                              ],
-                            );
-                            Navigator.pop(context);
-                          },
-                          leading: Icon(
-                            Icons.playlist_add,
-                            color: Theme.of(context)
-                                .buttonTheme
-                                .colorScheme
-                                ?.primary,
-                          ),
-                          title: Text(
-                            AppLocalizations.of(context)!.addToQueue,
-                            style: const TextStyle(
-                              color: null,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                PlaylistAdder(
-                  libraryController,
-                  asyncTracks: () async {
-                    if (playlistEntity.tracks.isNotEmpty) {
-                      return playlistEntity.tracks;
-                    }
-                    final fetchedPlaylist = await getPlaylistUsecase.exec(
-                      playlistEntity.id,
-                    );
-                    return fetchedPlaylist?.tracks ?? [];
-                  },
-                  builder: (context, showAdder) => ListTile(
-                    onTap: showAdder,
-                    leading: Icon(
-                      Icons.queue_music,
-                      color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                            },
+                      title: Text(
+                        isPlaylistPlaying && playerData.isPlaying
+                            ? context.localization.pause
+                            : context.localization.play,
+                      ),
                     ),
-                    title: Text(
-                      AppLocalizations.of(context)!.addToPlaylist,
-                    ),
-                  ),
-                ),
-                LibraryToggler(
-                  item: playlistEntity,
-                  libraryController: libraryController,
-                  notInLibraryWidget: (context, addToLibrary) {
-                    return Container();
-                  },
-                  inLibraryWidget: (context, removeFromLibrary) {
-                    return ListTile(
-                      enabled: playlistEntity.id != 'favorites',
+                    AppMenuEntry(
                       onTap: () async {
-                        final deleteDialog = await showDialog<bool>(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                AppLocalizations.of(context)!
-                                    .doYouWantToDeleteThePlaylist,
-                              ),
-                              content: Text(
-                                AppLocalizations.of(context)!
-                                    .theActionCannotBeUndone,
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(
-                                      context,
-                                      false,
-                                    );
-                                  },
-                                  child: Text(
-                                    AppLocalizations.of(context)!.cancel,
-                                  ),
-                                ),
-                                TextButton(
-                                  style: const ButtonStyle(
-                                    foregroundColor: WidgetStatePropertyAll(
-                                      Colors.red,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(
-                                      context,
-                                      true,
-                                    );
-                                  },
-                                  child: Text(
-                                    AppLocalizations.of(context)!.delete,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                        final random = Random();
+                        final randomIndex = random.nextInt(
+                          playlist.tracks.length,
                         );
-                        if (deleteDialog != null && deleteDialog) {
-                          // ignore: use_build_context_synchronously
-                          Navigator.pop(context);
-                          onPlaylistDeleted?.call();
-                          removeFromLibrary();
+                        playerController.methods.playPlaylist(
+                          playlist.tracks,
+                          playlist.id,
+                          startFrom: randomIndex,
+                        );
+                        if (!playerData.shuffleEnabled) {
+                          playerController.methods.toggleShuffle();
+                        } else {
+                          await playerController.methods.toggleShuffle();
+                          playerController.methods.toggleShuffle();
                         }
+                        libraryController.methods.updateLastTimePlayed(
+                          playlist.id,
+                        );
                       },
                       leading: Icon(
-                        Icons.delete,
+                        Icons.shuffle_rounded,
                         color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                            context.themeData.buttonTheme.colorScheme?.primary,
                       ),
                       title: Text(
-                        AppLocalizations.of(context)!.deletePlaylist,
+                        context.localization.shufflePlay,
                       ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+                    ),
+                    AppMenuEntry(
+                      onTap: () {
+                        playerController.methods.addToQueue(
+                          playlist.tracks,
+                        );
+                      },
+                      leading: Icon(
+                        Icons.playlist_add,
+                        color:
+                            context.themeData.buttonTheme.colorScheme?.primary,
+                      ),
+                      title: Text(
+                        context.localization.addToQueue,
+                        style: const TextStyle(
+                          color: null,
+                        ),
+                      ),
+                    ),
+                    AppMenuEntry(
+                      title: Text(
+                        context.localization.addToPlaylist,
+                      ),
+                      leading: Icon(
+                        Icons.queue_music,
+                        color:
+                            context.themeData.buttonTheme.colorScheme?.primary,
+                      ),
+                      onTap: () {
+                        // TODO AsynTracks
+                        if (context.display.isDesktop) {
+                          LyNavigator.showLyDialog(
+                            context: context,
+                            builder: (context) => Center(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * .7,
+                                height: MediaQuery.of(context).size.height * .7,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: BorderSide(
+                                      color: context.themeData.dividerColor
+                                          .withOpacity(
+                                        .3,
+                                      ),
+                                    ),
+                                  ),
+                                  child: PlaylistAdderWidget(
+                                    coreController: coreController,
+                                    libraryController: libraryController,
+                                    tracks: playlist.tracks,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+                        LyNavigator.push(
+                          coreController.coreContext!,
+                          PlaylistAdderWidget(
+                            coreController: coreController,
+                            libraryController: libraryController,
+                            tracks: playlist.tracks,
+                          ),
+                        );
+                      },
+                    ),
+                    if (playlist.id != UserService.favoritesId &&
+                        playlist.id != 'offline' &&
+                        isInLibrary)
+                      AppMenuEntry(
+                        leading: Icon(
+                          Icons.delete,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
+                        ),
+                        onTap: () async {
+                          final deleteDialog =
+                              await LyNavigator.showLyCardDialog<bool>(
+                            context: context,
+                            title: Text(context
+                                .localization.doYouWantToDeleteThePlaylist),
+                            actions: (context) => [
+                              LyFilledButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                    false,
+                                  );
+                                },
+                                child: Text(
+                                  context.localization.cancel,
+                                ),
+                              ),
+                              LyFilledButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                    true,
+                                  );
+                                },
+                                color: Colors.red,
+                                child: Text(
+                                  context.localization.delete,
+                                ),
+                              ),
+                            ],
+                            builder: (context) => Text(
+                              context.localization.theActionCannotBeUndone,
+                            ),
+                          );
+                          if (deleteDialog != null && deleteDialog) {
+                            onPlaylistDeleted?.call();
+                            await libraryController.methods
+                                .removePlaylistFromLibrary(
+                              playlist.id,
+                            );
+                          }
+                        },
+                        title: Text(
+                          context.localization.deletePlaylist,
+                        ),
+                      ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      },
     );
-  }
-}
-
-class PlaylistOptionsBuilder extends StatelessWidget {
-  final CoreController coreController;
-  final PlayerController playerController;
-  final PlaylistEntity playlistEntity;
-  final GetAlbumUsecase getAlbumUsecase;
-  final GetPlaylistUsecase getPlaylistUsecase;
-  final DownloaderController downloaderController;
-  final GetPlayableItemUsecase getPlayableItemUsecase;
-  final LibraryController libraryController;
-  final void Function()? onPlaylistDeleted;
-  final Widget Function(BuildContext context, void Function() showOptions)
-      builder;
-
-  const PlaylistOptionsBuilder({
-    required this.playlistEntity,
-    required this.coreController,
-    required this.builder,
-    required this.playerController,
-    required this.getAlbumUsecase,
-    super.key,
-    required this.downloaderController,
-    required this.getPlayableItemUsecase,
-    required this.libraryController,
-    required this.getPlaylistUsecase,
-    this.onPlaylistDeleted,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return builder(context, () {
-      coreController.methods.pushModal(
-        CoreBaseDialog(
-          coreController: coreController,
-          child: PlaylistOptions(
-            playlistEntity: playlistEntity,
-            getPlaylistUsecase: getPlaylistUsecase,
-            coreController: coreController,
-            playerController: playerController,
-            getAlbumUsecase: getAlbumUsecase,
-            downloaderController: downloaderController,
-            getPlayableItemUsecase: getPlayableItemUsecase,
-            libraryController: libraryController,
-            onPlaylistDeleted: onPlaylistDeleted,
-          ),
-        ),
-      );
-    });
   }
 }

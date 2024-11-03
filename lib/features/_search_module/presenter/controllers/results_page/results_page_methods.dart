@@ -1,4 +1,4 @@
-import 'package:musily_player/musily_player.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class ResultsPageMethods {
   final Future<void> Function(
@@ -15,8 +15,8 @@ class ResultsPageMethods {
 
   final Future<void> Function(String trackId) loadTrack;
 
-  final Future<void> Function(MusilyTrack track) play;
-  final Future<void> Function(List<MusilyTrack> tracks) addToQueue;
+  final Future<void> Function(TrackEntity track) play;
+  final Future<void> Function(List<TrackEntity> tracks) addToQueue;
 
   ResultsPageMethods({
     required this.searchTracks,

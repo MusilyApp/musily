@@ -1,31 +1,33 @@
-import 'package:musily/core/domain/errors/app_error.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
-import 'package:musily/core/utils/string_is_url.dart';
-import 'package:musily_player/musily_entities.dart';
-import 'package:musily_repository/musily_repository.dart';
+import 'package:musily/core/presenter/extensions/string.dart';
+import 'package:musily/core/domain/errors/musily_error.dart';
+import 'package:musily/core/domain/repositories/musily_repository.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
+  late final MusilyRepository _musilyRepository;
+
+  GetPlayableItemUsecaseImpl({
+    required MusilyRepository musilyRepository,
+  }) {
+    _musilyRepository = musilyRepository;
+  }
+
   @override
-  Future<MusilyTrack> exec(MusilyTrack track) async {
-    final musilyRepository = MusilyRepository();
+  Future<TrackEntity> exec(TrackEntity track, {String? youtubeId}) async {
     final yt = YoutubeExplode();
     late final String ytId;
 
     late final String url;
-    if (track.ytId == track.id) {
+    if (youtubeId != null) {
       ytId = track.id;
     } else {
-      final searchResults = await musilyRepository.searchTracks(
-        '${track.title} ${track.artist?.name}',
+      final searchResults = await _musilyRepository.searchTracks(
+        '${track.title} ${track.artist.name}',
       );
       if (searchResults.isEmpty) {
-        throw AppError(
-          code: 404,
-          error: 'not_found',
-          title: 'Arquivo não encontrado',
-          message: 'O arquivo da música não foi encontrado.',
-        );
+        throw MusilyError(code: 404, id: 'track_not_found');
       }
       ytId = searchResults.first.id.toString();
     }
@@ -35,16 +37,24 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
 
     url = audioSteamInfo.url.toString();
 
-    return MusilyTrack(
+    if (!(track.lowResImg?.isUrl ?? false) ||
+        !(track.highResImg?.isUrl ?? false)) {
+      final updatedTrack = await _musilyRepository.getTrack(track.id);
+      track.highResImg = updatedTrack?.highResImg;
+      track.lowResImg = updatedTrack?.lowResImg;
+    }
+
+    return TrackEntity(
       id: track.id,
       hash: track.hash,
       title: track.title,
       artist: track.artist,
       highResImg: track.highResImg,
       lowResImg: track.lowResImg,
-      url: stringIsUrl(url) ? url : null,
-      filePath: !stringIsUrl(url) ? url : null,
-      ytId: ytId,
+      url: url.isUrl ? url : null,
+      album: track.album,
+      fromSmartQueue: track.fromSmartQueue,
+      duration: track.duration,
     );
   }
 }

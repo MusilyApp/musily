@@ -1,105 +1,59 @@
-import 'package:musily/features/album/data/models/album_model.dart';
+import 'package:musily/core/domain/datasources/base_datasource.dart';
+import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
-import 'package:musily/features/artist/data/models/artist_model.dart';
 import 'package:musily/features/artist/domain/datasources/artist_datasource.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:musily_repository/core/data/mappers/artist_mapper.dart';
-import 'package:musily_repository/core/data/mappers/simplified_album_mapper.dart';
-import 'package:musily_repository/core/data/mappers/track_mapper.dart';
-import 'package:musily_repository/musily_repository.dart';
 
-class ArtistsDatasourceImpl extends ArtistDatasource {
+class ArtistsDatasourceImpl extends BaseDatasource implements ArtistDatasource {
+  late final MusilyRepository _musilyRepository;
+
+  ArtistsDatasourceImpl({
+    required MusilyRepository musilyRepository,
+  }) {
+    _musilyRepository = musilyRepository;
+  }
+
   @override
   Future<ArtistEntity?> getArtist(String id) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final artist = await musilyRepository.getArtist(id);
+    return exec<ArtistEntity?>(() async {
+      final artist = await _musilyRepository.getArtist(id);
       if (artist == null) {
         return null;
       }
-      return ArtistModel.fromMap(
-        ArtistMapper().toMap(artist),
-      );
-    } catch (e) {
-      return null;
-    }
+      return artist;
+    });
   }
 
   @override
   Future<List<ArtistEntity>> getArtists(String query) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final artists = await musilyRepository.searchArtists(query);
-      return [
-        ...artists.map(
-          (artist) => ArtistModel.fromMap(
-            ArtistMapper().toMap(
-              artist,
-            ),
-          ),
-        ),
-      ];
-    } catch (e) {
-      return [];
-    }
+    return exec<List<ArtistEntity>>(() async {
+      final artists = await _musilyRepository.searchArtists(query);
+      return artists;
+    });
   }
 
   @override
   Future<List<AlbumEntity>> getArtistAlbums(String artistId) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final data = await musilyRepository.getArtistAlbums(artistId);
-      return [
-        ...data.map(
-          (album) => AlbumModel.fromMap(
-            SimplifiedAlbumMapper().toMap(
-              album,
-            ),
-          ),
-        ),
-      ];
-    } catch (e) {
-      return [];
-    }
+    return exec<List<AlbumEntity>>(() async {
+      final albums = await _musilyRepository.getArtistAlbums(artistId);
+      return albums;
+    });
   }
 
   @override
   Future<List<TrackEntity>> getArtistTracks(String artistId) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final data = await musilyRepository.getArtistTracks(artistId);
-      return [
-        ...data.map(
-          (track) => TrackModel.fromMap(
-            TrackMapper().toMap(
-              track,
-            ),
-          ),
-        ),
-      ];
-    } catch (e) {
-      return [];
-    }
+    return exec<List<TrackEntity>>(() async {
+      final tracks = await _musilyRepository.getArtistTracks(artistId);
+      return tracks;
+    });
   }
 
   @override
   Future<List<AlbumEntity>> getArtistSingles(String artistId) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final data = await musilyRepository.getArtistSingles(artistId);
-      return [
-        ...data.map(
-          (album) => AlbumModel.fromMap(
-            SimplifiedAlbumMapper().toMap(
-              album,
-            ),
-          ),
-        ),
-      ];
-    } catch (e) {
-      return [];
-    }
+    return exec<List<AlbumEntity>>(() async {
+      final albums = await _musilyRepository.getArtistSingles(artistId);
+      return albums;
+    });
   }
 }

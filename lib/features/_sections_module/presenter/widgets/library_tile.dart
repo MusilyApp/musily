@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/data/services/user_service.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/card_outlined.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
-import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class LibraryTile extends StatelessWidget {
-  final LibraryItemEntity<dynamic> item;
+  final LibraryItemEntity item;
   final CoreController coreController;
   final PlayerController playerController;
   final GetAlbumUsecase getAlbumUsecase;
@@ -57,13 +57,16 @@ class LibraryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return CardOutlined(
       child: Builder(builder: (context) {
-        if (item.value is AlbumEntity) {
-          return ListTile(
+        if (item.album != null) {
+          return LyListTile(
+            paddingOnFocus: false,
+            borderRadius: BorderRadius.circular(8),
             onTap: () {
-              coreController.methods.pushWidget(
-                (item.value as AlbumEntity).tracks.isEmpty
+              LyNavigator.push(
+                context.showingPageContext,
+                item.album!.tracks.isEmpty
                     ? AsyncAlbumPage(
-                        albumId: (item.value as AlbumEntity).id,
+                        albumId: item.album!.id,
                         coreController: coreController,
                         playerController: playerController,
                         getAlbumUsecase: getAlbumUsecase,
@@ -77,7 +80,7 @@ class LibraryTile extends StatelessWidget {
                       )
                     : AlbumPage(
                         coreController: coreController,
-                        album: item.value,
+                        album: item.album!,
                         playerController: playerController,
                         getAlbumUsecase: getAlbumUsecase,
                         downloaderController: downloaderController,
@@ -102,7 +105,7 @@ class LibraryTile extends StatelessWidget {
               child: AppImage(
                 width: 48,
                 height: 48,
-                item.value.lowResImg,
+                item.album!.lowResImg ?? '',
                 fit: BoxFit.cover,
               ),
             ),
@@ -110,20 +113,22 @@ class LibraryTile extends StatelessWidget {
               padding: const EdgeInsets.only(right: 4),
               child: InfinityMarquee(
                 child: Text(
-                  (item.value as AlbumEntity).title,
+                  item.album!.title,
                 ),
               ),
             ),
           );
         }
-        if (item.value is PlaylistEntity) {
-          return ListTile(
+        if (item.playlist != null) {
+          return LyListTile(
+            paddingOnFocus: false,
+            borderRadius: BorderRadius.circular(8),
             onTap: () {
-              coreController.methods.pushWidget(
-                item.value.tracks.isEmpty
+              LyNavigator.push(
+                context.showingPageContext,
+                item.playlist!.tracks.isEmpty
                     ? AsyncPlaylistPage(
-                        getPlaylistUsecase: getPlaylistUsecase,
-                        playlistId: item.value.id,
+                        playlistId: item.playlist!.id,
                         coreController: coreController,
                         playerController: playerController,
                         downloaderController: downloaderController,
@@ -136,14 +141,13 @@ class LibraryTile extends StatelessWidget {
                         getArtistSinglesUsecase: getArtistSinglesUsecase,
                       )
                     : PlaylistPage(
-                        playlist: item.value,
+                        playlist: item.playlist!,
                         coreController: coreController,
                         playerController: playerController,
                         downloaderController: downloaderController,
                         getPlayableItemUsecase: getPlayableItemUsecase,
                         libraryController: libraryController,
                         getAlbumUsecase: getAlbumUsecase,
-                        getPlaylistUsecase: getPlaylistUsecase,
                         getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                         getArtistSinglesUsecase: getArtistSinglesUsecase,
                         getArtistTracksUsecase: getArtistTracksUsecase,
@@ -160,7 +164,7 @@ class LibraryTile extends StatelessWidget {
                 topLeft: Radius.circular(8),
                 bottomLeft: Radius.circular(8),
               ),
-              child: item.value.id == 'favorites'
+              child: item.playlist!.id == UserService.favoritesId
                   ? const FavoriteIcon()
                   : const SizedBox(
                       width: 48,
@@ -176,21 +180,24 @@ class LibraryTile extends StatelessWidget {
               ),
               child: InfinityMarquee(
                 child: Text(
-                  (item.value as PlaylistEntity).id == 'favorites'
-                      ? AppLocalizations.of(context)!.favorites
-                      : item.value.title,
+                  item.playlist!.id == UserService.favoritesId
+                      ? context.localization.favorites
+                      : item.playlist!.title,
                 ),
               ),
             ),
           );
         }
-        if (item.value is ArtistEntity) {
-          return ListTile(
+        if (item.artist != null) {
+          return LyListTile(
+            borderRadius: BorderRadius.circular(8),
+            paddingOnFocus: false,
             onTap: () {
-              coreController.methods.pushWidget(
-                (item.value as ArtistEntity).topTracks.isEmpty
+              LyNavigator.push(
+                context.showingPageContext,
+                item.artist!.topTracks.isEmpty
                     ? AsyncArtistPage(
-                        artistId: item.value.id,
+                        artistId: item.artist!.id,
                         coreController: coreController,
                         playerController: playerController,
                         downloaderController: downloaderController,
@@ -203,7 +210,7 @@ class LibraryTile extends StatelessWidget {
                         getArtistSinglesUsecase: getArtistSinglesUsecase,
                       )
                     : ArtistPage(
-                        artist: item.value,
+                        artist: item.artist!,
                         coreController: coreController,
                         playerController: playerController,
                         downloaderController: downloaderController,
@@ -229,7 +236,7 @@ class LibraryTile extends StatelessWidget {
               child: AppImage(
                 width: 48,
                 height: 48,
-                item.value.lowResImg,
+                item.artist!.lowResImg ?? '',
                 fit: BoxFit.cover,
               ),
             ),
@@ -239,7 +246,7 @@ class LibraryTile extends StatelessWidget {
               ),
               child: InfinityMarquee(
                 child: Text(
-                  (item.value as ArtistEntity).name,
+                  item.artist!.name,
                 ),
               ),
             ),
