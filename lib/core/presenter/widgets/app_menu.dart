@@ -3,11 +3,9 @@ import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
-import 'package:musily/core/presenter/ui/utils/show_ly_dialog.dart';
-import 'package:musily/core/presenter/widgets/core_base_dialog.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/menu_entry.dart';
-import 'package:musily_player/core/utils/display_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class AppMenu extends StatefulWidget {
   final List<AppMenuEntry> entries;
@@ -35,18 +33,19 @@ class AppMenu extends StatefulWidget {
 }
 
 class _AppMenuState extends State<AppMenu> {
-  final MenuController menuController = MenuController();
+  final MenuController _menuController = MenuController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return widget.coreController.builder(
       builder: (context, data) {
-        if ((DisplayHelper(context).isDesktop || widget.forceFloatingMenu) &&
+        if ((context.display.isDesktop || widget.forceFloatingMenu) &&
             !widget.forceModalMenu) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: MenuAnchor(
-              controller: menuController,
+              controller: _menuController,
               menuChildren: MenuEntry.build(
                 context,
                 [
@@ -65,10 +64,10 @@ class _AppMenuState extends State<AppMenu> {
               child: widget.toggler(
                 context,
                 () {
-                  if (menuController.isOpen) {
-                    menuController.close();
+                  if (_menuController.isOpen) {
+                    _menuController.close();
                   } else {
-                    menuController.open();
+                    _menuController.open();
                   }
                 },
               ),
@@ -78,38 +77,38 @@ class _AppMenuState extends State<AppMenu> {
         return widget.toggler(
           context,
           () {
-            widget.coreController.methods.pushModal(
-              const SizedBox.shrink(),
-            );
-            showLyDialog(
-              context: widget.coreController.coreKey.currentContext!,
+            LyNavigator.showBottomSheet(
+              context: widget.coreController.coreContext!,
               title: widget.modalHeader,
+              width: context.display.width,
               padding: EdgeInsets.zero,
-              // height: widget.entries.length < 5 ? 50 * 5.5 : 400,
+              margin: const EdgeInsets.all(12),
               alignment: Alignment.bottomCenter,
               actionsPadding: const EdgeInsets.all(16),
-              actions: [
+              actions: (context) => [
                 LyFilledButton(
                   onPressed: () {
                     Navigator.pop(
-                      widget.coreController.coreKey.currentContext!,
+                      widget.coreController.coreContext!,
                     );
                   },
-                  child: Text(AppLocalizations.of(context)!.close),
+                  child: Text(context.localization.close),
                 ),
               ],
               content: SizedBox(
                 height: widget.entries.length < 5 ? 50 * 5.5 : 250,
-                child: CoreBaseDialog(
-                  coreController: widget.coreController,
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
                   child: ListView(
+                    controller: _scrollController,
                     padding: EdgeInsets.zero,
                     children: [
                       ...widget.entries.map(
                         (entry) => LyListTile(
                           onTap: () {
                             Navigator.pop(
-                              widget.coreController.coreKey.currentContext!,
+                              widget.coreController.coreContext!,
                             );
                             entry.onTap?.call();
                           },
@@ -123,44 +122,6 @@ class _AppMenuState extends State<AppMenu> {
                 ),
               ),
             );
-            // widget.coreController.methods.pushModal(
-            //   CoreBaseDialog(
-            //     coreController: widget.coreController,
-            //     child: Column(
-            //       children: [
-            //         if (widget.modalHeader != null)
-            //           Builder(
-            //             builder: (context) {
-            //               return Column(
-            //                 mainAxisSize: MainAxisSize.min,
-            //                 children: [
-            //                   widget.modalHeader!,
-            //                   const Divider(),
-            //                 ],
-            //               );
-            //             },
-            //           ),
-            //         Expanded(
-            //           child: ListView(
-            //             children: [
-            //               ...widget.entries.map(
-            //                 (entry) => LyListTile(
-            //                   onTap: () {
-            //                     widget.coreController.methods.closeDialog();
-            //                     entry.onTap?.call();
-            //                   },
-            //                   leading: entry.leading,
-            //                   title: entry.title,
-            //                   trailing: entry.trailing,
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // );
           },
         );
       },
