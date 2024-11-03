@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_dropdown_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
 class AppSection extends StatefulWidget {
@@ -36,8 +36,8 @@ class _AppSectionState extends State<AppSection> {
               horizontal: 12,
             ),
             child: Text(
-              AppLocalizations.of(context)!.application,
-              style: Theme.of(context).textTheme.titleSmall,
+              context.localization.application,
+              style: context.themeData.textTheme.titleSmall,
             ),
           ),
           Padding(
@@ -78,31 +78,31 @@ class _AppSectionState extends State<AppSection> {
                   onChanged: (value) {
                     widget.controller.methods.changeLanguage(value);
                   },
-                  labelText: AppLocalizations.of(context)!.language,
+                  labelText: context.localization.language,
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 LyDropdownButton<ThemeMode>(
-                  labelText: AppLocalizations.of(context)!.theme,
+                  labelText: context.localization.theme,
                   value: data.themeMode ?? ThemeMode.system,
                   items: [
                     DropdownMenuItem(
                       value: ThemeMode.dark,
                       child: Text(
-                        AppLocalizations.of(context)!.dark,
+                        context.localization.dark,
                       ),
                     ),
                     DropdownMenuItem(
                       value: ThemeMode.light,
                       child: Text(
-                        AppLocalizations.of(context)!.light,
+                        context.localization.light,
                       ),
                     ),
                     DropdownMenuItem(
                       value: ThemeMode.system,
                       child: Text(
-                        AppLocalizations.of(context)!.system,
+                        context.localization.system,
                       ),
                     ),
                   ],

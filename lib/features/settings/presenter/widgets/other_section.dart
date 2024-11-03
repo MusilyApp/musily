@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
-import 'package:musily/core/presenter/ui/utils/show_ly_dialog.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/settings/presenter/widgets/about.dart';
 
 class OtherSection extends StatelessWidget {
@@ -18,8 +18,8 @@ class OtherSection extends StatelessWidget {
             horizontal: 12,
           ),
           child: Text(
-            AppLocalizations.of(context)!.others,
-            style: Theme.of(context).textTheme.titleSmall,
+            context.localization.others,
+            style: context.themeData.textTheme.titleSmall,
           ),
         ),
         LyListTile(
@@ -37,21 +37,21 @@ class OtherSection extends StatelessWidget {
               context: context,
             );
           },
-          title: Text(AppLocalizations.of(context)!.licenses),
+          title: Text(context.localization.licenses),
         ),
         LyListTile(
           onTap: () {
-            showLyDialog(
+            LyNavigator.showLyCardDialog(
               context: context,
               margin: const EdgeInsets.symmetric(horizontal: 12),
               title: const Text('Musily'),
-              content: const About(),
+              builder: (context) => const About(),
             );
           },
           leading: const Icon(
             Icons.info_rounded,
           ),
-          title: Text(AppLocalizations.of(context)!.about),
+          title: Text(context.localization.about),
         ),
       ],
     );
