@@ -1,32 +1,22 @@
+import 'package:musily/core/domain/datasources/base_datasource.dart';
+import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/features/player/domain/datasources/player_datasource.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:musily_repository/features/data_fetch/data/mappers/track_mapper.dart';
-import 'package:musily_repository/musily_repository.dart';
 
-class PlayerDatasourceImpl implements PlayerDatasource {
+class PlayerDatasourceImpl extends BaseDatasource implements PlayerDatasource {
+  late final MusilyRepository _musilyRepository;
+
+  PlayerDatasourceImpl({
+    required MusilyRepository musilyRepository,
+  }) {
+    _musilyRepository = musilyRepository;
+  }
+
   @override
   Future<List<TrackEntity>> getSmartQueue(List<TrackEntity> queue) async {
-    try {
-      final musilyRepository = MusilyRepository();
-      final smartQueueTracks = await musilyRepository.getRelatedTracks(
-        [
-          ...queue.map(
-            (track) => TrackMapper().fromMap(
-              TrackModel.toMap(track),
-            ),
-          ),
-        ],
-      );
-      return [
-        ...smartQueueTracks.map(
-          (track) => TrackModel.fromMap(
-            TrackMapper().toMap(track),
-          ),
-        ),
-      ];
-    } catch (e) {
-      return queue;
-    }
+    return exec<List<TrackEntity>>(() async {
+      final smartQueueTracks = await _musilyRepository.getRelatedTracks(queue);
+      return smartQueueTracks;
+    });
   }
 }
