@@ -7,7 +7,7 @@ class PlaylistEntity implements Identifiable {
   final String id;
   String title;
   int trackCount;
-  ShortArtist? artist;
+  SimplifiedArtist? artist;
   String? highResImg;
   String? lowResImg;
   List<TrackEntity> tracks;
@@ -21,4 +21,9 @@ class PlaylistEntity implements Identifiable {
     this.lowResImg,
     this.artist,
   });
+
+  @override
+  String toString() {
+    return 'PlaylistEntity(id: $id, title: $title, trackCount: $trackCount, artist: $artist, highResImg: $highResImg, lowResImg: $lowResImg, tracks: $tracks)';
+  }
 }

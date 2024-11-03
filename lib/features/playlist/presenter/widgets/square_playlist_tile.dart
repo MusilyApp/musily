@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -10,8 +12,8 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
@@ -50,10 +52,10 @@ class SquarePlaylistTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        coreController.methods.pushWidget(
+        LyNavigator.push(
+          context.showingPageContext,
           playlist.tracks.isEmpty
               ? AsyncPlaylistPage(
-                  getPlaylistUsecase: getPlaylistUsecase,
                   playlistId: playlist.id,
                   coreController: coreController,
                   playerController: playerController,
@@ -74,7 +76,6 @@ class SquarePlaylistTile extends StatelessWidget {
                   getPlayableItemUsecase: getPlayableItemUsecase,
                   libraryController: libraryController,
                   getAlbumUsecase: getAlbumUsecase,
-                  getPlaylistUsecase: getPlaylistUsecase,
                   getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                   getArtistSinglesUsecase: getArtistSinglesUsecase,
                   getArtistTracksUsecase: getArtistTracksUsecase,

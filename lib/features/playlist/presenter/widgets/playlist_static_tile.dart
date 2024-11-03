@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_tile_thumb.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class PlaylistStaticTile extends StatelessWidget {
   final PlaylistEntity playlist;
@@ -22,14 +23,14 @@ class PlaylistStaticTile extends StatelessWidget {
         size: 40,
       ),
       title: Text(
-        playlist.id == 'favorites'
-            ? AppLocalizations.of(context)!.favorites
+        playlist.id == UserService.favoritesId
+            ? context.localization.favorites
             : playlist.id == 'offline'
-                ? AppLocalizations.of(context)!.offline
+                ? context.localization.offline
                 : playlist.title,
       ),
       subtitle: Text(
-        '${AppLocalizations.of(context)!.playlist} · ${playlist.trackCount} ${AppLocalizations.of(context)!.songs}',
+        '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
       ),
     );
   }

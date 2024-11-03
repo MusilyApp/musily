@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
-import 'package:musily/core/presenter/ui/utils/show_ly_dialog.dart';
-import 'package:musily/core/utils/id_generator.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/features/_library_module/data/dtos/create_playlist_dto.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class PlaylistCreator extends StatefulWidget {
   final LibraryController libraryController;
@@ -36,15 +36,17 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
   submitNameTextField(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       final playlist = PlaylistEntity(
-        id: idGenerator(),
+        id: '',
         title: playlistNameController.text,
         trackCount: 0,
         tracks: [],
       );
-      widget.libraryController.methods.addToLibrary<PlaylistEntity>(
-        playlist,
+      widget.libraryController.methods.createPlaylist(
+        CreatePlaylistDTO(
+          title: playlistNameController.text,
+        ),
       );
-      Navigator.pop(widget.coreController.coreKey.currentContext!);
+      Navigator.pop(widget.coreController.coreContext!);
       playlistNameController.text = '';
       widget.onCreated?.call(playlist);
     }
@@ -53,33 +55,36 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
   @override
   Widget build(BuildContext context) {
     return widget.builder(context, () {
-      showLyDialog(
-        context: widget.coreController.coreKey.currentContext!,
-        // height: 180,
-        title: Text(AppLocalizations.of(context)!.createPlaylist),
-        content: LyTextField(
-          autofocus: true,
-          controller: playlistNameController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return AppLocalizations.of(context)!.requiredField;
-            }
-            return null;
-          },
-          hintText: AppLocalizations.of(context)!.playlistName,
-          onSubmitted: (value) => submitNameTextField(context),
+      LyNavigator.showLyCardDialog(
+        context: widget.coreController.coreContext!,
+        title: Text(context.localization.createPlaylist),
+        builder: (context) => Form(
+          key: _formKey,
+          child: LyTextField(
+            autofocus: true,
+            controller: playlistNameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.localization.requiredField;
+              }
+              return null;
+            },
+            hintText: context.localization.playlistName,
+            onSubmitted: (value) => submitNameTextField(context),
+          ),
         ),
-        actions: [
+        actions: (context) => [
           LyFilledButton(
             onPressed: () {
-              Navigator.pop(widget.coreController.coreKey.currentContext!);
+              Navigator.pop(widget.coreController.coreContext!);
               playlistNameController.text = '';
             },
-            child: Text(AppLocalizations.of(context)!.cancel),
+            child: Text(context.localization.cancel),
           ),
           LyFilledButton(
-            onPressed: () => submitNameTextField(context),
-            child: Text(AppLocalizations.of(context)!.create),
+            onPressed: () =>
+                submitNameTextField(widget.coreController.coreContext!),
+            child: Text(context.localization.create),
           )
         ],
       );

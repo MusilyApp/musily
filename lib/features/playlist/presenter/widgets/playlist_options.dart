@@ -1,30 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
-import 'package:musily/core/domain/entities/identifiable.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_menu.dart';
-import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
-import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_static_tile.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class PlaylistOptions extends StatelessWidget {
   final PlaylistEntity playlist;
   final CoreController coreController;
   final PlayerController playerController;
   final GetAlbumUsecase getAlbumUsecase;
-  final GetPlaylistUsecase getPlaylistUsecase;
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
@@ -37,7 +35,6 @@ class PlaylistOptions extends StatelessWidget {
     required this.coreController,
     required this.playerController,
     required this.getAlbumUsecase,
-    required this.getPlaylistUsecase,
     required this.downloaderController,
     required this.getPlayableItemUsecase,
     required this.libraryController,
@@ -66,8 +63,7 @@ class PlaylistOptions extends StatelessWidget {
             return libraryController.builder(
               builder: (context, libraryData) {
                 final isInLibrary = libraryData.items
-                    .where((element) =>
-                        (element.value as Identifiable).id == playlist.id)
+                    .where((element) => element.id == playlist.id)
                     .isNotEmpty;
                 return AppMenu(
                   coreController: coreController,
@@ -100,10 +96,8 @@ class PlaylistOptions extends StatelessWidget {
                               : isPlaylistDownloading
                                   ? Icons.cancel_rounded
                                   : Icons.download_rounded,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
                         ),
                         onTap: isDownloadCompleted
                             ? null
@@ -123,10 +117,10 @@ class PlaylistOptions extends StatelessWidget {
                               },
                         title: Text(
                           isDownloadCompleted
-                              ? AppLocalizations.of(context)!.downloadCompleted
+                              ? context.localization.downloadCompleted
                               : isPlaylistDownloading
-                                  ? AppLocalizations.of(context)!.cancelDownload
-                                  : AppLocalizations.of(context)!.download,
+                                  ? context.localization.cancelDownload
+                                  : context.localization.download,
                         ),
                       ),
                     AppMenuEntry(
@@ -135,34 +129,32 @@ class PlaylistOptions extends StatelessWidget {
                             ? Icons.pause_rounded
                             : Icons.play_arrow_rounded,
                         color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                            context.themeData.buttonTheme.colorScheme?.primary,
                       ),
-                      onTap: () async {
-                        if (isPlaylistPlaying) {
-                          if (playerData.isPlaying) {
-                            await playerController.methods.pause();
-                          } else {
-                            await playerController.methods.resume();
-                          }
-                        } else {
-                          await playerController.methods.playPlaylist(
-                            [
-                              ...playlist.tracks.map(
-                                (track) => TrackModel.toMusilyTrack(track),
-                              ),
-                            ],
-                            playlist.id,
-                            startFrom: 0,
-                          );
-                          libraryController.methods.updateLastTimePlayed(
-                            playlist.id,
-                          );
-                        }
-                      },
+                      onTap: playlist.tracks.isEmpty
+                          ? null
+                          : () async {
+                              if (isPlaylistPlaying) {
+                                if (playerData.isPlaying) {
+                                  await playerController.methods.pause();
+                                } else {
+                                  await playerController.methods.resume();
+                                }
+                              } else {
+                                await playerController.methods.playPlaylist(
+                                  playlist.tracks,
+                                  playlist.id,
+                                  startFrom: 0,
+                                );
+                                libraryController.methods.updateLastTimePlayed(
+                                  playlist.id,
+                                );
+                              }
+                            },
                       title: Text(
                         isPlaylistPlaying && playerData.isPlaying
-                            ? AppLocalizations.of(context)!.pause
-                            : AppLocalizations.of(context)!.play,
+                            ? context.localization.pause
+                            : context.localization.play,
                       ),
                     ),
                     AppMenuEntry(
@@ -172,11 +164,7 @@ class PlaylistOptions extends StatelessWidget {
                           playlist.tracks.length,
                         );
                         playerController.methods.playPlaylist(
-                          [
-                            ...playlist.tracks.map(
-                              (element) => TrackModel.toMusilyTrack(element),
-                            ),
-                          ],
+                          playlist.tracks,
                           playlist.id,
                           startFrom: randomIndex,
                         );
@@ -193,29 +181,25 @@ class PlaylistOptions extends StatelessWidget {
                       leading: Icon(
                         Icons.shuffle_rounded,
                         color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                            context.themeData.buttonTheme.colorScheme?.primary,
                       ),
                       title: Text(
-                        AppLocalizations.of(context)!.shufflePlay,
+                        context.localization.shufflePlay,
                       ),
                     ),
                     AppMenuEntry(
                       onTap: () {
                         playerController.methods.addToQueue(
-                          [
-                            ...playlist.tracks.map(
-                              (track) => TrackModel.toMusilyTrack(track),
-                            ),
-                          ],
+                          playlist.tracks,
                         );
                       },
                       leading: Icon(
                         Icons.playlist_add,
                         color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                            context.themeData.buttonTheme.colorScheme?.primary,
                       ),
                       title: Text(
-                        AppLocalizations.of(context)!.addToQueue,
+                        context.localization.addToQueue,
                         style: const TextStyle(
                           color: null,
                         ),
@@ -223,17 +207,17 @@ class PlaylistOptions extends StatelessWidget {
                     ),
                     AppMenuEntry(
                       title: Text(
-                        AppLocalizations.of(context)!.addToPlaylist,
+                        context.localization.addToPlaylist,
                       ),
                       leading: Icon(
                         Icons.queue_music,
                         color:
-                            Theme.of(context).buttonTheme.colorScheme?.primary,
+                            context.themeData.buttonTheme.colorScheme?.primary,
                       ),
                       onTap: () {
                         // TODO AsynTracks
-                        if (DisplayHelper(context).isDesktop) {
-                          showDialog(
+                        if (context.display.isDesktop) {
+                          LyNavigator.showLyDialog(
                             context: context,
                             builder: (context) => Center(
                               child: SizedBox(
@@ -243,11 +227,10 @@ class PlaylistOptions extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     side: BorderSide(
-                                      color: Theme.of(context)
-                                          .dividerColor
+                                      color: context.themeData.dividerColor
                                           .withOpacity(
-                                            .3,
-                                          ),
+                                        .3,
+                                      ),
                                     ),
                                   ),
                                   child: PlaylistAdderWidget(
@@ -261,83 +244,70 @@ class PlaylistOptions extends StatelessWidget {
                           );
                           return;
                         }
-                        coreController.methods.pushModal(
+                        LyNavigator.push(
+                          coreController.coreContext!,
                           PlaylistAdderWidget(
                             coreController: coreController,
                             libraryController: libraryController,
                             tracks: playlist.tracks,
                           ),
-                          // overlayMainPage: true,
                         );
                       },
                     ),
-                    if (playlist.id != 'favorites' &&
+                    if (playlist.id != UserService.favoritesId &&
                         playlist.id != 'offline' &&
                         isInLibrary)
                       AppMenuEntry(
                         leading: Icon(
                           Icons.delete,
-                          color: Theme.of(context)
-                              .buttonTheme
-                              .colorScheme
-                              ?.primary,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
                         ),
                         onTap: () async {
-                          final deleteDialog = await showDialog<bool>(
+                          final deleteDialog =
+                              await LyNavigator.showLyCardDialog<bool>(
                             context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text(
-                                  AppLocalizations.of(context)!
-                                      .doYouWantToDeleteThePlaylist,
+                            title: Text(context
+                                .localization.doYouWantToDeleteThePlaylist),
+                            actions: (context) => [
+                              LyFilledButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                    false,
+                                  );
+                                },
+                                child: Text(
+                                  context.localization.cancel,
                                 ),
-                                content: Text(
-                                  AppLocalizations.of(context)!
-                                      .theActionCannotBeUndone,
+                              ),
+                              LyFilledButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                    true,
+                                  );
+                                },
+                                color: Colors.red,
+                                child: Text(
+                                  context.localization.delete,
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(
-                                        context,
-                                        false,
-                                      );
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(context)!.cancel,
-                                    ),
-                                  ),
-                                  TextButton(
-                                    style: const ButtonStyle(
-                                      foregroundColor: WidgetStatePropertyAll(
-                                        Colors.red,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(
-                                        context,
-                                        true,
-                                      );
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(context)!.delete,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
+                              ),
+                            ],
+                            builder: (context) => Text(
+                              context.localization.theActionCannotBeUndone,
+                            ),
                           );
                           if (deleteDialog != null && deleteDialog) {
-                            // ignore: use_build_context_synchronously
-                            Navigator.pop(context);
                             onPlaylistDeleted?.call();
-                            await libraryController.methods.deleteLibraryItem(
+                            await libraryController.methods
+                                .removePlaylistFromLibrary(
                               playlist.id,
                             );
                           }
                         },
                         title: Text(
-                          AppLocalizations.of(context)!.deletePlaylist,
+                          context.localization.deletePlaylist,
                         ),
                       ),
                   ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/features/_library_module/data/dtos/update_playlist_dto.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class PlaylistEditor extends StatefulWidget {
   final Widget Function(
@@ -37,19 +39,20 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, () {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Form(
+    return widget.builder(
+      context,
+      () {
+        LyNavigator.showLyCardDialog(
+          context: context,
+          builder: (context) => Form(
             key: _formKey,
             child: AlertDialog(
-              title: Text(AppLocalizations.of(context)!.editPlaylist),
+              title: Text(context.localization.editPlaylist),
               content: LyTextField(
                 controller: playlistNameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return AppLocalizations.of(context)!.requiredField;
+                    return context.localization.requiredField;
                   }
                   return null;
                 },
@@ -65,21 +68,25 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
                 LyFilledButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      widget.libraryController.methods.updatePlaylistName(
-                        widget.playlistEntity.id,
-                        playlistNameController.text,
+                      widget.libraryController.methods.updatePlaylist(
+                        UpdatePlaylistDto(
+                          id: widget.playlistEntity.id,
+                          title: playlistNameController.text,
+                        ),
                       );
                       Navigator.pop(context);
-                      widget.onFinished?.call(playlistNameController.text);
+                      widget.onFinished?.call(
+                        playlistNameController.text,
+                      );
                     }
                   },
-                  child: Text(AppLocalizations.of(context)!.confirm),
+                  child: Text(context.localization.confirm),
                 ),
               ],
             ),
-          );
-        },
-      );
-    });
+          ),
+        );
+      },
+    );
   }
 }
