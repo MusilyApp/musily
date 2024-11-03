@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyListTile extends StatefulWidget {
@@ -60,7 +61,7 @@ class _LyListTileState extends State<LyListTile> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = context.themeData.colorScheme;
 
     return Padding(
       padding: widget.paddingOnFocus
@@ -72,8 +73,8 @@ class _LyListTileState extends State<LyListTile> {
         borderRadius: widget.borderRadius ??
             (hasFocus ? BorderRadius.circular(8) : BorderRadius.zero),
         focusColor: colorScheme.primary.withOpacity(0.1),
-        highlightColor: colorScheme.primary.withOpacity(0.2),
-        splashColor: colorScheme.primary.withOpacity(0.3),
+        highlightColor: colorScheme.primary.withOpacity(0.3),
+        splashColor: Colors.transparent,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           padding: widget.contentPadding ??

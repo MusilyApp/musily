@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyTonalIconButton extends StatefulWidget {
@@ -61,9 +62,45 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
     });
   }
 
+  Size _getButtonSize() {
+    switch (widget.density) {
+      case LyDensity.dense:
+        return widget.fixedSize ?? const Size(40.0, 40.0);
+      case LyDensity.normal:
+        return widget.fixedSize ?? const Size(46.0, 46.0);
+      case LyDensity.comfortable:
+        return widget.fixedSize ?? const Size(55.0, 55.0);
+    }
+  }
+
+  EdgeInsets _getPadding() {
+    switch (widget.density) {
+      case LyDensity.dense:
+        return const EdgeInsets.all(4.0);
+      case LyDensity.normal:
+        return const EdgeInsets.all(6.0);
+      case LyDensity.comfortable:
+        return const EdgeInsets.all(12.0);
+    }
+  }
+
+  double _getIconSize() {
+    switch (widget.density) {
+      case LyDensity.dense:
+        return widget.iconSize ?? 20.0;
+      case LyDensity.normal:
+        return widget.iconSize ?? 24.0;
+      case LyDensity.comfortable:
+        return widget.iconSize ?? 28.0;
+      default:
+        return widget.iconSize ?? 24.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isDisabled = widget.onPressed == null;
+    final Size buttonSize = _getButtonSize();
 
     return Padding(
       padding: widget.margin ?? EdgeInsets.zero,
@@ -72,7 +109,7 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
         focusNode: focusNode,
         visualDensity: VisualDensity.compact,
         focusElevation: 0,
-        padding: EdgeInsets.zero,
+        padding: _getPadding(),
         onPressed: widget.onPressed,
         shape: widget.label != null
             ? RoundedRectangleBorder(
@@ -80,7 +117,7 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                 side: hasFocus && !isDisabled
                     ? BorderSide(
                         width: 2,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: context.themeData.colorScheme.primary,
                       )
                     : const BorderSide(
                         color: Colors.transparent,
@@ -90,19 +127,19 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                 side: hasFocus && !isDisabled
                     ? BorderSide(
                         width: 2,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: context.themeData.colorScheme.primary,
                       )
                     : const BorderSide(
                         color: Colors.transparent,
                       ),
               ),
         disabledColor:
-            Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+            context.themeData.colorScheme.onSurface.withOpacity(0.12),
         color: (hasFocus
-            ? Theme.of(context).colorScheme.secondary.withOpacity(0.1)
-            : Theme.of(context).colorScheme.surfaceContainerHighest),
-        minWidth: widget.fixedSize?.width ?? 56.0,
-        height: widget.fixedSize?.height ?? 56.0,
+            ? context.themeData.colorScheme.secondary.withOpacity(0.1)
+            : context.themeData.colorScheme.surfaceContainerHighest),
+        minWidth: buttonSize.width, // Largura dinâmica do botão
+        height: buttonSize.height, // Altura dinâmica do botão
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: widget.label != null ? 12 : 0,
@@ -117,17 +154,15 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                       final Icon originalIcon = widget.icon as Icon;
                       return Icon(
                         originalIcon.icon,
-                        size: widget.iconSize ?? originalIcon.size ?? 24.0,
+                        size:
+                            _getIconSize(), // Usa o tamanho do ícone baseado na densidade
                         color: isDisabled
-                            ? Theme.of(context)
-                                .colorScheme
-                                .onSurface
+                            ? context.themeData.colorScheme.onSurface
                                 .withOpacity(0.38)
                             : (hasFocus
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant),
+                                ? context.themeData.colorScheme.primary
+                                : context
+                                    .themeData.colorScheme.onSurfaceVariant),
                       );
                     }
                     return widget.icon!;
@@ -147,15 +182,12 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                         originalText.data ?? '',
                         style: TextStyle(
                           color: isDisabled
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
+                              ? context.themeData.colorScheme.onSurface
                                   .withOpacity(0.38)
                               : hasFocus
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
+                                  ? context.themeData.colorScheme.primary
+                                  : context
+                                      .themeData.colorScheme.onSurfaceVariant,
                         ),
                         strutStyle: originalText.strutStyle,
                         textAlign: originalText.textAlign,

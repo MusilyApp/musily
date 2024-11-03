@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyDropdownButton<T> extends StatefulWidget {
@@ -78,14 +79,12 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
               ),
               child: Text(
                 widget.labelText!,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: hasFocus
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.9),
-                    ),
+                style: context.themeData.textTheme.bodySmall?.copyWith(
+                  color: hasFocus
+                      ? context.themeData.colorScheme.primary
+                      : context.themeData.colorScheme.onSurface
+                          .withOpacity(0.9),
+                ),
               ),
             ),
           DropdownButtonFormField<T>(
@@ -103,10 +102,8 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
                 borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
                 borderSide: BorderSide(
                   color: hasFocus
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .onSurface
+                      ? context.themeData.colorScheme.primary
+                      : context.themeData.colorScheme.onSurface
                           .withOpacity(0.4),
                 ),
               ),
@@ -114,32 +111,32 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
                 borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
                 borderSide: BorderSide(
                   color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                      context.themeData.colorScheme.onSurface.withOpacity(0.4),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: context.themeData.colorScheme.primary,
                   width: 2,
                 ),
               ),
               filled: true,
               fillColor: hasFocus
-                  ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.1)
-                  : Theme.of(context).colorScheme.surface,
+                  ? context.themeData.colorScheme.onPrimary.withOpacity(0.1)
+                  : context.themeData.colorScheme.surface,
             ),
             icon: Icon(
               Icons.arrow_drop_down,
               color: hasFocus
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  ? context.themeData.colorScheme.primary
+                  : context.themeData.colorScheme.onSurface.withOpacity(0.6),
             ),
-            dropdownColor: Theme.of(context).colorScheme.surface,
+            dropdownColor: context.themeData.colorScheme.surface,
             style: TextStyle(
               color: hasFocus
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface,
+                  ? context.themeData.colorScheme.primary
+                  : context.themeData.colorScheme.onSurface,
             ),
           ),
         ],

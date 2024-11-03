@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyFilledButton extends StatefulWidget {
@@ -15,6 +16,7 @@ class LyFilledButton extends StatefulWidget {
   final ShapeBorder? shape;
   final Widget? child;
   final bool loading;
+  final Color? color;
 
   const LyFilledButton({
     super.key,
@@ -31,6 +33,7 @@ class LyFilledButton extends StatefulWidget {
     this.borderRadius,
     this.shape,
     this.loading = false,
+    this.color,
   });
 
   @override
@@ -79,17 +82,18 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                   ? BorderSide(
                       width: 2,
                       strokeAlign: 1,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: context.themeData.colorScheme.primary,
                     )
                   : const BorderSide(
                       color: Colors.transparent,
                     ),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             ),
-        disabledColor: Theme.of(context).disabledColor,
-        color: (hasFocus
-            ? Theme.of(context).colorScheme.onPrimary
-            : Theme.of(context).colorScheme.primary),
+        disabledColor: context.themeData.disabledColor,
+        color: widget.color ??
+            (hasFocus
+                ? context.themeData.colorScheme.onPrimary
+                : context.themeData.colorScheme.primary),
         minWidth: widget.fullWidth ? double.maxFinite : null,
         child: Padding(
           padding: widget.contentPadding ??
@@ -112,7 +116,7 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                   child: CircularProgressIndicator(
                     strokeWidth: 2.0,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.onPrimary,
+                      context.themeData.colorScheme.onPrimary,
                     ),
                   ),
                 )
@@ -125,13 +129,13 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                         originalText.data ?? '',
                         style: TextStyle(
                           color: isDisabled
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
+                              ? context.themeData.colorScheme.onSurface
                                   .withOpacity(0.38)
-                              : (hasFocus
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).colorScheme.onPrimary),
+                              : widget.color == null
+                                  ? (hasFocus
+                                      ? context.themeData.colorScheme.primary
+                                      : context.themeData.colorScheme.onPrimary)
+                                  : null,
                         ),
                         strutStyle: originalText.strutStyle,
                         textAlign: originalText.textAlign,

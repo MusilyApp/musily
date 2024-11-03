@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyCard extends StatefulWidget {
@@ -16,6 +17,8 @@ class LyCard extends StatefulWidget {
   final void Function()? onFocusOut;
   final void Function()? onTap;
   final void Function()? onLongPress;
+  final void Function()? onInitState;
+  final void Function()? onDispose;
   final double? width;
   final double? height;
   final Duration transitionDuration;
@@ -37,6 +40,8 @@ class LyCard extends StatefulWidget {
     this.onFocusOut,
     this.onTap,
     this.onLongPress,
+    this.onInitState,
+    this.onDispose,
     this.width,
     this.height,
     this.transitionDuration = const Duration(milliseconds: 200),
@@ -58,12 +63,14 @@ class _LyCardState extends State<LyCard> {
       focusNode = widget.focusNode;
       focusNode!.addListener(_handleFocusChange);
     }
+    widget.onInitState?.call();
   }
 
   @override
   void dispose() {
     focusNode?.removeListener(_handleFocusChange);
     focusNode?.dispose();
+    widget.onDispose?.call();
     super.dispose();
   }
 
@@ -89,22 +96,18 @@ class _LyCardState extends State<LyCard> {
         child: Material(
           elevation: widget.elevation,
           color: hasFocus
-              ? Theme.of(context)
-                  .colorScheme
-                  .surfaceContainerHighest
+              ? context.themeData.colorScheme.surfaceContainerHighest
                   .withOpacity(0.1)
-              : Theme.of(context).colorScheme.surface,
+              : context.themeData.colorScheme.surface,
           shape: widget.shape ??
               RoundedRectangleBorder(
                 side: hasFocus
                     ? BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: context.themeData.colorScheme.primary,
                         width: 2.0,
                       )
                     : BorderSide(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
+                        color: context.themeData.colorScheme.primary
                             .withOpacity(.1),
                         width: 2.0,
                       ),
@@ -169,11 +172,11 @@ class _LyCardState extends State<LyCard> {
     if (header is Text) {
       return Text(
         header.data ?? '',
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: hasFocus
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface,
-            ),
+        style: context.themeData.textTheme.headlineSmall?.copyWith(
+          color: hasFocus
+              ? context.themeData.colorScheme.primary
+              : context.themeData.colorScheme.onSurface,
+        ),
       );
     }
     return header;

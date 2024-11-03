@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyTextField extends StatefulWidget {
@@ -110,12 +111,12 @@ class _LyTextFieldState extends State<LyTextField> {
           labelStyle: widget.labelStyle ??
               TextStyle(
                 color: hasFocus
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onSurface,
+                    ? context.themeData.colorScheme.primary
+                    : context.themeData.colorScheme.onSurface,
               ),
           hintStyle: widget.hintStyle ??
               TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: context.themeData.colorScheme.onSurface.withOpacity(0.5),
               ),
           contentPadding: widget.contentPadding ??
               EdgeInsets.symmetric(
@@ -126,33 +127,33 @@ class _LyTextFieldState extends State<LyTextField> {
             borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             borderSide: BorderSide(
               color: hasFocus
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                  ? context.themeData.colorScheme.primary
+                  : context.themeData.colorScheme.onSurface.withOpacity(0.4),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+              color: context.themeData.colorScheme.onSurface.withOpacity(0.4),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
+              color: context.themeData.colorScheme.primary,
               width: 2,
             ),
           ),
           filled: true,
           fillColor: hasFocus
-              ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.1)
-              : Theme.of(context).colorScheme.surface,
+              ? context.themeData.colorScheme.onPrimary.withOpacity(0.1)
+              : context.themeData.colorScheme.surface,
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.suffixIcon,
         ),
         style: widget.textStyle ??
             TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              color: context.themeData.colorScheme.onSurface,
             ),
         onChanged: widget.onChanged,
         validator: widget.validator,

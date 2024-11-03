@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyTonalButton extends StatefulWidget {
@@ -78,7 +79,7 @@ class _LyTonalButtonState extends State<LyTonalButton> {
                   ? BorderSide(
                       width: 2,
                       strokeAlign: 1,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: context.themeData.colorScheme.primary,
                     )
                   : const BorderSide(
                       color: Colors.transparent,
@@ -87,13 +88,11 @@ class _LyTonalButtonState extends State<LyTonalButton> {
             ),
         color: widget.onPressed == null // Verifica se está desabilitado
             ? (widget.disabledColor ??
-                Theme.of(context)
-                    .colorScheme
-                    .onSurface
+                context.themeData.colorScheme.onSurface
                     .withOpacity(0.38)) // Cor desativada padrão
             : (hasFocus
-                ? Theme.of(context).colorScheme.secondary.withOpacity(0.1)
-                : Theme.of(context).colorScheme.surfaceContainerHighest),
+                ? context.themeData.colorScheme.secondary.withOpacity(0.1)
+                : context.themeData.colorScheme.surfaceContainerHighest),
         minWidth: widget.fullWidth ? double.maxFinite : null,
         child: Padding(
           padding: widget.contentPadding ??
@@ -118,8 +117,8 @@ class _LyTonalButtonState extends State<LyTonalButton> {
                   originalText.data ?? '',
                   style: TextStyle(
                     color: hasFocus
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onSurface,
+                        ? context.themeData.colorScheme.primary
+                        : context.themeData.colorScheme.onSurface,
                   ),
                   strutStyle: originalText.strutStyle,
                   textAlign: originalText.textAlign,

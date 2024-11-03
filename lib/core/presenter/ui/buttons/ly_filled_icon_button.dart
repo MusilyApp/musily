@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyFilledIconButton extends StatefulWidget {
@@ -67,19 +68,20 @@ class _LyFilledIconButtonState extends State<LyFilledIconButton> {
         elevation: widget.elevation,
         focusNode: focusNode,
         onPressed: widget.onPressed,
+        disabledColor: context.themeData.disabledColor,
         shape: CircleBorder(
           side: hasFocus
               ? BorderSide(
                   width: 2,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: context.themeData.colorScheme.primary,
                 )
               : const BorderSide(
                   color: Colors.transparent,
                 ),
         ),
         color: hasFocus
-            ? Theme.of(context).colorScheme.onPrimary
-            : Theme.of(context).colorScheme.primary,
+            ? context.themeData.colorScheme.onPrimary
+            : context.themeData.colorScheme.primary,
         minWidth: widget.fixedSize?.width ?? 56.0,
         height: widget.fixedSize?.height ?? 56.0,
         child: Center(
@@ -91,9 +93,11 @@ class _LyFilledIconButtonState extends State<LyFilledIconButton> {
                   return Icon(
                     originalIcon.icon,
                     size: widget.iconSize ?? originalIcon.size ?? 24.0,
-                    color: hasFocus
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onPrimary,
+                    color: widget.onPressed == null
+                        ? context.themeData.disabledColor
+                        : hasFocus
+                            ? context.themeData.colorScheme.primary
+                            : context.themeData.colorScheme.onPrimary,
                   );
                 }
                 return widget.icon!;

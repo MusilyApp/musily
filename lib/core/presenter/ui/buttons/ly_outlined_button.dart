@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyOutlinedButton extends StatefulWidget {
@@ -77,8 +78,8 @@ class _LyOutlinedButtonState extends State<LyOutlinedButton> {
               side: BorderSide(
                 width: hasFocus ? 2 : 1,
                 color: hasFocus
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    ? context.themeData.colorScheme.primary
+                    : context.themeData.colorScheme.onSurface.withOpacity(0.5),
               ),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             ),
@@ -107,8 +108,8 @@ class _LyOutlinedButtonState extends State<LyOutlinedButton> {
                   originalText.data ?? '',
                   style: TextStyle(
                     color: hasFocus
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onSurface,
+                        ? context.themeData.colorScheme.primary
+                        : context.themeData.colorScheme.onSurface,
                   ),
                   strutStyle: originalText.strutStyle,
                   textAlign: originalText.textAlign,
