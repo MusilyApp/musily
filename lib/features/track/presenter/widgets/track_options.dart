@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_menu.dart';
-import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -14,13 +14,12 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/widgets/downloader_menu_entry.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class TrackOptions extends StatelessWidget {
   final CoreController coreController;
@@ -61,7 +60,7 @@ class TrackOptions extends StatelessWidget {
       downloaderController: downloaderController,
     )).builder(
       context,
-      TrackModel.toMusilyTrack(track),
+      track,
     );
     return AppMenu(
       modalHeader: TrackTileStatic(
@@ -79,11 +78,11 @@ class TrackOptions extends StatelessWidget {
           AppMenuEntry(
             leading: Icon(
               Icons.playlist_add_rounded,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary,
+              color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
             onTap: () {
-              if (DisplayHelper(context).isDesktop) {
-                showDialog(
+              if (context.display.isDesktop) {
+                LyNavigator.showLyDialog(
                   context: context,
                   builder: (context) => Center(
                     child: SizedBox(
@@ -94,7 +93,7 @@ class TrackOptions extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
                             color:
-                                Theme.of(context).dividerColor.withOpacity(.3),
+                                context.themeData.dividerColor.withOpacity(.3),
                             width: 1,
                           ),
                         ),
@@ -109,7 +108,8 @@ class TrackOptions extends StatelessWidget {
                 );
                 return;
               }
-              coreController.methods.pushWidget(
+              LyNavigator.push(
+                coreController.coreContext!,
                 PlaylistAdderWidget(
                   coreController: coreController,
                   libraryController: libraryController,
@@ -118,14 +118,13 @@ class TrackOptions extends StatelessWidget {
               );
             },
             title: Text(
-              AppLocalizations.of(context)!.addToPlaylist,
+              context.localization.addToPlaylist,
             ),
           ),
         if (!(hideOptions ?? []).contains(TrackTileOptions.addToQueue))
           AppMenuEntry(
             onTap: () {
-              playerController.methods
-                  .addToQueue([TrackModel.toMusilyTrack(track)]);
+              playerController.methods.addToQueue([track]);
               coreController.updateData(
                 coreController.data.copyWith(
                   isShowingDialog: false,
@@ -133,11 +132,11 @@ class TrackOptions extends StatelessWidget {
               );
             },
             title: Text(
-              AppLocalizations.of(context)!.addToQueue,
+              context.localization.addToQueue,
             ),
             leading: Icon(
               Icons.queue_music_rounded,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary,
+              color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
         if (!(hideOptions ?? []).contains(TrackTileOptions.seeAlbum))
@@ -149,7 +148,8 @@ class TrackOptions extends StatelessWidget {
                     isShowingDialog: false,
                   ),
                 );
-                coreController.methods.pushWidget(
+                LyNavigator.push(
+                  context.showingPageContext,
                   AsyncAlbumPage(
                     albumId: track.album.id,
                     coreController: coreController,
@@ -165,10 +165,10 @@ class TrackOptions extends StatelessWidget {
                   ),
                 );
               },
-              title: Text(AppLocalizations.of(context)!.goToAlbum),
+              title: Text(context.localization.goToAlbum),
               leading: Icon(
                 Icons.album_rounded,
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
             ),
         if (!(hideOptions ?? []).contains(TrackTileOptions.seeArtist))
@@ -179,7 +179,8 @@ class TrackOptions extends StatelessWidget {
                   isShowingDialog: false,
                 ),
               );
-              coreController.methods.pushWidget(
+              LyNavigator.push(
+                context.showingPageContext,
                 AsyncArtistPage(
                   artistId: track.artist.id,
                   coreController: coreController,
@@ -195,18 +196,18 @@ class TrackOptions extends StatelessWidget {
                 ),
               );
             },
-            title: Text(AppLocalizations.of(context)!.goToArtist),
+            title: Text(context.localization.goToArtist),
             leading: Icon(
               Icons.person_rounded,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary,
+              color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
         if (!(hideOptions ?? []).contains(TrackTileOptions.share))
           AppMenuEntry(
-            title: Text(AppLocalizations.of(context)!.share),
+            title: Text(context.localization.share),
             leading: Icon(
               Icons.share_rounded,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary,
+              color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
       ],
@@ -216,7 +217,7 @@ class TrackOptions extends StatelessWidget {
           onPressed: invoke,
           style: ButtonStyle(
             iconSize: WidgetStatePropertyAll(
-              DisplayHelper(context).isDesktop ? 20 : null,
+              context.display.isDesktop ? 20 : null,
             ),
           ),
           icon: const Icon(

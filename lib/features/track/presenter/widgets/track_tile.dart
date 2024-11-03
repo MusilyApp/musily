@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -10,10 +11,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/widgets/download_button.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/downloader/presenter/widgets/download_button.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 
@@ -83,7 +83,7 @@ class _TrackTileState extends State<TrackTile> {
                 widget.playerController.methods.pause();
               } else {
                 widget.playerController.methods.loadAndPlay(
-                  TrackModel.toMusilyTrack(widget.track),
+                  widget.track,
                   widget.track.hash,
                 );
               }
@@ -99,7 +99,7 @@ class _TrackTileState extends State<TrackTile> {
                 borderRadius: BorderRadius.circular(8),
                 side: BorderSide(
                   width: 1,
-                  color: Theme.of(context).colorScheme.outline.withOpacity(.2),
+                  color: context.themeData.colorScheme.outline.withOpacity(.2),
                 ),
               ),
               child: Builder(
@@ -121,7 +121,7 @@ class _TrackTileState extends State<TrackTile> {
                     height: 40,
                     child: Icon(
                       Icons.music_note,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color?.withOpacity(.7),
                     ),
                   );
                 },
@@ -137,9 +137,7 @@ class _TrackTileState extends State<TrackTile> {
           children: [
             DownloadButton(
               controller: widget.downloaderController,
-              track: TrackModel.toMusilyTrack(
-                widget.track,
-              ),
+              track: widget.track,
             ),
             TrackOptions(
               hideOptions: widget.hideOptions,

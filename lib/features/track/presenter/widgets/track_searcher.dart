@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -10,9 +11,8 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
-import 'package:musily_player/core/utils/display_helper.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 
 class TrackSearcher extends StatelessWidget {
   final CoreController coreController;
@@ -48,7 +48,7 @@ class TrackSearcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SearchAnchor(
-      isFullScreen: !DisplayHelper(context).isDesktop,
+      isFullScreen: !context.display.isDesktop,
       builder: (context, controller) {
         return IconButton(
           onPressed: () {
@@ -59,18 +59,18 @@ class TrackSearcher extends StatelessWidget {
           ),
         );
       },
-      viewBackgroundColor: DisplayHelper(context).isDesktop
-          ? Theme.of(context).cardTheme.color
-          : Theme.of(context).scaffoldBackgroundColor,
-      viewShape: DisplayHelper(context).isDesktop
+      viewBackgroundColor: context.display.isDesktop
+          ? context.themeData.cardTheme.color
+          : context.themeData.scaffoldBackgroundColor,
+      viewShape: context.display.isDesktop
           ? RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                 12,
               ),
               side: BorderSide(
-                color: Theme.of(context).dividerColor.withOpacity(
-                      .2,
-                    ),
+                color: context.themeData.dividerColor.withOpacity(
+                  .2,
+                ),
               ),
             )
           : null,
