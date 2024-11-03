@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - releases
 
 name: Test, Build and Release apk
 
