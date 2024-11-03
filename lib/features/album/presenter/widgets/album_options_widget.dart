@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/app_menu.dart';
@@ -13,10 +13,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class AlbumOptions extends StatelessWidget {
   final AlbumEntity album;
@@ -77,12 +76,12 @@ class AlbumOptions extends StatelessWidget {
                 isAlbumDownloading
                     ? Icons.cancel_rounded
                     : Icons.download_rounded,
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
               title: Text(
                 isAlbumDownloading
-                    ? AppLocalizations.of(context)!.cancelDownload
-                    : AppLocalizations.of(context)!.download,
+                    ? context.localization.cancelDownload
+                    : context.localization.download,
               ),
             ),
             AppMenuEntry(
@@ -96,9 +95,7 @@ class AlbumOptions extends StatelessWidget {
                 } else {
                   await playerController.methods.playPlaylist(
                     [
-                      ...album.tracks.map(
-                        (track) => TrackModel.toMusilyTrack(track),
-                      ),
+                      ...album.tracks,
                     ],
                     album.id,
                     startFrom: 0,
@@ -112,12 +109,12 @@ class AlbumOptions extends StatelessWidget {
                 isAlbumPlaying && playerData.isPlaying
                     ? Icons.pause_rounded
                     : Icons.play_arrow_rounded,
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
               title: Text(
                 isAlbumPlaying && playerData.isPlaying
-                    ? AppLocalizations.of(context)!.pause
-                    : AppLocalizations.of(context)!.play,
+                    ? context.localization.pause
+                    : context.localization.play,
               ),
             ),
             AppMenuEntry(
@@ -127,11 +124,7 @@ class AlbumOptions extends StatelessWidget {
                   album.tracks.length,
                 );
                 playerController.methods.playPlaylist(
-                  [
-                    ...album.tracks.map(
-                      (element) => TrackModel.toMusilyTrack(element),
-                    ),
-                  ],
+                  album.tracks,
                   album.id,
                   startFrom: randomIndex,
                 );
@@ -147,28 +140,24 @@ class AlbumOptions extends StatelessWidget {
               },
               leading: Icon(
                 Icons.shuffle_rounded,
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
               title: Text(
-                AppLocalizations.of(context)!.shufflePlay,
+                context.localization.shufflePlay,
               ),
             ),
             AppMenuEntry(
               onTap: () {
                 playerController.methods.addToQueue(
-                  [
-                    ...album.tracks.map(
-                      (track) => TrackModel.toMusilyTrack(track),
-                    ),
-                  ],
+                  album.tracks,
                 );
               },
               leading: Icon(
                 Icons.playlist_add,
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
               title: Text(
-                AppLocalizations.of(context)!.addToQueue,
+                context.localization.addToQueue,
                 style: const TextStyle(
                   color: null,
                 ),

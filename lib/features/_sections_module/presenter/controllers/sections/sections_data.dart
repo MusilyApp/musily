@@ -14,8 +14,8 @@ class SectionsDependencies {
 
 class SectionsData extends BaseControllerData {
   bool loadingSections;
-  List<SectionEntity> sections;
-  SectionEntity<LibraryItemEntity> librarySection;
+  List<HomeSectionEntity> sections;
+  HomeSectionEntity<LibraryItemEntity> librarySection;
 
   SectionsData({
     required this.loadingSections,
@@ -26,8 +26,8 @@ class SectionsData extends BaseControllerData {
   @override
   SectionsData copyWith({
     bool? loadingSections,
-    List<SectionEntity>? sections,
-    SectionEntity<LibraryItemEntity>? librarySection,
+    List<HomeSectionEntity>? sections,
+    HomeSectionEntity<LibraryItemEntity>? librarySection,
   }) {
     return SectionsData(
       loadingSections: loadingSections ?? this.loadingSections,

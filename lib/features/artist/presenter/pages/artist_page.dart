@@ -2,17 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_outlined_button.dart';
-import 'package:musily/core/presenter/ui/buttons/ly_tonal_button.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
-import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
+import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/library_toggler.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
@@ -27,13 +28,11 @@ import 'package:musily/features/artist/presenter/pages/artist_albums_page.dart';
 import 'package:musily/features/artist/presenter/pages/artist_singles_page.dart';
 import 'package:musily/features/artist/presenter/pages/artist_tracks_page.dart';
 import 'package:musily/features/artist/presenter/widgets/artist_tile.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
-import 'package:musily_player/musily_entities.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class ArtistPage extends StatefulWidget {
   final CoreController coreController;
@@ -76,13 +75,9 @@ class _ArtistPageState extends State<ArtistPage> {
   Future<void> loadTracks() async {
     if (widget.playerController.data.playingId == widget.artist.id) {
       allTracks = [
-        ...widget.playerController.data.queue
-            .map(
-              (track) => TrackModel.fromMusilyTrack(track),
-            )
-            .where(
-              (e) => e.artist.id == widget.artist.id,
-            ),
+        ...widget.playerController.data.queue.where(
+          (e) => e.artist.id == widget.artist.id,
+        ),
       ];
       return;
     }
@@ -108,8 +103,7 @@ class _ArtistPageState extends State<ArtistPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CoreBaseWidget(
-      coreController: widget.coreController,
+    return LyPage(
       child: Scaffold(
         body: Builder(builder: (context) {
           return Stack(
@@ -133,12 +127,11 @@ class _ArtistPageState extends State<ArtistPage> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  Theme.of(context).scaffoldBackgroundColor,
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
+                                  context.themeData.scaffoldBackgroundColor,
+                                  context.themeData.scaffoldBackgroundColor
                                       .withOpacity(
-                                        .45,
-                                      ),
+                                    .45,
+                                  ),
                                 ],
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
@@ -154,12 +147,11 @@ class _ArtistPageState extends State<ArtistPage> {
                               child: InfinityMarquee(
                                 child: Text(
                                   widget.artist.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium
+                                  style: context
+                                      .themeData.textTheme.displayMedium
                                       ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -186,12 +178,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                     );
                                     widget.playerController.methods
                                         .playPlaylist(
-                                      [
-                                        ...allTracks.map(
-                                          (element) =>
-                                              TrackModel.toMusilyTrack(element),
-                                        ),
-                                      ],
+                                      allTracks,
                                       widget.artist.id,
                                       startFrom: randomIndex,
                                     );
@@ -235,12 +222,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                     } else {
                                       await widget.playerController.methods
                                           .playPlaylist(
-                                        [
-                                          ...allTracks.map(
-                                            (track) =>
-                                                TrackModel.toMusilyTrack(track),
-                                          ),
-                                        ],
+                                        allTracks,
                                         widget.artist.id,
                                         startFrom: 0,
                                       );
@@ -255,7 +237,7 @@ class _ArtistPageState extends State<ArtistPage> {
                             icon: loadingTracks
                                 ? CircularProgressIndicator(
                                     color:
-                                        Theme.of(context).colorScheme.onPrimary,
+                                        context.themeData.colorScheme.onPrimary,
                                   )
                                 : Icon(
                                     isArtistPlaying && data.isPlaying
@@ -283,40 +265,44 @@ class _ArtistPageState extends State<ArtistPage> {
                           padding: const EdgeInsets.only(
                             top: 12,
                           ),
-                          child: LibraryToggler(
-                            libraryController: widget.libraryController,
-                            loadingWidget: (context) {
-                              return LyTonalButton(
-                                onPressed: null,
-                                child: LoadingAnimationWidget.halfTriangleDot(
-                                  color: Theme.of(context).iconTheme.color ??
-                                      Colors.white,
-                                  size: 16,
-                                ),
-                              );
-                            },
-                            notInLibraryWidget: (context, addToLibrary) {
-                              return LyTonalIconButton(
-                                onPressed: addToLibrary,
-                                iconSpacing: 0,
-                                icon: const SizedBox.shrink(),
-                                label: Text(
-                                  AppLocalizations.of(context)!.follow,
-                                ),
-                              );
-                            },
-                            inLibraryWidget: (context, removeFromLibrary) {
-                              return LyTonalIconButton(
-                                onPressed: removeFromLibrary,
-                                label: Text(
-                                  AppLocalizations.of(context)!.following,
-                                ),
-                                icon: const Icon(
-                                  Icons.check_rounded,
-                                ),
-                              );
-                            },
-                            item: widget.artist,
+                          child: widget.libraryController.builder(
+                            builder: (context, data) => LibraryToggler(
+                              libraryController: widget.libraryController,
+                              notInLibraryWidget: (context, addToLibrary) {
+                                return LyTonalIconButton(
+                                  onPressed: addToLibrary,
+                                  iconSpacing: 0,
+                                  density: LyDensity.normal,
+                                  icon: const SizedBox.shrink(),
+                                  label: Text(
+                                    context.localization.follow,
+                                  ),
+                                );
+                              },
+                              inLibraryWidget: (context, removeFromLibrary) {
+                                return LyTonalIconButton(
+                                  onPressed: removeFromLibrary,
+                                  density: LyDensity.normal,
+                                  label: Text(
+                                    context.localization.following,
+                                  ),
+                                  icon: const Icon(
+                                    Icons.check_rounded,
+                                  ),
+                                );
+                              },
+                              item: widget.libraryController.data.items
+                                      .where((e) =>
+                                          e.artist?.id == widget.artist.id)
+                                      .firstOrNull ??
+                                  LibraryItemEntity(
+                                    id: '',
+                                    synced: false,
+                                    lastTimePlayed: DateTime.now(),
+                                    createdAt: DateTime.now(),
+                                    artist: widget.artist,
+                                  ),
+                            ),
                           ),
                         ),
                       ],
@@ -334,13 +320,11 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.topSongs,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
+                              context.localization.topSongs,
+                              style: context.themeData.textTheme.headlineSmall
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Padding(
@@ -381,7 +365,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                   ),
                                 );
                               },
-                              child: Text(AppLocalizations.of(context)!.more),
+                              child: Text(context.localization.more),
                             ),
                           ),
                         ],
@@ -405,15 +389,12 @@ class _ArtistPageState extends State<ArtistPage> {
                               await loadTracks();
                             }
 
-                            late final List<MusilyTrack> queueToPlay;
+                            late final List<TrackEntity> queueToPlay;
                             if (widget.playerController.data.playingId ==
                                 widget.artist.id) {
                               queueToPlay = widget.playerController.data.queue;
                             } else {
-                              queueToPlay = [
-                                ...allTracks.map((element) =>
-                                    TrackModel.toMusilyTrack(element))
-                              ];
+                              queueToPlay = allTracks;
                             }
 
                             final startIndex = queueToPlay.indexWhere(
@@ -446,13 +427,11 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.topAlbums,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
+                              context.localization.topAlbums,
+                              style: context.themeData.textTheme.headlineSmall
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Padding(
@@ -491,7 +470,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                   ),
                                 );
                               },
-                              child: Text(AppLocalizations.of(context)!.more),
+                              child: Text(context.localization.more),
                             ),
                           ),
                         ],
@@ -543,13 +522,11 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.topSingles,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
+                              context.localization.topSingles,
+                              style: context.themeData.textTheme.headlineSmall
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Padding(
@@ -590,7 +567,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                   ),
                                 );
                               },
-                              child: Text(AppLocalizations.of(context)!.more),
+                              child: Text(context.localization.more),
                             ),
                           ),
                         ],
@@ -641,13 +618,11 @@ class _ArtistPageState extends State<ArtistPage> {
                               bottom: 16,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.similarArtists,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
+                              context.localization.similarArtists,
+                              style: context.themeData.textTheme.headlineSmall
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -772,31 +747,25 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
       body: Builder(
         builder: (context) {
           if (loadingArtist) {
-            return CoreBaseWidget(
-              coreController: widget.coreController,
-              child: Center(
-                child: LoadingAnimationWidget.halfTriangleDot(
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 50,
-                ),
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: context.themeData.colorScheme.primary,
+                size: 50,
               ),
             );
           }
           if (artist == null) {
-            return CoreBaseWidget(
-              coreController: widget.coreController,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.error_rounded,
-                      size: 50,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
-                    ),
-                    Text(AppLocalizations.of(context)!.artistNotFound),
-                  ],
-                ),
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_rounded,
+                    size: 50,
+                    color: context.themeData.iconTheme.color?.withOpacity(.7),
+                  ),
+                  Text(context.localization.artistNotFound),
+                ],
               ),
             );
           }

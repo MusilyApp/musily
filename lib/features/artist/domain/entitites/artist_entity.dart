@@ -2,11 +2,11 @@ import 'package:musily/core/domain/entities/identifiable.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
-class ShortArtist {
+class SimplifiedArtist {
   final String id;
   String name;
 
-  ShortArtist({
+  SimplifiedArtist({
     required this.id,
     required this.name,
   });

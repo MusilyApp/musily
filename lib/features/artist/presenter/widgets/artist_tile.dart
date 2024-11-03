@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/_library_module/presenter/widgets/library_wrapper.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -11,8 +13,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class ArtistTile extends StatelessWidget {
   final ArtistEntity artist;
@@ -44,69 +47,78 @@ class ArtistTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LyListTile(
-      onTap: () => coreController.methods.pushWidget(
-        artist.topTracks.isEmpty
-            ? AsyncArtistPage(
-                artistId: artist.id,
-                coreController: coreController,
-                playerController: playerController,
-                downloaderController: downloaderController,
-                getPlayableItemUsecase: getPlayableItemUsecase,
-                libraryController: libraryController,
-                getAlbumUsecase: getAlbumUsecase,
-                getArtistUsecase: getArtistUsecase,
-                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                getArtistTracksUsecase: getArtistTracksUsecase,
-                getArtistSinglesUsecase: getArtistSinglesUsecase,
-              )
-            : ArtistPage(
-                getAlbumUsecase: getAlbumUsecase,
-                artist: artist,
-                coreController: coreController,
-                playerController: playerController,
-                downloaderController: downloaderController,
-                getPlayableItemUsecase: getPlayableItemUsecase,
-                libraryController: libraryController,
-                getArtistUsecase: getArtistUsecase,
-                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                getArtistTracksUsecase: getArtistTracksUsecase,
-                getArtistSinglesUsecase: getArtistSinglesUsecase,
-              ),
-      ),
-      subtitle: const Text(
-        'Artista',
-      ),
-      leading: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(360),
-          side: BorderSide(
-            width: 1,
-            color: Theme.of(context).colorScheme.outline.withOpacity(.2),
-          ),
+    return LibraryWrapper(
+      libraryController: libraryController,
+      libraryItem: libraryController.data.items
+          .where(
+            (e) => e.id == artist.id,
+          )
+          .firstOrNull,
+      child: LyListTile(
+        onTap: () => LyNavigator.push(
+          context.showingPageContext,
+          artist.topTracks.isEmpty
+              ? AsyncArtistPage(
+                  artistId: artist.id,
+                  coreController: coreController,
+                  playerController: playerController,
+                  downloaderController: downloaderController,
+                  getPlayableItemUsecase: getPlayableItemUsecase,
+                  libraryController: libraryController,
+                  getAlbumUsecase: getAlbumUsecase,
+                  getArtistUsecase: getArtistUsecase,
+                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                  getArtistTracksUsecase: getArtistTracksUsecase,
+                  getArtistSinglesUsecase: getArtistSinglesUsecase,
+                )
+              : ArtistPage(
+                  getAlbumUsecase: getAlbumUsecase,
+                  artist: artist,
+                  coreController: coreController,
+                  playerController: playerController,
+                  downloaderController: downloaderController,
+                  getPlayableItemUsecase: getPlayableItemUsecase,
+                  libraryController: libraryController,
+                  getArtistUsecase: getArtistUsecase,
+                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                  getArtistTracksUsecase: getArtistTracksUsecase,
+                  getArtistSinglesUsecase: getArtistSinglesUsecase,
+                ),
         ),
-        child: Builder(
-          builder: (context) {
-            if (artist.lowResImg != null) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(360),
-                child: AppImage(
-                  artist.lowResImg!,
-                  width: 40,
-                  height: 40,
+        subtitle: Text(
+          context.localization.artist,
+        ),
+        leading: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(360),
+            side: BorderSide(
+              width: 1,
+              color: context.themeData.colorScheme.outline.withOpacity(.2),
+            ),
+          ),
+          child: Builder(
+            builder: (context) {
+              if (artist.lowResImg != null) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(360),
+                  child: AppImage(
+                    artist.lowResImg!,
+                    width: 40,
+                    height: 40,
+                  ),
+                );
+              }
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.person_rounded,
                 ),
               );
-            }
-            return const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.person_rounded,
-              ),
-            );
-          },
+            },
+          ),
         ),
+        title: Text(artist.name),
       ),
-      title: Text(artist.name),
     );
   }
 }

@@ -4,10 +4,10 @@ import 'package:musily/features/_search_module/presenter/controllers/results_pag
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_methods.dart';
 import 'package:musily/features/album/domain/usecases/get_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artists_usecase.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_tracks_usecase.dart';
-import 'package:musily_player/musily_player.dart';
 
 class ResultsPageController
     extends BaseController<ResultsPageData, ResultsPageMethods> {
@@ -198,7 +198,7 @@ class ResultsPageController
           catchError(e);
         }
       },
-      play: (MusilyTrack track) async {
+      play: (TrackEntity track) async {
         if (playerController.data.currentPlayingItem?.id == track.id) {
           if (playerController.data.isPlaying) {
             await playerController.methods.pause();
@@ -208,7 +208,7 @@ class ResultsPageController
         } else {
           await playerController.methods.loadAndPlay(
             track,
-            track.hash ?? track.id,
+            track.hash,
           );
         }
       },

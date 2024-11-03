@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
@@ -13,9 +13,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class ArtistAlbumsPage extends StatefulWidget {
   final List<AlbumEntity> albums;
@@ -91,18 +91,17 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CoreBaseWidget(
-      coreController: widget.coreController,
+    return LyPage(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.albums),
+          title: Text(context.localization.albums),
         ),
         body: Builder(
           builder: (context) {
             if (loadingAlbums) {
               return Center(
                 child: LoadingAnimationWidget.halfTriangleDot(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: context.themeData.colorScheme.primary,
                   size: 50,
                 ),
               );
@@ -115,13 +114,13 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
                     Icon(
                       Icons.album_rounded,
                       size: 50,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.5),
+                      color: context.themeData.iconTheme.color?.withOpacity(.5),
                     ),
                     const SizedBox(
                       height: 12,
                     ),
                     Text(
-                      AppLocalizations.of(context)!.noMoreAlbums,
+                      context.localization.noMoreAlbums,
                     ),
                   ],
                 ),

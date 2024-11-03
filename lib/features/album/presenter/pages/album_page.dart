@@ -2,13 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
-import 'package:musily/core/presenter/widgets/core_base_widget.dart';
+import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
+import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/library_toggler.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
@@ -18,13 +19,12 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_searcher.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
-import 'package:musily_player/musily_entities.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class AlbumPage extends StatefulWidget {
   final CoreController coreController;
@@ -75,8 +75,7 @@ class _AlbumPageState extends State<AlbumPage> {
   Widget build(BuildContext context) {
     return widget.coreController.builder(
       builder: (context, data) {
-        return CoreBaseWidget(
-          coreController: widget.coreController,
+        return LyPage(
           child: Scaffold(
             appBar: AppBar(
               title: Text(widget.album.artist.name),
@@ -100,14 +99,11 @@ class _AlbumPageState extends State<AlbumPage> {
                         getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                         getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                         clickAction: (track, controller) {
-                          late final List<MusilyTrack> queueToPlay;
+                          late final List<TrackEntity> queueToPlay;
                           if (data.playingId == widget.album.id) {
                             queueToPlay = data.queue;
                           } else {
-                            queueToPlay = [
-                              ...widget.album.tracks.map((element) =>
-                                  TrackModel.toMusilyTrack(element))
-                            ];
+                            queueToPlay = widget.album.tracks;
                           }
 
                           final startIndex = queueToPlay.indexWhere(
@@ -171,12 +167,10 @@ class _AlbumPageState extends State<AlbumPage> {
                             child: Text(
                               widget.album.title,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
+                              style: context.themeData.textTheme.headlineSmall
                                   ?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
@@ -191,12 +185,10 @@ class _AlbumPageState extends State<AlbumPage> {
                           ),
                           child: Text(
                             widget.album.year.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
+                            style: context.themeData.textTheme.bodyMedium
                                 ?.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                ),
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ],
@@ -259,43 +251,45 @@ class _AlbumPageState extends State<AlbumPage> {
                         const SizedBox(
                           width: 8,
                         ),
-                        LibraryToggler(
-                          item: widget.album,
-                          libraryController: widget.libraryController,
-                          notInLibraryWidget: (context, addToLibrary) {
-                            return LyTonalIconButton(
-                              onPressed: addToLibrary,
-                              onFocus: () {
-                                scrollToTop();
-                              },
-                              fixedSize: const Size(55, 55),
-                              icon: const Icon(
-                                Icons.library_add,
-                              ),
-                            );
-                          },
-                          inLibraryWidget: (context, removeFromLibrary) {
-                            return LyTonalIconButton(
-                              onPressed: removeFromLibrary,
-                              onFocus: () {
-                                scrollToTop();
-                              },
-                              fixedSize: const Size(55, 55),
-                              icon: const Icon(
-                                Icons.library_add_check_rounded,
-                              ),
-                            );
-                          },
-                          loadingWidget: (context) {
-                            return LyTonalIconButton(
-                              onPressed: null,
-                              onFocus: () {
-                                scrollToTop();
-                              },
-                              fixedSize: const Size(55, 55),
-                              icon: const CircularProgressIndicator(),
-                            );
-                          },
+                        widget.libraryController.builder(
+                          builder: (context, data) => LibraryToggler(
+                            item: data.items
+                                    .where(
+                                        (e) => e.album?.id == widget.album.id)
+                                    .firstOrNull ??
+                                LibraryItemEntity(
+                                  id: '',
+                                  synced: false,
+                                  lastTimePlayed: DateTime.now(),
+                                  createdAt: DateTime.now(),
+                                  album: widget.album,
+                                ),
+                            libraryController: widget.libraryController,
+                            notInLibraryWidget: (context, addToLibrary) {
+                              return LyTonalIconButton(
+                                onPressed: addToLibrary,
+                                onFocus: () {
+                                  scrollToTop();
+                                },
+                                fixedSize: const Size(55, 55),
+                                icon: const Icon(
+                                  Icons.library_add,
+                                ),
+                              );
+                            },
+                            inLibraryWidget: (context, removeFromLibrary) {
+                              return LyTonalIconButton(
+                                onPressed: removeFromLibrary,
+                                onFocus: () {
+                                  scrollToTop();
+                                },
+                                fixedSize: const Size(55, 55),
+                                icon: const Icon(
+                                  Icons.library_add_check_rounded,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         const SizedBox(
                           width: 8,
@@ -311,11 +305,7 @@ class _AlbumPageState extends State<AlbumPage> {
                             } else {
                               await widget.playerController.methods
                                   .playPlaylist(
-                                [
-                                  ...widget.album.tracks.map(
-                                    (track) => TrackModel.toMusilyTrack(track),
-                                  ),
-                                ],
+                                widget.album.tracks,
                                 widget.album.id,
                                 startFrom: 0,
                               );
@@ -349,12 +339,7 @@ class _AlbumPageState extends State<AlbumPage> {
                               widget.album.tracks.length,
                             );
                             widget.playerController.methods.playPlaylist(
-                              [
-                                ...widget.album.tracks.map(
-                                  (element) =>
-                                      TrackModel.toMusilyTrack(element),
-                                ),
-                              ],
+                              widget.album.tracks,
                               widget.album.id,
                               startFrom: randomIndex,
                             );
@@ -406,7 +391,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 data.currentPlayingItem?.hash == track.hash &&
                                 data.isPlaying
                             ? LoadingAnimationWidget.staggeredDotsWave(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: context.themeData.colorScheme.primary,
                                 size: 20,
                               )
                             : SizedBox(
@@ -414,12 +399,10 @@ class _AlbumPageState extends State<AlbumPage> {
                                 child: Center(
                                   child: Text(
                                     '${widget.album.tracks.indexOf(track) + 1}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
+                                    style: context.themeData.textTheme.bodyLarge
                                         ?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -434,14 +417,11 @@ class _AlbumPageState extends State<AlbumPage> {
                         getPlayableItemUsecase: widget.getPlayableItemUsecase,
                         libraryController: widget.libraryController,
                         customAction: () {
-                          late final List<MusilyTrack> queueToPlay;
+                          late final List<TrackEntity> queueToPlay;
                           if (data.playingId == widget.album.id) {
                             queueToPlay = data.queue;
                           } else {
-                            queueToPlay = [
-                              ...widget.album.tracks.map((element) =>
-                                  TrackModel.toMusilyTrack(element))
-                            ];
+                            queueToPlay = widget.album.tracks;
                           }
 
                           final startIndex = queueToPlay.indexWhere(
@@ -545,33 +525,27 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
       body: Builder(
         builder: (context) {
           if (loadingAlbum) {
-            return CoreBaseWidget(
-              coreController: widget.coreController,
-              child: Center(
-                child: LoadingAnimationWidget.halfTriangleDot(
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 50,
-                ),
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: context.themeData.colorScheme.primary,
+                size: 50,
               ),
             );
           }
           if (album == null) {
-            return CoreBaseWidget(
-              coreController: widget.coreController,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.error_rounded,
-                      size: 50,
-                      color: Theme.of(context).iconTheme.color?.withOpacity(.7),
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.albumNotFound,
-                    )
-                  ],
-                ),
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_rounded,
+                    size: 50,
+                    color: context.themeData.iconTheme.color?.withOpacity(.7),
+                  ),
+                  Text(
+                    context.localization.albumNotFound,
+                  )
+                ],
               ),
             );
           }

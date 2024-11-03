@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/uasecases/get_playable_item_usecase.dart';
+import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -12,9 +13,9 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class SquareAlbumTile extends StatelessWidget {
   final AlbumEntity album;
@@ -48,7 +49,8 @@ class SquareAlbumTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        coreController.methods.pushWidget(
+        LyNavigator.push(
+          context.showingPageContext,
           album.tracks.isNotEmpty
               ? AlbumPage(
                   coreController: coreController,
@@ -98,7 +100,7 @@ class SquareAlbumTile extends StatelessWidget {
                 child: Text(album.title),
               ),
               subtitle: Text(
-                '${AppLocalizations.of(context)!.album}${album.year != 0 ? ' - ${album.year}' : ''}',
+                '${context.localization.album}${album.year != 0 ? ' - ${album.year}' : ''}',
               ),
             ),
           ],
