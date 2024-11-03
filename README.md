@@ -58,7 +58,7 @@ To run Musily on Linux, you'll need the following libraries installed:
 #### Install Dependencies on Ubuntu/Debian-based Systems
 
 ```bash
-sudo apt install libmpv-dev libsecret-1-dev
+sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev
 ```
 
 For other Linux distributions, please use the respective package managers (e.g., dnf for Fedora-based systems).
