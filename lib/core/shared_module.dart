@@ -1,18 +1,25 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:musily/core/data/adapters/http_adapter_impl.dart';
 import 'package:musily/core/data/database/library_database.dart';
+import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/data/usecases/get_playable_item_usecase_impl.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/utils/display_helper.dart';
 import 'package:musily/features/_library_module/data/datasources/library_datasource_impl.dart';
 import 'package:musily/features/_library_module/data/repositories/library_repository_impl.dart';
-import 'package:musily/features/_library_module/data/usecases/add_to_library_usecase_impl.dart';
-import 'package:musily/features/_library_module/data/usecases/delete_library_item_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/add_album_to_library_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/add_artist_to_library_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/add_tracks_to_playlist_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/create_playlist_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/delete_playlist_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/get_library_item_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/get_library_items_usecase_impl.dart';
-import 'package:musily/features/_library_module/data/usecases/get_library_offset_limit_usecase_impl.dart';
-import 'package:musily/features/_library_module/data/usecases/update_library_item_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/remove_album_from_library_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/remove_artist_from_library_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/remove_tracks_from_playlist_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/update_playlist_usecase_impl.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/data/datasources/search_datasource_impl.dart';
+import 'package:musily/features/_search_module/data/repositories/search_repository_impl.dart';
 import 'package:musily/features/_search_module/data/usecases/get_search_suggestions_usecase_impl.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/_sections_module/data/datasources/sections_datasource_impl.dart';
@@ -23,7 +30,6 @@ import 'package:musily/features/album/data/datasources/album_datasource_impl.dar
 import 'package:musily/features/album/data/repositories/album_repository_impl.dart';
 import 'package:musily/features/album/data/usecases/get_album_usecase_impl.dart';
 import 'package:musily/features/album/data/usecases/get_albums_usecase_impl.dart';
-import 'package:musily/features/album/presenter/pages/album_page.dart';
 import 'package:musily/features/artist/data/datasources/artists_datasource_impl.dart';
 import 'package:musily/features/artist/data/repository/artist_repository_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artist_albums_usecase_impl.dart';
@@ -31,39 +37,46 @@ import 'package:musily/features/artist/data/usecases/get_artist_singles_usecase_
 import 'package:musily/features/artist/data/usecases/get_artist_tracks_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artist_usecase_impl.dart';
 import 'package:musily/features/artist/data/usecases/get_artists_usecase_impl.dart';
-import 'package:musily/features/artist/presenter/pages/artist_page.dart';
+import 'package:musily/features/auth/data/datasource/auth_datasource_impl.dart';
+import 'package:musily/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:musily/features/auth/data/usecases/create_account_usecase_impl.dart';
+import 'package:musily/features/auth/data/usecases/get_current_user_usecase_impl.dart';
+import 'package:musily/features/auth/data/usecases/login_usecase_impl.dart';
+import 'package:musily/features/auth/data/usecases/logout_usecase_impl.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 import 'package:musily/features/player/data/datasources/player_datasource_impl.dart';
 import 'package:musily/features/player/data/repositories/player_repository_impl.dart';
 import 'package:musily/features/player/data/usecases/get_smart_queue_usecase_impl.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
-import 'package:musily/features/track/presenter/widgets/track_tile.dart';
-import 'package:musily_player/domain/entities/player_localization.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/playlist/data/datasources/playlist_datasource_impl.dart';
 import 'package:musily/features/playlist/data/repositories/playlist_repository_impl.dart';
 import 'package:musily/features/playlist/data/usecases/get_playlist_usecase_impl.dart';
 import 'package:musily/features/track/data/datasources/track_datasource_impl.dart';
-import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/data/repositories/track_respository_impl.dart';
 import 'package:musily/features/track/data/usecases/get_track_lyrics_usecase_impl.dart';
 import 'package:musily/features/track/data/usecases/get_track_usecase_impl.dart';
 import 'package:musily/features/track/data/usecases/get_tracks_usecase_impl.dart';
-import 'package:musily/features/track/presenter/widgets/track_options.dart';
-import 'package:musily_player/presenter/controllers/player/player_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../features/_search_module/data/repositories/search_repository_impl.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 
 class SharedModule extends Module {
   @override
   void exportedBinds(Injector i) {
     super.exportedBinds(i);
+
+    final musilyRepository = MusilyRepositoryImpl();
+
     i.addLazySingleton(CoreController.new);
+    i.addLazySingleton(
+      HttpAdapterImpl.new,
+    );
 
     // Player dependencies
-    i.addLazySingleton(PlayerDatasourceImpl.new);
+    i.addLazySingleton(
+      () => PlayerDatasourceImpl(
+        musilyRepository: musilyRepository,
+      ),
+    );
     i.addLazySingleton(
       () => PlayerRepositoryImpl(
         playerDatasource: i.get<PlayerDatasourceImpl>(),
@@ -76,137 +89,17 @@ class SharedModule extends Module {
     );
     i.addLazySingleton(
       () => PlayerController(
-        themeMode: Modular.get<SettingsController>().data.themeMode,
-        localization: (context) => PlayerLocalization(
-          playingNow: AppLocalizations.of(context)!.playingNow,
-          lyricsNotFound: AppLocalizations.of(context)!.lyricsNotFound,
-        ),
-        loadUrl: (track) async {
-          final getPlayableItemUsecase = i.get<GetPlayableItemUsecaseImpl>();
-          final item = await getPlayableItemUsecase.exec(track);
-          return item.url;
-        },
-        getLyrics: (trackId) async {
-          final getTrackLyricsUsecase = i.get<GetTrackLyricsUsecaseImpl>();
-          final lyrics = await getTrackLyricsUsecase.exec(trackId);
-          return lyrics;
-        },
-        favoriteButton: (context, track) => FavoriteButton(
-          libraryController: i.get<LibraryController>(),
-          track: TrackModel.fromMusilyTrack(track),
-        ),
-        getSmartQueue: (currentQueue) async {
-          final getSmartQueueUsecase = i.get<GetSmartQueueUsecaseImpl>();
-          final smartQueue = await getSmartQueueUsecase.exec(
-            [
-              ...currentQueue.map(
-                (e) => TrackModel.fromMusilyTrack(e),
-              ),
-            ],
-          );
-          return [
-            ...smartQueue.map(
-              (e) => TrackModel.toMusilyTrack(e),
-            ),
-          ];
-        },
-        onAddSmartQueueItem: (track) {
-          final playerController = i.get<PlayerController>();
-          final libraryController = i.get<LibraryController>();
-          libraryController.methods.addToPlaylist(
-            [
-              TrackModel.fromMusilyTrack(track),
-            ],
-            playerController.data.playingId,
-          );
-        },
-        onAlbumInvoked: (album, context) {
-          final displayHelper = DisplayHelper(context);
-          final playerController = i.get<PlayerController>();
-          if (!displayHelper.isDesktop) {
-            playerController.methods.closePlayer();
-          }
-          final coreController = i.get<CoreController>();
-          coreController.methods.pushWidget(
-            AsyncAlbumPage(
-              albumId: album.id,
-              coreController: coreController,
-              playerController: playerController,
-              getAlbumUsecase: i.get<GetAlbumUsecaseImpl>(),
-              downloaderController: i.get<DownloaderController>(),
-              getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
-              libraryController: i.get<LibraryController>(),
-              getArtistAlbumsUsecase: i.get<GetArtistAlbumsUsecaseImpl>(),
-              getArtistSinglesUsecase: i.get<GetArtistSinglesUsecaseImpl>(),
-              getArtistTracksUsecase: i.get<GetArtistTracksUsecaseImpl>(),
-              getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
-            ),
-          );
-        },
-        onArtistInvoked: (artist, context) {
-          final displayHelper = DisplayHelper(context);
-          final playerController = i.get<PlayerController>();
-          if (!displayHelper.isDesktop) {
-            playerController.methods.closePlayer();
-          }
-          final coreController = i.get<CoreController>();
-          coreController.methods.pushWidget(
-            AsyncArtistPage(
-              artistId: artist.id,
-              coreController: coreController,
-              playerController: i.get<PlayerController>(),
-              getAlbumUsecase: i.get<GetAlbumUsecaseImpl>(),
-              downloaderController: i.get<DownloaderController>(),
-              getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
-              libraryController: i.get<LibraryController>(),
-              getArtistAlbumsUsecase: i.get<GetArtistAlbumsUsecaseImpl>(),
-              getArtistSinglesUsecase: i.get<GetArtistSinglesUsecaseImpl>(),
-              getArtistTracksUsecase: i.get<GetArtistTracksUsecaseImpl>(),
-              getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
-            ),
-          );
-        },
-        onPlayerCollapsed: () {
-          final coreController = i.get<CoreController>();
-          coreController.updateData(
-            coreController.data.copyWith(
-              isPlayerExpanded: false,
-            ),
-          );
-        },
-        onPlayerExpanded: () {
-          final coreController = i.get<CoreController>();
-          coreController.updateData(
-            coreController.data.copyWith(
-              isPlayerExpanded: true,
-            ),
-          );
-        },
-        trackOptionsWidget: (context, track) {
-          return TrackOptions(
-            track: TrackModel.fromMusilyTrack(track),
-            playerController: i.get<PlayerController>(),
-            getAlbumUsecase: i.get<GetAlbumUsecaseImpl>(),
-            downloaderController: i.get<DownloaderController>(),
-            getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
-            libraryController: i.get<LibraryController>(),
-            getArtistAlbumsUsecase: i.get<GetArtistAlbumsUsecaseImpl>(),
-            getArtistSinglesUsecase: i.get<GetArtistSinglesUsecaseImpl>(),
-            getArtistTracksUsecase: i.get<GetArtistTracksUsecaseImpl>(),
-            getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
-            coreController: i.get<CoreController>(),
-            hideOptions: const [
-              TrackTileOptions.seeAlbum,
-              TrackTileOptions.seeArtist,
-            ],
-          );
-        },
+        getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
+        getTrackLyricsUsecase: i.get<GetTrackLyricsUsecaseImpl>(),
+        getSmartQueueUsecase: i.get<GetSmartQueueUsecaseImpl>(),
       ),
     );
 
     // Section dependencies
     i.addLazySingleton(
-      () => SectionsDatasourceImpl(),
+      () => SectionsDatasourceImpl(
+        musilyRepository: musilyRepository,
+      ),
     );
     i.addLazySingleton(
       () => SectionsRepositoryImpl(
@@ -221,7 +114,7 @@ class SharedModule extends Module {
     i.addLazySingleton<SectionsController>(
       () => SectionsController(
         getSectionsUsecase: i.get<GetSectionsUsecaseImpl>(),
-        getLibraryOffsetLimitUsecase: i.get<GetLibraryOffsetLimitUsecaseImpl>(),
+        getLibraryItemsUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
       ),
     );
 
@@ -231,8 +124,8 @@ class SharedModule extends Module {
     );
     i.addLazySingleton(
       () => LibraryDatasourceImpl(
+        httpAdapter: i.get<HttpAdapterImpl>(),
         modelAdapter: i.get<LibraryDatabase>(),
-        downloaderController: i.get<DownloaderController>(),
       ),
     );
     i.addLazySingleton(
@@ -241,27 +134,7 @@ class SharedModule extends Module {
       ),
     );
     i.addLazySingleton(
-      () => GetLibraryOffsetLimitUsecaseImpl(
-        libraryRepository: i.get<LibraryRepositoryImpl>(),
-      ),
-    );
-    i.addLazySingleton(
       () => GetLibraryItemUsecaseImpl(
-        libraryRepository: i.get<LibraryRepositoryImpl>(),
-      ),
-    );
-    i.addLazySingleton(
-      () => AddToLibraryUsecaseImpl(
-        libraryRepository: i.get<LibraryRepositoryImpl>(),
-      ),
-    );
-    i.addLazySingleton(
-      () => DeleteLibraryItemUsecaseImpl(
-        libraryRepository: i.get<LibraryRepositoryImpl>(),
-      ),
-    );
-    i.addLazySingleton(
-      () => UpdateLibraryItemUsecaseImpl(
         libraryRepository: i.get<LibraryRepositoryImpl>(),
       ),
     );
@@ -271,20 +144,75 @@ class SharedModule extends Module {
       ),
     );
     i.addLazySingleton(
-      () => LibraryController(
-        getLibraryUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
-        addToLibraryUsecase: i.get<AddToLibraryUsecaseImpl>(),
-        updateLibraryItemUsecase: i.get<UpdateLibraryItemUsecaseImpl>(),
-        getLibraryItemUsecase: i.get<GetLibraryItemUsecaseImpl>(),
-        deleteLibraryItemUsecase: i.get<DeleteLibraryItemUsecaseImpl>(),
-        downloaderController: i.get<DownloaderController>(),
-        playerController: i.get<PlayerController>(),
+      () => UpdatePlaylistUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
       ),
+    );
+    i.addLazySingleton(
+      () => AddTracksToPlaylistUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => CreatePlaylistUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => RemoveTracksFromPlaylistUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => AddArtistToLibraryUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => RemoveArtistFromLibraryUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => AddAlbumToLibraryUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => RemoveAlbumFromLibraryUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => DeletePlaylistUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => LibraryController(
+          getLibraryUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
+          getLibraryItemUsecase: i.get<GetLibraryItemUsecaseImpl>(),
+          downloaderController: i.get<DownloaderController>(),
+          playerController: i.get<PlayerController>(),
+          updatePlaylistUsecase: i.get<UpdatePlaylistUsecaseImpl>(),
+          addTracksToPlaylistUsecase: i.get<AddTracksToPlaylistUsecaseImpl>(),
+          createPlaylistUsecase: i.get<CreatePlaylistUsecaseImpl>(),
+          removeTracksFromPlaylistUsecase:
+              i.get<RemoveTracksFromPlaylistUsecaseImpl>(),
+          addArtistToLibraryUsecase: i.get<AddArtistToLibraryUsecaseImpl>(),
+          removeArtistFromLibraryUsecase:
+              i.get<RemoveArtistFromLibraryUsecaseImpl>(),
+          addAlbumToLibraryUsecase: i.get<AddAlbumToLibraryUsecaseImpl>(),
+          removeAlbumFromLibraryUsecase:
+              i.get<RemoveAlbumFromLibraryUsecaseImpl>(),
+          deletePlaylistUsecase: i.get<DeletePlaylistUsecaseImpl>()),
     );
 
     // Downloader dependencies
     i.addLazySingleton(
-      () => GetPlayableItemUsecaseImpl(),
+      () => GetPlayableItemUsecaseImpl(
+        musilyRepository: musilyRepository,
+      ),
     );
     i.addLazySingleton(
       () => DownloaderController(),
@@ -295,6 +223,7 @@ class SharedModule extends Module {
       () => AlbumDatasourceImpl(
         downloaderController: i.get<DownloaderController>(),
         libraryDatasource: i.get<LibraryDatasourceImpl>(),
+        musilyRepository: musilyRepository,
       ),
     );
     i.addLazySingleton(
@@ -317,6 +246,7 @@ class SharedModule extends Module {
     i.addLazySingleton(
       () => TrackDatasourceImpl(
         downloaderController: i.get<DownloaderController>(),
+        musilyRepository: musilyRepository,
       ),
     );
     i.addLazySingleton(
@@ -342,7 +272,9 @@ class SharedModule extends Module {
 
     // Artist dependencies
     i.addLazySingleton(
-      () => ArtistsDatasourceImpl(),
+      () => ArtistsDatasourceImpl(
+        musilyRepository: musilyRepository,
+      ),
     );
     i.addLazySingleton(
       () => ArtistRepositoryImpl(
@@ -390,7 +322,9 @@ class SharedModule extends Module {
         searchRepository: i.get<SearchRepositoryImpl>(),
       ),
     );
-    i.addLazySingleton(SearchDatasourceImpl.new);
+    i.addLazySingleton(() => SearchDatasourceImpl(
+          musilyRepository: musilyRepository,
+        ));
     i.addLazySingleton(
       () => SearchRepositoryImpl(
         searchDatasource: i.get<SearchDatasourceImpl>(),
@@ -402,6 +336,7 @@ class SharedModule extends Module {
       () => PlaylistDatasourceImpl(
         libraryDatasource: i.get<LibraryDatasourceImpl>(),
         downloaderController: i.get<DownloaderController>(),
+        musilyRepository: musilyRepository,
       ),
     );
     i.addLazySingleton(
@@ -429,8 +364,44 @@ class SharedModule extends Module {
     );
 
     // Auth dependencies
+    i.addSingleton(
+      () => AuthDatasourceImpl(
+        httpAdapter: i.get<HttpAdapterImpl>(),
+        libraryController: i.get<LibraryController>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => AuthRepositoryImpl(
+        authDatasource: i.get<AuthDatasourceImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => LogoutUsecaseImpl(
+        authRepository: i.get<AuthRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => LoginUsecaseImpl(
+        authRepository: i.get<AuthRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => GetCurrentUserUsecaseImpl(
+        authRepository: i.get<AuthRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
+      () => CreateAccountUsecaseImpl(
+        authRepository: i.get<AuthRepositoryImpl>(),
+      ),
+    );
     i.addLazySingleton<AuthController>(
-      AuthController.new,
+      () => AuthController(
+        createAccountUsecase: i.get<CreateAccountUsecaseImpl>(),
+        getCurrentUserUsecase: i.get<GetCurrentUserUsecaseImpl>(),
+        loginUsecase: i.get<LoginUsecaseImpl>(),
+        logoutUsecase: i.get<LogoutUsecaseImpl>(),
+      ),
       config: BindConfig(
         onDispose: (value) => value.dispose(),
       ),
