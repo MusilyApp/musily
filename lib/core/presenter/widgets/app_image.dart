@@ -1,7 +1,7 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:musily/core/utils/string_is_url.dart';
+import 'package:musily/core/presenter/extensions/string.dart';
+import 'package:musily/core/presenter/widgets/musily_logo.dart';
 
 class AppImage extends StatelessWidget {
   final String uri;
@@ -24,20 +24,9 @@ class AppImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        if (uri.isEmpty) {
-          return SizedBox(
-            width: width,
-            height: height,
-            child: const Center(
-              child: Icon(
-                Icons.image_rounded,
-              ),
-            ),
-          );
-        }
-        if (stringIsUrl(uri)) {
-          return Image.network(
-            uri,
+        if (uri.isUrl) {
+          return CachedNetworkImage(
+            imageUrl: uri,
             width: width,
             height: height,
             fit: fit,
@@ -45,13 +34,14 @@ class AppImage extends StatelessWidget {
             colorBlendMode: colorBlendMode,
           );
         }
-        return Image.file(
-          File(uri),
+        return Container(
           width: width,
           height: height,
-          fit: fit,
-          color: color,
-          colorBlendMode: colorBlendMode,
+          padding: const EdgeInsets.all(8),
+          child: MusilyLogo(
+            width: width,
+            height: height,
+          ),
         );
       },
     );
