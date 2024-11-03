@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class FavoriteIcon extends StatelessWidget {
   final double size;
@@ -20,7 +21,7 @@ class FavoriteIcon extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             Colors.transparent,
-            Theme.of(context).buttonTheme.colorScheme?.primary ?? Colors.white,
+            context.themeData.buttonTheme.colorScheme?.primary ?? Colors.white,
           ],
         ),
       ),
