@@ -19,7 +19,7 @@ class AppError implements Exception {
 
 String getErrorStringById(String errorId) {
   switch (errorId) {
-    case 'loginError':
+    case 'auth.invalid_credentials':
       return 'Icorrect e-mail or password.';
     default:
       return 'Internal error';

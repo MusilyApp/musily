@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/errors/app_error.dart';
+import 'package:musily/core/domain/errors/musily_error.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
-import 'package:musily/core/presenter/ui/utils/show_ly_dialog.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_builder.dart';
-import 'package:musily_repository/core/domain/errors/musily_error.dart';
 
 abstract class BaseControllerData {
   copyWith();
@@ -73,29 +73,28 @@ abstract class BaseController<Data extends BaseControllerData, Methods> {
       listener: (context, data) {
         if (this.event.id == 'catch_error' && allowAlertDialog) {
           if (this.event.data is MusilyError) {
-            showLyDialog(
+            LyNavigator.showLyCardDialog(
               context: context,
-              content: AlertDialog(
-                content: Text(
-                  getErrorStringById(
-                    (this.event.data as MusilyError).id,
-                  ),
+              actions: (context) => [
+                LyFilledButton(
+                  onPressed: () {
+                    dispatchEvent(
+                      BaseControllerEvent(
+                        data: 'errorDone',
+                      ),
+                    );
+                    Navigator.pop(context);
+                    // LyNavigator.navigateTo(NavigatorPages.homePage);
+                  },
+                  child: const Text('Ok'),
+                )
+              ],
+              title: Text(
+                getErrorStringById(
+                  (this.event.data as MusilyError).id,
                 ),
-                actions: [
-                  LyFilledButton(
-                    onPressed: () {
-                      dispatchEvent(
-                        BaseControllerEvent(
-                          data: 'errorDone',
-                        ),
-                      );
-                      Navigator.pop(context);
-                      // AppNavigator.navigateTo(NavigatorPages.homePage);
-                    },
-                    child: const Text('Ok'),
-                  )
-                ],
               ),
+              builder: (context) => const SizedBox.shrink(),
             );
           }
         }
