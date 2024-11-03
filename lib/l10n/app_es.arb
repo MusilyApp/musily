@@ -67,8 +67,8 @@
   "about": "Acerca de",
   "application": "Aplicación",
   "others": "Otros",
-  "close":"Cerrar",
-  "copiedToClipboard":"Copiado al portapapeles",
+  "close": "Cerrar",
+  "copiedToClipboard": "Copiado al portapapeles",
   "noDownloads": "No hay descargas",
   "noResults": "Sin resultados",
   "downloadCompleted": "Descarga completada",
@@ -83,5 +83,6 @@
   "passwordMustBeAtLeast8Characters": "La contraseña debe tener al menos 8 caracteres",
   "createAccount": "Crear cuenta",
   "name": "Nombre",
-  "pleaseEnterYourName": "Por favor, ingrese su nombre"
+  "pleaseEnterYourName": "Por favor, ingrese su nombre",
+  "artist": "Artista"
 }

@@ -67,8 +67,8 @@
   "about": "Про",
   "application": "Програма",
   "others": "Інші",
-  "close":"Закрити",
-  "copiedToClipboard":"Скопійовано до буфера обміну",
+  "close": "Закрити",
+  "copiedToClipboard": "Скопійовано до буфера обміну",
   "noDownloads": "Немає завантажень",
   "noResults": "Немає результатів",
   "downloadCompleted": "Завантаження завершено",
@@ -83,5 +83,6 @@
   "passwordMustBeAtLeast8Characters": "Пароль має бути щонайменше 8 символів",
   "createAccount": "Створити обліковий запис",
   "name": "Ім''я",
-  "pleaseEnterYourName": "Будь ласка, введіть ваше ім''я"
+  "pleaseEnterYourName": "Будь ласка, введіть ваше ім''я",
+  "artist": "Виконавець"
 }

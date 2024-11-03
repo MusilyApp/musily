@@ -67,8 +67,8 @@
   "about": "О приложении",
   "application": "Приложение",
   "others": "Прочие",
-  "close":"Закрыть",
-  "copiedToClipboard":"Скопировано в буфер обмена",
+  "close": "Закрыть",
+  "copiedToClipboard": "Скопировано в буфер обмена",
   "noDownloads": "Нет загрузок",
   "noResults": "Нет результатов",
   "downloadCompleted": "Загрузка завершена",
@@ -83,5 +83,6 @@
   "passwordMustBeAtLeast8Characters": "Пароль должен содержать не менее 8 символов",
   "createAccount": "Создать аккаунт",
   "name": "Имя",
-  "pleaseEnterYourName": "Пожалуйста, введите ваше имя"
+  "pleaseEnterYourName": "Пожалуйста, введите ваше имя",
+  "artist": "Исполнитель"
 }
