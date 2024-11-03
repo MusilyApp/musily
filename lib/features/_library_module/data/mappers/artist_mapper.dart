@@ -1,16 +1,16 @@
-import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
-import 'package:musily/features/_library_module/domain/mappers/library_item_mapper.dart';
+import 'package:musily/features/_library_module/domain/entities/legacy_library_item_entity.dart';
+import 'package:musily/features/_library_module/domain/mappers/legacy_library_item_mapper.dart';
 import 'package:musily/features/artist/data/models/artist_model.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
-import 'package:musily_player/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 
-class ArtistMapper implements LibraryItemMapper<ArtistEntity> {
+class ArtistMapper implements LegacyLibraryItemMapper<ArtistEntity> {
   @override
-  LibraryItemEntity<ArtistEntity> fromMap(
+  LegacyLibraryItemEntity<ArtistEntity> fromMap(
     Map<String, dynamic> map, {
     bool full = false,
   }) {
-    return LibraryItemEntity(
+    return LegacyLibraryItemEntity(
       id: map['id'],
       lastTimePlayed:
           DateTime.tryParse(map['lastTimePlayed']) ?? DateTime.now(),
@@ -29,11 +29,11 @@ class ArtistMapper implements LibraryItemMapper<ArtistEntity> {
   }
 
   @override
-  Future<LibraryItemEntity<ArtistEntity>> toOffline(
-    LibraryItemEntity<ArtistEntity> item,
+  Future<LegacyLibraryItemEntity<ArtistEntity>> toOffline(
+    LegacyLibraryItemEntity<ArtistEntity> item,
     DownloaderController downloaderController,
   ) async {
-    return LibraryItemEntity(
+    return LegacyLibraryItemEntity(
       id: item.id,
       lastTimePlayed: item.lastTimePlayed,
       value: item.value,

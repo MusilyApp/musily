@@ -5,13 +5,14 @@ import 'package:musily/features/_library_module/domain/usecases/get_library_item
 class GetLibraryItemsUsecaseImpl implements GetLibraryItemsUsecase {
   late final LibraryRepository _libraryRepository;
 
-  GetLibraryItemsUsecaseImpl({required LibraryRepository libraryRepository}) {
+  GetLibraryItemsUsecaseImpl({
+    required LibraryRepository libraryRepository,
+  }) {
     _libraryRepository = libraryRepository;
   }
 
   @override
   Future<List<LibraryItemEntity>> exec() async {
-    final items = await _libraryRepository.getLibrary();
-    return items;
+    return await _libraryRepository.getLibraryItems();
   }
 }
