@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class CardOutlined extends StatelessWidget {
   final Widget? child;
@@ -14,7 +15,7 @@ class CardOutlined extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
           width: 1,
-          color: Theme.of(context).colorScheme.outline.withOpacity(.2),
+          color: context.themeData.colorScheme.outline.withOpacity(.2),
         ),
       ),
       child: child,
