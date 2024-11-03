@@ -21,47 +21,6 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
 
   @override
   CoreMethods defineMethods() {
-    return CoreMethods(
-      closeDialog: () {
-        dispatchEvent(
-          BaseControllerEvent(
-            id: 'closeDialog',
-            data: data,
-          ),
-        );
-      },
-      pushModal: (widget) {
-        updateData(
-          data.copyWith(
-            isShowingDialog: true,
-          ),
-        );
-        dispatchEvent(
-          BaseControllerEvent<Widget>(
-            id: 'pushModal',
-            data: widget,
-          ),
-        );
-      },
-      pushWidget: (
-        widget, {
-        overlayMainPage = false,
-      }) {
-        dispatchEvent(
-          BaseControllerEvent<Widget>(
-            id: overlayMainPage ? 'pushOverlayingWidget' : 'pushWidget',
-            data: widget,
-          ),
-        );
-        updateData(
-          data.copyWith(
-            pages: data.pages
-              ..add(
-                widget,
-              ),
-          ),
-        );
-      },
-    );
+    return CoreMethods();
   }
 }
