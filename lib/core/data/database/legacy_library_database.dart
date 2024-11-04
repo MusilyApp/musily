@@ -1,3 +1,5 @@
+import 'package:isar/isar.dart';
+import 'package:musily/core/data/database/collections/database_library.dart';
 import 'package:musily/core/data/database/database.dart';
 import 'package:musily/core/domain/adapters/database_adapter.dart';
 
@@ -37,5 +39,14 @@ class LegacyLibraryDatabase implements DatabaseModelAdapter {
       limit,
     );
     return items;
+  }
+
+  Future<void> cleanLegacyDatabase() async {
+    await _database.isar.writeTxn(() async {
+      await _database.isar.databaseLibrarys
+          .filter()
+          .musilyIdIsNotEmpty()
+          .deleteAll();
+    });
   }
 }
