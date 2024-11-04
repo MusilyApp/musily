@@ -10,12 +10,6 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   BuildContext? get coreContext => coreKey.currentContext;
   BuildContext? get coreShowingContext => coreShowingKey.currentContext;
 
-  CoreController() {
-    _migrateLibrary();
-  }
-
-  Future<void> _migrateLibrary() async {}
-
   @override
   CoreData defineData() {
     return CoreData(
