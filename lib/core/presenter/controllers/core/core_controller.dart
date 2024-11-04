@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/data/database/legacy_library_database.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/presenter/controllers/core/core_data.dart';
 import 'package:musily/core/presenter/controllers/core/core_methods.dart';
@@ -11,7 +10,11 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   BuildContext? get coreContext => coreKey.currentContext;
   BuildContext? get coreShowingContext => coreShowingKey.currentContext;
 
-  final legacyLibraryDatabase = LegacyLibraryDatabase();
+  CoreController() {
+    _migrateLibrary();
+  }
+
+  Future<void> _migrateLibrary() async {}
 
   @override
   CoreData defineData() {
