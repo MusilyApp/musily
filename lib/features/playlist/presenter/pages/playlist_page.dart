@@ -84,18 +84,18 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.playlist.id == UserService.favoritesId
-                ? context.localization.favorites
-                : widget.playlist.id == 'offline'
-                    ? context.localization.offline
-                    : widget.playlist.title,
-          ),
-          actions: [
-            widget.playerController.builder(builder: (context, data) {
-              return Padding(
+      child: widget.playerController.builder(builder: (context, data) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.playlist.id == UserService.favoritesId
+                  ? context.localization.favorites
+                  : widget.playlist.id == 'offline'
+                      ? context.localization.offline
+                      : widget.playlist.title,
+            ),
+            actions: [
+              Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,
                 ),
@@ -134,340 +134,344 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     controller.closeView(controller.text);
                   },
                 ),
-              );
-            }),
-          ],
-        ),
-        body: ListView(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: widget.playlist.id == UserService.favoritesId
-                      ? const FavoriteIcon(
-                          size: 250,
-                          iconSize: 150,
-                        )
-                      : widget.playlist.id == 'offline'
-                          ? const OfflineIcon(
-                              size: 250,
-                              iconSize: 150,
-                            )
-                          : ImageCollection(
-                              urls: imageUrls,
-                              size: 250,
-                            ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-                horizontal: 26,
               ),
-              child: Text(
-                widget.playlist.id == UserService.favoritesId
-                    ? context.localization.favorites
-                    : widget.playlist.id == 'offline'
-                        ? context.localization.offline
-                        : widget.playlist.title,
-                textAlign: TextAlign.center,
-                style: context.themeData.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+            ],
+          ),
+          body: ListView(
+            children: [
+              const SizedBox(
+                height: 50,
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widget.downloaderController.builder(
-                  builder: (context, data) {
-                    final isPlaylistDownloading = data.queue
-                            .where(
-                              (e) => e.status == e.downloadDownloading,
-                            )
-                            .isNotEmpty &&
-                        data.downloadingKey == widget.playlist.id;
-                    final isDone = data.queue
-                            .where(
-                              (e) => widget.playlist.tracks
-                                  .where((item) => item.hash == e.track.hash)
-                                  .isNotEmpty,
-                            )
-                            .where((e) => e.status == e.downloadCompleted)
-                            .length ==
-                        widget.playlist.tracks.length;
-                    return LyTonalIconButton(
-                      onPressed: widget.playlist.id == 'offline'
-                          ? null
-                          : () {
-                              if (isDone) {
-                                return;
-                              }
-                              if (isPlaylistDownloading) {
-                                widget.libraryController.methods
-                                    .cancelCollectionDownload(
-                                  widget.playlist.tracks,
-                                  widget.playlist.id,
-                                );
-                              } else {
-                                widget.libraryController.methods
-                                    .downloadCollection(
-                                  widget.playlist.tracks,
-                                  widget.playlist.id,
-                                );
-                              }
-                            },
-                      fixedSize: const Size(55, 55),
-                      icon: Icon(
-                        isPlaylistDownloading
-                            ? Icons.close
-                            : isDone
-                                ? Icons.download_done_rounded
-                                : Icons.download_rounded,
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                PlaylistEditor(
-                  onFinished: (name) {
-                    widget.playlist.title = name;
-                  },
-                  builder: (context, showEditor) {
-                    return LyTonalIconButton(
-                      onPressed:
-                          widget.playlist.id == UserService.favoritesId ||
-                                  widget.playlist.id == 'offline'
-                              ? null
-                              : showEditor,
-                      fixedSize: const Size(55, 55),
-                      icon: const Icon(
-                        Icons.edit_rounded,
-                      ),
-                    );
-                  },
-                  libraryController: widget.libraryController,
-                  playlistEntity: widget.playlist,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                widget.playerController.builder(
-                  builder: (context, data) {
-                    final isPlaylistPlaying =
-                        data.playingId == widget.playlist.id;
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        LyFilledIconButton(
-                          onPressed: widget.playlist.tracks.isEmpty
-                              ? null
-                              : () async {
-                                  if (isPlaylistPlaying) {
-                                    if (data.isPlaying) {
-                                      await widget.playerController.methods
-                                          .pause();
-                                    } else {
-                                      await widget.playerController.methods
-                                          .resume();
-                                    }
-                                  } else {
-                                    await widget.playerController.methods
-                                        .playPlaylist(
-                                      widget.playlist.tracks,
-                                      widget.playlist.id,
-                                      startFrom: 0,
-                                    );
-                                    widget.libraryController.methods
-                                        .updateLastTimePlayed(
-                                      widget.playlist.id,
-                                    );
-                                  }
-                                },
-                          iconSize: 40,
-                          fixedSize: const Size(60, 60),
-                          icon: Icon(
-                            isPlaylistPlaying && data.isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        LyTonalIconButton(
-                          onPressed: () async {
-                            final random = Random();
-                            final randomIndex = random.nextInt(
-                              widget.playlist.tracks.length,
-                            );
-                            widget.playerController.methods.playPlaylist(
-                              widget.playlist.tracks,
-                              widget.playlist.id,
-                              startFrom: randomIndex,
-                            );
-                            if (!data.shuffleEnabled) {
-                              widget.playerController.methods.toggleShuffle();
-                            } else {
-                              await widget.playerController.methods
-                                  .toggleShuffle();
-                              widget.playerController.methods.toggleShuffle();
-                            }
-                            widget.libraryController.methods
-                                .updateLastTimePlayed(
-                              widget.playlist.id,
-                            );
-                          },
-                          fixedSize: const Size(55, 55),
-                          icon: const Icon(
-                            Icons.shuffle_rounded,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                PlaylistOptions(
-                  playlist: widget.playlist,
-                  coreController: widget.coreController,
-                  playerController: widget.playerController,
-                  getAlbumUsecase: widget.getAlbumUsecase,
-                  downloaderController: widget.downloaderController,
-                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                  libraryController: widget.libraryController,
-                  tonal: true,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            ...widget.playlist.tracks.map(
-              (track) => widget.playerController.builder(
-                  builder: (context, playerData) {
-                return widget.libraryController.builder(
-                    builder: (context, libraryData) {
-                  return TrackTile(
-                    track: track,
-                    getAlbumUsecase: widget.getAlbumUsecase,
-                    coreController: widget.coreController,
-                    playerController: widget.playerController,
-                    downloaderController: widget.downloaderController,
-                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                    getArtistUsecase: widget.getArtistUsecase,
-                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                    libraryController: widget.libraryController,
-                    leading: playerData.playingId == widget.playlist.id &&
-                            playerData.currentPlayingItem?.hash == track.hash &&
-                            playerData.isPlaying
-                        ? SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                              ),
-                              child: LoadingAnimationWidget.staggeredDotsWave(
-                                color: context.themeData.colorScheme.primary,
-                                size: 20,
-                              ),
-                            ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: widget.playlist.id == UserService.favoritesId
+                        ? FavoriteIcon(
+                            size: 250,
+                            animated: data.isPlaying &&
+                                data.playingId.startsWith('favorites'),
+                            iconSize: 150,
                           )
-                        : null,
-                    customAction: () {
-                      late final List<TrackEntity> queueToPlay;
-                      if (playerData.playingId == widget.playlist.id) {
-                        queueToPlay = playerData.queue;
-                      } else {
-                        queueToPlay = widget.playlist.tracks;
-                      }
-
-                      final startIndex = queueToPlay.indexWhere(
-                        (element) => element.hash == track.hash,
-                      );
-
-                      widget.playerController.methods.playPlaylist(
-                        queueToPlay,
-                        widget.playlist.id,
-                        startFrom: startIndex == -1 ? 0 : startIndex,
-                      );
-                      widget.libraryController.methods.updateLastTimePlayed(
-                        widget.playlist.id,
-                      );
-                    },
-                    customOptions: (context) {
-                      final isInLibrary = libraryData.items
-                          .where((element) => element.id == widget.playlist.id)
-                          .isNotEmpty;
-                      return [
-                        if (widget.playlist.id != 'offline' && isInLibrary)
-                          AppMenuEntry(
-                            onTap: () {
-                              if (widget.playerController.data
-                                      .currentPlayingItem?.hash ==
-                                  track.hash) {
-                                widget.playerController.updateData(
-                                  widget.playerController.data
-                                      .copyWith(playingId: ''),
-                                );
-                              }
-                              widget.libraryController.methods
-                                  .removeTracksFromPlaylist(
-                                widget.playlist.id,
-                                [track.id],
-                              );
-                              setState(() {
-                                if (widget.playlist.tracks
-                                    .where(
-                                      (element) => element.hash == track.hash,
-                                    )
-                                    .isNotEmpty) {
-                                  widget.playlist.tracks.removeWhere(
-                                    (element) => element.hash == track.hash,
+                        : widget.playlist.id == 'offline'
+                            ? const OfflineIcon(
+                                size: 250,
+                                iconSize: 150,
+                              )
+                            : ImageCollection(
+                                urls: imageUrls,
+                                size: 250,
+                              ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 26,
+                ),
+                child: Text(
+                  widget.playlist.id == UserService.favoritesId
+                      ? context.localization.favorites
+                      : widget.playlist.id == 'offline'
+                          ? context.localization.offline
+                          : widget.playlist.title,
+                  textAlign: TextAlign.center,
+                  style: context.themeData.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  widget.downloaderController.builder(
+                    builder: (context, data) {
+                      final isPlaylistDownloading = data.queue
+                              .where(
+                                (e) => e.status == e.downloadDownloading,
+                              )
+                              .isNotEmpty &&
+                          data.downloadingKey == widget.playlist.id;
+                      final isDone = data.queue
+                              .where(
+                                (e) => widget.playlist.tracks
+                                    .where((item) => item.hash == e.track.hash)
+                                    .isNotEmpty,
+                              )
+                              .where((e) => e.status == e.downloadCompleted)
+                              .length ==
+                          widget.playlist.tracks.length;
+                      return LyTonalIconButton(
+                        onPressed: widget.playlist.id == 'offline'
+                            ? null
+                            : () {
+                                if (isDone) {
+                                  return;
+                                }
+                                if (isPlaylistDownloading) {
+                                  widget.libraryController.methods
+                                      .cancelCollectionDownload(
+                                    widget.playlist.tracks,
+                                    widget.playlist.id,
+                                  );
+                                } else {
+                                  widget.libraryController.methods
+                                      .downloadCollection(
+                                    widget.playlist.tracks,
+                                    widget.playlist.id,
                                   );
                                 }
-                              });
-                              if (context.display.isDesktop) {
-                                return;
-                              }
-                              Navigator.pop(context);
-                            },
-                            title:
-                                Text(context.localization.removeFromPlaylist),
-                            leading: Icon(
-                              Icons.delete_rounded,
-                              color: context
-                                  .themeData.buttonTheme.colorScheme?.primary,
+                              },
+                        fixedSize: const Size(55, 55),
+                        icon: Icon(
+                          isPlaylistDownloading
+                              ? Icons.close
+                              : isDone
+                                  ? Icons.download_done_rounded
+                                  : Icons.download_rounded,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  PlaylistEditor(
+                    onFinished: (name) {
+                      widget.playlist.title = name;
+                    },
+                    builder: (context, showEditor) {
+                      return LyTonalIconButton(
+                        onPressed:
+                            widget.playlist.id == UserService.favoritesId ||
+                                    widget.playlist.id == 'offline'
+                                ? null
+                                : showEditor,
+                        fixedSize: const Size(55, 55),
+                        icon: const Icon(
+                          Icons.edit_rounded,
+                        ),
+                      );
+                    },
+                    libraryController: widget.libraryController,
+                    playlistEntity: widget.playlist,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  widget.playerController.builder(
+                    builder: (context, data) {
+                      final isPlaylistPlaying =
+                          data.playingId == widget.playlist.id;
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          LyFilledIconButton(
+                            onPressed: widget.playlist.tracks.isEmpty
+                                ? null
+                                : () async {
+                                    if (isPlaylistPlaying) {
+                                      if (data.isPlaying) {
+                                        await widget.playerController.methods
+                                            .pause();
+                                      } else {
+                                        await widget.playerController.methods
+                                            .resume();
+                                      }
+                                    } else {
+                                      await widget.playerController.methods
+                                          .playPlaylist(
+                                        widget.playlist.tracks,
+                                        widget.playlist.id,
+                                        startFrom: 0,
+                                      );
+                                      widget.libraryController.methods
+                                          .updateLastTimePlayed(
+                                        widget.playlist.id,
+                                      );
+                                    }
+                                  },
+                            iconSize: 40,
+                            fixedSize: const Size(60, 60),
+                            icon: Icon(
+                              isPlaylistPlaying && data.isPlaying
+                                  ? Icons.pause_rounded
+                                  : Icons.play_arrow_rounded,
                             ),
                           ),
-                      ];
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          LyTonalIconButton(
+                            onPressed: () async {
+                              final random = Random();
+                              final randomIndex = random.nextInt(
+                                widget.playlist.tracks.length,
+                              );
+                              widget.playerController.methods.playPlaylist(
+                                widget.playlist.tracks,
+                                widget.playlist.id,
+                                startFrom: randomIndex,
+                              );
+                              if (!data.shuffleEnabled) {
+                                widget.playerController.methods.toggleShuffle();
+                              } else {
+                                await widget.playerController.methods
+                                    .toggleShuffle();
+                                widget.playerController.methods.toggleShuffle();
+                              }
+                              widget.libraryController.methods
+                                  .updateLastTimePlayed(
+                                widget.playlist.id,
+                              );
+                            },
+                            fixedSize: const Size(55, 55),
+                            icon: const Icon(
+                              Icons.shuffle_rounded,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                        ],
+                      );
                     },
-                  );
-                });
-              }),
-            ),
-            PlayerSizedBox(
-              playerController: widget.playerController,
-            ),
-          ],
-        ),
-      ),
+                  ),
+                  PlaylistOptions(
+                    playlist: widget.playlist,
+                    coreController: widget.coreController,
+                    playerController: widget.playerController,
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    downloaderController: widget.downloaderController,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    libraryController: widget.libraryController,
+                    tonal: true,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              ...widget.playlist.tracks.map(
+                (track) => widget.playerController.builder(
+                    builder: (context, playerData) {
+                  return widget.libraryController.builder(
+                      builder: (context, libraryData) {
+                    return TrackTile(
+                      track: track,
+                      getAlbumUsecase: widget.getAlbumUsecase,
+                      coreController: widget.coreController,
+                      playerController: widget.playerController,
+                      downloaderController: widget.downloaderController,
+                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                      getArtistUsecase: widget.getArtistUsecase,
+                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                      libraryController: widget.libraryController,
+                      leading: playerData.playingId == widget.playlist.id &&
+                              playerData.currentPlayingItem?.hash ==
+                                  track.hash &&
+                              playerData.isPlaying
+                          ? SizedBox(
+                              width: 48,
+                              height: 48,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                ),
+                                child: LoadingAnimationWidget.staggeredDotsWave(
+                                  color: context.themeData.colorScheme.primary,
+                                  size: 20,
+                                ),
+                              ),
+                            )
+                          : null,
+                      customAction: () {
+                        late final List<TrackEntity> queueToPlay;
+                        if (playerData.playingId == widget.playlist.id) {
+                          queueToPlay = playerData.queue;
+                        } else {
+                          queueToPlay = widget.playlist.tracks;
+                        }
+
+                        final startIndex = queueToPlay.indexWhere(
+                          (element) => element.hash == track.hash,
+                        );
+
+                        widget.playerController.methods.playPlaylist(
+                          queueToPlay,
+                          widget.playlist.id,
+                          startFrom: startIndex == -1 ? 0 : startIndex,
+                        );
+                        widget.libraryController.methods.updateLastTimePlayed(
+                          widget.playlist.id,
+                        );
+                      },
+                      customOptions: (context) {
+                        final isInLibrary = libraryData.items
+                            .where(
+                                (element) => element.id == widget.playlist.id)
+                            .isNotEmpty;
+                        return [
+                          if (widget.playlist.id != 'offline' && isInLibrary)
+                            AppMenuEntry(
+                              onTap: () {
+                                if (widget.playerController.data
+                                        .currentPlayingItem?.hash ==
+                                    track.hash) {
+                                  widget.playerController.updateData(
+                                    widget.playerController.data
+                                        .copyWith(playingId: ''),
+                                  );
+                                }
+                                widget.libraryController.methods
+                                    .removeTracksFromPlaylist(
+                                  widget.playlist.id,
+                                  [track.id],
+                                );
+                                setState(() {
+                                  if (widget.playlist.tracks
+                                      .where(
+                                        (element) => element.hash == track.hash,
+                                      )
+                                      .isNotEmpty) {
+                                    widget.playlist.tracks.removeWhere(
+                                      (element) => element.hash == track.hash,
+                                    );
+                                  }
+                                });
+                                if (context.display.isDesktop) {
+                                  return;
+                                }
+                                Navigator.pop(context);
+                              },
+                              title:
+                                  Text(context.localization.removeFromPlaylist),
+                              leading: Icon(
+                                Icons.delete_rounded,
+                                color: context
+                                    .themeData.buttonTheme.colorScheme?.primary,
+                              ),
+                            ),
+                        ];
+                      },
+                    );
+                  });
+                }),
+              ),
+              PlayerSizedBox(
+                playerController: widget.playerController,
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
