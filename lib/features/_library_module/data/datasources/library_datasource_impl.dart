@@ -167,8 +167,9 @@ class LibraryDatasourceImpl extends BaseDatasource
   Future<LibraryItemEntity?> getLibraryItem(String itemId) async {
     try {
       if (UserService.loggedIn) {
-        final response =
-            await _httpAdapter.get('/library/get_library_item/$itemId');
+        final response = await _httpAdapter.get(
+          '/library/get_library_item/$itemId',
+        );
         final libraryItem = LibraryItemModel.fromMap(response.data);
         if (libraryItem.playlist != null) {
           final tracks = libraryItem.playlist!.tracks;
