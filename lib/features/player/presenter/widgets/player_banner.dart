@@ -155,14 +155,25 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                     builder: (context) {
                                       if (widget.track.highResImg != null &&
                                           widget.track.highResImg!.isNotEmpty) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          child: AppImage(
-                                            height: 350,
-                                            width: 350,
-                                            widget.track.highResImg!,
-                                            fit: BoxFit.cover,
+                                        return Card(
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color: context
+                                                  .themeData.dividerColor
+                                                  .withOpacity(.2),
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            child: AppImage(
+                                              height: 350,
+                                              width: 350,
+                                              widget.track.highResImg!,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         );
                                       }
