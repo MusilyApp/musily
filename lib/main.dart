@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/core/data/database/database.dart';
 import 'package:musily/core/data/repositories/musily_repository_impl.dart';
+import 'package:musily/core/data/services/library_migration.dart';
 import 'package:musily/features/player/data/services/musily_service.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/widgets/app_material.dart';
@@ -15,8 +16,10 @@ void main() async {
   await Database().init();
 
   final userService = UserService();
+  final libraryMigrationService = LibraryMigrationService();
   final musilyRepository = MusilyRepositoryImpl();
 
+  await libraryMigrationService.migrateLibrary();
   await musilyRepository.initialize();
   await userService.initialize();
 
