@@ -75,11 +75,9 @@ class PlaylistAdderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LyPage(
-      ignoreFromStack: context.display.isDesktop,
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.localization.addToPlaylist),
-          automaticallyImplyLeading: !context.display.isDesktop,
         ),
         floatingActionButton: PlaylistCreator(
           libraryController,

@@ -4,7 +4,7 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class PlaylistEntity implements Identifiable {
   @override
-  final String id;
+  String id;
   String title;
   int trackCount;
   SimplifiedArtist? artist;
