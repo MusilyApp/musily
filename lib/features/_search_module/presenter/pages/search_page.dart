@@ -60,18 +60,36 @@ class _SearchPageState extends State<SearchPage> {
   List<String> searchSuggestions = [];
   Timer? debounce;
 
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    debounce?.cancel();
+    super.dispose();
+  }
+
   getSearchSuggestions() async {
-    if (searchSuggestions.isEmpty) {
-      setState(() {
-        searchSuggestions = [];
-        return;
-      });
-    }
     final suggestions = await widget.getSearchSuggestionsUsecase.exec(
       searchTextController.text,
     );
     setState(() {
       searchSuggestions = searchTextController.text.isEmpty ? [] : suggestions;
+    });
+  }
+
+  onSearchTextChanged(String value) {
+    if (value.isEmpty) {
+      setState(() {
+        searchSuggestions = [];
+      });
+      return;
+    }
+
+    if (debounce?.isActive ?? false) {
+      debounce!.cancel();
+      return;
+    }
+    debounce = Timer(const Duration(milliseconds: 300), () {
+      getSearchSuggestions();
     });
   }
 
@@ -134,15 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                         autocorrect: false,
                         controller: searchTextController,
                         focusNode: searchFocusNode,
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            setState(() {
-                              searchSuggestions = [];
-                            });
-                            return;
-                          }
-                          getSearchSuggestions();
-                        },
+                        onChanged: onSearchTextChanged,
                         onSubmitted: submitSearch,
                         autofocus: true,
                         prefixIcon: const Icon(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:musily/features/_library_module/data/dtos/create_playlist_dto.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
@@ -28,23 +29,33 @@ class LibraryToggler extends StatefulWidget {
 }
 
 class _LibraryTogglerState extends State<LibraryToggler> {
-  bool loading = false;
+  Timer? _debounceTimer;
+
+  Future<void> _debounceAction(Future<void> Function() action) async {
+    if (_debounceTimer?.isActive ?? false) {
+      _debounceTimer?.cancel();
+      return;
+    }
+
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {});
+
+    await action();
+  }
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return widget.libraryController.builder(
       builder: (context, data) {
-        if (data.items
-            .where((element) => element.id == widget.item.id)
-            .isNotEmpty) {
+        if (data.items.any((element) => element.id == widget.item.id)) {
           return widget.inLibraryWidget(
             context,
-            () async {
+            () => _debounceAction(() async {
               if (widget.item.playlist != null) {
                 await widget.libraryController.methods
                     .removePlaylistFromLibrary(
@@ -61,12 +72,12 @@ class _LibraryTogglerState extends State<LibraryToggler> {
                   widget.item.id,
                 );
               }
-            },
+            }),
           );
         }
         return widget.notInLibraryWidget(
           context,
-          () async {
+          () => _debounceAction(() async {
             if (widget.item.playlist != null) {
               await widget.libraryController.methods.createPlaylist(
                 CreatePlaylistDTO(
@@ -84,7 +95,7 @@ class _LibraryTogglerState extends State<LibraryToggler> {
                 widget.item.artist!,
               );
             }
-          },
+          }),
         );
       },
     );
