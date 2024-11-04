@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
@@ -31,7 +32,7 @@ class LibraryWrapper extends StatelessWidget {
                     icon: const Icon(Icons.cloud_upload_rounded),
                   );
                 }
-                if (synced) {
+                if (synced || !UserService.loggedIn) {
                   return const SizedBox.shrink();
                 }
                 return LyTonalIconButton(

@@ -1,29 +1,26 @@
-import 'package:musily/core/domain/errors/musily_error.dart';
-import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
-import 'package:musily/features/_library_module/domain/mappers/library_item_mapper.dart';
+import 'package:musily/features/_library_module/domain/entities/legacy_library_item_entity.dart';
+import 'package:musily/features/_library_module/domain/mappers/legacy_library_item_mapper.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/playlist/data/models/playlist_model.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/track/data/models/track_model.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
-class PlaylistMapper implements LibraryItemMapper<PlaylistEntity> {
+class PlaylistMapper implements LegacyLibraryItemMapper<PlaylistEntity> {
   @override
-  LibraryItemEntity fromMap(
+  LegacyLibraryItemEntity<PlaylistEntity> fromMap(
     Map<String, dynamic> map, {
     bool full = false,
   }) {
-    final trackCount = (map['playlist']['trackCount'] ?? 0);
-    return LibraryItemEntity(
-      id: map['playlist']['id'],
-      synced: false,
+    final trackCount = ((map['value']['tracks'] ?? []) as List).length;
+    return LegacyLibraryItemEntity(
+      id: map['id'],
       lastTimePlayed:
           DateTime.tryParse(map['lastTimePlayed']) ?? DateTime.now(),
-      playlist: PlaylistModel.fromMap(
-        map['playlist']..['tracks'] = full ? map['playlist']['tracks'] : [],
+      value: PlaylistModel.fromMap(
+        map['value'],
         trackCount: trackCount,
       ),
-      createdAt: DateTime.tryParse(map['createdAt']) ?? DateTime.now(),
     );
   }
 
@@ -38,27 +35,22 @@ class PlaylistMapper implements LibraryItemMapper<PlaylistEntity> {
   }
 
   @override
-  Future<LibraryItemEntity> toOffline(
-    LibraryItemEntity item,
+  Future<LegacyLibraryItemEntity<PlaylistEntity>> toOffline(
+    LegacyLibraryItemEntity item,
     DownloaderController downloaderController,
   ) async {
-    if (item.playlist == null) {
-      throw MusilyError(code: 500, id: 'playlist_not_found');
-    }
     final offlineTracks = <TrackEntity>[];
-    for (final track in item.playlist!.tracks) {
+    for (final track in item.value.tracks) {
       final offlineTrack = await TrackModel.toOffline(
         track,
         downloaderController,
       );
       offlineTracks.add(offlineTrack);
     }
-    return LibraryItemEntity(
+    return LegacyLibraryItemEntity(
       id: item.id,
       lastTimePlayed: item.lastTimePlayed,
-      synced: false,
-      playlist: item.playlist!..tracks = offlineTracks,
-      createdAt: item.createdAt,
+      value: item.value..tracks = offlineTracks,
     );
   }
 }

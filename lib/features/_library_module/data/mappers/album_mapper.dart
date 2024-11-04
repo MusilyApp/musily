@@ -15,7 +15,7 @@ class AlbumMapper implements LegacyLibraryItemMapper<AlbumEntity> {
       lastTimePlayed:
           DateTime.tryParse(map['lastTimePlayed']) ?? DateTime.now(),
       value: AlbumModel.fromMap(
-        (map['value'])..['tracks'] = full ? map['value']['tracks'] : [],
+        map['value'],
       ),
     );
   }
