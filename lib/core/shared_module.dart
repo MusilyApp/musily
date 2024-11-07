@@ -16,6 +16,7 @@ import 'package:musily/features/_library_module/data/usecases/get_library_items_
 import 'package:musily/features/_library_module/data/usecases/remove_album_from_library_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/remove_artist_from_library_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/remove_tracks_from_playlist_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/update_library_item_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/update_playlist_usecase_impl.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/data/datasources/search_datasource_impl.dart';
@@ -189,23 +190,30 @@ class SharedModule extends Module {
       ),
     );
     i.addLazySingleton(
+      () => UpdateLibraryItemUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
       () => LibraryController(
-          getLibraryUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
-          getLibraryItemUsecase: i.get<GetLibraryItemUsecaseImpl>(),
-          downloaderController: i.get<DownloaderController>(),
-          playerController: i.get<PlayerController>(),
-          updatePlaylistUsecase: i.get<UpdatePlaylistUsecaseImpl>(),
-          addTracksToPlaylistUsecase: i.get<AddTracksToPlaylistUsecaseImpl>(),
-          createPlaylistUsecase: i.get<CreatePlaylistUsecaseImpl>(),
-          removeTracksFromPlaylistUsecase:
-              i.get<RemoveTracksFromPlaylistUsecaseImpl>(),
-          addArtistToLibraryUsecase: i.get<AddArtistToLibraryUsecaseImpl>(),
-          removeArtistFromLibraryUsecase:
-              i.get<RemoveArtistFromLibraryUsecaseImpl>(),
-          addAlbumToLibraryUsecase: i.get<AddAlbumToLibraryUsecaseImpl>(),
-          removeAlbumFromLibraryUsecase:
-              i.get<RemoveAlbumFromLibraryUsecaseImpl>(),
-          deletePlaylistUsecase: i.get<DeletePlaylistUsecaseImpl>()),
+        getLibraryUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
+        getLibraryItemUsecase: i.get<GetLibraryItemUsecaseImpl>(),
+        downloaderController: i.get<DownloaderController>(),
+        playerController: i.get<PlayerController>(),
+        updatePlaylistUsecase: i.get<UpdatePlaylistUsecaseImpl>(),
+        addTracksToPlaylistUsecase: i.get<AddTracksToPlaylistUsecaseImpl>(),
+        createPlaylistUsecase: i.get<CreatePlaylistUsecaseImpl>(),
+        removeTracksFromPlaylistUsecase:
+            i.get<RemoveTracksFromPlaylistUsecaseImpl>(),
+        addArtistToLibraryUsecase: i.get<AddArtistToLibraryUsecaseImpl>(),
+        removeArtistFromLibraryUsecase:
+            i.get<RemoveArtistFromLibraryUsecaseImpl>(),
+        addAlbumToLibraryUsecase: i.get<AddAlbumToLibraryUsecaseImpl>(),
+        removeAlbumFromLibraryUsecase:
+            i.get<RemoveAlbumFromLibraryUsecaseImpl>(),
+        deletePlaylistUsecase: i.get<DeletePlaylistUsecaseImpl>(),
+        updateLibraryItemUsecase: i.get<UpdateLibraryItemUsecaseImpl>(),
+      ),
     );
 
     // Downloader dependencies
