@@ -1,5 +1,4 @@
 import 'package:musily/core/presenter/extensions/string.dart';
-import 'package:musily/core/domain/errors/musily_error.dart';
 import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
@@ -21,15 +20,9 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
 
     late final String url;
     if (youtubeId != null) {
-      ytId = track.id;
+      ytId = youtubeId;
     } else {
-      final searchResults = await _musilyRepository.searchTracks(
-        '${track.title} ${track.artist.name}',
-      );
-      if (searchResults.isEmpty) {
-        throw MusilyError(code: 404, id: 'track_not_found');
-      }
-      ytId = searchResults.first.id.toString();
+      ytId = track.id;
     }
 
     final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId));
