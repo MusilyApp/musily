@@ -220,8 +220,8 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                                       },
                                       icon: Icon(
                                         data.isPlaying
-                                            ? Icons.pause
-                                            : Icons.play_arrow,
+                                            ? Icons.pause_rounded
+                                            : Icons.play_arrow_rounded,
                                         size: 30,
                                       ),
                                     );
