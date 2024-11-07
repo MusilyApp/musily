@@ -37,9 +37,9 @@ class _LibraryTogglerState extends State<LibraryToggler> {
       return;
     }
 
-    _debounceTimer = Timer(const Duration(milliseconds: 300), () {});
-
-    await action();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
+      await action();
+    });
   }
 
   @override

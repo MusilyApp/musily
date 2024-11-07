@@ -86,7 +86,6 @@ class _SearchPageState extends State<SearchPage> {
 
     if (debounce?.isActive ?? false) {
       debounce!.cancel();
-      return;
     }
     debounce = Timer(const Duration(milliseconds: 300), () {
       getSearchSuggestions();
