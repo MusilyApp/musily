@@ -14,6 +14,7 @@ import 'package:musily/features/_library_module/domain/usecases/get_library_item
 import 'package:musily/features/_library_module/domain/usecases/remove_album_from_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/remove_artist_from_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/remove_tracks_from_playlist_usecase.dart';
+import 'package:musily/features/_library_module/domain/usecases/update_library_item_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/update_playlist_usecase.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_data.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_methods.dart';
@@ -37,6 +38,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   late final AddAlbumToLibraryUsecase _addAlbumToLibraryUsecase;
   late final RemoveAlbumFromLibraryUsecase _removeAlbumFromLibraryUsecase;
   late final DeletePlaylistUsecase _deletePlaylistUsecase;
+  late final UpdateLibraryItemUsecase _updateLibraryItemUsecase;
 
   LibraryController({
     required GetLibraryItemsUsecase getLibraryUsecase,
@@ -52,6 +54,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     required AddAlbumToLibraryUsecase addAlbumToLibraryUsecase,
     required RemoveAlbumFromLibraryUsecase removeAlbumFromLibraryUsecase,
     required DeletePlaylistUsecase deletePlaylistUsecase,
+    required UpdateLibraryItemUsecase updateLibraryItemUsecase,
   }) {
     _getLibraryItemsUsecase = getLibraryUsecase;
     _getLibraryItemUsecase = getLibraryItemUsecase;
@@ -66,6 +69,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     _addAlbumToLibraryUsecase = addAlbumToLibraryUsecase;
     _removeAlbumFromLibraryUsecase = removeAlbumFromLibraryUsecase;
     _deletePlaylistUsecase = deletePlaylistUsecase;
+    _updateLibraryItemUsecase = updateLibraryItemUsecase;
 
     methods.getLibraryItems();
     if (data.loadedFavoritesHash.isEmpty) {
@@ -598,7 +602,29 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
           ),
         );
       },
-      updateLastTimePlayed: (id) async {},
+      updateLastTimePlayed: (id) async {
+        final index = data.items.indexWhere(
+          (e) => e.id == id || e.album?.id == id || e.artist?.id == id,
+        );
+        final lastTimePlayed =
+            data.items.elementAtOrNull(index)?.lastTimePlayed;
+        try {
+          if (index > 0) {
+            final item = data.items[index];
+            item.lastTimePlayed = DateTime.now();
+            updateData(data);
+            await queue.add(() async {
+              await _updateLibraryItemUsecase.exec(item);
+            });
+          }
+        } catch (e) {
+          if (lastTimePlayed != null) {
+            data.items[index].lastTimePlayed = lastTimePlayed;
+            updateData(data);
+          }
+          catchError(e);
+        }
+      },
 
       // Download
       downloadCollection: (tracks, downloadingId) async {

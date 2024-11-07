@@ -9,6 +9,7 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 abstract class LibraryRepository {
   Future<List<LibraryItemEntity>> getLibraryItems();
   Future<LibraryItemEntity?> getLibraryItem(String itemId);
+  Future<LibraryItemEntity> updateLibraryItem(LibraryItemEntity item);
 
   // Playlist
   Future<PlaylistEntity> createPlaylist(CreatePlaylistDTO data);

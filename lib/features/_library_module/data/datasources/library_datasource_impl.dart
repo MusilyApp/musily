@@ -303,4 +303,20 @@ class LibraryDatasourceImpl extends BaseDatasource
       return null;
     });
   }
+
+  @override
+  Future<LibraryItemEntity> updateLibraryItem(LibraryItemEntity item) {
+    return exec(() async {
+      final libraryItemMap = LibraryItemModel.toMap(item);
+      libraryItemMap['playlist']?['tracks'] = [];
+      if (UserService.loggedIn) {
+        await _httpAdapter.patch(
+          '/library/update_library_item',
+          data: libraryItemMap,
+        );
+      }
+      await _modelAdapter.put(libraryItemMap);
+      return item;
+    });
+  }
 }

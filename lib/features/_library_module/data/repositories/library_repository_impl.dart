@@ -74,4 +74,9 @@ class LibraryRepositoryImpl implements LibraryRepository {
   Future<PlaylistEntity?> updatePlaylist(UpdatePlaylistDto data) {
     return _libraryDatasource.updatePlaylist(data);
   }
+
+  @override
+  Future<LibraryItemEntity> updateLibraryItem(LibraryItemEntity item) {
+    return _libraryDatasource.updateLibraryItem(item);
+  }
 }
