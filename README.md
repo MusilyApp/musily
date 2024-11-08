@@ -1,4 +1,6 @@
-<img src="assets/icons/ic_launcher_round.png" alt="Descrição da imagem" width="80">
+<div align="center">
+  <img src="assets/icons/ic_launcher_round.png" alt="Descrição da imagem" width="100px">
+</div>
 
 # Musily: A great music app.
 
@@ -81,8 +83,18 @@ flutter pub get
 
 3. **Run the app:**
 
+To run Musily with a specific flavor, use the following commands:
+
+- **Stable flavor:**
+
 ```shell
-flutte run
+flutter run --flavor stable
+```
+
+- **Dev Flavor**
+
+```shell
+flutter run --flavor dev
 ```
 
 ### Contributions
