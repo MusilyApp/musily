@@ -113,7 +113,7 @@ class SectionsPage extends StatelessWidget {
                   builder: (context, data) {
                     if (data.loading) {
                       final loadingPlaceholderItems = List.filled(
-                        4,
+                        context.display.isDesktop ? 6 : 4,
                         LibraryTile(
                           item: LibraryItemEntity(
                             id: 'id',
@@ -149,7 +149,7 @@ class SectionsPage extends StatelessWidget {
                         ),
                         child: Skeletonizer(
                           child: AppFlex(
-                            maxItemsPerRow: 2,
+                            maxItemsPerRow: context.display.isDesktop ? 3 : 2,
                             children: loadingPlaceholderItems,
                           ),
                         ),
@@ -215,13 +215,7 @@ class SectionsPage extends StatelessWidget {
                             final limit = context.display.isDesktop ? 6 : 4;
                             final items = data.items.length < limit
                                 ? data.items
-                                : (data.items
-                                      ..sort(
-                                        (a, b) => b.lastTimePlayed.compareTo(
-                                          a.lastTimePlayed,
-                                        ),
-                                      ))
-                                    .sublist(0, limit);
+                                : data.items.sublist(0, limit);
                             return AppFlex(
                               maxItemsPerRow: context.display.isDesktop ? 3 : 2,
                               children: [
