@@ -2,7 +2,7 @@
 name: musily
 description: "A great music app."
 publish_to: "none" # Set to 'none' to prevent publishing to pub.dev
-version: 2.1.2
+version: 3.0.0
 
 # Flutter SDK Environment
 environment:
@@ -98,15 +98,7 @@ flutter_native_splash:
   color_dark: "#151218"
   image_dark: assets/icons/ic_launcher_splash_dark.png
   android_12:
-    image: assets/icons/ic_launcher_splash.png
+    image: assets/icons/ic_launcher_foreground.png
     icon_background_color: "#ffffff"
-    image_dark: assets/icons/ic_launcher_splash_dark.png
+    image_dark: assets/icons/ic_launcher_foreground_dev.png
     icon_background_color_dark: "#151218"
-
-# Launcher Icon Configuration
-flutter_launcher_icons:
-  android: "launcher_icon"
-  adaptive_icon_background: "#e8def7"
-  adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
-  adaptive_icon_round: "assets/icons/ic_launcher_round.png"
-  image_path: "assets/icons/ic_launcher.png"
