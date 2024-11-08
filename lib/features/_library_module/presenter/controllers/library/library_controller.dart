@@ -612,6 +612,11 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
           if (index > 0) {
             final item = data.items[index];
             item.lastTimePlayed = DateTime.now();
+            data.items.sort(
+              (a, b) => b.lastTimePlayed.compareTo(
+                a.lastTimePlayed,
+              ),
+            );
             updateData(data);
             await queue.add(() async {
               await _updateLibraryItemUsecase.exec(item);
@@ -620,7 +625,11 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         } catch (e) {
           if (lastTimePlayed != null) {
             data.items[index].lastTimePlayed = lastTimePlayed;
-            updateData(data);
+            data.items.sort(
+              (a, b) => b.lastTimePlayed.compareTo(
+                a.lastTimePlayed,
+              ),
+            );
           }
           catchError(e);
         }
