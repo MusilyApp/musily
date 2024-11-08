@@ -68,7 +68,6 @@ pubspec.lock
 
 # IDE
 .idea
-.vscode
 
 # Project related
 .oldfiles
