@@ -49,21 +49,37 @@ Make sure you have the correct Flutter version and system dependencies installed
 
 ### Linux Support
 
-Musily supports Linux-based distributions with the following requirements:
+Musily is compatible with most Linux-based distributions. To ensure the app functions properly, please install the following required dependencies.
 
-**Dependencies**:  
-To run Musily on Linux, you'll need the following libraries installed:
+**Required Dependencies**:
+
+The following libraries must be installed to run Musily on Linux:
 
 - **libmpv**: For audio playback using MPV media player.
 - **libsecret**: For secure storage of user credentials and sensitive information.
+- **libjsoncpp**: Required for JSON handling, as a dependency of Flutter Secure Storage.
 
 #### Install Dependencies on Ubuntu/Debian-based Systems
+
+To install these dependencies on Ubuntu or Debian-based systems, use
 
 ```bash
 sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev
 ```
 
-For other Linux distributions, please use the respective package managers (e.g., dnf for Fedora-based systems).
+### Installation on Other Linux Distributions
+
+- **Fedora/RHEL**:
+
+```bash
+sudo dnf install mpv-devel libsecret-devel jsoncpp-devel
+```
+
+- **Arch/Manjaro**:
+
+```bash
+sudo pacman -S mpv libsecret jsoncpp
+```
 
 ---
 
@@ -117,4 +133,4 @@ Musily is open-source and licensed under the GNU GENERAL PUBLIC LICENSE. You can
 
 ### Contact
 
-For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker).
+For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker) or [E-mail](mailto:contact@musily.com).
