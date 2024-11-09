@@ -15,6 +15,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
+import 'package:musily/features/playlist/domain/enums/playlist_origin.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 
@@ -56,6 +57,7 @@ class SquarePlaylistTile extends StatelessWidget {
           context.showingPageContext,
           playlist.tracks.isEmpty
               ? AsyncPlaylistPage(
+                  origin: PlaylistOrigin.dataFetch,
                   playlistId: playlist.id,
                   coreController: coreController,
                   playerController: playerController,

@@ -9,6 +9,7 @@ import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/playlist/domain/enums/playlist_origin.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_creator.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_tile.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -171,6 +172,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                                 widget.getArtistUsecase,
                                           )
                                         : AsyncPlaylistPage(
+                                            origin: PlaylistOrigin.library,
                                             playlistId: favoritesPlaylist.id,
                                             coreController:
                                                 widget.coreController,
@@ -248,6 +250,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                                 widget.getArtistUsecase,
                                           )
                                         : AsyncPlaylistPage(
+                                            origin: PlaylistOrigin.library,
                                             playlistId: offlinePlaylist.id,
                                             coreController:
                                                 widget.coreController,

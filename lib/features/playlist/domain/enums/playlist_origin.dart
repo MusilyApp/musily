@@ -1,0 +1,4 @@
+enum PlaylistOrigin {
+  library,
+  dataFetch,
+}
