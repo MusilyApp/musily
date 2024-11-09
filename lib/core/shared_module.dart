@@ -360,11 +360,7 @@ class SharedModule extends Module {
     // Settings dependencies
     i.addLazySingleton<SettingsController>(
       () => SettingsController(
-        onThemeModeUpdated: (themeMode) {
-          final playerController = i.get<PlayerController>();
-          playerController.data.themeMode = themeMode;
-          playerController.updateData(playerController.data);
-        },
+        httpAdapter: i.get<HttpAdapterImpl>(),
       ),
       config: BindConfig(
         onDispose: (value) => value.dispose(),

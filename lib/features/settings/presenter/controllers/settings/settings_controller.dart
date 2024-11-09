@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_methods.dart';
@@ -6,14 +7,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class SettingsController extends BaseController<SettingsData, SettingsMethods> {
-  final void Function(ThemeMode? themeMode)? onThemeModeUpdated;
-
   SettingsController({
-    this.onThemeModeUpdated,
+    required HttpAdapter httpAdapter,
   }) {
     methods.loadLanguage();
     methods.loadThemeMode();
+    showSyncSection = httpAdapter.baseUrl.isNotEmpty;
   }
+
+  bool showSyncSection = false;
+
   @override
   SettingsData defineData() {
     return SettingsData();
@@ -28,7 +31,6 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         data.themeMode = ThemeMode.values.byName(
           savedThemeMode ?? 'system',
         );
-        onThemeModeUpdated?.call(data.themeMode);
       },
       changeLanguage: (locale) async {
         if (locale == null) {
@@ -47,7 +49,6 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
           'themeMode',
           mode?.name ?? 'system',
         );
-        onThemeModeUpdated?.call(data.themeMode);
       },
       loadLanguage: () async {
         final prefs = await SharedPreferences.getInstance();

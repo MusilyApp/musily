@@ -30,10 +30,11 @@ class SettingsPage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            SyncSection(
-              coreController: coreController,
-              authController: authController,
-            ),
+            if (settingsController.showSyncSection)
+              SyncSection(
+                coreController: coreController,
+                authController: authController,
+              ),
             AppSection(
               controller: settingsController,
             ),
