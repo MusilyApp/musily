@@ -83,7 +83,7 @@ flutter pub get
 
 3. **Run the app:**
 
-To run Musily with a specific flavor, use the following commands:
+To run Musily with a specific flavor on **Android**, use the following commands:
 
 - **Stable flavor:**
 
@@ -95,6 +95,12 @@ flutter run --flavor stable
 
 ```shell
 flutter run --flavor dev
+```
+
+For other platforms, simply use:
+
+```shell
+flutter run
 ```
 
 ### Contributions
