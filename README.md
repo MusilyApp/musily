@@ -133,4 +133,4 @@ Musily is open-source and licensed under the GNU GENERAL PUBLIC LICENSE. You can
 
 ### Contact
 
-For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker) or [E-mail](mailto:contact@musily.com).
+For any questions or suggestions, please contact via [Telegram](https://t.me/FelipeYslaoker) or [E-mail](mailto:contact@musily.app).
