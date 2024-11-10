@@ -1,4 +1,5 @@
 import 'package:musily/core/data/database/user_tracks_db.dart';
+import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/adapters/database_adapter.dart';
 import 'package:musily/core/domain/adapters/http_adapter.dart';
@@ -24,6 +25,7 @@ class LibraryDatasourceImpl extends BaseDatasource
   late final HttpAdapter _httpAdapter;
 
   final userTracksDB = UserTracksDB();
+  final musilyRepository = MusilyRepositoryImpl();
 
   LibraryDatasourceImpl({
     required HttpAdapter httpAdapter,
@@ -175,6 +177,12 @@ class LibraryDatasourceImpl extends BaseDatasource
           final tracks = libraryItem.playlist!.tracks;
           response.data['playlist']['tracks'] = [];
           await userTracksDB.addTracksToPlaylist(itemId, tracks);
+        }
+        if (libraryItem.artist != null) {
+          final artist = await musilyRepository.getArtist(libraryItem.id);
+          response.data['artist'] = ArtistModel.toMap(
+            artist ?? libraryItem.artist!,
+          );
         }
         await _modelAdapter.put(response.data);
         return libraryItem;

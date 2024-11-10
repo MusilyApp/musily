@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
@@ -17,7 +18,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
-class ArtistTile extends StatelessWidget {
+class ArtistTile extends StatefulWidget {
   final ArtistEntity artist;
   final GetAlbumUsecase getAlbumUsecase;
   final CoreController coreController;
@@ -29,6 +30,7 @@ class ArtistTile extends StatelessWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final ContentOrigin contentOrigin;
 
   const ArtistTile({
     super.key,
@@ -43,46 +45,60 @@ class ArtistTile extends StatelessWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.contentOrigin,
   });
+
+  @override
+  State<ArtistTile> createState() => _ArtistTileState();
+}
+
+class _ArtistTileState extends State<ArtistTile> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.contentOrigin == ContentOrigin.library) {
+      widget.libraryController.methods.getLibraryItem(widget.artist.id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return LibraryWrapper(
-      libraryController: libraryController,
-      libraryItem: libraryController.data.items
+      libraryController: widget.libraryController,
+      libraryItem: widget.libraryController.data.items
           .where(
-            (e) => e.id == artist.id,
+            (e) => e.id == widget.artist.id,
           )
           .firstOrNull,
       child: LyListTile(
         onTap: () => LyNavigator.push(
           context.showingPageContext,
-          artist.topTracks.isEmpty
+          widget.artist.topTracks.isEmpty
               ? AsyncArtistPage(
-                  artistId: artist.id,
-                  coreController: coreController,
-                  playerController: playerController,
-                  downloaderController: downloaderController,
-                  getPlayableItemUsecase: getPlayableItemUsecase,
-                  libraryController: libraryController,
-                  getAlbumUsecase: getAlbumUsecase,
-                  getArtistUsecase: getArtistUsecase,
-                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                  getArtistTracksUsecase: getArtistTracksUsecase,
-                  getArtistSinglesUsecase: getArtistSinglesUsecase,
+                  artistId: widget.artist.id,
+                  coreController: widget.coreController,
+                  playerController: widget.playerController,
+                  downloaderController: widget.downloaderController,
+                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                  libraryController: widget.libraryController,
+                  getAlbumUsecase: widget.getAlbumUsecase,
+                  getArtistUsecase: widget.getArtistUsecase,
+                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                 )
               : ArtistPage(
-                  getAlbumUsecase: getAlbumUsecase,
-                  artist: artist,
-                  coreController: coreController,
-                  playerController: playerController,
-                  downloaderController: downloaderController,
-                  getPlayableItemUsecase: getPlayableItemUsecase,
-                  libraryController: libraryController,
-                  getArtistUsecase: getArtistUsecase,
-                  getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                  getArtistTracksUsecase: getArtistTracksUsecase,
-                  getArtistSinglesUsecase: getArtistSinglesUsecase,
+                  getAlbumUsecase: widget.getAlbumUsecase,
+                  artist: widget.artist,
+                  coreController: widget.coreController,
+                  playerController: widget.playerController,
+                  downloaderController: widget.downloaderController,
+                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                  libraryController: widget.libraryController,
+                  getArtistUsecase: widget.getArtistUsecase,
+                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                 ),
         ),
         subtitle: Text(
@@ -98,11 +114,11 @@ class ArtistTile extends StatelessWidget {
           ),
           child: Builder(
             builder: (context) {
-              if (artist.lowResImg != null) {
+              if (widget.artist.lowResImg != null) {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(360),
                   child: AppImage(
-                    artist.lowResImg!,
+                    widget.artist.lowResImg!,
                     width: 40,
                     height: 40,
                   ),
@@ -117,7 +133,7 @@ class ArtistTile extends StatelessWidget {
             },
           ),
         ),
-        title: Text(artist.name),
+        title: Text(widget.artist.name),
       ),
     );
   }

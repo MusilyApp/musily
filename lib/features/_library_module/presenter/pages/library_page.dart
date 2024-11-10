@@ -6,6 +6,7 @@ import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
+import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
@@ -113,362 +114,404 @@ class _LibraryPageState extends State<LibraryPage> {
                   backgroundColor: context.themeData.scaffoldBackgroundColor,
                   surfaceTintColor: context.themeData.scaffoldBackgroundColor,
                   actions: [
-                    PlaylistCreator(
-                      widget.libraryController,
-                      coreController: widget.coreController,
-                      builder: (context, showCreator) => IconButton(
-                        onPressed: showCreator,
-                        icon: const Icon(
-                          Icons.add,
+                    if (!data.loading)
+                      PlaylistCreator(
+                        widget.libraryController,
+                        coreController: widget.coreController,
+                        builder: (context, showCreator) => IconButton(
+                          onPressed: showCreator,
+                          icon: const Icon(
+                            Icons.add,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
                 body: RefreshIndicator(
                   onRefresh: () {
                     return widget.libraryController.methods.getLibraryItems();
                   },
-                  child: Column(
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          bool showOffline =
-                              offlinePlaylist.playlist!.trackCount > 0;
-                          final favoritesPlaylistFiltered = data.items.where(
-                              (item) => item.id == UserService.favoritesId);
-                          final favoritesPlaylist =
-                              (favoritesPlaylistFiltered.lastOrNull);
-                          return Column(
-                            children: [
-                              if (favoritesPlaylist != null)
-                                LyListTile(
-                                  onTap: () => LyNavigator.push(
-                                    context.showingPageContext,
-                                    favoritesPlaylist
-                                            .playlist!.tracks.isNotEmpty
-                                        ? PlaylistPage(
-                                            playlist:
-                                                favoritesPlaylist.playlist!,
-                                            playerController:
-                                                widget.playerController,
-                                            coreController:
-                                                widget.coreController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                          )
-                                        : AsyncPlaylistPage(
-                                            origin: ContentOrigin.library,
-                                            playlistId: favoritesPlaylist.id,
-                                            coreController:
-                                                widget.coreController,
-                                            playerController:
-                                                widget.playerController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                          ),
-                                  ),
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: const FavoriteIcon(
-                                      size: 50,
+                  child: Builder(builder: (context) {
+                    if (data.loading) {
+                      return ListView(
+                        children: [
+                          ...List<Widget>.generate(
+                            15,
+                            (index) => Skeletonizer(
+                              child: LyListTile(
+                                leading: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      360,
+                                    ),
+                                    side: BorderSide(
+                                      strokeAlign: 1,
+                                      color: context.themeData.dividerColor
+                                          .withOpacity(.1),
                                     ),
                                   ),
-                                  title: Text(
-                                    context.localization.favorites,
-                                  ),
-                                  subtitle: Builder(
-                                    builder: (context) {
-                                      if (data
-                                          .itemsAddingToFavorites.isNotEmpty) {
-                                        return Skeletonizer(
-                                          child: Text(
-                                            '${favoritesPlaylist.playlist!.trackCount} ${context.localization.songs}',
-                                          ),
-                                        );
-                                      }
-                                      return Text(
-                                        '${favoritesPlaylist.playlist!.trackCount} ${context.localization.songs}',
-                                      );
-                                    },
+                                  child: const SizedBox(
+                                    width: 40,
+                                    height: 40,
                                   ),
                                 ),
-                              if (showOffline)
-                                LyListTile(
-                                  onTap: () => LyNavigator.push(
-                                    context.showingPageContext,
-                                    offlinePlaylist.playlist!.tracks.isNotEmpty
-                                        ? PlaylistPage(
-                                            playlist: offlinePlaylist.playlist!,
-                                            playerController:
-                                                widget.playerController,
-                                            coreController:
-                                                widget.coreController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                          )
-                                        : AsyncPlaylistPage(
-                                            origin: ContentOrigin.library,
-                                            playlistId: offlinePlaylist.id,
-                                            coreController:
-                                                widget.coreController,
-                                            playerController:
-                                                widget.playerController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                          ),
-                                  ),
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: const OfflineIcon(
-                                      size: 50,
-                                    ),
-                                  ),
-                                  title: Text(
-                                    context.localization.offline,
-                                  ),
-                                  subtitle: Text(
-                                    '${offlinePlaylist.playlist!.trackCount} ${context.localization.songs}',
-                                  ),
-                                ),
-                              const Divider(),
-                              SegmentedButton(
-                                emptySelectionAllowed: true,
-                                segments: const [
-                                  ButtonSegment(
-                                    value: 'album',
-                                    label: Icon(
-                                      Icons.album_rounded,
-                                    ),
-                                    icon: Icon(
-                                      Icons.filter_alt_rounded,
-                                    ),
-                                  ),
-                                  ButtonSegment(
-                                    value: 'artist',
-                                    label: Icon(
-                                      Icons.person_rounded,
-                                    ),
-                                    icon: Icon(
-                                      Icons.filter_alt_rounded,
-                                    ),
-                                  ),
-                                  ButtonSegment(
-                                    value: 'playlist',
-                                    label: Icon(
-                                      Icons.playlist_play_rounded,
-                                    ),
-                                    icon: Icon(
-                                      Icons.filter_alt_rounded,
-                                    ),
-                                  ),
-                                ],
-                                selected: filters,
-                                onSelectionChanged: (value) {
-                                  setState(() {
-                                    filters = value;
-                                  });
-                                },
-                                multiSelectionEnabled: true,
+                                title: Text(generatePlaceholderString()),
+                                subtitle: Text(generatePlaceholderString()),
                               ),
-                              const Divider(),
-                              // const SizedBox(
-                              //   height: 12,
-                              // ),
-                            ],
-                          );
-                        },
-                      ),
-                      if (itemList
-                          .where(
-                            (item) => !([UserService.favoritesId, 'offline']
-                                .contains(item.id)),
-                          )
-                          .isEmpty)
-                        widget.playerController.builder(
-                          builder: (context, data) {
-                            return Expanded(
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.library_music_rounded,
-                                      size: 70,
-                                      color: context
-                                          .themeData.colorScheme.outline
-                                          .withOpacity(.9),
+                            ),
+                          ),
+                          PlayerSizedBox(
+                            playerController: widget.playerController,
+                          ),
+                        ],
+                      );
+                    }
+                    return Column(
+                      children: [
+                        Builder(
+                          builder: (context) {
+                            bool showOffline =
+                                offlinePlaylist.playlist!.trackCount > 0;
+                            final favoritesPlaylistFiltered = data.items.where(
+                                (item) => item.id == UserService.favoritesId);
+                            final favoritesPlaylist =
+                                (favoritesPlaylistFiltered.lastOrNull);
+                            return Column(
+                              children: [
+                                if (favoritesPlaylist != null)
+                                  LyListTile(
+                                    onTap: () => LyNavigator.push(
+                                      context.showingPageContext,
+                                      favoritesPlaylist
+                                              .playlist!.tracks.isNotEmpty
+                                          ? PlaylistPage(
+                                              playlist:
+                                                  favoritesPlaylist.playlist!,
+                                              playerController:
+                                                  widget.playerController,
+                                              coreController:
+                                                  widget.coreController,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                            )
+                                          : AsyncPlaylistPage(
+                                              origin: ContentOrigin.library,
+                                              playlistId: favoritesPlaylist.id,
+                                              coreController:
+                                                  widget.coreController,
+                                              playerController:
+                                                  widget.playerController,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                            ),
                                     ),
-                                    Text(
-                                      context.localization.emptyLibrary,
-                                      style: TextStyle(
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: const FavoriteIcon(
+                                        size: 50,
+                                      ),
+                                    ),
+                                    title: Text(
+                                      context.localization.favorites,
+                                    ),
+                                    subtitle: Builder(
+                                      builder: (context) {
+                                        if (data.itemsAddingToFavorites
+                                            .isNotEmpty) {
+                                          return Skeletonizer(
+                                            child: Text(
+                                              '${favoritesPlaylist.playlist!.trackCount} ${context.localization.songs}',
+                                            ),
+                                          );
+                                        }
+                                        return Text(
+                                          '${favoritesPlaylist.playlist!.trackCount} ${context.localization.songs}',
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                if (showOffline)
+                                  LyListTile(
+                                    onTap: () => LyNavigator.push(
+                                      context.showingPageContext,
+                                      offlinePlaylist
+                                              .playlist!.tracks.isNotEmpty
+                                          ? PlaylistPage(
+                                              playlist:
+                                                  offlinePlaylist.playlist!,
+                                              playerController:
+                                                  widget.playerController,
+                                              coreController:
+                                                  widget.coreController,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                            )
+                                          : AsyncPlaylistPage(
+                                              origin: ContentOrigin.library,
+                                              playlistId: offlinePlaylist.id,
+                                              coreController:
+                                                  widget.coreController,
+                                              playerController:
+                                                  widget.playerController,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                            ),
+                                    ),
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: const OfflineIcon(
+                                        size: 50,
+                                      ),
+                                    ),
+                                    title: Text(
+                                      context.localization.offline,
+                                    ),
+                                    subtitle: Text(
+                                      '${offlinePlaylist.playlist!.trackCount} ${context.localization.songs}',
+                                    ),
+                                  ),
+                                const Divider(),
+                                SegmentedButton(
+                                  emptySelectionAllowed: true,
+                                  segments: const [
+                                    ButtonSegment(
+                                      value: 'album',
+                                      label: Icon(
+                                        Icons.album_rounded,
+                                      ),
+                                      icon: Icon(
+                                        Icons.filter_alt_rounded,
+                                      ),
+                                    ),
+                                    ButtonSegment(
+                                      value: 'artist',
+                                      label: Icon(
+                                        Icons.person_rounded,
+                                      ),
+                                      icon: Icon(
+                                        Icons.filter_alt_rounded,
+                                      ),
+                                    ),
+                                    ButtonSegment(
+                                      value: 'playlist',
+                                      label: Icon(
+                                        Icons.playlist_play_rounded,
+                                      ),
+                                      icon: Icon(
+                                        Icons.filter_alt_rounded,
+                                      ),
+                                    ),
+                                  ],
+                                  selected: filters,
+                                  onSelectionChanged: (value) {
+                                    setState(() {
+                                      filters = value;
+                                    });
+                                  },
+                                  multiSelectionEnabled: true,
+                                ),
+                                const Divider(),
+                              ],
+                            );
+                          },
+                        ),
+                        if (itemList
+                            .where(
+                              (item) => !([UserService.favoritesId, 'offline']
+                                  .contains(item.id)),
+                            )
+                            .isEmpty)
+                          widget.playerController.builder(
+                            builder: (context, data) {
+                              return Expanded(
+                                child: Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.library_music_rounded,
+                                        size: 70,
                                         color: context
                                             .themeData.colorScheme.outline
                                             .withOpacity(.9),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      else
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              ...itemList
-                                  .where((item) =>
-                                      item.id != UserService.favoritesId &&
-                                      item.id != 'offline')
-                                  .map(
-                                    (item) => Builder(
-                                      builder: (context) {
-                                        if (item.album != null) {
-                                          return AlbumTile(
-                                            album: item.album!,
-                                            coreController:
-                                                widget.coreController,
-                                            playerController:
-                                                widget.playerController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                          );
-                                        }
-                                        if (item.playlist != null) {
-                                          return PlaylistTile(
-                                            playlist: item.playlist!,
-                                            libraryController:
-                                                widget.libraryController,
-                                            playerController:
-                                                widget.playerController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            coreController:
-                                                widget.coreController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            getPlaylistUsecase:
-                                                widget.getPlaylistUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                          );
-                                        }
-                                        if (item.artist != null) {
-                                          return ArtistTile(
-                                            artist: item.artist!,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            coreController:
-                                                widget.coreController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            libraryController:
-                                                widget.libraryController,
-                                            playerController:
-                                                widget.playerController,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                          );
-                                        }
-                                        return Container();
-                                      },
-                                    ),
+                                      Text(
+                                        context.localization.emptyLibrary,
+                                        style: TextStyle(
+                                          color: context
+                                              .themeData.colorScheme.outline
+                                              .withOpacity(.9),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                              PlayerSizedBox(
-                                playerController: widget.playerController,
-                              ),
-                            ],
+                                ),
+                              );
+                            },
+                          )
+                        else
+                          Expanded(
+                            child: ListView(
+                              children: [
+                                ...itemList
+                                    .where((item) =>
+                                        item.id != UserService.favoritesId &&
+                                        item.id != 'offline')
+                                    .map(
+                                      (item) => Builder(
+                                        builder: (context) {
+                                          if (item.album != null) {
+                                            return AlbumTile(
+                                              contentOrigin:
+                                                  ContentOrigin.library,
+                                              album: item.album!,
+                                              coreController:
+                                                  widget.coreController,
+                                              playerController:
+                                                  widget.playerController,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                            );
+                                          }
+                                          if (item.playlist != null) {
+                                            return PlaylistTile(
+                                              contentOrigin:
+                                                  ContentOrigin.library,
+                                              playlist: item.playlist!,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              playerController:
+                                                  widget.playerController,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              coreController:
+                                                  widget.coreController,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              getPlaylistUsecase:
+                                                  widget.getPlaylistUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                            );
+                                          }
+                                          if (item.artist != null) {
+                                            return ArtistTile(
+                                              contentOrigin:
+                                                  ContentOrigin.library,
+                                              artist: item.artist!,
+                                              getAlbumUsecase:
+                                                  widget.getAlbumUsecase,
+                                              coreController:
+                                                  widget.coreController,
+                                              downloaderController:
+                                                  widget.downloaderController,
+                                              getPlayableItemUsecase:
+                                                  widget.getPlayableItemUsecase,
+                                              libraryController:
+                                                  widget.libraryController,
+                                              playerController:
+                                                  widget.playerController,
+                                              getArtistUsecase:
+                                                  widget.getArtistUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  widget.getArtistAlbumsUsecase,
+                                              getArtistTracksUsecase:
+                                                  widget.getArtistTracksUsecase,
+                                              getArtistSinglesUsecase: widget
+                                                  .getArtistSinglesUsecase,
+                                            );
+                                          }
+                                          return Container();
+                                        },
+                                      ),
+                                    ),
+                                PlayerSizedBox(
+                                  playerController: widget.playerController,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
                 ),
               );
             },

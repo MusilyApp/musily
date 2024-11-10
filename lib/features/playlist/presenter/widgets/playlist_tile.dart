@@ -33,6 +33,7 @@ class PlaylistTile extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final ContentOrigin contentOrigin;
 
   final void Function()? customClickAction;
   const PlaylistTile({
@@ -50,82 +51,85 @@ class PlaylistTile extends StatelessWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
+    required this.contentOrigin,
   });
 
   @override
   Widget build(BuildContext context) {
-    return libraryController.builder(builder: (context, data) {
-      final asyncOperation = data.itemsAddingToLibrary.contains(playlist.id);
-      return LyListTile(
-        onTap: () {
-          if (customClickAction != null) {
-            customClickAction!.call();
-            return;
-          }
-          LyNavigator.push(
-            context.showingPageContext,
-            playlist.tracks.isNotEmpty
-                ? PlaylistPage(
-                    coreController: coreController,
-                    playlist: playlist,
-                    playerController: playerController,
-                    downloaderController: downloaderController,
-                    getPlayableItemUsecase: getPlayableItemUsecase,
-                    libraryController: libraryController,
-                    getAlbumUsecase: getAlbumUsecase,
-                    getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                    getArtistSinglesUsecase: getArtistSinglesUsecase,
-                    getArtistTracksUsecase: getArtistTracksUsecase,
-                    getArtistUsecase: getArtistUsecase,
-                  )
-                : AsyncPlaylistPage(
-                    origin: ContentOrigin.library,
-                    playlistId: playlist.id,
-                    coreController: coreController,
-                    playerController: playerController,
-                    downloaderController: downloaderController,
-                    getPlayableItemUsecase: getPlayableItemUsecase,
-                    libraryController: libraryController,
-                    getAlbumUsecase: getAlbumUsecase,
-                    getArtistUsecase: getArtistUsecase,
-                    getArtistTracksUsecase: getArtistTracksUsecase,
-                    getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                    getArtistSinglesUsecase: getArtistSinglesUsecase,
-                  ),
-          );
-        },
-        leading: PlaylistTileThumb(
-          playlist: playlist,
-        ),
-        title: Text(
-          playlist.title,
-        ),
-        subtitle: Builder(
-          builder: (context) {
-            if (asyncOperation) {
-              return Skeletonizer(
-                child: Text(
-                  '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
-                ),
-              );
+    return libraryController.builder(
+      builder: (context, data) {
+        final asyncOperation = data.itemsAddingToLibrary.contains(playlist.id);
+        return LyListTile(
+          onTap: () {
+            if (customClickAction != null) {
+              customClickAction!.call();
+              return;
             }
-            return Text(
-              '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
+            LyNavigator.push(
+              context.showingPageContext,
+              playlist.tracks.isNotEmpty
+                  ? PlaylistPage(
+                      coreController: coreController,
+                      playlist: playlist,
+                      playerController: playerController,
+                      downloaderController: downloaderController,
+                      getPlayableItemUsecase: getPlayableItemUsecase,
+                      libraryController: libraryController,
+                      getAlbumUsecase: getAlbumUsecase,
+                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: getArtistSinglesUsecase,
+                      getArtistTracksUsecase: getArtistTracksUsecase,
+                      getArtistUsecase: getArtistUsecase,
+                    )
+                  : AsyncPlaylistPage(
+                      origin: ContentOrigin.library,
+                      playlistId: playlist.id,
+                      coreController: coreController,
+                      playerController: playerController,
+                      downloaderController: downloaderController,
+                      getPlayableItemUsecase: getPlayableItemUsecase,
+                      libraryController: libraryController,
+                      getAlbumUsecase: getAlbumUsecase,
+                      getArtistUsecase: getArtistUsecase,
+                      getArtistTracksUsecase: getArtistTracksUsecase,
+                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: getArtistSinglesUsecase,
+                    ),
             );
           },
-        ),
-        trailing: asyncOperation
-            ? null
-            : PlaylistOptions(
-                playlist: playlist,
-                coreController: coreController,
-                playerController: playerController,
-                getAlbumUsecase: getAlbumUsecase,
-                downloaderController: downloaderController,
-                getPlayableItemUsecase: getPlayableItemUsecase,
-                libraryController: libraryController,
-              ),
-      );
-    });
+          leading: PlaylistTileThumb(
+            playlist: playlist,
+          ),
+          title: Text(
+            playlist.title,
+          ),
+          subtitle: Builder(
+            builder: (context) {
+              if (asyncOperation) {
+                return Skeletonizer(
+                  child: Text(
+                    '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
+                  ),
+                );
+              }
+              return Text(
+                '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
+              );
+            },
+          ),
+          trailing: asyncOperation
+              ? null
+              : PlaylistOptions(
+                  playlist: playlist,
+                  coreController: coreController,
+                  playerController: playerController,
+                  getAlbumUsecase: getAlbumUsecase,
+                  downloaderController: downloaderController,
+                  getPlayableItemUsecase: getPlayableItemUsecase,
+                  libraryController: libraryController,
+                ),
+        );
+      },
+    );
   }
 }

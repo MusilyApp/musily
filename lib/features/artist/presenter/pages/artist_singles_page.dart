@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
@@ -134,6 +135,7 @@ class _ArtistSinglesPageState extends State<ArtistSinglesPage> {
                       final album = allSingles[index];
                       return AlbumTile(
                         album: album,
+                        contentOrigin: ContentOrigin.dataFetch,
                         coreController: widget.coreController,
                         playerController: widget.playerController,
                         getPlayableItemUsecase: widget.getPlayableItemUsecase,
