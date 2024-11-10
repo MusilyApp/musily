@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -19,7 +20,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 
-class AlbumTile extends StatelessWidget {
+class AlbumTile extends StatefulWidget {
   final AlbumEntity album;
   final CoreController coreController;
   final PlayerController playerController;
@@ -32,6 +33,7 @@ class AlbumTile extends StatelessWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final ContentOrigin contentOrigin;
 
   const AlbumTile({
     required this.album,
@@ -47,49 +49,65 @@ class AlbumTile extends StatelessWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.contentOrigin,
   });
+
+  @override
+  State<AlbumTile> createState() => _AlbumTileState();
+}
+
+class _AlbumTileState extends State<AlbumTile> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.contentOrigin == ContentOrigin.library) {
+      widget.libraryController.methods.getLibraryItem(widget.album.id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return LibraryWrapper(
-      libraryController: libraryController,
-      libraryItem: libraryController.data.items
+      libraryController: widget.libraryController,
+      libraryItem: widget.libraryController.data.items
           .where(
-            (e) => e.id == album.id,
+            (e) => e.id == widget.album.id,
           )
           .firstOrNull,
       child: LyListTile(
-        onTap: staticTile
+        onTap: widget.staticTile
             ? null
             : () {
                 LyNavigator.push(
                   context.showingPageContext,
-                  album.tracks.isNotEmpty
+                  widget.album.tracks.isNotEmpty
                       ? AlbumPage(
-                          album: album,
-                          coreController: coreController,
-                          playerController: playerController,
-                          getAlbumUsecase: getAlbumUsecase,
-                          downloaderController: downloaderController,
-                          getPlayableItemUsecase: getPlayableItemUsecase,
-                          libraryController: libraryController,
-                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase: getArtistSinglesUsecase,
-                          getArtistTracksUsecase: getArtistTracksUsecase,
-                          getArtistUsecase: getArtistUsecase,
+                          album: widget.album,
+                          coreController: widget.coreController,
+                          playerController: widget.playerController,
+                          getAlbumUsecase: widget.getAlbumUsecase,
+                          downloaderController: widget.downloaderController,
+                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                          libraryController: widget.libraryController,
+                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase:
+                              widget.getArtistSinglesUsecase,
+                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                          getArtistUsecase: widget.getArtistUsecase,
                         )
                       : AsyncAlbumPage(
-                          albumId: album.id,
-                          coreController: coreController,
-                          playerController: playerController,
-                          getAlbumUsecase: getAlbumUsecase,
-                          downloaderController: downloaderController,
-                          getPlayableItemUsecase: getPlayableItemUsecase,
-                          libraryController: libraryController,
-                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase: getArtistSinglesUsecase,
-                          getArtistTracksUsecase: getArtistTracksUsecase,
-                          getArtistUsecase: getArtistUsecase,
+                          albumId: widget.album.id,
+                          coreController: widget.coreController,
+                          playerController: widget.playerController,
+                          getAlbumUsecase: widget.getAlbumUsecase,
+                          downloaderController: widget.downloaderController,
+                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                          libraryController: widget.libraryController,
+                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase:
+                              widget.getArtistSinglesUsecase,
+                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                          getArtistUsecase: widget.getArtistUsecase,
                         ),
                 );
               },
@@ -103,11 +121,12 @@ class AlbumTile extends StatelessWidget {
           ),
           child: Builder(
             builder: (context) {
-              if (album.highResImg != null && album.highResImg!.isNotEmpty) {
+              if (widget.album.highResImg != null &&
+                  widget.album.highResImg!.isNotEmpty) {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: AppImage(
-                    album.lowResImg!,
+                    widget.album.lowResImg!,
                     width: 40,
                     height: 40,
                     fit: BoxFit.cover,
@@ -127,28 +146,28 @@ class AlbumTile extends StatelessWidget {
         ),
         title: InfinityMarquee(
           child: Text(
-            album.title,
+            widget.album.title,
           ),
         ),
         subtitle: InfinityMarquee(
           child: Text(
-            album.artist.name,
+            widget.album.artist.name,
           ),
         ),
-        trailing: staticTile
+        trailing: widget.staticTile
             ? null
             : AlbumOptions(
-                album: album,
-                coreController: coreController,
-                playerController: playerController,
-                getAlbumUsecase: getAlbumUsecase,
-                downloaderController: downloaderController,
-                getPlayableItemUsecase: getPlayableItemUsecase,
-                libraryController: libraryController,
-                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                getArtistSinglesUsecase: getArtistSinglesUsecase,
-                getArtistTracksUsecase: getArtistTracksUsecase,
-                getArtistUsecase: getArtistUsecase,
+                album: widget.album,
+                coreController: widget.coreController,
+                playerController: widget.playerController,
+                getAlbumUsecase: widget.getAlbumUsecase,
+                downloaderController: widget.downloaderController,
+                getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                libraryController: widget.libraryController,
+                getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                getArtistUsecase: widget.getArtistUsecase,
               ),
       ),
     );
