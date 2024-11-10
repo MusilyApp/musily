@@ -96,7 +96,7 @@ class _AppMenuState extends State<AppMenu> {
                 ),
               ],
               content: SizedBox(
-                height: 235,
+                height: 230,
                 child: Scrollbar(
                   controller: _scrollController,
                   thumbVisibility: true,
