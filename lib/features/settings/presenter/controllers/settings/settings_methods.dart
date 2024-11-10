@@ -7,11 +7,13 @@ class SettingsMethods {
   final void Function(ThemeMode? mode) changeTheme;
   final Future<void> Function() loadLanguage;
   final Future<void> Function() loadThemeMode;
+  final void Function() setBrightness;
 
   SettingsMethods({
     required this.changeLanguage,
     required this.changeTheme,
     required this.loadLanguage,
     required this.loadThemeMode,
+    required this.setBrightness,
   });
 }

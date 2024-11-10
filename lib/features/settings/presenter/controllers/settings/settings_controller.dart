@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
@@ -25,12 +28,31 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   @override
   SettingsMethods defineMethods() {
     return SettingsMethods(
+      setBrightness: () {
+        if (!Platform.isAndroid) {
+          return;
+        }
+        if (data.themeMode == ThemeMode.dark) {
+          SystemChrome.setSystemUIOverlayStyle(
+            const SystemUiOverlayStyle(
+              systemNavigationBarIconBrightness: Brightness.light,
+            ),
+          );
+        } else {
+          SystemChrome.setSystemUIOverlayStyle(
+            const SystemUiOverlayStyle(
+              systemNavigationBarIconBrightness: Brightness.dark,
+            ),
+          );
+        }
+      },
       loadThemeMode: () async {
         final prefs = await SharedPreferences.getInstance();
         final savedThemeMode = prefs.getString('themeMode');
         data.themeMode = ThemeMode.values.byName(
           savedThemeMode ?? 'system',
         );
+        methods.setBrightness();
       },
       changeLanguage: (locale) async {
         if (locale == null) {
@@ -49,6 +71,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
           'themeMode',
           mode?.name ?? 'system',
         );
+        methods.setBrightness();
       },
       loadLanguage: () async {
         final prefs = await SharedPreferences.getInstance();
