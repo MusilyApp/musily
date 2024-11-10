@@ -71,6 +71,8 @@ class _LyOutlinedButtonState extends State<LyOutlinedButton> {
         focusNode: focusNode,
         padding: EdgeInsets.zero,
         focusElevation: 0,
+        hoverElevation: 0,
+        highlightElevation: 0,
         visualDensity: VisualDensity.compact,
         onPressed: widget.onPressed,
         shape: widget.shape ??
