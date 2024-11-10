@@ -78,7 +78,7 @@ class _AppMenuState extends State<AppMenu> {
           context,
           () {
             LyNavigator.showBottomSheet(
-              context: widget.coreController.coreContext!,
+              context: context,
               title: widget.modalHeader,
               width: context.display.width,
               padding: EdgeInsets.zero,
@@ -96,7 +96,7 @@ class _AppMenuState extends State<AppMenu> {
                 ),
               ],
               content: SizedBox(
-                height: widget.entries.length < 5 ? 50 * 5.5 : 250,
+                height: 235,
                 child: Scrollbar(
                   controller: _scrollController,
                   thumbVisibility: true,
