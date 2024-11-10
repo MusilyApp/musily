@@ -42,17 +42,13 @@ class LibraryDatabase implements DatabaseModelAdapter {
   }
 
   Future<void> cleanCloudLibrary() async {
-    try {
-      _database.isar.writeTxn(() async {
-        await _database.isar.librarys
-            .filter()
-            .anonymousEqualTo(false)
-            .or()
-            .anonymousIsNull()
-            .deleteAll();
-      });
-    } catch (e) {
-      print(e);
-    }
+    _database.isar.writeTxn(() async {
+      await _database.isar.librarys
+          .filter()
+          .anonymousEqualTo(false)
+          .or()
+          .anonymousIsNull()
+          .deleteAll();
+    });
   }
 }
