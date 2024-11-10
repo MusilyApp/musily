@@ -4,7 +4,7 @@ import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/playlist/domain/enums/playlist_origin.dart';
+import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_tile_thumb.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -79,7 +79,7 @@ class PlaylistTile extends StatelessWidget {
                     getArtistUsecase: getArtistUsecase,
                   )
                 : AsyncPlaylistPage(
-                    origin: PlaylistOrigin.library,
+                    origin: ContentOrigin.library,
                     playlistId: playlist.id,
                     coreController: coreController,
                     playerController: playerController,

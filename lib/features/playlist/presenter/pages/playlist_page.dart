@@ -19,7 +19,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
-import 'package:musily/features/playlist/domain/enums/playlist_origin.dart';
+import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_editor.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_searcher.dart';
@@ -501,7 +501,7 @@ class AsyncPlaylistPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
-  final PlaylistOrigin origin;
+  final ContentOrigin origin;
 
   const AsyncPlaylistPage({
     super.key,
@@ -531,7 +531,7 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
     setState(() {
       loadingPlaylist = true;
     });
-    if (widget.origin == PlaylistOrigin.library) {
+    if (widget.origin == ContentOrigin.library) {
       await widget.libraryController.methods.getLibraryItem(
         widget.playlistId,
       );

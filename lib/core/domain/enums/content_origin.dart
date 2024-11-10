@@ -1,4 +1,4 @@
-enum PlaylistOrigin {
+enum ContentOrigin {
   library,
   dataFetch,
 }

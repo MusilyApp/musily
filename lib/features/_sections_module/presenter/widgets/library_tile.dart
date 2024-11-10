@@ -19,7 +19,7 @@ import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
-import 'package:musily/features/playlist/domain/enums/playlist_origin.dart';
+import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -129,7 +129,7 @@ class LibraryTile extends StatelessWidget {
                 context.showingPageContext,
                 item.playlist!.tracks.isEmpty
                     ? AsyncPlaylistPage(
-                        origin: PlaylistOrigin.library,
+                        origin: ContentOrigin.library,
                         playlistId: item.playlist!.id,
                         coreController: coreController,
                         playerController: playerController,
