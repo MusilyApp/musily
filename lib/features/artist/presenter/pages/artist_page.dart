@@ -46,6 +46,7 @@ class ArtistPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final bool isAsync;
 
   const ArtistPage({
     required this.artist,
@@ -60,6 +61,7 @@ class ArtistPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
+    this.isAsync = false,
   });
 
   @override
@@ -104,6 +106,7 @@ class _ArtistPageState extends State<ArtistPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      ignoreFromStack: widget.isAsync,
       child: Scaffold(
         body: Builder(builder: (context) {
           return Stack(
@@ -742,47 +745,50 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: artist == null ? AppBar() : null,
-      body: Builder(
-        builder: (context) {
-          if (loadingArtist) {
-            return Center(
-              child: LoadingAnimationWidget.halfTriangleDot(
-                color: context.themeData.colorScheme.primary,
-                size: 50,
-              ),
+    return LyPage(
+      child: Scaffold(
+        appBar: artist == null ? AppBar() : null,
+        body: Builder(
+          builder: (context) {
+            if (loadingArtist) {
+              return Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: context.themeData.colorScheme.primary,
+                  size: 50,
+                ),
+              );
+            }
+            if (artist == null) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.error_rounded,
+                      size: 50,
+                      color: context.themeData.iconTheme.color?.withOpacity(.7),
+                    ),
+                    Text(context.localization.artistNotFound),
+                  ],
+                ),
+              );
+            }
+            return ArtistPage(
+              artist: artist!,
+              isAsync: true,
+              coreController: widget.coreController,
+              playerController: widget.playerController,
+              downloaderController: widget.downloaderController,
+              getPlayableItemUsecase: widget.getPlayableItemUsecase,
+              libraryController: widget.libraryController,
+              getAlbumUsecase: widget.getAlbumUsecase,
+              getArtistUsecase: widget.getArtistUsecase,
+              getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+              getArtistTracksUsecase: widget.getArtistTracksUsecase,
+              getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
             );
-          }
-          if (artist == null) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.error_rounded,
-                    size: 50,
-                    color: context.themeData.iconTheme.color?.withOpacity(.7),
-                  ),
-                  Text(context.localization.artistNotFound),
-                ],
-              ),
-            );
-          }
-          return ArtistPage(
-            artist: artist!,
-            coreController: widget.coreController,
-            playerController: widget.playerController,
-            downloaderController: widget.downloaderController,
-            getPlayableItemUsecase: widget.getPlayableItemUsecase,
-            libraryController: widget.libraryController,
-            getAlbumUsecase: widget.getAlbumUsecase,
-            getArtistUsecase: widget.getArtistUsecase,
-            getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-            getArtistTracksUsecase: widget.getArtistTracksUsecase,
-            getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-          );
-        },
+          },
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:musily/core/presenter/extensions/date_time.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/utils/id_generator.dart';
 
@@ -48,7 +49,7 @@ class _LyPageState extends State<LyPage> {
         context,
       );
     }
-    log('[Page Initialized]: $contextKey added to stack.');
+    log('+[${DateTime.now().toHourMinuteSecond()}]: $contextKey added to stack.');
   }
 
   @override
@@ -58,7 +59,7 @@ class _LyPageState extends State<LyPage> {
       return;
     }
     ContextManager.removeContext(context);
-    log('[Page Disposed]: $contextKey removed from stack.');
+    log('-[${DateTime.now().toHourMinuteSecond()}]: $contextKey removed from stack.');
   }
 
   @override
