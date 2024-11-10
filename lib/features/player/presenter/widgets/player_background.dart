@@ -41,7 +41,7 @@ class _PlayerBackgroundState extends State<PlayerBackground> {
       });
       Future.delayed(const Duration(milliseconds: 400), () {
         setState(() {
-          selectedAnimatedWidget = Random().nextInt(4);
+          selectedAnimatedWidget = Random().nextInt(3);
           changingAnimatedWidget = false;
         });
       });
@@ -57,10 +57,6 @@ class _PlayerBackgroundState extends State<PlayerBackground> {
   Widget _getAnimatedWidget(BuildContext context) {
     final items = [
       LoadingAnimationWidget.waveDots(
-        color: context.themeData.dividerColor,
-        size: context.display.width,
-      ),
-      LoadingAnimationWidget.staggeredDotsWave(
         color: context.themeData.dividerColor,
         size: context.display.width,
       ),

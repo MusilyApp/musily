@@ -5,6 +5,7 @@ import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/duration.dart';
+import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
@@ -84,7 +85,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          bottom: 8,
                           left: 12,
                           right: 12,
                         ),
@@ -204,7 +204,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
-                            child: ListTile(
+                            child: LyListTile(
                               title: InfinityMarquee(
                                 child: Text(
                                   currentPlayingItem.title,
