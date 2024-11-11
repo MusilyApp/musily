@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       allowAlertDialog: true,
       builder: (context, data) {
         return LyPage(
+          contextKey: 'LoginPage',
           preventPop: data.loading,
           child: Scaffold(
             key: widget.authController.loginPageKey,

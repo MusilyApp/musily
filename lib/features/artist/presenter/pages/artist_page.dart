@@ -107,6 +107,7 @@ class _ArtistPageState extends State<ArtistPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'ArtistPage_${widget.artist.id}',
       ignoreFromStack: widget.isAsync,
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -728,6 +729,7 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'AsyncArtistPage_${widget.artistId}',
       child: Scaffold(
         appBar: artist == null ? AppBar() : null,
         body: Builder(

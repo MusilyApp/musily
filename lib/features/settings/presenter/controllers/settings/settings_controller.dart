@@ -32,7 +32,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         if (!Platform.isAndroid) {
           return;
         }
-        if (data.themeMode == ThemeMode.dark) {
+        if ((data.context?.themeMode ?? data.themeMode) == ThemeMode.dark) {
           SystemChrome.setSystemUIOverlayStyle(
             const SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.light,

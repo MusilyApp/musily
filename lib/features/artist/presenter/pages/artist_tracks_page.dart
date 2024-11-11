@@ -92,6 +92,7 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'ArtistTracksPage_${widget.artist.id}',
       child: Scaffold(
         appBar: AppBar(
           title: Text(

@@ -75,6 +75,7 @@ class PlaylistAdderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'PlaylistAdderWidget',
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.localization.addToPlaylist),

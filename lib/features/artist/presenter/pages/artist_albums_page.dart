@@ -93,6 +93,7 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'ArtistAlbumsPage_${widget.artist.id}',
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.localization.albums),

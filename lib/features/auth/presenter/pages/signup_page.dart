@@ -50,6 +50,7 @@ class _SignupPageState extends State<SignupPage> {
     return widget.authController.builder(
       builder: (context, data) {
         return LyPage(
+          contextKey: 'SignupPage',
           preventPop: data.loading,
           child: Scaffold(
             key: widget.authController.signupPageKey,

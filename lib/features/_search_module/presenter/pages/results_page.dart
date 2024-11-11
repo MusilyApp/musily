@@ -64,6 +64,7 @@ class _ResultsPageState extends State<ResultsPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'SearchResultsPage',
       child: DefaultTabController(
         initialIndex: 0,
         length: 3,

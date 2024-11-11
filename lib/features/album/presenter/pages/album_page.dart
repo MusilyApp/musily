@@ -78,6 +78,7 @@ class _AlbumPageState extends State<AlbumPage> {
     return widget.coreController.builder(
       builder: (context, data) {
         return LyPage(
+          contextKey: 'AlbumPage_${widget.album.id}',
           ignoreFromStack: widget.isAsync,
           child: Scaffold(
             appBar: AppBar(
@@ -524,6 +525,7 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'AsyncAlbumPage_${widget.albumId}',
       child: Scaffold(
         appBar: album == null ? AppBar() : null,
         body: Builder(

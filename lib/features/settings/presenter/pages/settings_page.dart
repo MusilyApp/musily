@@ -22,6 +22,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'SettingsPage',
       child: Scaffold(
         appBar: AppBar(
           title: Text(

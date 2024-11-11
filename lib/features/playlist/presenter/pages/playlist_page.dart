@@ -88,6 +88,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'PlaylistPage_${widget.playlist.id}',
       ignoreFromStack: widget.isAsync,
       child: widget.playerController.builder(
         builder: (context, data) {
@@ -556,6 +557,7 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return LyPage(
+      contextKey: 'AsyncPlaylistPage_${widget.playlistId}',
       child: Scaffold(
         appBar: playlist == null ? AppBar() : null,
         body: Builder(
