@@ -18,6 +18,7 @@ import 'package:musily/features/downloader/downloader_module.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/data/usecases/get_playlist_usecase_impl.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
 class CoreModule extends Module {
   @override
@@ -42,6 +43,7 @@ class CoreModule extends Module {
         getArtistSinglesUsecase: Modular.get<GetArtistSinglesUsecaseImpl>(),
         getPlaylistUsecase: Modular.get<GetPlaylistUsecaseImpl>(),
         sectionsController: Modular.get<SectionsController>(),
+        settingsController: Modular.get<SettingsController>(),
       ),
       children: [
         ModuleRoute(
