@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/utils/ly_disposable.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/animated_size_widget.dart';
@@ -23,6 +24,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/mini_player_widget.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
 class CorePage extends StatefulWidget {
   final CoreController coreController;
@@ -38,6 +40,7 @@ class CorePage extends StatefulWidget {
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final GetPlaylistUsecase getPlaylistUsecase;
   final SectionsController sectionsController;
+  final SettingsController settingsController;
 
   const CorePage({
     required this.coreController,
@@ -54,6 +57,7 @@ class CorePage extends StatefulWidget {
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
     required this.sectionsController,
+    required this.settingsController,
   });
 
   @override
@@ -75,7 +79,6 @@ class _CorePageState extends State<CorePage> {
   @override
   void initState() {
     super.initState();
-
     initDeepLinks();
   }
 
@@ -96,75 +99,279 @@ class _CorePageState extends State<CorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.coreController.builder(
-      builder: (context, data) {
-        return LayoutBuilder(builder: (context, constraints) {
-          final availableHeight = constraints.maxHeight;
-          return LyPage(
-            // canPop: ContextManager().contextStack.length == 1,
-            // onPopInvoked: (didPop) {
-            //   print('abelha top');
-            // },
-            mainPage: true,
-            child: Scaffold(
-              key: widget.coreController.coreKey,
-              bottomNavigationBar: context.display.isDesktop
-                  ? null
-                  : BottomNavigationBar(
-                      type: BottomNavigationBarType.fixed,
-                      items: [
-                        BottomNavigationBarItem(
-                          label: context.localization.home,
-                          icon: const Icon(Icons.home_rounded),
-                        ),
-                        BottomNavigationBarItem(
-                          label: context.localization.search,
-                          icon: const Icon(Icons.search_rounded),
-                        ),
-                        BottomNavigationBarItem(
-                          label: context.localization.library,
-                          icon: const Icon(Icons.library_music_rounded),
-                        ),
-                        BottomNavigationBarItem(
-                          label: context.localization.downloads,
-                          icon: const Icon(
-                            Icons.download_rounded,
-                          ),
-                        ),
-                      ],
-                      currentIndex: _selected,
-                      onTap: (value) {
-                        setState(
-                          () {
-                            _selected = value;
-                            LyNavigator.navigateTo(
-                              routes[value],
+    return LyDisposable(
+      onInitState: () {
+        widget.settingsController.updateData(
+          widget.settingsController.data.copyWith(
+            context: context,
+          ),
+        );
+      },
+      child: widget.coreController.builder(
+        builder: (context, data) {
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final availableHeight = constraints.maxHeight;
+              return LyPage(
+                mainPage: true,
+                child: Scaffold(
+                  key: widget.coreController.coreKey,
+                  bottomNavigationBar: context.display.isDesktop
+                      ? null
+                      : BottomNavigationBar(
+                          type: BottomNavigationBarType.fixed,
+                          items: [
+                            BottomNavigationBarItem(
+                              label: context.localization.home,
+                              icon: const Icon(Icons.home_rounded),
+                            ),
+                            BottomNavigationBarItem(
+                              label: context.localization.search,
+                              icon: const Icon(Icons.search_rounded),
+                            ),
+                            BottomNavigationBarItem(
+                              label: context.localization.library,
+                              icon: const Icon(Icons.library_music_rounded),
+                            ),
+                            BottomNavigationBarItem(
+                              label: context.localization.downloads,
+                              icon: const Icon(
+                                Icons.download_rounded,
+                              ),
+                            ),
+                          ],
+                          currentIndex: _selected,
+                          onTap: (value) {
+                            setState(
+                              () {
+                                _selected = value;
+                                LyNavigator.navigateTo(
+                                  routes[value],
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
-              body: widget.playerController.builder(
-                builder: (context, data) {
-                  return Stack(
-                    children: [
-                      if (!context.display.isDesktop)
-                        const RouterOutlet()
-                      else
-                        AnimatedSizeWidget(
-                          width: context.display.width,
-                          height: data.currentPlayingItem != null
-                              ? availableHeight - 75
-                              : availableHeight,
-                          child: Row(
-                            children: [
-                              Column(
+                        ),
+                  body: widget.playerController.builder(
+                    builder: (context, data) {
+                      return Stack(
+                        children: [
+                          if (!context.display.isDesktop)
+                            const RouterOutlet()
+                          else
+                            AnimatedSizeWidget(
+                              width: context.display.width,
+                              height: data.currentPlayingItem != null
+                                  ? availableHeight - 75
+                                  : availableHeight,
+                              child: Row(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      height: 144,
-                                      width: 310,
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SizedBox(
+                                          height: 144,
+                                          width: 310,
+                                          child: Card(
+                                            margin: EdgeInsets.zero,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              side: BorderSide(
+                                                strokeAlign: 1,
+                                                color: context
+                                                    .themeData.dividerColor
+                                                    .withOpacity(.2),
+                                              ),
+                                            ),
+                                            child: Scaffold(
+                                              body: Column(
+                                                children: [
+                                                  LyListTile(
+                                                    onTap: () {
+                                                      if (_selected != 0) {
+                                                        widget.coreController
+                                                            .updateData(
+                                                          widget.coreController
+                                                              .data
+                                                              .copyWith(
+                                                            pages: [],
+                                                          ),
+                                                        );
+                                                      }
+                                                      setState(() {
+                                                        _selected = 0;
+                                                        LyNavigator.navigateTo(
+                                                          routes[0],
+                                                        );
+                                                      });
+                                                    },
+                                                    leading: Icon(
+                                                      Icons.home_rounded,
+                                                      color: _selected == 0
+                                                          ? context
+                                                              .themeData
+                                                              .colorScheme
+                                                              .primary
+                                                          : null,
+                                                    ),
+                                                    title: Text(
+                                                      context.localization.home,
+                                                      style: TextStyle(
+                                                        color: _selected == 0
+                                                            ? context
+                                                                .themeData
+                                                                .colorScheme
+                                                                .primary
+                                                            : null,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  LyListTile(
+                                                    onTap: () {
+                                                      if (_selected != 1) {
+                                                        widget.coreController
+                                                            .updateData(
+                                                          widget.coreController
+                                                              .data
+                                                              .copyWith(
+                                                            pages: [],
+                                                          ),
+                                                        );
+                                                      }
+                                                      setState(() {
+                                                        _selected = 1;
+                                                        LyNavigator.navigateTo(
+                                                          routes[1],
+                                                        );
+                                                      });
+                                                    },
+                                                    leading: Icon(
+                                                      Icons.search_rounded,
+                                                      color: _selected == 1
+                                                          ? context
+                                                              .themeData
+                                                              .colorScheme
+                                                              .primary
+                                                          : null,
+                                                    ),
+                                                    title: Text(
+                                                      context
+                                                          .localization.search,
+                                                      style: TextStyle(
+                                                        color: _selected == 1
+                                                            ? context
+                                                                .themeData
+                                                                .colorScheme
+                                                                .primary
+                                                            : null,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  LyListTile(
+                                                    onTap: () {
+                                                      if (_selected != 3) {
+                                                        widget.coreController
+                                                            .updateData(
+                                                          widget.coreController
+                                                              .data
+                                                              .copyWith(
+                                                            pages: [],
+                                                          ),
+                                                        );
+                                                      }
+                                                      setState(() {
+                                                        _selected = 3;
+                                                        LyNavigator.navigateTo(
+                                                          routes[3],
+                                                        );
+                                                      });
+                                                    },
+                                                    leading: Icon(
+                                                      Icons.download_rounded,
+                                                      color: _selected == 3
+                                                          ? context
+                                                              .themeData
+                                                              .colorScheme
+                                                              .primary
+                                                          : null,
+                                                    ),
+                                                    title: Text(
+                                                      context.localization
+                                                          .downloads,
+                                                      style: TextStyle(
+                                                        color: _selected == 3
+                                                            ? context
+                                                                .themeData
+                                                                .colorScheme
+                                                                .primary
+                                                            : null,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: SizedBox(
+                                          width: 310,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 8,
+                                            ),
+                                            child: Card(
+                                              margin: EdgeInsets.zero,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                side: BorderSide(
+                                                  strokeAlign: 1,
+                                                  color: context
+                                                      .themeData.dividerColor
+                                                      .withOpacity(.2),
+                                                ),
+                                              ),
+                                              child: LibraryPage(
+                                                playerController:
+                                                    widget.playerController,
+                                                getAlbumUsecase:
+                                                    widget.getAlbumUsecase,
+                                                coreController:
+                                                    widget.coreController,
+                                                libraryController:
+                                                    widget.libraryController,
+                                                downloaderController:
+                                                    widget.downloaderController,
+                                                getPlayableItemUsecase: widget
+                                                    .getPlayableItemUsecase,
+                                                getPlaylistUsecase:
+                                                    widget.getPlaylistUsecase,
+                                                getArtistUsecase:
+                                                    widget.getArtistUsecase,
+                                                getArtistAlbumsUsecase: widget
+                                                    .getArtistAlbumsUsecase,
+                                                getArtistTracksUsecase: widget
+                                                    .getArtistTracksUsecase,
+                                                getArtistSinglesUsecase: widget
+                                                    .getArtistSinglesUsecase,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        bottom: 8,
+                                        right: 8,
+                                      ),
                                       child: Card(
                                         margin: EdgeInsets.zero,
                                         shape: RoundedRectangleBorder(
@@ -177,232 +384,57 @@ class _CorePageState extends State<CorePage> {
                                                 .withOpacity(.2),
                                           ),
                                         ),
-                                        child: Scaffold(
-                                          body: Column(
-                                            children: [
-                                              LyListTile(
-                                                onTap: () {
-                                                  if (_selected != 0) {
-                                                    widget.coreController
-                                                        .updateData(
-                                                      widget.coreController.data
-                                                          .copyWith(
-                                                        pages: [],
-                                                      ),
-                                                    );
-                                                  }
-                                                  setState(() {
-                                                    _selected = 0;
-                                                    LyNavigator.navigateTo(
-                                                      routes[0],
-                                                    );
-                                                  });
-                                                },
-                                                leading: Icon(
-                                                  Icons.home_rounded,
-                                                  color: _selected == 0
-                                                      ? context.themeData
-                                                          .colorScheme.primary
-                                                      : null,
-                                                ),
-                                                title: Text(
-                                                  context.localization.home,
-                                                  style: TextStyle(
-                                                    color: _selected == 0
-                                                        ? context.themeData
-                                                            .colorScheme.primary
-                                                        : null,
-                                                  ),
-                                                ),
-                                              ),
-                                              LyListTile(
-                                                onTap: () {
-                                                  if (_selected != 1) {
-                                                    widget.coreController
-                                                        .updateData(
-                                                      widget.coreController.data
-                                                          .copyWith(
-                                                        pages: [],
-                                                      ),
-                                                    );
-                                                  }
-                                                  setState(() {
-                                                    _selected = 1;
-                                                    LyNavigator.navigateTo(
-                                                      routes[1],
-                                                    );
-                                                  });
-                                                },
-                                                leading: Icon(
-                                                  Icons.search_rounded,
-                                                  color: _selected == 1
-                                                      ? context.themeData
-                                                          .colorScheme.primary
-                                                      : null,
-                                                ),
-                                                title: Text(
-                                                  context.localization.search,
-                                                  style: TextStyle(
-                                                    color: _selected == 1
-                                                        ? context.themeData
-                                                            .colorScheme.primary
-                                                        : null,
-                                                  ),
-                                                ),
-                                              ),
-                                              LyListTile(
-                                                onTap: () {
-                                                  if (_selected != 3) {
-                                                    widget.coreController
-                                                        .updateData(
-                                                      widget.coreController.data
-                                                          .copyWith(
-                                                        pages: [],
-                                                      ),
-                                                    );
-                                                  }
-                                                  setState(() {
-                                                    _selected = 3;
-                                                    LyNavigator.navigateTo(
-                                                      routes[3],
-                                                    );
-                                                  });
-                                                },
-                                                leading: Icon(
-                                                  Icons.download_rounded,
-                                                  color: _selected == 3
-                                                      ? context.themeData
-                                                          .colorScheme.primary
-                                                      : null,
-                                                ),
-                                                title: Text(
-                                                  context
-                                                      .localization.downloads,
-                                                  style: TextStyle(
-                                                    color: _selected == 3
-                                                        ? context.themeData
-                                                            .colorScheme.primary
-                                                        : null,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: const RouterOutlet(),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: SizedBox(
-                                      width: 310,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 8,
-                                        ),
-                                        child: Card(
-                                          margin: EdgeInsets.zero,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            side: BorderSide(
-                                              strokeAlign: 1,
-                                              color: context
-                                                  .themeData.dividerColor
-                                                  .withOpacity(.2),
-                                            ),
-                                          ),
-                                          child: LibraryPage(
-                                            playerController:
-                                                widget.playerController,
-                                            getAlbumUsecase:
-                                                widget.getAlbumUsecase,
-                                            coreController:
-                                                widget.coreController,
-                                            libraryController:
-                                                widget.libraryController,
-                                            downloaderController:
-                                                widget.downloaderController,
-                                            getPlayableItemUsecase:
-                                                widget.getPlayableItemUsecase,
-                                            getPlaylistUsecase:
-                                                widget.getPlaylistUsecase,
-                                            getArtistUsecase:
-                                                widget.getArtistUsecase,
-                                            getArtistAlbumsUsecase:
-                                                widget.getArtistAlbumsUsecase,
-                                            getArtistTracksUsecase:
-                                                widget.getArtistTracksUsecase,
-                                            getArtistSinglesUsecase:
-                                                widget.getArtistSinglesUsecase,
-                                          ),
-                                        ),
-                                      ),
+                                  AnimatedSizeWidget(
+                                    // key: Key(data.hashCode.toString()),
+                                    duration: const Duration(
+                                      milliseconds: 150,
                                     ),
+                                    width: (data.showLyrics || data.showQueue)
+                                        ? 345
+                                        : 0,
+                                    height: 20,
+                                    child: Container(),
                                   ),
                                 ],
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 8,
-                                    bottom: 8,
-                                    right: 8,
-                                  ),
-                                  child: Card(
-                                    margin: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      side: BorderSide(
-                                        strokeAlign: 1,
-                                        color: context.themeData.dividerColor
-                                            .withOpacity(.2),
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: const RouterOutlet(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              AnimatedSizeWidget(
-                                // key: Key(data.hashCode.toString()),
-                                duration: const Duration(
-                                  milliseconds: 150,
-                                ),
-                                width: (data.showLyrics || data.showQueue)
-                                    ? 345
-                                    : 0,
-                                height: 20,
-                                child: Container(),
-                              ),
-                            ],
+                            ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: MiniPlayerWidget(
+                              playerController: widget.playerController,
+                              downloaderController: widget.downloaderController,
+                              coreController: widget.coreController,
+                              getAlbumUsecase: widget.getAlbumUsecase,
+                              getPlayableItemUsecase:
+                                  widget.getPlayableItemUsecase,
+                              libraryController: widget.libraryController,
+                              getArtistAlbumsUsecase:
+                                  widget.getArtistAlbumsUsecase,
+                              getArtistSinglesUsecase:
+                                  widget.getArtistSinglesUsecase,
+                              getArtistTracksUsecase:
+                                  widget.getArtistTracksUsecase,
+                              getArtistUsecase: widget.getArtistUsecase,
+                            ),
                           ),
-                        ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: MiniPlayerWidget(
-                          playerController: widget.playerController,
-                          downloaderController: widget.downloaderController,
-                          coreController: widget.coreController,
-                          getAlbumUsecase: widget.getAlbumUsecase,
-                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                          libraryController: widget.libraryController,
-                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase:
-                              widget.getArtistSinglesUsecase,
-                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                          getArtistUsecase: widget.getArtistUsecase,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           );
-        });
-      },
+        },
+      ),
     );
   }
 }
