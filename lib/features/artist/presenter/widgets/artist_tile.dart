@@ -54,14 +54,6 @@ class ArtistTile extends StatefulWidget {
 
 class _ArtistTileState extends State<ArtistTile> {
   @override
-  void initState() {
-    super.initState();
-    if (widget.contentOrigin == ContentOrigin.library) {
-      widget.libraryController.methods.getLibraryItem(widget.artist.id);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LibraryWrapper(
       libraryController: widget.libraryController,
@@ -71,36 +63,41 @@ class _ArtistTileState extends State<ArtistTile> {
           )
           .firstOrNull,
       child: LyListTile(
-        onTap: () => LyNavigator.push(
-          context.showingPageContext,
-          widget.artist.topTracks.isEmpty
-              ? AsyncArtistPage(
-                  artistId: widget.artist.id,
-                  coreController: widget.coreController,
-                  playerController: widget.playerController,
-                  downloaderController: widget.downloaderController,
-                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                  libraryController: widget.libraryController,
-                  getAlbumUsecase: widget.getAlbumUsecase,
-                  getArtistUsecase: widget.getArtistUsecase,
-                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                )
-              : ArtistPage(
-                  getAlbumUsecase: widget.getAlbumUsecase,
-                  artist: widget.artist,
-                  coreController: widget.coreController,
-                  playerController: widget.playerController,
-                  downloaderController: widget.downloaderController,
-                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                  libraryController: widget.libraryController,
-                  getArtistUsecase: widget.getArtistUsecase,
-                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                ),
-        ),
+        onTap: () {
+          LyNavigator.push(
+            context.showingPageContext,
+            widget.artist.topTracks.isEmpty
+                ? AsyncArtistPage(
+                    artistId: widget.artist.id,
+                    coreController: widget.coreController,
+                    playerController: widget.playerController,
+                    downloaderController: widget.downloaderController,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    libraryController: widget.libraryController,
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    getArtistUsecase: widget.getArtistUsecase,
+                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  )
+                : ArtistPage(
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    artist: widget.artist,
+                    coreController: widget.coreController,
+                    playerController: widget.playerController,
+                    downloaderController: widget.downloaderController,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    libraryController: widget.libraryController,
+                    getArtistUsecase: widget.getArtistUsecase,
+                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  ),
+          );
+          if (widget.contentOrigin == ContentOrigin.library) {
+            widget.libraryController.methods.getLibraryItem(widget.artist.id);
+          }
+        },
         subtitle: Text(
           context.localization.artist,
         ),

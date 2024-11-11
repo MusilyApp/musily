@@ -58,14 +58,6 @@ class AlbumTile extends StatefulWidget {
 
 class _AlbumTileState extends State<AlbumTile> {
   @override
-  void initState() {
-    super.initState();
-    if (widget.contentOrigin == ContentOrigin.library) {
-      widget.libraryController.methods.getLibraryItem(widget.album.id);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LibraryWrapper(
       libraryController: widget.libraryController,
@@ -110,6 +102,10 @@ class _AlbumTileState extends State<AlbumTile> {
                           getArtistUsecase: widget.getArtistUsecase,
                         ),
                 );
+                if (widget.contentOrigin == ContentOrigin.library) {
+                  widget.libraryController.methods
+                      .getLibraryItem(widget.album.id);
+                }
               },
         leading: Card(
           shape: RoundedRectangleBorder(
