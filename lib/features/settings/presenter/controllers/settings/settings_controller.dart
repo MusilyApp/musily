@@ -28,11 +28,18 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   @override
   SettingsMethods defineMethods() {
     return SettingsMethods(
-      setBrightness: () {
+      setBrightness: () async {
         if (!Platform.isAndroid) {
           return;
         }
-        if ((data.context?.themeMode ?? data.themeMode) == ThemeMode.dark) {
+        while (data.context == null) {
+          await Future.delayed(
+            const Duration(
+              seconds: 1,
+            ),
+          );
+        }
+        if (data.context!.themeMode == ThemeMode.dark) {
           SystemChrome.setSystemUIOverlayStyle(
             const SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.light,
@@ -80,13 +87,6 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
           data.locale = Locale(savedLocale);
           updateData(data);
         } else {
-          while (data.context == null) {
-            await Future.delayed(
-              const Duration(
-                seconds: 1,
-              ),
-            );
-          }
           while (data.context == null) {
             await Future.delayed(
               const Duration(
