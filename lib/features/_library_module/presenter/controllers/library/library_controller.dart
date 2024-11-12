@@ -72,9 +72,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     _updateLibraryItemUsecase = updateLibraryItemUsecase;
 
     methods.getLibraryItems();
-    if (data.loadedFavoritesHash.isEmpty) {
-      methods.loadFavorites();
-    }
   }
 
   final queue = Queue(
