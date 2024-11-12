@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:musily/core/domain/errors/app_error.dart';
 import 'package:musily/core/domain/errors/musily_error.dart';
+import 'package:musily/core/presenter/extensions/musily_error.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/utils/ly_error_handler.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_builder.dart';
 
@@ -40,21 +41,8 @@ abstract class BaseController<Data extends BaseControllerData, Methods> {
   }
 
   void catchError(dynamic error) {
-    if (error is AppError) {
-      dispatchEvent(
-        BaseControllerEvent<AppError>(
-          id: 'catch_error',
-          data: error,
-        ),
-      );
-    }
     if (error is MusilyError) {
-      dispatchEvent(
-        BaseControllerEvent<MusilyError>(
-          id: 'catch_error',
-          data: error,
-        ),
-      );
+      LyErrorHandler.snackBar(error.message);
     }
   }
 
@@ -84,13 +72,12 @@ abstract class BaseController<Data extends BaseControllerData, Methods> {
                       ),
                     );
                     Navigator.pop(context);
-                    // LyNavigator.navigateTo(NavigatorPages.homePage);
                   },
                   child: const Text('Ok'),
                 )
               ],
               title: Text(
-                getErrorStringById(
+                MusilyError.getErrorStringById(
                   (this.event.data as MusilyError).id,
                 ),
               ),
