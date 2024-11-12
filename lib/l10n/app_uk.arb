@@ -84,5 +84,13 @@
   "createAccount": "Створити обліковий запис",
   "name": "Ім''я",
   "pleaseEnterYourName": "Будь ласка, введіть ваше ім''я",
-  "artist": "Виконавець"
+  "artist": "Виконавець",
+  "internalServerError": "Внутрішня помилка сервера",
+  "invalidRequest": "Неправильний запит",
+  "emailAlreadyInUse": "Електронна пошта вже використовується",
+  "invalidCredentials": "Невірні облікові дані",
+  "loginRequired": "Потрібно увійти до системи",
+  "itemNotFound": "Елемент не знайдено",
+  "invalidUserId": "Невірний ID користувача",
+  "userNotFound": "Користувача не знайдено"
 }

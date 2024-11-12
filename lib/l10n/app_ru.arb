@@ -84,5 +84,13 @@
   "createAccount": "Создать аккаунт",
   "name": "Имя",
   "pleaseEnterYourName": "Пожалуйста, введите ваше имя",
-  "artist": "Исполнитель"
+  "artist": "Исполнитель",
+  "internalServerError": "Внутренняя ошибка сервера",
+  "invalidRequest": "Неверный запрос",
+  "emailAlreadyInUse": "Электронная почта уже используется",
+  "invalidCredentials": "Неверные учетные данные",
+  "loginRequired": "Требуется вход в систему",
+  "itemNotFound": "Элемент не найден",
+  "invalidUserId": "Неверный ID пользователя",
+  "userNotFound": "Пользователь не найден"
 }

@@ -84,5 +84,13 @@
   "createAccount": "Criar Conta",
   "name": "Nome",
   "pleaseEnterYourName": "Por favor, insira seu nome",
-  "artist": "Artista"
+  "artist": "Artista",
+  "internalServerError": "Erro interno do servidor",
+  "invalidRequest": "Solicitação inválida",
+  "emailAlreadyInUse": "O e-mail já está em uso",
+  "invalidCredentials": "Credenciais inválidas",
+  "loginRequired": "Login necessário",
+  "itemNotFound": "Item não encontrado",
+  "invalidUserId": "ID de usuário inválido",
+  "userNotFound": "Usuário não encontrado"
 }
