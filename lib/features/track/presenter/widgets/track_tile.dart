@@ -41,7 +41,7 @@ class TrackTile extends StatefulWidget {
   final Widget? leading;
   final void Function()? customAction;
   final List<AppMenuEntry> Function(BuildContext context)? customOptions;
-  final List<TrackTileOptions>? hideOptions;
+  final List<TrackTileOptions> hideOptions;
   const TrackTile({
     required this.track,
     required this.coreController,
@@ -49,7 +49,7 @@ class TrackTile extends StatefulWidget {
     required this.getPlayableItemUsecase,
     required this.libraryController,
     required this.downloaderController,
-    this.hideOptions,
+    this.hideOptions = const [],
     this.customOptions,
     this.leading,
     this.customAction,

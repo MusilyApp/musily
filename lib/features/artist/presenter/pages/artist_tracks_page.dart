@@ -145,6 +145,7 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
                         getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                         getArtistTracksUsecase: widget.getArtistTracksUsecase,
                         getArtistUsecase: widget.getArtistUsecase,
+                        hideOptions: const [TrackTileOptions.seeArtist],
                         customAction: () {
                           late final List<TrackEntity> queueToPlay;
                           if (widget.playerController.data.playingId ==

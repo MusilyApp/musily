@@ -391,6 +391,9 @@ class _ArtistPageState extends State<ArtistPage> {
                       getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                       getArtistTracksUsecase: widget.getArtistTracksUsecase,
                       getArtistUsecase: widget.getArtistUsecase,
+                      hideOptions: const [
+                        TrackTileOptions.seeArtist,
+                      ],
                       customAction: () async {
                         if (allTracks.isEmpty) {
                           await loadTracks();

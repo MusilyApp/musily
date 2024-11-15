@@ -123,137 +123,141 @@ class PlaylistOptions extends StatelessWidget {
                                   : context.localization.download,
                         ),
                       ),
-                    AppMenuEntry(
-                      leading: Icon(
-                        isPlaylistPlaying && playerData.isPlaying
-                            ? Icons.pause_rounded
-                            : Icons.play_arrow_rounded,
-                        color:
-                            context.themeData.buttonTheme.colorScheme?.primary,
-                      ),
-                      onTap: playlist.tracks.isEmpty
-                          ? null
-                          : () async {
-                              if (isPlaylistPlaying) {
-                                if (playerData.isPlaying) {
-                                  await playerController.methods.pause();
+                    if (playlist.tracks.isNotEmpty) ...[
+                      AppMenuEntry(
+                        leading: Icon(
+                          isPlaylistPlaying && playerData.isPlaying
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
+                        ),
+                        onTap: playlist.tracks.isEmpty
+                            ? null
+                            : () async {
+                                if (isPlaylistPlaying) {
+                                  if (playerData.isPlaying) {
+                                    await playerController.methods.pause();
+                                  } else {
+                                    await playerController.methods.resume();
+                                  }
                                 } else {
-                                  await playerController.methods.resume();
+                                  await playerController.methods.playPlaylist(
+                                    playlist.tracks,
+                                    playlist.id,
+                                    startFrom: 0,
+                                  );
+                                  libraryController.methods
+                                      .updateLastTimePlayed(
+                                    playlist.id,
+                                  );
                                 }
-                              } else {
-                                await playerController.methods.playPlaylist(
-                                  playlist.tracks,
-                                  playlist.id,
-                                  startFrom: 0,
-                                );
-                                libraryController.methods.updateLastTimePlayed(
-                                  playlist.id,
-                                );
-                              }
-                            },
-                      title: Text(
-                        isPlaylistPlaying && playerData.isPlaying
-                            ? context.localization.pause
-                            : context.localization.play,
-                      ),
-                    ),
-                    AppMenuEntry(
-                      onTap: () async {
-                        final random = Random();
-                        final randomIndex = random.nextInt(
-                          playlist.tracks.length,
-                        );
-                        playerController.methods.playPlaylist(
-                          playlist.tracks,
-                          playlist.id,
-                          startFrom: randomIndex,
-                        );
-                        if (!playerData.shuffleEnabled) {
-                          playerController.methods.toggleShuffle();
-                        } else {
-                          await playerController.methods.toggleShuffle();
-                          playerController.methods.toggleShuffle();
-                        }
-                        libraryController.methods.updateLastTimePlayed(
-                          playlist.id,
-                        );
-                      },
-                      leading: Icon(
-                        Icons.shuffle_rounded,
-                        color:
-                            context.themeData.buttonTheme.colorScheme?.primary,
-                      ),
-                      title: Text(
-                        context.localization.shufflePlay,
-                      ),
-                    ),
-                    AppMenuEntry(
-                      onTap: () {
-                        playerController.methods.addToQueue(
-                          playlist.tracks,
-                        );
-                      },
-                      leading: Icon(
-                        Icons.playlist_add,
-                        color:
-                            context.themeData.buttonTheme.colorScheme?.primary,
-                      ),
-                      title: Text(
-                        context.localization.addToQueue,
-                        style: const TextStyle(
-                          color: null,
+                              },
+                        title: Text(
+                          isPlaylistPlaying && playerData.isPlaying
+                              ? context.localization.pause
+                              : context.localization.play,
                         ),
                       ),
-                    ),
-                    AppMenuEntry(
-                      title: Text(
-                        context.localization.addToPlaylist,
+                      AppMenuEntry(
+                        onTap: () async {
+                          final random = Random();
+                          final randomIndex = random.nextInt(
+                            playlist.tracks.length,
+                          );
+                          playerController.methods.playPlaylist(
+                            playlist.tracks,
+                            playlist.id,
+                            startFrom: randomIndex,
+                          );
+                          if (!playerData.shuffleEnabled) {
+                            playerController.methods.toggleShuffle();
+                          } else {
+                            await playerController.methods.toggleShuffle();
+                            playerController.methods.toggleShuffle();
+                          }
+                          libraryController.methods.updateLastTimePlayed(
+                            playlist.id,
+                          );
+                        },
+                        leading: Icon(
+                          Icons.shuffle_rounded,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
+                        ),
+                        title: Text(
+                          context.localization.shufflePlay,
+                        ),
                       ),
-                      leading: Icon(
-                        Icons.queue_music,
-                        color:
-                            context.themeData.buttonTheme.colorScheme?.primary,
+                      AppMenuEntry(
+                        onTap: () {
+                          playerController.methods.addToQueue(
+                            playlist.tracks,
+                          );
+                        },
+                        leading: Icon(
+                          Icons.playlist_add,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
+                        ),
+                        title: Text(
+                          context.localization.addToQueue,
+                          style: const TextStyle(
+                            color: null,
+                          ),
+                        ),
                       ),
-                      onTap: () {
-                        // TODO AsynTracks
-                        if (context.display.isDesktop) {
-                          LyNavigator.showLyDialog(
-                            context: context,
-                            builder: (context) => Center(
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * .7,
-                                height: MediaQuery.of(context).size.height * .7,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    side: BorderSide(
-                                      color: context.themeData.dividerColor
-                                          .withOpacity(
-                                        .3,
+                      AppMenuEntry(
+                        title: Text(
+                          context.localization.addToPlaylist,
+                        ),
+                        leading: Icon(
+                          Icons.queue_music,
+                          color: context
+                              .themeData.buttonTheme.colorScheme?.primary,
+                        ),
+                        onTap: () {
+                          // TODO AsynTracks
+                          if (context.display.isDesktop) {
+                            LyNavigator.showLyDialog(
+                              context: context,
+                              builder: (context) => Center(
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * .7,
+                                  height:
+                                      MediaQuery.of(context).size.height * .7,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      side: BorderSide(
+                                        color: context.themeData.dividerColor
+                                            .withOpacity(
+                                          .3,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: PlaylistAdderWidget(
-                                    coreController: coreController,
-                                    libraryController: libraryController,
-                                    tracks: playlist.tracks,
+                                    child: PlaylistAdderWidget(
+                                      coreController: coreController,
+                                      libraryController: libraryController,
+                                      tracks: playlist.tracks,
+                                    ),
                                   ),
                                 ),
                               ),
+                            );
+                            return;
+                          }
+                          LyNavigator.push(
+                            coreController.coreContext!,
+                            PlaylistAdderWidget(
+                              coreController: coreController,
+                              libraryController: libraryController,
+                              tracks: playlist.tracks,
                             ),
                           );
-                          return;
-                        }
-                        LyNavigator.push(
-                          coreController.coreContext!,
-                          PlaylistAdderWidget(
-                            coreController: coreController,
-                            libraryController: libraryController,
-                            tracks: playlist.tracks,
-                          ),
-                        );
-                      },
-                    ),
+                        },
+                      ),
+                    ],
                     if (playlist.id != UserService.favoritesId &&
                         playlist.id != 'offline' &&
                         isInLibrary)

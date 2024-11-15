@@ -215,7 +215,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                 .length ==
                             widget.playlist.tracks.length;
                         return LyTonalIconButton(
-                          onPressed: widget.playlist.id == 'offline'
+                          onPressed: widget.playlist.id == 'offline' ||
+                                  widget.playlist.tracks.isEmpty
                               ? null
                               : () {
                                   if (isDone) {
@@ -316,30 +317,33 @@ class _PlaylistPageState extends State<PlaylistPage> {
                               width: 8,
                             ),
                             LyTonalIconButton(
-                              onPressed: () async {
-                                final random = Random();
-                                final randomIndex = random.nextInt(
-                                  widget.playlist.tracks.length,
-                                );
-                                widget.playerController.methods.playPlaylist(
-                                  widget.playlist.tracks,
-                                  widget.playlist.id,
-                                  startFrom: randomIndex,
-                                );
-                                if (!data.shuffleEnabled) {
-                                  widget.playerController.methods
-                                      .toggleShuffle();
-                                } else {
-                                  await widget.playerController.methods
-                                      .toggleShuffle();
-                                  widget.playerController.methods
-                                      .toggleShuffle();
-                                }
-                                widget.libraryController.methods
-                                    .updateLastTimePlayed(
-                                  widget.playlist.id,
-                                );
-                              },
+                              onPressed: widget.playlist.tracks.isNotEmpty
+                                  ? () async {
+                                      final random = Random();
+                                      final randomIndex = random.nextInt(
+                                        widget.playlist.tracks.length,
+                                      );
+                                      widget.playerController.methods
+                                          .playPlaylist(
+                                        widget.playlist.tracks,
+                                        widget.playlist.id,
+                                        startFrom: randomIndex,
+                                      );
+                                      if (!data.shuffleEnabled) {
+                                        widget.playerController.methods
+                                            .toggleShuffle();
+                                      } else {
+                                        await widget.playerController.methods
+                                            .toggleShuffle();
+                                        widget.playerController.methods
+                                            .toggleShuffle();
+                                      }
+                                      widget.libraryController.methods
+                                          .updateLastTimePlayed(
+                                        widget.playlist.id,
+                                      );
+                                    }
+                                  : null,
                               fixedSize: const Size(55, 55),
                               icon: const Icon(
                                 Icons.shuffle_rounded,

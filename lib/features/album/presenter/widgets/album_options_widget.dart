@@ -15,6 +15,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -90,6 +91,36 @@ class AlbumOptions extends StatelessWidget {
                   isAlbumDownloading
                       ? context.localization.cancelDownload
                       : context.localization.download,
+                ),
+              ),
+              AppMenuEntry(
+                onTap: () {
+                  coreController.updateData(
+                    coreController.data.copyWith(
+                      isShowingDialog: false,
+                    ),
+                  );
+                  LyNavigator.push(
+                    context.showingPageContext,
+                    AsyncArtistPage(
+                      artistId: album.artist.id,
+                      coreController: coreController,
+                      playerController: playerController,
+                      downloaderController: downloaderController,
+                      getPlayableItemUsecase: getPlayableItemUsecase,
+                      libraryController: libraryController,
+                      getAlbumUsecase: getAlbumUsecase,
+                      getArtistUsecase: getArtistUsecase,
+                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                      getArtistTracksUsecase: getArtistTracksUsecase,
+                      getArtistSinglesUsecase: getArtistSinglesUsecase,
+                    ),
+                  );
+                },
+                title: Text(context.localization.goToArtist),
+                leading: Icon(
+                  Icons.person_rounded,
+                  color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
               ),
               AppMenuEntry(

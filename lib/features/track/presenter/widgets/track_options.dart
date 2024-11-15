@@ -31,7 +31,7 @@ class TrackOptions extends StatelessWidget {
   final LibraryController libraryController;
   final GetAlbumUsecase getAlbumUsecase;
   final List<AppMenuEntry> Function(BuildContext context)? customActions;
-  final List<TrackTileOptions>? hideOptions;
+  final List<TrackTileOptions> hideOptions;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
@@ -47,7 +47,7 @@ class TrackOptions extends StatelessWidget {
     required this.libraryController,
     required this.getAlbumUsecase,
     this.customActions,
-    this.hideOptions,
+    this.hideOptions = const [],
     required this.getArtistUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
@@ -68,13 +68,13 @@ class TrackOptions extends StatelessWidget {
       ),
       entries: [
         if (customActions != null) ...customActions!.call(context),
-        if (!(hideOptions ?? []).contains(TrackTileOptions.download))
+        if (!hideOptions.contains(TrackTileOptions.download))
           AppMenuEntry(
             leading: downloaderMenuEntry.leading,
             title: downloaderMenuEntry.child,
             onTap: downloaderMenuEntry.onPressed,
           ),
-        if (!(hideOptions ?? []).contains(TrackTileOptions.addToPlaylist))
+        if (!hideOptions.contains(TrackTileOptions.addToPlaylist))
           AppMenuEntry(
             leading: Icon(
               Icons.playlist_add_rounded,
@@ -121,7 +121,7 @@ class TrackOptions extends StatelessWidget {
               context.localization.addToPlaylist,
             ),
           ),
-        if (!(hideOptions ?? []).contains(TrackTileOptions.addToQueue))
+        if (!hideOptions.contains(TrackTileOptions.addToQueue))
           AppMenuEntry(
             onTap: () {
               playerController.methods.addToQueue([track]);
@@ -139,7 +139,7 @@ class TrackOptions extends StatelessWidget {
               color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
-        if (!(hideOptions ?? []).contains(TrackTileOptions.seeAlbum))
+        if (!hideOptions.contains(TrackTileOptions.seeAlbum))
           if (track.album.id.isNotEmpty)
             AppMenuEntry(
               onTap: () {
@@ -171,7 +171,7 @@ class TrackOptions extends StatelessWidget {
                 color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
             ),
-        if (!(hideOptions ?? []).contains(TrackTileOptions.seeArtist))
+        if (!hideOptions.contains(TrackTileOptions.seeArtist))
           AppMenuEntry(
             onTap: () {
               coreController.updateData(
@@ -202,7 +202,7 @@ class TrackOptions extends StatelessWidget {
               color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
-        if (!(hideOptions ?? []).contains(TrackTileOptions.share))
+        if (!hideOptions.contains(TrackTileOptions.share))
           AppMenuEntry(
             title: Text(context.localization.share),
             leading: Icon(
