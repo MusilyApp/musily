@@ -154,8 +154,7 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                       final Icon originalIcon = widget.icon as Icon;
                       return Icon(
                         originalIcon.icon,
-                        size:
-                            _getIconSize(), // Usa o tamanho do ícone baseado na densidade
+                        size: _getIconSize(),
                         color: isDisabled
                             ? context.themeData.colorScheme.onSurface
                                 .withOpacity(0.38)
