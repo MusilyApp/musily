@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
@@ -22,7 +21,6 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/widgets/artist_tile.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/favorite/presenter/widgets/favorite_icon.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
@@ -172,92 +170,8 @@ class _LibraryPageState extends State<LibraryPage> {
                           builder: (context) {
                             bool showOffline =
                                 offlinePlaylist.playlist!.trackCount > 0;
-                            final favoritesPlaylistFiltered = data.items.where(
-                                (item) => item.id == UserService.favoritesId);
-                            final favoritesPlaylist =
-                                (favoritesPlaylistFiltered.lastOrNull);
                             return Column(
                               children: [
-                                if (favoritesPlaylist != null)
-                                  LyListTile(
-                                    onTap: () => LyNavigator.push(
-                                      context.showingPageContext,
-                                      favoritesPlaylist
-                                              .playlist!.tracks.isNotEmpty
-                                          ? PlaylistPage(
-                                              playlist:
-                                                  favoritesPlaylist.playlist!,
-                                              playerController:
-                                                  widget.playerController,
-                                              coreController:
-                                                  widget.coreController,
-                                              downloaderController:
-                                                  widget.downloaderController,
-                                              getPlayableItemUsecase:
-                                                  widget.getPlayableItemUsecase,
-                                              libraryController:
-                                                  widget.libraryController,
-                                              getAlbumUsecase:
-                                                  widget.getAlbumUsecase,
-                                              getArtistAlbumsUsecase:
-                                                  widget.getArtistAlbumsUsecase,
-                                              getArtistSinglesUsecase: widget
-                                                  .getArtistSinglesUsecase,
-                                              getArtistTracksUsecase:
-                                                  widget.getArtistTracksUsecase,
-                                              getArtistUsecase:
-                                                  widget.getArtistUsecase,
-                                            )
-                                          : AsyncPlaylistPage(
-                                              origin: ContentOrigin.library,
-                                              playlistId: favoritesPlaylist.id,
-                                              coreController:
-                                                  widget.coreController,
-                                              playerController:
-                                                  widget.playerController,
-                                              downloaderController:
-                                                  widget.downloaderController,
-                                              getPlayableItemUsecase:
-                                                  widget.getPlayableItemUsecase,
-                                              libraryController:
-                                                  widget.libraryController,
-                                              getAlbumUsecase:
-                                                  widget.getAlbumUsecase,
-                                              getArtistUsecase:
-                                                  widget.getArtistUsecase,
-                                              getArtistTracksUsecase:
-                                                  widget.getArtistTracksUsecase,
-                                              getArtistAlbumsUsecase:
-                                                  widget.getArtistAlbumsUsecase,
-                                              getArtistSinglesUsecase: widget
-                                                  .getArtistSinglesUsecase,
-                                            ),
-                                    ),
-                                    leading: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: const FavoriteIcon(
-                                        size: 50,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      context.localization.favorites,
-                                    ),
-                                    subtitle: Builder(
-                                      builder: (context) {
-                                        if (data.itemsAddingToFavorites
-                                            .isNotEmpty) {
-                                          return Skeletonizer(
-                                            child: Text(
-                                              '${favoritesPlaylist.playlist!.trackCount} ${context.localization.songs}',
-                                            ),
-                                          );
-                                        }
-                                        return Text(
-                                          '${favoritesPlaylist.playlist!.trackCount} ${context.localization.songs}',
-                                        );
-                                      },
-                                    ),
-                                  ),
                                 if (showOffline)
                                   LyListTile(
                                     onTap: () => LyNavigator.push(
@@ -326,93 +240,114 @@ class _LibraryPageState extends State<LibraryPage> {
                                       '${offlinePlaylist.playlist!.trackCount} ${context.localization.songs}',
                                     ),
                                   ),
-                                const Divider(),
-                                SegmentedButton(
-                                  emptySelectionAllowed: true,
-                                  segments: const [
-                                    ButtonSegment(
-                                      value: 'album',
-                                      label: Icon(
-                                        Icons.album_rounded,
+                                if (showOffline && data.items.isNotEmpty)
+                                  const Divider(),
+                                if (data.items.isNotEmpty) ...[
+                                  SegmentedButton(
+                                    emptySelectionAllowed: true,
+                                    segments: const [
+                                      ButtonSegment(
+                                        value: 'album',
+                                        label: Icon(
+                                          Icons.album_rounded,
+                                        ),
+                                        icon: Icon(
+                                          Icons.filter_alt_rounded,
+                                        ),
                                       ),
-                                      icon: Icon(
-                                        Icons.filter_alt_rounded,
+                                      ButtonSegment(
+                                        value: 'artist',
+                                        label: Icon(
+                                          Icons.person_rounded,
+                                        ),
+                                        icon: Icon(
+                                          Icons.filter_alt_rounded,
+                                        ),
                                       ),
-                                    ),
-                                    ButtonSegment(
-                                      value: 'artist',
-                                      label: Icon(
-                                        Icons.person_rounded,
+                                      ButtonSegment(
+                                        value: 'playlist',
+                                        label: Icon(
+                                          Icons.playlist_play_rounded,
+                                        ),
+                                        icon: Icon(
+                                          Icons.filter_alt_rounded,
+                                        ),
                                       ),
-                                      icon: Icon(
-                                        Icons.filter_alt_rounded,
-                                      ),
-                                    ),
-                                    ButtonSegment(
-                                      value: 'playlist',
-                                      label: Icon(
-                                        Icons.playlist_play_rounded,
-                                      ),
-                                      icon: Icon(
-                                        Icons.filter_alt_rounded,
-                                      ),
-                                    ),
-                                  ],
-                                  selected: filters,
-                                  onSelectionChanged: (value) {
-                                    setState(() {
-                                      filters = value;
-                                    });
-                                  },
-                                  multiSelectionEnabled: true,
-                                ),
-                                const Divider(),
+                                    ],
+                                    selected: filters,
+                                    onSelectionChanged: (value) {
+                                      setState(() {
+                                        filters = value;
+                                      });
+                                    },
+                                    multiSelectionEnabled: true,
+                                  ),
+                                  const Divider()
+                                ],
                               ],
                             );
                           },
                         ),
-                        if (itemList
+                        if (data.items
                             .where(
-                              (item) => !([UserService.favoritesId, 'offline']
-                                  .contains(item.id)),
+                              (item) => item.id != 'offline',
                             )
                             .isEmpty)
-                          widget.playerController.builder(
-                            builder: (context, data) {
-                              return Expanded(
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.library_music_rounded,
-                                        size: 70,
-                                        color: context
-                                            .themeData.colorScheme.outline
-                                            .withOpacity(.9),
-                                      ),
-                                      Text(
-                                        context.localization.emptyLibrary,
-                                        style: TextStyle(
-                                          color: context
-                                              .themeData.colorScheme.outline
-                                              .withOpacity(.9),
-                                        ),
-                                      ),
-                                    ],
+                          Expanded(
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.library_music_rounded,
+                                    size: 70,
+                                    color: context.themeData.colorScheme.outline
+                                        .withOpacity(.9),
                                   ),
-                                ),
-                              );
-                            },
+                                  Text(
+                                    context.localization.emptyLibrary,
+                                    style: TextStyle(
+                                      color: context
+                                          .themeData.colorScheme.outline
+                                          .withOpacity(.9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        else if (itemList
+                            .where((e) => e.id != 'offline')
+                            .isEmpty)
+                          Expanded(
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.filter_alt_off,
+                                    size: 70,
+                                    color: context.themeData.colorScheme.outline
+                                        .withOpacity(.9),
+                                  ),
+                                  Text(
+                                    context.localization.noResults,
+                                    style: TextStyle(
+                                      color: context
+                                          .themeData.colorScheme.outline
+                                          .withOpacity(.9),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           )
                         else
                           Expanded(
                             child: ListView(
                               children: [
                                 ...itemList
-                                    .where((item) =>
-                                        item.id != UserService.favoritesId &&
-                                        item.id != 'offline')
+                                    .where((item) => item.id != 'offline')
                                     .map(
                                       (item) => Builder(
                                         builder: (context) {
