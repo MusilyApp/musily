@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
@@ -101,7 +102,9 @@ class PlaylistTile extends StatelessWidget {
             playlist: playlist,
           ),
           title: Text(
-            playlist.title,
+            playlist.id == UserService.favoritesId
+                ? context.localization.favorites
+                : playlist.title,
           ),
           subtitle: Builder(
             builder: (context) {
