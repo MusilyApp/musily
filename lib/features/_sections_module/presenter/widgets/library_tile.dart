@@ -167,7 +167,12 @@ class LibraryTile extends StatelessWidget {
                 bottomLeft: Radius.circular(8),
               ),
               child: item.playlist!.id == UserService.favoritesId
-                  ? const FavoriteIcon()
+                  ? playerController.builder(builder: (context, data) {
+                      return FavoriteIcon(
+                        animated: data.isPlaying &&
+                            data.playingId.startsWith('favorites'),
+                      );
+                    })
                   : const SizedBox(
                       width: 48,
                       height: 48,

@@ -100,6 +100,7 @@ class PlaylistTile extends StatelessWidget {
           },
           leading: PlaylistTileThumb(
             playlist: playlist,
+            playerController: playerController,
           ),
           title: Text(
             playlist.id == UserService.favoritesId
