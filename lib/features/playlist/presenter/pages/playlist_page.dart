@@ -466,10 +466,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                   if (context.display.isDesktop) {
                                     return;
                                   }
-                                  Navigator.pop(context);
                                 },
                                 title: Text(
-                                    context.localization.removeFromPlaylist),
+                                  context.localization.removeFromPlaylist,
+                                ),
                                 leading: Icon(
                                   Icons.delete_rounded,
                                   color: context.themeData.buttonTheme
