@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
@@ -120,24 +121,27 @@ class _TrackResultsPageState extends State<TrackResultsPage> {
               ),
             );
           }
-          return ListView.builder(
-            itemCount: data.tracksResult.items.length,
-            itemBuilder: (context, index) {
-              final track = data.tracksResult.items[index];
-              return TrackTile(
-                track: track,
-                getAlbumUsecase: widget.getAlbumUsecase,
-                coreController: widget.coreController,
+          return ListView(
+            children: [
+              ...data.tracksResult.items.map(
+                (track) => TrackTile(
+                  track: track,
+                  getAlbumUsecase: widget.getAlbumUsecase,
+                  coreController: widget.coreController,
+                  playerController: widget.playerController,
+                  downloaderController: widget.downloaderController,
+                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                  libraryController: widget.libraryController,
+                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                  getArtistUsecase: widget.getArtistUsecase,
+                ),
+              ),
+              PlayerSizedBox(
                 playerController: widget.playerController,
-                downloaderController: widget.downloaderController,
-                getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                libraryController: widget.libraryController,
-                getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                getArtistUsecase: widget.getArtistUsecase,
-              );
-            },
+              ),
+            ],
           );
         },
       ),

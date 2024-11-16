@@ -3,7 +3,6 @@ import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
-import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/_search_module/presenter/pages/album_results_page.dart';
@@ -163,9 +162,6 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                   ],
                 ),
-              ),
-              PlayerSizedBox(
-                playerController: widget.playerController,
               ),
             ],
           ),
