@@ -182,6 +182,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                               hideOptions: const [
                                 TrackTileOptions.seeAlbum,
                                 TrackTileOptions.seeArtist,
+                                TrackTileOptions.addToQueue,
                               ],
                             ),
                           ],
