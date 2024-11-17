@@ -603,6 +603,9 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         final index = data.items.indexWhere(
           (e) => e.id == id || e.album?.id == id || e.artist?.id == id,
         );
+        if (index < 0) {
+          return;
+        }
         final lastTimePlayed =
             data.items.elementAtOrNull(index)?.lastTimePlayed;
         try {
