@@ -10,6 +10,9 @@ class SimplifiedArtist {
     required this.id,
     required this.name,
   });
+
+  @override
+  String toString() => 'SimplifiedArtist(id: $id, name: $name)';
 }
 
 class ArtistEntity implements Identifiable {
