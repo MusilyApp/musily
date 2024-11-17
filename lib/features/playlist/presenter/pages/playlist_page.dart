@@ -564,9 +564,9 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
       contextKey: 'AsyncPlaylistPage_${widget.playlistId}',
       child: Scaffold(
         appBar: playlist == null ? AppBar() : null,
-        body: Builder(
-          builder: (context) {
-            if (loadingPlaylist) {
+        body: widget.libraryController.builder(
+          builder: (context, data) {
+            if (loadingPlaylist || data.loading) {
               return Center(
                 child: LoadingAnimationWidget.halfTriangleDot(
                   color: context.themeData.colorScheme.primary,

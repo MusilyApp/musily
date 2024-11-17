@@ -739,9 +739,9 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
       contextKey: 'AsyncArtistPage_${widget.artistId}',
       child: Scaffold(
         appBar: artist == null ? AppBar() : null,
-        body: Builder(
-          builder: (context) {
-            if (loadingArtist) {
+        body: widget.libraryController.builder(
+          builder: (context, data) {
+            if (loadingArtist || data.loading) {
               return Center(
                 child: LoadingAnimationWidget.halfTriangleDot(
                   color: context.themeData.colorScheme.primary,

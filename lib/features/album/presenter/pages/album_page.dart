@@ -528,9 +528,9 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
       contextKey: 'AsyncAlbumPage_${widget.albumId}',
       child: Scaffold(
         appBar: album == null ? AppBar() : null,
-        body: Builder(
-          builder: (context) {
-            if (loadingAlbum) {
+        body: widget.libraryController.builder(
+          builder: (context, data) {
+            if (loadingAlbum || data.loading) {
               return Center(
                 child: LoadingAnimationWidget.halfTriangleDot(
                   color: context.themeData.colorScheme.primary,
