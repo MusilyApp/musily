@@ -75,13 +75,19 @@ https://musily.app/artist/${artist.id}/
 ''');
       },
       shareSong: (track) async {
+        late final String url;
+        if (track.album.id.isEmpty) {
+          url = 'https://musily.app/song/${track.id}/';
+        } else {
+          url = 'https://musily.app/album/${track.album.id}/${track.id}';
+        }
         await Share.share('''
 ${coreContext!.localization.comeCheckTEMPLATEOnMusily.replaceAll(
           'TEMPLATE',
           '"${track.title}"',
         )}
 
-https://musily.app/song/${track.id}/
+$url
 ''');
       },
       shareAlbum: (album) async {
@@ -95,117 +101,135 @@ https://musily.app/album/${album.id}/
 ''');
       },
       handleDeepLink: (uri) async {
-        updateData(
-          data.copyWith(
-            hadlingDeepLink: true,
-          ),
-        );
+        try {
+          updateData(
+            data.copyWith(
+              hadlingDeepLink: true,
+            ),
+          );
+          final contextManager = ContextManager();
+          final pagesKeys = [
+            'LibraryPage',
+            'SectionsPage',
+            'SearchPage',
+            'DownloaderPage',
+          ];
 
-        final contextManager = ContextManager();
-        final pagesKeys = [
-          'LibraryPage',
-          'SectionsPage',
-          'SearchPage',
-          'DownloaderPage',
-        ];
+          final context = contextManager.contextStack
+              .where((e) => pagesKeys.contains(e.key))
+              .firstOrNull
+              ?.context;
 
-        final context = contextManager.contextStack
-            .where((e) => pagesKeys.contains(e.key))
-            .firstOrNull
-            ?.context;
-
-        if (context == null) {
-          return;
-        }
-
-        final uriSegments = uri.pathSegments;
-
-        if (uriSegments.isNotEmpty) {
-          final type = uriSegments.elementAtOrNull(0);
-          final id = uriSegments.elementAtOrNull(1);
-          final origin = uriSegments.elementAtOrNull(2);
-
-          switch (type) {
-            case 'artist':
-              if (id != null) {
-                LyNavigator.push(
-                  context,
-                  AsyncArtistPage(
-                    artistId: id,
-                    coreController: this,
-                    playerController: playerController,
-                    downloaderController: downloaderController,
-                    getPlayableItemUsecase: getPlayableItemUsecase,
-                    libraryController: libraryController,
-                    getAlbumUsecase: getAlbumUsecase,
-                    getArtistUsecase: getArtistUsecase,
-                    getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                    getArtistTracksUsecase: getArtistTracksUsecase,
-                    getArtistSinglesUsecase: getArtistSinglesUsecase,
-                  ),
-                );
-              }
-              break;
-            case 'album':
-              if (id != null) {
-                LyNavigator.push(
-                  context,
-                  AsyncAlbumPage(
-                    albumId: id,
-                    coreController: this,
-                    playerController: playerController,
-                    downloaderController: downloaderController,
-                    getPlayableItemUsecase: getPlayableItemUsecase,
-                    libraryController: libraryController,
-                    getAlbumUsecase: getAlbumUsecase,
-                    getArtistUsecase: getArtistUsecase,
-                    getArtistTracksUsecase: getArtistTracksUsecase,
-                    getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                    getArtistSinglesUsecase: getArtistSinglesUsecase,
-                  ),
-                );
-              }
-              break;
-            case 'playlist':
-              if (id != null) {
-                LyNavigator.push(
-                  context,
-                  AsyncPlaylistPage(
-                    playlistId: id,
-                    coreController: this,
-                    playerController: playerController,
-                    downloaderController: downloaderController,
-                    getPlayableItemUsecase: getPlayableItemUsecase,
-                    libraryController: libraryController,
-                    getAlbumUsecase: getAlbumUsecase,
-                    getArtistUsecase: getArtistUsecase,
-                    getArtistTracksUsecase: getArtistTracksUsecase,
-                    getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                    getArtistSinglesUsecase: getArtistSinglesUsecase,
-                    origin: origin == 'library'
-                        ? ContentOrigin.library
-                        : ContentOrigin.dataFetch,
-                  ),
-                );
-              }
-              break;
-            case 'song':
-              if (id != null) {
-                final song = await getTrackUsecase.exec(id);
-                if (song != null) {
-                  playerController.methods.addToQueue([song]);
-                }
-              }
-              break;
-            default:
-              break;
+          if (context == null) {
+            return;
           }
+
+          final uriSegments = uri.pathSegments;
+
+          if (uriSegments.isNotEmpty) {
+            final type = uriSegments.elementAtOrNull(0);
+            final id = uriSegments.elementAtOrNull(1);
+            final extra = uriSegments.elementAtOrNull(2);
+
+            switch (type) {
+              case 'artist':
+                if (id != null) {
+                  LyNavigator.push(
+                    context,
+                    AsyncArtistPage(
+                      artistId: id,
+                      coreController: this,
+                      playerController: playerController,
+                      downloaderController: downloaderController,
+                      getPlayableItemUsecase: getPlayableItemUsecase,
+                      libraryController: libraryController,
+                      getAlbumUsecase: getAlbumUsecase,
+                      getArtistUsecase: getArtistUsecase,
+                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                      getArtistTracksUsecase: getArtistTracksUsecase,
+                      getArtistSinglesUsecase: getArtistSinglesUsecase,
+                    ),
+                  );
+                }
+                break;
+              case 'album':
+                if (id != null) {
+                  if (extra != null) {
+                    final fetchedAlbum = await getAlbumUsecase.exec(id);
+                    if (fetchedAlbum != null) {
+                      final track = fetchedAlbum.tracks
+                          .where(
+                            (e) => e.id == extra,
+                          )
+                          .firstOrNull;
+                      if (track != null) {
+                        playerController.methods.addToQueue([track]);
+                      }
+                    }
+                    return;
+                  }
+                  LyNavigator.push(
+                    context,
+                    AsyncAlbumPage(
+                      albumId: id,
+                      coreController: this,
+                      playerController: playerController,
+                      downloaderController: downloaderController,
+                      getPlayableItemUsecase: getPlayableItemUsecase,
+                      libraryController: libraryController,
+                      getAlbumUsecase: getAlbumUsecase,
+                      getArtistUsecase: getArtistUsecase,
+                      getArtistTracksUsecase: getArtistTracksUsecase,
+                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: getArtistSinglesUsecase,
+                    ),
+                  );
+                }
+                break;
+              case 'playlist':
+                if (id != null) {
+                  LyNavigator.push(
+                    context,
+                    AsyncPlaylistPage(
+                      playlistId: id,
+                      coreController: this,
+                      playerController: playerController,
+                      downloaderController: downloaderController,
+                      getPlayableItemUsecase: getPlayableItemUsecase,
+                      libraryController: libraryController,
+                      getAlbumUsecase: getAlbumUsecase,
+                      getArtistUsecase: getArtistUsecase,
+                      getArtistTracksUsecase: getArtistTracksUsecase,
+                      getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: getArtistSinglesUsecase,
+                      origin: extra == 'library'
+                          ? ContentOrigin.library
+                          : ContentOrigin.dataFetch,
+                    ),
+                  );
+                }
+                break;
+              case 'song':
+                if (id != null) {
+                  final song = await getTrackUsecase.exec(id);
+                  if (song != null) {
+                    playerController.methods.addToQueue([song]);
+                  }
+                }
+                break;
+              default:
+                break;
+            }
+          }
+        } catch (e) {
+          catchError(e);
+        } finally {
+          updateData(
+            data.copyWith(
+              hadlingDeepLink: false,
+            ),
+          );
         }
-        updateData(
-          data.copyWith(
-            hadlingDeepLink: false,
-          ),
-        );
       },
     );
   }
