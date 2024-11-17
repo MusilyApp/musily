@@ -92,5 +92,6 @@
   "loginRequired": "Inicio de sesión requerido",
   "itemNotFound": "Elemento no encontrado",
   "invalidUserId": "ID de usuario inválido",
-  "userNotFound": "Usuario no encontrado"
+  "userNotFound": "Usuario no encontrado",
+  "comeCheckTEMPLATEOnMusily": "¡Ven a ver TEMPLATE en Musily!"
 }

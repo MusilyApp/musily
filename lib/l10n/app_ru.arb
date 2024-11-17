@@ -92,5 +92,6 @@
   "loginRequired": "Требуется вход в систему",
   "itemNotFound": "Элемент не найден",
   "invalidUserId": "Неверный ID пользователя",
-  "userNotFound": "Пользователь не найден"
+  "userNotFound": "Пользователь не найден",
+  "comeCheckTEMPLATEOnMusily": "Приходите посмотреть TEMPLATE на Musily!"
 }

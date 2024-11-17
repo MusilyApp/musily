@@ -92,5 +92,6 @@
   "loginRequired": "Login required",
   "itemNotFound": "Item not found",
   "invalidUserId": "Invalid user ID",
-  "userNotFound": "User not found"
+  "userNotFound": "User not found",
+  "comeCheckTEMPLATEOnMusily": "Come check TEMPLATE on Musily!"
 }
