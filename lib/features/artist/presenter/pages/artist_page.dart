@@ -258,7 +258,11 @@ class _ArtistPageState extends State<ArtistPage> {
                         width: 8,
                       ),
                       LyTonalIconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.coreController.methods.shareArtist(
+                            widget.artist,
+                          );
+                        },
                         fixedSize: const Size(55, 55),
                         icon: const Icon(
                           Icons.share_rounded,

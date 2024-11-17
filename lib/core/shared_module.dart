@@ -67,7 +67,20 @@ class SharedModule extends Module {
 
     final musilyRepository = MusilyRepositoryImpl();
 
-    i.addLazySingleton(CoreController.new);
+    i.addLazySingleton(
+      () => CoreController(
+        playerController: i.get<PlayerController>(),
+        downloaderController: i.get<DownloaderController>(),
+        libraryController: i.get<LibraryController>(),
+        getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
+        getTrackUsecase: i.get<GetTrackUsecaseImpl>(),
+        getAlbumUsecase: i.get<GetAlbumUsecaseImpl>(),
+        getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
+        getArtistAlbumsUsecase: i.get<GetArtistAlbumsUsecaseImpl>(),
+        getArtistTracksUsecase: i.get<GetArtistTracksUsecaseImpl>(),
+        getArtistSinglesUsecase: i.get<GetArtistSinglesUsecaseImpl>(),
+      ),
+    );
     i.addLazySingleton(
       HttpAdapterImpl.new,
     );

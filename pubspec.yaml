@@ -72,6 +72,7 @@ dependencies:
   crypto: ^3.0.3
   adwaita: ^1.1.0
   flutter_download_manager: ^0.5.5
+  share_plus: ^10.1.2
 
 # Development Dependencies
 dev_dependencies:

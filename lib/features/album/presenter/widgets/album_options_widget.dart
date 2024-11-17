@@ -246,7 +246,9 @@ class AlbumOptions extends StatelessWidget {
                 ),
               ),
               AppMenuEntry(
-                onTap: () {},
+                onTap: () {
+                  coreController.methods.shareAlbum(album);
+                },
                 leading: Icon(
                   Icons.share_rounded,
                   color: Theme.of(context).buttonTheme.colorScheme?.primary,

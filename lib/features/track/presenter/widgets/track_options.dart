@@ -205,6 +205,9 @@ class TrackOptions extends StatelessWidget {
         if (!hideOptions.contains(TrackTileOptions.share))
           AppMenuEntry(
             title: Text(context.localization.share),
+            onTap: () {
+              coreController.methods.shareSong(track);
+            },
             leading: Icon(
               Icons.share_rounded,
               color: context.themeData.buttonTheme.colorScheme?.primary,

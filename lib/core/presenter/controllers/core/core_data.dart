@@ -1,26 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 
 class CoreData extends BaseControllerData {
   bool isShowingDialog;
   bool isPlayerExpanded;
-  List<Widget> pages;
+  bool hadlingDeepLink;
   CoreData({
     required this.isShowingDialog,
     required this.isPlayerExpanded,
-    required this.pages,
+    required this.hadlingDeepLink,
   });
 
   @override
   CoreData copyWith({
     bool? isShowingDialog,
     bool? isPlayerExpanded,
-    List<Widget>? pages,
+    bool? hadlingDeepLink,
   }) {
     return CoreData(
       isShowingDialog: isShowingDialog ?? this.isShowingDialog,
       isPlayerExpanded: isPlayerExpanded ?? this.isPlayerExpanded,
-      pages: pages ?? this.pages,
+      hadlingDeepLink: hadlingDeepLink ?? this.hadlingDeepLink,
     );
   }
 }

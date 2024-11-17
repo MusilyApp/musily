@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
@@ -93,7 +94,7 @@ class _CorePageState extends State<CorePage> {
     _appLinks = AppLinks();
 
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      debugPrint('onAppLink: $uri');
+      widget.coreController.methods.handleDeepLink(uri);
     });
   }
 
@@ -190,16 +191,6 @@ class _CorePageState extends State<CorePage> {
                                                 children: [
                                                   LyListTile(
                                                     onTap: () {
-                                                      if (_selected != 0) {
-                                                        widget.coreController
-                                                            .updateData(
-                                                          widget.coreController
-                                                              .data
-                                                              .copyWith(
-                                                            pages: [],
-                                                          ),
-                                                        );
-                                                      }
                                                       setState(() {
                                                         _selected = 0;
                                                         LyNavigator.navigateTo(
@@ -230,16 +221,6 @@ class _CorePageState extends State<CorePage> {
                                                   ),
                                                   LyListTile(
                                                     onTap: () {
-                                                      if (_selected != 1) {
-                                                        widget.coreController
-                                                            .updateData(
-                                                          widget.coreController
-                                                              .data
-                                                              .copyWith(
-                                                            pages: [],
-                                                          ),
-                                                        );
-                                                      }
                                                       setState(() {
                                                         _selected = 1;
                                                         LyNavigator.navigateTo(
@@ -271,16 +252,6 @@ class _CorePageState extends State<CorePage> {
                                                   ),
                                                   LyListTile(
                                                     onTap: () {
-                                                      if (_selected != 3) {
-                                                        widget.coreController
-                                                            .updateData(
-                                                          widget.coreController
-                                                              .data
-                                                              .copyWith(
-                                                            pages: [],
-                                                          ),
-                                                        );
-                                                      }
                                                       setState(() {
                                                         _selected = 3;
                                                         LyNavigator.navigateTo(
@@ -425,6 +396,29 @@ class _CorePageState extends State<CorePage> {
                               getArtistUsecase: widget.getArtistUsecase,
                             ),
                           ),
+                          widget.coreController.builder(
+                              builder: (context, coreData) {
+                            return AnimatedOpacity(
+                              duration: const Duration(milliseconds: 300),
+                              opacity: coreData.hadlingDeepLink ? 1 : 0,
+                              child: AnimatedSizeWidget(
+                                width: context.display.width,
+                                height: coreData.hadlingDeepLink
+                                    ? context.display.height
+                                    : 0,
+                                duration: const Duration(milliseconds: 300),
+                                color: context.themeData.scaffoldBackgroundColor
+                                    .withOpacity(.7),
+                                child: Center(
+                                  child: LoadingAnimationWidget.halfTriangleDot(
+                                    color:
+                                        context.themeData.colorScheme.primary,
+                                    size: 50,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                         ],
                       );
                     },

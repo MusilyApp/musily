@@ -541,7 +541,11 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  widget.coreController.methods.shareSong(
+                                    currentPlayingItem,
+                                  );
+                                },
                                 icon: const Icon(
                                   Icons.share_rounded,
                                   size: 20,

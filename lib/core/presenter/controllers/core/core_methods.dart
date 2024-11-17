@@ -1,3 +1,16 @@
+import 'package:musily/features/album/domain/entities/album_entity.dart';
+import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
+
 class CoreMethods {
-  CoreMethods();
+  final Future<void> Function(Uri uri) handleDeepLink;
+  final Future<void> Function(AlbumEntity album) shareAlbum;
+  final Future<void> Function(ArtistEntity artist) shareArtist;
+  final Future<void> Function(TrackEntity track) shareSong;
+  CoreMethods({
+    required this.handleDeepLink,
+    required this.shareAlbum,
+    required this.shareArtist,
+    required this.shareSong,
+  });
 }
