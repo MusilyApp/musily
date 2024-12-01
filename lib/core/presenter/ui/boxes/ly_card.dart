@@ -4,6 +4,7 @@ import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
 class LyCard extends StatefulWidget {
   final Widget? header;
+  final EdgeInsetsGeometry headerPadding;
   final Widget? content;
   final Widget? footer;
   final EdgeInsetsGeometry? margin;
@@ -32,6 +33,7 @@ class LyCard extends StatefulWidget {
     this.margin,
     this.padding,
     this.density = LyDensity.normal,
+    this.headerPadding = const EdgeInsets.all(12),
     this.elevation = 1.0,
     this.focusNode,
     this.borderRadius,
@@ -140,9 +142,7 @@ class _LyCardState extends State<LyCard> {
                 children: [
                   if (widget.header != null)
                     Padding(
-                      padding: widget.header is Text
-                          ? const EdgeInsets.only(bottom: 8)
-                          : EdgeInsets.zero,
+                      padding: widget.headerPadding,
                       child: _buildHeader(context, widget.header!),
                     ),
                   if (widget.content != null) ...[

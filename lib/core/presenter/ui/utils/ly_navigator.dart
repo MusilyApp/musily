@@ -237,6 +237,7 @@ class LyNavigator {
           transitionDuration: transitionDuration,
           margin: margin ?? EdgeInsets.zero,
           header: title,
+          headerPadding: EdgeInsets.zero,
           height: height,
           width: width,
           content: content,
@@ -290,10 +291,14 @@ class LyNavigator {
     log('+[${DateTime.now().toHourMinuteSecond()}] Dialog $key added to Stack');
     return showDialog(
       context: context,
+      barrierDismissible: barrierDismissible,
       builder: (context) => LyCard(
         onInitState: () {
           ContextManager.addChangeLockListener(
             (data) {
+              if (!barrierDismissible) {
+                return;
+              }
               if (!data) {
                 if (ContextManager()
                     .dialogStack
@@ -321,18 +326,23 @@ class LyNavigator {
         header: title,
         height: height,
         width: width,
-        content: builder(context),
-        footer: Wrap(
-          spacing: 8,
-          alignment: WrapAlignment.end,
-          children: [
-            ...actions?.call(context) ?? [],
-          ],
+        content: Padding(
+          padding: padding ?? const EdgeInsets.all(8.0),
+          child: builder(context),
         ),
+        footer: ((actions?.call(context))?.isEmpty ?? true)
+            ? null
+            : Wrap(
+                spacing: 8,
+                alignment: WrapAlignment.end,
+                children: [
+                  ...actions?.call(context) ?? [],
+                ],
+              ),
         elevation: elevation,
         borderRadius: borderRadius,
         shape: shape,
-        padding: padding,
+        padding: padding ?? EdgeInsets.zero,
         density: density,
       ),
     );
