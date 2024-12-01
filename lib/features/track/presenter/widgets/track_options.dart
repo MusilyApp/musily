@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_download_manager/flutter_download_manager.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -68,12 +69,27 @@ class TrackOptions extends StatelessWidget {
       ),
       entries: [
         if (customActions != null) ...customActions!.call(context),
-        if (!hideOptions.contains(TrackTileOptions.download))
+        if (!hideOptions.contains(TrackTileOptions.download)) ...[
           AppMenuEntry(
             leading: downloaderMenuEntry.leading,
             title: downloaderMenuEntry.child,
             onTap: downloaderMenuEntry.onPressed,
           ),
+          if (downloaderController.methods.getItem(track)?.status ==
+              DownloadStatus.completed)
+            AppMenuEntry(
+              onTap: () {
+                coreController.methods.saveTrackToDownload(track);
+              },
+              title: Text(
+                context.localization.saveToDownloads,
+              ),
+              leading: Icon(
+                Icons.folder_copy_rounded,
+                color: context.themeData.buttonTheme.colorScheme?.primary,
+              ),
+            )
+        ],
         if (!hideOptions.contains(TrackTileOptions.addToPlaylist))
           AppMenuEntry(
             leading: Icon(
