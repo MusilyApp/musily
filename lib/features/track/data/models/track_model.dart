@@ -10,6 +10,7 @@ class TrackModel {
       title: map['title'],
       orderIndex: map['orderIndex'] ?? 0,
       hash: map['hash'],
+      url: map['url'],
       artist: SimplifiedArtist(
         id: map['artist']['id'] ?? '',
         name: map['artist']['name'] ?? '',
@@ -26,13 +27,14 @@ class TrackModel {
     );
   }
 
-  static Map<String, dynamic> toMap(TrackEntity track) {
+  static Map<String, dynamic> toMap(TrackEntity track, {bool withUrl = false}) {
     return {
       'id': track.id,
       'title': track.title,
       'orderIndex': track.orderIndex,
       'trackId': track.id,
       'hash': track.hash,
+      if (withUrl && track.url != null) 'url': track.url,
       'artist': {
         'id': track.artist.id,
         'name': track.artist.name,
