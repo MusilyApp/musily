@@ -44,45 +44,43 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
       () {
         LyNavigator.showLyCardDialog(
           context: context,
+          title: Text(context.localization.editPlaylist),
+          actions: (context) => [
+            LyFilledButton(
+              onPressed: () {
+                Navigator.pop(context);
+                playlistNameController.text = widget.playlistEntity.title;
+              },
+              child: const Text('Cancelar'),
+            ),
+            LyFilledButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  widget.libraryController.methods.updatePlaylist(
+                    UpdatePlaylistDto(
+                      id: widget.playlistEntity.id,
+                      title: playlistNameController.text,
+                    ),
+                  );
+                  Navigator.pop(context);
+                  widget.onFinished?.call(
+                    playlistNameController.text,
+                  );
+                }
+              },
+              child: Text(context.localization.confirm),
+            ),
+          ],
           builder: (context) => Form(
             key: _formKey,
-            child: AlertDialog(
-              title: Text(context.localization.editPlaylist),
-              content: LyTextField(
-                controller: playlistNameController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return context.localization.requiredField;
-                  }
-                  return null;
-                },
-              ),
-              actions: [
-                LyFilledButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    playlistNameController.text = widget.playlistEntity.title;
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                LyFilledButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      widget.libraryController.methods.updatePlaylist(
-                        UpdatePlaylistDto(
-                          id: widget.playlistEntity.id,
-                          title: playlistNameController.text,
-                        ),
-                      );
-                      Navigator.pop(context);
-                      widget.onFinished?.call(
-                        playlistNameController.text,
-                      );
-                    }
-                  },
-                  child: Text(context.localization.confirm),
-                ),
-              ],
+            child: LyTextField(
+              controller: playlistNameController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return context.localization.requiredField;
+                }
+                return null;
+              },
             ),
           ),
         );
