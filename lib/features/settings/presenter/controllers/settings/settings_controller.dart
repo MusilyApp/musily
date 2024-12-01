@@ -41,14 +41,18 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         }
         if (data.context!.themeMode == ThemeMode.dark) {
           SystemChrome.setSystemUIOverlayStyle(
-            const SystemUiOverlayStyle(
+            SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.light,
+              statusBarColor: Colors.black.withOpacity(0.002),
+              systemNavigationBarColor: Colors.black.withOpacity(0.002),
             ),
           );
         } else {
           SystemChrome.setSystemUIOverlayStyle(
-            const SystemUiOverlayStyle(
+            SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.dark,
+              statusBarColor: Colors.black.withOpacity(0.002),
+              systemNavigationBarColor: Colors.black.withOpacity(0.002),
             ),
           );
         }
