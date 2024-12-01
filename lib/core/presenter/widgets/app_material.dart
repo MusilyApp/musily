@@ -4,13 +4,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
-class AppMaterial extends StatelessWidget {
+class AppMaterial extends StatefulWidget {
   const AppMaterial({super.key});
+
+  @override
+  State<AppMaterial> createState() => _AppMaterialState();
+}
+
+class _AppMaterialState extends State<AppMaterial> with WidgetsBindingObserver {
+  final settingsController = Modular.get<SettingsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    setState(() {
+      if (state == AppLifecycleState.resumed) {
+        settingsController.methods.setBrightness();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Modular.setInitialRoute('/sections/');
-    final settingsController = Modular.get<SettingsController>();
     return settingsController.builder(
       builder: (context, data) {
         return MaterialApp.router(
