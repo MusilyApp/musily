@@ -32,7 +32,7 @@ void main() async {
 
   await MusilyService.init(
     config: MusilyServiceConfig(
-      androidNotificationChannelId: 'app.musily.music',
+      androidNotificationChannelId: 'app.musily.music.dev',
       androidNotificationChannelName: 'Musily',
       androidNotificationIcon: 'drawable/ic_launcher_foreground',
       androidShowNotificationBadge: true,
