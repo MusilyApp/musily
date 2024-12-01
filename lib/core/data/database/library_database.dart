@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:isar/isar.dart';
 import 'package:musily/core/data/database/collections/library.dart';
 import 'package:musily/core/data/database/database.dart';
+import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/adapters/database_adapter.dart';
 
 class LibraryDatabase implements DatabaseModelAdapter {
@@ -49,6 +52,25 @@ class LibraryDatabase implements DatabaseModelAdapter {
           .or()
           .anonymousIsNull()
           .deleteAll();
+    });
+  }
+
+  @override
+  Future<void> putMany(List<Map<String, dynamic>> items) async {
+    _database.isar.writeTxn(() async {
+      final anonymous = !UserService.loggedIn;
+
+      await _database.isar.librarys.putAll([
+        ...items.map(
+          (e) => Library()
+            ..musilyId = e['id']
+            ..value = jsonEncode(e)
+            ..synced = e['synced']
+            ..anonymous = anonymous
+            ..lastTimePlayed = e['lasTimePlayed']
+            ..createdAt = e['createdAt'],
+        )
+      ]);
     });
   }
 }

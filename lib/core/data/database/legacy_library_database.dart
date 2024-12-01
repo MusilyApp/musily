@@ -49,4 +49,9 @@ class LegacyLibraryDatabase implements DatabaseModelAdapter {
           .deleteAll();
     });
   }
+
+  @override
+  Future<void> putMany(List<Map<String, dynamic>> items) {
+    throw UnimplementedError();
+  }
 }
