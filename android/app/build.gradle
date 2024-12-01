@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id 'dev.flutter.flutter-gradle-plugin'
 }
 
@@ -11,6 +10,12 @@ if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -24,7 +29,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace = 'org.app.musily'
+    namespace = 'app.musily.music'
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
     flavorDimensions 'default'
@@ -35,16 +40,40 @@ android {
     }
 
     defaultConfig {
-        applicationId = 'org.app.musily'
+        applicationId = 'app.musily.music'
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
+    signingConfigs {
+        dev {
+            storeFile = file(keystoreProperties['devStoreFile'])
+            storePassword = keystoreProperties['devStorePassword']
+            keyAlias = keystoreProperties['devKeyAlias']
+            keyPassword = keystoreProperties['devKeyPassword']
+        }
+
+        stable {
+            storeFile = file(keystoreProperties['stableStoreFile'])
+            storePassword = keystoreProperties['stableStorePassword']
+            keyAlias = keystoreProperties['stableKeyAlias']
+            keyPassword = keystoreProperties['stableKeyPassword']
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            shrinkResources = false
+            signingConfig signingConfigs.stable
+        }
+        debug {
+            signingConfig signingConfigs.dev
         }
     }
 
@@ -52,11 +81,12 @@ android {
         dev {
             dimension 'default'
             resValue 'string', 'app_name', 'Musily Dev'
-            applicationId 'org.musily.app.dev'
+            applicationId 'app.musily.music.dev'
             applicationIdSuffix '.dev'
             manifestPlaceholders = [
                 appIcon: '@mipmap/launcher_icon_dev',
             ]
+            signingConfig signingConfigs.dev
         }
         stable {
             dimension 'default'
@@ -64,6 +94,7 @@ android {
             manifestPlaceholders = [
                 appIcon: '@mipmap/launcher_icon',
             ]
+            signingConfig signingConfigs.stable
         }
     }
 }
