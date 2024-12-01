@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:media_store_plus/media_store_plus.dart';
+import 'package:musily/core/data/services/library_backup_service.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_data.dart';
 import 'package:musily/core/presenter/controllers/core/core_methods.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/utils/ly_error_handler.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -18,6 +24,8 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CoreController extends BaseController<CoreData, CoreMethods> {
@@ -35,6 +43,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
 
+  late final BackupService backupService;
+
   CoreController({
     required this.playerController,
     required this.downloaderController,
@@ -46,7 +56,22 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
-  });
+  }) {
+    backupService = BackupService(
+      downloaderController: downloaderController,
+      libraryController: libraryController,
+    );
+    ReceiveSharingIntent.instance.getMediaStream().listen((data) {
+      updateData(
+        this.data.copyWith(
+              backupFileDir: data.firstOrNull?.path ?? '',
+            ),
+      );
+      if (this.data.backupFileDir.endsWith('.lybak')) {
+        methods.restoreLibraryBackup();
+      }
+    });
+  }
 
   BuildContext? get coreContext => coreKey.currentContext;
   BuildContext? get coreShowingContext => coreShowingKey.currentContext;
@@ -57,12 +82,88 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       isShowingDialog: false,
       isPlayerExpanded: false,
       hadlingDeepLink: false,
+      backupInProgress: false,
+      backupFileDir: '',
     );
   }
 
   @override
   CoreMethods defineMethods() {
     return CoreMethods(
+      pickBackupfile: () async {
+        final backupFile = await backupService.pickBackupFile();
+        if (backupFile != null) {
+          updateData(data.copyWith(
+            backupFileDir: backupFile.path,
+          ));
+          await methods.restoreLibraryBackup();
+        }
+      },
+      saveTrackToDownload: (track) async {
+        try {
+          if (Platform.isAndroid || Platform.isIOS) {
+            await methods.requestStoragePermission();
+          }
+
+          await backupService.saveTrackToDownloads(track);
+
+          ScaffoldMessenger.of(coreContext!).showSnackBar(
+            SnackBar(
+              content: Text(
+                coreContext!.localization.musicSavedToDownloads,
+              ),
+            ),
+          );
+        } catch (e) {
+          print(e);
+          LyErrorHandler.snackBar(':P');
+        }
+      },
+      restoreLibraryBackup: () async {
+        LyNavigator.showLyCardDialog(
+          context: coreContext!,
+          actions: (context) => [
+            LyFilledButton(
+              onPressed: () {
+                LyNavigator.pop(context);
+              },
+              child: Text(context.localization.cancel),
+            ),
+            LyFilledButton(
+              onPressed: () async {
+                LyNavigator.pop(context);
+                updateData(data.copyWith(
+                  backupInProgress: true,
+                ));
+                final backupFile = File(data.backupFileDir);
+                await backupService.restoreLibraryBackup(backupFile);
+                await libraryController.methods.getLibraryItems();
+                updateData(data.copyWith(
+                  backupInProgress: false,
+                ));
+                ScaffoldMessenger.of(coreContext!).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      coreContext!.localization.backupCompletedSuccessfully,
+                    ),
+                  ),
+                );
+              },
+              child: Text(context.localization.restore),
+            ),
+          ],
+          builder: (context) => const SizedBox.shrink(),
+          title: Text(coreContext!.localization.doYouWantToRestoreThisBackup),
+        );
+      },
+      requestStoragePermission: () async {
+        List<Permission> permissions = [
+          Permission.storage,
+        ];
+
+        await permissions.request();
+        MediaStore.appFolder = 'Musily';
+      },
       // TODO Share abstraction
       shareArtist: (artist) async {
         await Share.share('''
@@ -71,13 +172,13 @@ ${coreContext!.localization.comeCheckTEMPLATEOnMusily.replaceAll(
           '"${artist.name}"',
         )}
 
-https://musily.app/artist/${artist.id}/
+https://musily.app/artist/${artist.id}
 ''');
       },
       shareSong: (track) async {
         late final String url;
         if (track.album.id.isEmpty) {
-          url = 'https://musily.app/song/${track.id}/';
+          url = 'https://musily.app/song/${track.id}';
         } else {
           url = 'https://musily.app/album/${track.album.id}/${track.id}';
         }
@@ -97,7 +198,7 @@ ${coreContext!.localization.comeCheckTEMPLATEOnMusily.replaceAll(
           '"${album.title}"',
         )}
 
-https://musily.app/album/${album.id}/
+https://musily.app/album/${album.id}
 ''');
       },
       handleDeepLink: (uri) async {
