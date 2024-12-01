@@ -400,10 +400,14 @@ class _CorePageState extends State<CorePage> {
                               builder: (context, coreData) {
                             return AnimatedOpacity(
                               duration: const Duration(milliseconds: 300),
-                              opacity: coreData.hadlingDeepLink ? 1 : 0,
+                              opacity: coreData.hadlingDeepLink ||
+                                      coreData.backupInProgress
+                                  ? 1
+                                  : 0,
                               child: AnimatedSizeWidget(
                                 width: context.display.width,
-                                height: coreData.hadlingDeepLink
+                                height: coreData.hadlingDeepLink ||
+                                        coreData.backupInProgress
                                     ? context.display.height
                                     : 0,
                                 duration: const Duration(milliseconds: 300),
