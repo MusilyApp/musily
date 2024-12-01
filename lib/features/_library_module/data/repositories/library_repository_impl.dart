@@ -79,4 +79,9 @@ class LibraryRepositoryImpl implements LibraryRepository {
   Future<LibraryItemEntity> updateLibraryItem(LibraryItemEntity item) {
     return _libraryDatasource.updateLibraryItem(item);
   }
+
+  @override
+  Future<void> mergeLibrary(List<LibraryItemEntity> items) {
+    return _libraryDatasource.mergeLibrary(items);
+  }
 }

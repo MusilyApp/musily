@@ -327,4 +327,20 @@ class LibraryDatasourceImpl extends BaseDatasource
       return item;
     });
   }
+
+  @override
+  Future<void> mergeLibrary(List<LibraryItemEntity> items) {
+    return exec(() async {
+      final itemsMapList = [
+        ...items.map((e) => LibraryItemModel.toMap(e)),
+      ];
+      if (UserService.loggedIn) {
+        await _httpAdapter.patch(
+          '/library/merge_library',
+          data: itemsMapList,
+        );
+      }
+      await _modelAdapter.putMany(itemsMapList);
+    });
+  }
 }

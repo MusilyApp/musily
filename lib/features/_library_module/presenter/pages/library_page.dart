@@ -8,6 +8,7 @@ import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/_library_module/presenter/pages/backup_page.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_creator.dart';
@@ -123,6 +124,19 @@ class _LibraryPageState extends State<LibraryPage> {
                           ),
                         ),
                       ),
+                    IconButton(
+                      onPressed: () async {
+                        LyNavigator.push(
+                          context,
+                          BackupPage(
+                            downloaderController: widget.downloaderController,
+                            libraryController: widget.libraryController,
+                            coreController: widget.coreController,
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.settings_backup_restore),
+                    ),
                   ],
                 ),
                 body: RefreshIndicator(

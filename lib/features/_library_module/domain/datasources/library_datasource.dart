@@ -10,6 +10,7 @@ abstract class LibraryDatasource {
   Future<List<LibraryItemEntity>> getLibraryItems();
   Future<LibraryItemEntity?> getLibraryItem(String itemId);
   Future<LibraryItemEntity> updateLibraryItem(LibraryItemEntity item);
+  Future<void> mergeLibrary(List<LibraryItemEntity> items);
 
   // Playlist
   Future<PlaylistEntity> createPlaylist(CreatePlaylistDTO data);

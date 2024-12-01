@@ -3,7 +3,7 @@ import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 
 class LibraryItemEntity {
-  final String id;
+  String id;
   ArtistEntity? artist;
   AlbumEntity? album;
   PlaylistEntity? playlist;

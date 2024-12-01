@@ -9,6 +9,7 @@ class LibraryMethods {
   // Library
   final Future<void> Function({bool showLoading}) getLibraryItems;
   final Future<LibraryItemEntity?> Function(String itemId) getLibraryItem;
+  final Future<void> Function(List<LibraryItemEntity> items) mergeLibrary;
 
   // Playlist
   final Future<void> Function(CreatePlaylistDTO data) createPlaylist;
@@ -73,5 +74,6 @@ class LibraryMethods {
     required this.updateLastTimePlayed,
     required this.downloadCollection,
     required this.cancelCollectionDownload,
+    required this.mergeLibrary,
   });
 }

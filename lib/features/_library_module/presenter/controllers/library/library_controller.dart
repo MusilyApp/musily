@@ -11,6 +11,7 @@ import 'package:musily/features/_library_module/domain/usecases/create_playlist_
 import 'package:musily/features/_library_module/domain/usecases/delete_playlist_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/get_library_item_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/get_library_items_usecase.dart';
+import 'package:musily/features/_library_module/domain/usecases/merge_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/remove_album_from_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/remove_artist_from_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/remove_tracks_from_playlist_usecase.dart';
@@ -39,6 +40,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   late final RemoveAlbumFromLibraryUsecase _removeAlbumFromLibraryUsecase;
   late final DeletePlaylistUsecase _deletePlaylistUsecase;
   late final UpdateLibraryItemUsecase _updateLibraryItemUsecase;
+  late final MergeLibraryUsecase _mergeLibraryUsecase;
 
   LibraryController({
     required GetLibraryItemsUsecase getLibraryUsecase,
@@ -55,6 +57,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     required RemoveAlbumFromLibraryUsecase removeAlbumFromLibraryUsecase,
     required DeletePlaylistUsecase deletePlaylistUsecase,
     required UpdateLibraryItemUsecase updateLibraryItemUsecase,
+    required MergeLibraryUsecase mergeLibraryUsecase,
   }) {
     _getLibraryItemsUsecase = getLibraryUsecase;
     _getLibraryItemUsecase = getLibraryItemUsecase;
@@ -70,6 +73,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     _removeAlbumFromLibraryUsecase = removeAlbumFromLibraryUsecase;
     _deletePlaylistUsecase = deletePlaylistUsecase;
     _updateLibraryItemUsecase = updateLibraryItemUsecase;
+    _mergeLibraryUsecase = mergeLibraryUsecase;
 
     methods.getLibraryItems();
   }
@@ -154,6 +158,22 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
           ),
         );
         return item;
+      },
+      mergeLibrary: (items) async {
+        final originalItems = List<LibraryItemEntity>.from(data.items);
+
+        try {
+          await queue.add(() async {
+            await _mergeLibraryUsecase.exec(items);
+            await methods.getLibraryItems();
+          });
+        } catch (e) {
+          updateData(
+            data.copyWith(
+              items: originalItems,
+            ),
+          );
+        }
       },
 
       // Playlist
