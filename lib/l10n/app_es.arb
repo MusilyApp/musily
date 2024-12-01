@@ -93,5 +93,19 @@
   "itemNotFound": "Elemento no encontrado",
   "invalidUserId": "ID de usuario inválido",
   "userNotFound": "Usuario no encontrado",
-  "comeCheckTEMPLATEOnMusily": "¡Ven a ver TEMPLATE en Musily!"
+  "comeCheckTEMPLATEOnMusily": "¡Ven a ver TEMPLATE en Musily!",
+  "backup": "Respaldo",
+  "restore": "Restaurar",
+  "backupLibrary": "Respaldar Biblioteca",
+  "backupCompletedSuccessfully": "¡Respaldo completado con éxito!",
+  "backupFailed": "El respaldo falló",
+  "includeLibrary": "Incluir Biblioteca",
+  "includeDownloads": "Incluir Descargas",
+  "startBackup": "Iniciar Respaldo",
+  "doYouWantToRestoreThisBackup": "¿Quieres restaurar esta copia de seguridad?",
+  "backupInProgress": "Copia de seguridad en progreso",
+  "backupRestoredSuccessfully": "Copia de seguridad restaurada con éxito",
+  "backupFileDoesNotExist": "El archivo de copia de seguridad no existe",
+  "musicSavedToDownloads": "Música guardada en descargas",
+  "saveToDownloads": "Guardar en Descargas"
 }

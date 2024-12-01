@@ -93,5 +93,19 @@
   "itemNotFound": "Item not found",
   "invalidUserId": "Invalid user ID",
   "userNotFound": "User not found",
-  "comeCheckTEMPLATEOnMusily": "Come check TEMPLATE on Musily!"
+  "comeCheckTEMPLATEOnMusily": "Come check TEMPLATE on Musily!",
+  "backup": "Backup",
+  "restore": "Restore",
+  "backupLibrary": "Backup Library",
+  "backupCompletedSuccessfully": "Backup completed successfully!",
+  "backupFailed": "Backup failed",
+  "includeLibrary": "Include Library",
+  "includeDownloads": "Include Downloads",
+  "startBackup": "Start Backup",
+  "doYouWantToRestoreThisBackup": "Do you want to restore this backup?",
+  "backupInProgress": "Backup in progress",
+  "backupRestoredSuccessfully": "Backup restored successfully",
+  "backupFileDoesNotExist": "Backup file does not exist",
+  "musicSavedToDownloads": "Music saved to downloads",
+  "saveToDownloads": "Save to Downloads"
 }

@@ -93,5 +93,19 @@
   "itemNotFound": "Елемент не знайдено",
   "invalidUserId": "Невірний ID користувача",
   "userNotFound": "Користувача не знайдено",
-  "comeCheckTEMPLATEOnMusily": "Приходьте подивитися TEMPLATE на Musily!"
+  "comeCheckTEMPLATEOnMusily": "Приходьте подивитися TEMPLATE на Musily!",
+  "backup": "Резервне копіювання",
+  "restore": "Відновити",
+  "backupLibrary": "Резервне копіювання бібліотеки",
+  "backupCompletedSuccessfully": "Резервне копіювання успішно завершено!",
+  "backupFailed": "Резервне копіювання не вдалося",
+  "includeLibrary": "Включити бібліотеку",
+  "includeDownloads": "Включити завантаження",
+  "startBackup": "Розпочати резервне копіювання",
+  "doYouWantToRestoreThisBackup": "Ви хочете відновити цю резервну копію?",
+  "backupInProgress": "Резервне копіювання триває",
+  "backupRestoredSuccessfully": "Резервну копію успішно відновлено",
+  "backupFileDoesNotExist": "Файл резервної копії не існує",
+  "musicSavedToDownloads": "Музика збережена у завантаженнях",
+  "saveToDownloads": "Зберегти у завантаження"
 }
