@@ -33,6 +33,10 @@ class MusilyError implements Exception {
         return context.localization.invalidUserId;
       case 'user.user_not_found':
         return context.localization.userNotFound;
+      case 'backup_failed':
+        return context.localization.backupFailed;
+      case 'backup_file_does_not_exist':
+        return context.localization.backupFileDoesNotExist;
       default:
         return 'Internal error';
     }
