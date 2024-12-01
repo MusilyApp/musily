@@ -13,6 +13,7 @@ import 'package:musily/features/_library_module/data/usecases/create_playlist_us
 import 'package:musily/features/_library_module/data/usecases/delete_playlist_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/get_library_item_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/get_library_items_usecase_impl.dart';
+import 'package:musily/features/_library_module/data/usecases/merge_library_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/remove_album_from_library_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/remove_artist_from_library_usecase_impl.dart';
 import 'package:musily/features/_library_module/data/usecases/remove_tracks_from_playlist_usecase_impl.dart';
@@ -208,6 +209,11 @@ class SharedModule extends Module {
       ),
     );
     i.addLazySingleton(
+      () => MergeLibraryUsecaseImpl(
+        libraryRepository: i.get<LibraryRepositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
       () => LibraryController(
         getLibraryUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
         getLibraryItemUsecase: i.get<GetLibraryItemUsecaseImpl>(),
@@ -226,6 +232,7 @@ class SharedModule extends Module {
             i.get<RemoveAlbumFromLibraryUsecaseImpl>(),
         deletePlaylistUsecase: i.get<DeletePlaylistUsecaseImpl>(),
         updateLibraryItemUsecase: i.get<UpdateLibraryItemUsecaseImpl>(),
+        mergeLibraryUsecase: i.get<MergeLibraryUsecaseImpl>(),
       ),
     );
 
