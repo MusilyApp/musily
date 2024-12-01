@@ -490,6 +490,14 @@ class DownloaderController
               await methods.saveMd5(file);
             }
           });
+          await Future.delayed(const Duration(
+            milliseconds: 200,
+          ));
+          await downloadManager.pauseDownload(url);
+          await Future.delayed(const Duration(
+            milliseconds: 200,
+          ));
+          await downloadManager.resumeDownload(url);
           return task;
         }
         return null;
@@ -513,6 +521,7 @@ class DownloaderController
           track: track,
           progress: 0,
           status: DownloadStatus.queued,
+          boosted: false,
         );
         updateData(
           data.copyWith(

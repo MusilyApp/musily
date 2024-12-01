@@ -6,6 +6,7 @@ class DownloadingItem {
   final TrackEntity track;
   double progress;
   DownloadStatus status;
+  bool boosted;
 
   DownloadStatus get downloadCompleted => DownloadStatus.completed;
   DownloadStatus get downloadQueued => DownloadStatus.queued;
@@ -18,6 +19,7 @@ class DownloadingItem {
     required this.track,
     required this.progress,
     required this.status,
+    this.boosted = false,
   });
 }
 
