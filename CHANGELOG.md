@@ -1,3 +1,19 @@
+## 3.0.0
+
+**Features**
+
+- Backup Library: Introduced functionality for seamless backup operations.
+- Save Music to Downloads: Added the ability to save music directly to the downloads folder.
+
+**Improvments**
+
+- Enhanced UI: Improved the user interface for a more intuitive and visually appealing experience.
+- Faster Downloads: Optimized download speeds for quicker and more efficient file transfers.
+
+**Fixes**
+
+- Navigation Bar Issues: Resolved bugs affecting phones with navigation bars instead of gesture-based navigation.
+
 ## 2.1.2
 
 **Hot Fixes**
