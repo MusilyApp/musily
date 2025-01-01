@@ -92,8 +92,6 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
         return widget.iconSize ?? 24.0;
       case LyDensity.comfortable:
         return widget.iconSize ?? 28.0;
-      default:
-        return widget.iconSize ?? 24.0;
     }
   }
 
