@@ -43,7 +43,7 @@ class Database {
           if (existingItem != null) {
             final updatedItem = existingItem
               ..value = jsonEncode(value)
-              ..lastTimePlayed = value['lasTimePlayed']
+              ..lastTimePlayed = value['lastTimePlayed']
               ..synced = value['synced']
               ..anonymous = anonymous
               ..createdAt = value['createdAt'];
@@ -55,7 +55,7 @@ class Database {
             ..value = jsonEncode(value)
             ..synced = value['synced']
             ..anonymous = anonymous
-            ..lastTimePlayed = value['lasTimePlayed']
+            ..lastTimePlayed = value['lastTimePlayed']
             ..createdAt = value['createdAt'];
           await isar.librarys.put(newLibraryItem);
           break;
@@ -70,10 +70,17 @@ class Database {
       case CollectionType.library:
         late final List<Library> items;
         if (UserService.loggedIn) {
-          items =
-              await isar.librarys.filter().anonymousEqualTo(false).findAll();
+          items = await isar.librarys
+              .filter()
+              .anonymousEqualTo(false)
+              .sortByLastTimePlayedDesc()
+              .findAll();
         } else {
-          items = await isar.librarys.filter().anonymousEqualTo(true).findAll();
+          items = await isar.librarys
+              .filter()
+              .anonymousEqualTo(true)
+              .sortByLastTimePlayedDesc()
+              .findAll();
         }
         return [
           ...items.map(

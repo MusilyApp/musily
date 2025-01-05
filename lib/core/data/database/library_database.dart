@@ -67,7 +67,7 @@ class LibraryDatabase implements DatabaseModelAdapter {
             ..value = jsonEncode(e)
             ..synced = e['synced']
             ..anonymous = anonymous
-            ..lastTimePlayed = e['lasTimePlayed']
+            ..lastTimePlayed = e['lastTimePlayed']
             ..createdAt = e['createdAt'],
         )
       ]);

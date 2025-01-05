@@ -35,21 +35,24 @@ class UserTracksDB {
 
         await _database.isar.userTracks.putAll([
           ...newTracks.map(
-            (e) => UserTracks()
-              ..musilyId = e.id
-              ..libraryItemId = playlistId
-              ..hash = e.hash
-              ..orderIndex = trackCount + 1
-              ..userId = userId
-              ..highResImg = e.highResImg ?? ''
-              ..lowResImg = e.lowResImg ?? ''
-              ..title = e.title
-              ..albumId = e.album.id
-              ..albumTitle = e.album.title
-              ..artistId = e.artist.id
-              ..artistName = e.artist.name
-              ..duration = e.duration.inSeconds
-              ..createdAt = DateTime.now(),
+            (e) {
+              final newTrackIndex = newTracks.indexOf(e);
+              return UserTracks()
+                ..musilyId = e.id
+                ..libraryItemId = playlistId
+                ..hash = e.hash
+                ..orderIndex = trackCount + (newTrackIndex + 1)
+                ..userId = userId
+                ..highResImg = e.highResImg ?? ''
+                ..lowResImg = e.lowResImg ?? ''
+                ..title = e.title
+                ..albumId = e.album.id
+                ..albumTitle = e.album.title
+                ..artistId = e.artist.id
+                ..artistName = e.artist.name
+                ..duration = e.duration.inSeconds
+                ..createdAt = DateTime.now();
+            },
           ),
         ]);
       },
@@ -62,9 +65,12 @@ class UserTracksDB {
   ) async {
     await _database.isar.writeTxn(
       () async {
-        _database.isar.userTracks
+        final pattern = trackIds.map((id) => '*$id*').join(',');
+
+        await _database.isar.userTracks
             .filter()
             .libraryItemIdEqualTo(playlistId)
+            .musilyIdMatches(pattern)
             .deleteAll();
       },
     );
