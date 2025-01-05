@@ -52,13 +52,6 @@ android {
     }
 
     signingConfigs {
-        dev {
-            storeFile = file(keystoreProperties['devStoreFile'])
-            storePassword = keystoreProperties['devStorePassword']
-            keyAlias = keystoreProperties['devKeyAlias']
-            keyPassword = keystoreProperties['devKeyPassword']
-        }
-
         stable {
             storeFile = file(keystoreProperties['stableStoreFile'])
             storePassword = keystoreProperties['stableStorePassword']
@@ -72,9 +65,7 @@ android {
             shrinkResources = false
             signingConfig signingConfigs.stable
         }
-        debug {
-            signingConfig signingConfigs.dev
-        }
+        debug {}
     }
 
     productFlavors {
@@ -86,7 +77,6 @@ android {
             manifestPlaceholders = [
                 appIcon: '@mipmap/launcher_icon_dev',
             ]
-            signingConfig signingConfigs.dev
         }
         stable {
             dimension 'default'
