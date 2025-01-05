@@ -116,6 +116,7 @@ class _LibraryPageState extends State<LibraryPage> {
                     if (!data.loading)
                       PlaylistCreator(
                         widget.libraryController,
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
                         coreController: widget.coreController,
                         builder: (context, showCreator) => IconButton(
                           onPressed: showCreator,
@@ -197,6 +198,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                   offlinePlaylist.playlist!,
                                               playerController:
                                                   widget.playerController,
+                                              getPlaylistUsecase:
+                                                  widget.getPlaylistUsecase,
                                               coreController:
                                                   widget.coreController,
                                               downloaderController:
@@ -221,6 +224,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                               playlistId: offlinePlaylist.id,
                                               coreController:
                                                   widget.coreController,
+                                              getPlaylistUsecase:
+                                                  widget.getPlaylistUsecase,
                                               playerController:
                                                   widget.playerController,
                                               downloaderController:
@@ -369,6 +374,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                             return AlbumTile(
                                               contentOrigin:
                                                   ContentOrigin.library,
+                                              getPlaylistUsecase:
+                                                  widget.getPlaylistUsecase,
                                               album: item.album!,
                                               coreController:
                                                   widget.coreController,
@@ -428,6 +435,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                               artist: item.artist!,
                                               getAlbumUsecase:
                                                   widget.getAlbumUsecase,
+                                              getPlaylistUsecase:
+                                                  widget.getPlaylistUsecase,
                                               coreController:
                                                   widget.coreController,
                                               downloaderController:

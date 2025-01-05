@@ -629,19 +629,17 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         final lastTimePlayed =
             data.items.elementAtOrNull(index)?.lastTimePlayed;
         try {
-          if (index > 0) {
-            final item = data.items[index];
-            item.lastTimePlayed = DateTime.now();
-            data.items.sort(
-              (a, b) => b.lastTimePlayed.compareTo(
-                a.lastTimePlayed,
-              ),
-            );
-            updateData(data);
-            await queue.add(() async {
-              await _updateLibraryItemUsecase.exec(item);
-            });
-          }
+          final item = data.items[index];
+          item.lastTimePlayed = DateTime.now();
+          data.items.sort(
+            (a, b) => b.lastTimePlayed.compareTo(
+              a.lastTimePlayed,
+            ),
+          );
+          updateData(data);
+          await queue.add(() async {
+            await _updateLibraryItemUsecase.exec(item);
+          });
         } catch (e) {
           if (lastTimePlayed != null) {
             data.items[index].lastTimePlayed = lastTimePlayed;

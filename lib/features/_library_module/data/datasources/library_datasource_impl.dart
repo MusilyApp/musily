@@ -146,10 +146,11 @@ class LibraryDatasourceImpl extends BaseDatasource
           id: playlistId,
           title: data.title,
           tracks: [],
-          trackCount: 0,
+          trackCount: data.tracks.length,
         ),
       );
       await _modelAdapter.put(LibraryItemModel.toMap(anonymousItem));
+      await userTracksDB.addTracksToPlaylist(playlistId, data.tracks);
       return anonymousItem.playlist!;
     });
   }
@@ -270,13 +271,15 @@ class LibraryDatasourceImpl extends BaseDatasource
     String playlistId,
     List<String> trackIds,
   ) {
-    return exec(() async {
-      await _httpAdapter.delete(
-        '/library/remove_tracks_from_playlist/$playlistId',
-        data: {
-          'tracks': trackIds,
-        },
-      );
+    return exec<void>(() async {
+      if (UserService.loggedIn) {
+        await _httpAdapter.delete(
+          '/library/remove_tracks_from_playlist/$playlistId',
+          data: {
+            'tracks': trackIds,
+          },
+        );
+      }
       final currentPlaylist = await _modelAdapter.findById(playlistId);
       if (currentPlaylist != null) {
         await userTracksDB.removeTracksFromPlaylist(playlistId, trackIds);
@@ -340,7 +343,21 @@ class LibraryDatasourceImpl extends BaseDatasource
           data: itemsMapList,
         );
       }
-      await _modelAdapter.putMany(itemsMapList);
+      for (final item in items) {
+        if (item.playlist == null) {
+          continue;
+        }
+        await userTracksDB.addTracksToPlaylist(
+          item.id,
+          item.playlist!.tracks,
+        );
+      }
+      await _modelAdapter.putMany([
+        ...itemsMapList.map((e) {
+          e['playlist']?['tracks'] = [];
+          return e;
+        })
+      ]);
     });
   }
 }
