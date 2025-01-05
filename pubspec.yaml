@@ -23,7 +23,7 @@ dependencies:
   dio: ^5.5.0+1
 
   # YouTube APIs
-  youtube_explode_dart: ^2.2.5
+  youtube_explode_dart: ^2.3.6
   dart_ytmusic_api: ^1.0.7
 
   # UI and Animations
