@@ -107,5 +107,7 @@
   "backupRestoredSuccessfully": "Резервну копію успішно відновлено",
   "backupFileDoesNotExist": "Файл резервної копії не існує",
   "musicSavedToDownloads": "Музика збережена у завантаженнях",
-  "saveToDownloads": "Зберегти у завантаження"
+  "saveToDownloads": "Зберегти у завантаження",
+  "importingPlaylist": "Імпортування Плейлиста",
+  "playlistNameOrUrl": "Назва або URL плейлиста"
 }

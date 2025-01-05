@@ -107,5 +107,7 @@
   "backupRestoredSuccessfully": "Copia de seguridad restaurada con éxito",
   "backupFileDoesNotExist": "El archivo de copia de seguridad no existe",
   "musicSavedToDownloads": "Música guardada en descargas",
-  "saveToDownloads": "Guardar en Descargas"
+  "saveToDownloads": "Guardar en Descargas",
+  "importingPlaylist": "Importando Playlist",
+  "playlistNameOrUrl": "Nombre o URL de la lista de reproducción"
 }

@@ -107,5 +107,7 @@
   "backupRestoredSuccessfully": "Backup restored successfully",
   "backupFileDoesNotExist": "Backup file does not exist",
   "musicSavedToDownloads": "Music saved to downloads",
-  "saveToDownloads": "Save to Downloads"
+  "saveToDownloads": "Save to Downloads",
+  "importingPlaylist": "Importing Playlist",
+  "playlistNameOrUrl": "Playlist name or URL"
 }
