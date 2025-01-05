@@ -1,12 +1,13 @@
+name: Test, Build and Release apk
+permissions:
+  contents: write
+
 on:
   push:
     branches:
       - releases
+  workflow_dispatch:
 
-name: Test, Build and Release apk
-
-env:
-  PROPERTIES_PATH: "./android/key.properties"
 
 jobs:
   build:
@@ -61,7 +62,7 @@ jobs:
 
       # Create key.properties file
       - name: Create key.properties
-        run: echo "${{ secrets.KEY_PROPERTIES_BASE64 }}" | base64 --decode > ${{env.PROPERTIES_PATH}}
+        run: echo "${{ secrets.KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/key.properties
 
       # Create key.jks file
       - name: Create key.jks
@@ -92,8 +93,27 @@ jobs:
           prerelease: false
           overwrite: true
 
+      # Get the latest release download URL
+      - name: Get Latest Release URL
+        id: get_release_url
+        run: |
+          release_url=$(curl -s https://api.github.com/repos/MusilyApp/musily/releases/latest | jq -r '.assets[0].browser_download_url')
+          echo "release_url=${release_url}" >> $GITHUB_ENV
+          echo "release_url=${release_url}" >> $GITHUB_OUTPUT
+
       # Post on Telegram
       - name: Post on Telegram
         run: |
-          chmod +x post_telegram.sh
-          ./post_telegram.sh "${{ secrets.TELEGRAM_BOT_TOKEN }}" "${{ secrets.TELEGRAM_CHAT_ID }}"
+          # Set your Telegram bot API token and chat ID
+          TELEGRAM_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+          
+          # Message text with description and a download button
+          MESSAGE="Version: ${{ steps.extract_version.outputs.version }}\n\n${{ steps.extract_description.outputs.description }}"
+          
+          # Send message with download button
+          curl -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
+               -d "chat_id=$CHAT_ID" \
+               -d "text=$MESSAGE" \
+               -d "parse_mode=Markdown" \
+               -d "reply_markup={\"inline_keyboard\":[[{\"text\":\"Download APK\",\"url\":\"${{ steps.get_release_url.outputs.release_url }}\"}]]}"
