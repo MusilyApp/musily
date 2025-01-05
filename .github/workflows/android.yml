@@ -1,4 +1,4 @@
-name: Test, Build and Release apk
+name: Test, Build and Release APK
 permissions:
   contents: write
 
@@ -8,13 +8,13 @@ on:
       - releases
   workflow_dispatch:
 
-
 jobs:
   build:
     name: Build APK
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -31,10 +31,14 @@ jobs:
         id: extract_description
         run: |
           description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
+          # Escape special characters for GitHub Actions output
+          description="${description//'%'/'%25'}"
+          description="${description//$'\n'/'%0A'}"
+          description="${description//$'\r'/'%0D'}"
           echo "description=${description}" >> $GITHUB_ENV
           echo "description=${description}" >> $GITHUB_OUTPUT
 
-      # Setup Java environment in order to build the Android app.
+      # Set up Java environment
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -52,7 +56,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Setup the Flutter environment.
+      # Set up Flutter environment
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -67,11 +71,11 @@ jobs:
       - name: Create key.jks
         run: echo "${{ secrets.KEY_STORE_BASE64 }}" | base64 --decode > android/app/key.jks
 
-      # Get Flutter dependencies.
+      # Get Flutter dependencies
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      # Statically analyze the Dart code for any errors.
+      # Analyze Dart code
       - name: Analyze Dart code
         run: flutter analyze .
 
@@ -86,7 +90,7 @@ jobs:
           repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/flutter-apk/app-release.apk
-          asset_name: musily-${{steps.extract_version.outputs.version}}.apk
+          asset_name: musily-${{ steps.extract_version.outputs.version }}.apk
           tag: ${{ steps.extract_version.outputs.version }}
           body: "${{ steps.extract_description.outputs.description }}"
           prerelease: false
@@ -103,13 +107,12 @@ jobs:
       # Post on Telegram
       - name: Post on Telegram
         run: |
-          # Set your Telegram bot API token and chat ID
           TELEGRAM_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
           CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
-          
-          # Message text with description and a download button
+
+          # Format the Telegram message
           MESSAGE="Version: ${{ steps.extract_version.outputs.version }}\n\n${{ steps.extract_description.outputs.description }}"
-          
+
           # Send message with download button
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
                -d "chat_id=$CHAT_ID" \
