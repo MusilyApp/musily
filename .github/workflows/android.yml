@@ -81,7 +81,7 @@ jobs:
 
       # Build universal APK
       - name: Build universal APK
-        run: flutter build apk --release
+        run: flutter build apk --release --flavor stable
 
       # Release universal generated APK
       - name: Release universal APK
@@ -89,7 +89,7 @@ jobs:
         with:
           repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/flutter-apk/app-release.apk
+          file: build/app/outputs/flutter-apk/app-stable-release.apk
           asset_name: musily-${{ steps.extract_version.outputs.version }}.apk
           tag: ${{ steps.extract_version.outputs.version }}
           body: "${{ steps.extract_description.outputs.description }}"
