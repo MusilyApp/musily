@@ -20,6 +20,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_editor.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_searcher.dart';
@@ -43,6 +44,7 @@ class PlaylistPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final bool isAsync;
 
   const PlaylistPage({
@@ -59,6 +61,7 @@ class PlaylistPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     this.isAsync = false,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -140,6 +143,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       );
                       controller.closeView(controller.text);
                     },
+                    getPlaylistUsecase: widget.getPlaylistUsecase,
                   ),
                 ),
               ],
@@ -365,6 +369,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       getPlayableItemUsecase: widget.getPlayableItemUsecase,
                       libraryController: widget.libraryController,
                       tonal: true,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
                     ),
                   ],
                 ),
@@ -377,6 +382,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     return widget.libraryController.builder(
                         builder: (context, libraryData) {
                       return TrackTile(
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
                         track: track,
                         getAlbumUsecase: widget.getAlbumUsecase,
                         coreController: widget.coreController,
@@ -452,20 +458,14 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                     [track.id],
                                   );
                                   setState(() {
-                                    if (widget.playlist.tracks
-                                        .where(
-                                          (element) =>
-                                              element.hash == track.hash,
-                                        )
-                                        .isNotEmpty) {
+                                    if (widget.playlist.tracks.any(
+                                      (element) => element.hash == track.hash,
+                                    )) {
                                       widget.playlist.tracks.removeWhere(
                                         (element) => element.hash == track.hash,
                                       );
                                     }
                                   });
-                                  if (context.display.isDesktop) {
-                                    return;
-                                  }
                                 },
                                 title: Text(
                                   context.localization.removeFromPlaylist,
@@ -506,6 +506,7 @@ class AsyncPlaylistPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final ContentOrigin origin;
 
   const AsyncPlaylistPage({
@@ -522,6 +523,7 @@ class AsyncPlaylistPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     required this.origin,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -591,6 +593,7 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
             }
             return PlaylistPage(
               playlist: playlist!,
+              getPlaylistUsecase: widget.getPlaylistUsecase,
               isAsync: true,
               coreController: widget.coreController,
               playerController: widget.playerController,
