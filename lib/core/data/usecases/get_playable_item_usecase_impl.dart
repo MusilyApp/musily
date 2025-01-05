@@ -1,7 +1,7 @@
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
-import 'package:musily/core/presenter/ui/utils/ly_error_handler.dart';
+import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -52,7 +52,7 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
         duration: track.duration,
       );
     } catch (e) {
-      LyErrorHandler.snackBar(e.toString());
+      LySnackbar.show(e.toString());
       return track;
     }
   }

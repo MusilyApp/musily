@@ -280,6 +280,7 @@ class LyNavigator {
     Duration transitionDuration = const Duration(milliseconds: 200),
     RouteTransitionsBuilder? transitionBuilder,
     bool useRootNavigator = true,
+    bool resizeToAvoidBottomInset = true,
   }) {
     final key = idGenerator();
     ContextManager().dialogStack.add(
@@ -292,64 +293,78 @@ class LyNavigator {
     return showDialog(
       context: context,
       barrierDismissible: barrierDismissible,
-      builder: (context) => LyCard(
-        onInitState: () {
-          ContextManager.addChangeLockListener(
-            (data) {
-              if (!barrierDismissible) {
-                return;
-              }
-              if (!data) {
-                if (ContextManager()
-                    .dialogStack
-                    .where((e) => e.key == key)
-                    .isNotEmpty) {
-                  if (ContextManager().preventPopGlobal) {
-                    return;
-                  }
-                  ContextManager().preventPopGlobal = true;
-                  Navigator.pop(context);
-                  return;
-                }
-                log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
-              }
-            },
-          );
-        },
-        onDispose: () {
-          ContextManager().dialogStack.removeWhere((e) => e.key == key);
-          ContextManager().preventPopGlobal = false;
-          log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
-        },
-        transitionDuration: transitionDuration,
-        margin: margin ?? EdgeInsets.zero,
-        header: title,
-        height: height,
-        width: width,
-        content: Padding(
-          padding: padding ?? const EdgeInsets.all(8.0),
-          child: builder(context),
-        ),
-        footer: ((actions?.call(context))?.isEmpty ?? true)
-            ? null
-            : Wrap(
-                spacing: 8,
-                alignment: WrapAlignment.end,
-                children: [
-                  ...actions?.call(context) ?? [],
-                ],
+      builder: (dialogContext) {
+        final bottomInset = MediaQuery.of(dialogContext).viewInsets.bottom;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: resizeToAvoidBottomInset ? bottomInset : 0,
               ),
-        elevation: elevation,
-        borderRadius: borderRadius,
-        shape: shape,
-        padding: padding ?? EdgeInsets.zero,
-        density: density,
-      ),
+              child: LyCard(
+                onInitState: () {
+                  ContextManager.addChangeLockListener(
+                    (data) {
+                      if (!barrierDismissible) {
+                        return;
+                      }
+                      if (!data) {
+                        if (ContextManager()
+                            .dialogStack
+                            .where((e) => e.key == key)
+                            .isNotEmpty) {
+                          if (ContextManager().preventPopGlobal) {
+                            return;
+                          }
+                          ContextManager().preventPopGlobal = true;
+                          Navigator.pop(context);
+                          return;
+                        }
+                        log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
+                      }
+                    },
+                  );
+                },
+                onDispose: () {
+                  ContextManager().dialogStack.removeWhere((e) => e.key == key);
+                  ContextManager().preventPopGlobal = false;
+                  log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
+                },
+                transitionDuration: transitionDuration,
+                margin: margin ?? EdgeInsets.zero,
+                header: title,
+                height: height,
+                width: width,
+                content: Padding(
+                  padding: padding ?? const EdgeInsets.all(8.0),
+                  child: builder(dialogContext),
+                ),
+                footer: ((actions?.call(dialogContext))?.isEmpty ?? true)
+                    ? null
+                    : Wrap(
+                        spacing: 8,
+                        alignment: WrapAlignment.end,
+                        children: [
+                          ...actions?.call(dialogContext) ?? [],
+                        ],
+                      ),
+                elevation: elevation,
+                borderRadius: borderRadius,
+                shape: shape,
+                padding: padding ?? EdgeInsets.zero,
+                density: density,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
   static Future<T?> showLyDialog<T>({
     required BuildContext context,
+    bool resizeToAvoidBottomInset = true,
     required Widget Function(BuildContext context) builder,
   }) {
     final key = idGenerator();
@@ -362,34 +377,43 @@ class LyNavigator {
     log('+[${DateTime.now().toHourMinuteSecond()}] Dialog $key added to Stack');
     return showDialog(
       context: context,
-      builder: (context) => LyDisposable(
-        onInitState: () {
-          ContextManager.addChangeLockListener(
-            (data) {
-              if (!data) {
-                if (ContextManager()
-                    .dialogStack
-                    .where((e) => e.key == key)
-                    .isNotEmpty) {
-                  if (ContextManager().preventPopGlobal) {
-                    return;
+      builder: (dialogContext) {
+        final bottomInset = MediaQuery.of(dialogContext).viewInsets.bottom;
+
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: resizeToAvoidBottomInset ? bottomInset : 0,
+          ),
+          child: LyDisposable(
+            onInitState: () {
+              ContextManager.addChangeLockListener(
+                (data) {
+                  if (!data) {
+                    if (ContextManager()
+                        .dialogStack
+                        .where((e) => e.key == key)
+                        .isNotEmpty) {
+                      if (ContextManager().preventPopGlobal) {
+                        return;
+                      }
+                      ContextManager().preventPopGlobal = true;
+                      Navigator.pop(context);
+                      return;
+                    }
+                    log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
                   }
-                  ContextManager().preventPopGlobal = true;
-                  Navigator.pop(context);
-                  return;
-                }
-                log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
-              }
+                },
+              );
             },
-          );
-        },
-        onDispose: () {
-          ContextManager().dialogStack.removeWhere((e) => e.key == key);
-          ContextManager().preventPopGlobal = false;
-          log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
-        },
-        child: builder(context),
-      ),
+            onDispose: () {
+              ContextManager().dialogStack.removeWhere((e) => e.key == key);
+              ContextManager().preventPopGlobal = false;
+              log('-[${DateTime.now().toHourMinuteSecond()}] Dialog $key Removed from Stack');
+            },
+            child: builder(dialogContext),
+          ),
+        );
+      },
     );
   }
 }

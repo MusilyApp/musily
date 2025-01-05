@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/domain/errors/musily_error.dart';
 import 'package:musily/core/presenter/extensions/musily_error.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
-import 'package:musily/core/presenter/ui/utils/ly_error_handler.dart';
+import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_builder.dart';
 
@@ -42,7 +42,7 @@ abstract class BaseController<Data extends BaseControllerData, Methods> {
 
   void catchError(dynamic error) {
     if (error is MusilyError) {
-      LyErrorHandler.snackBar(error.message);
+      LySnackbar.show(error.message);
     }
   }
 

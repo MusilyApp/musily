@@ -383,6 +383,7 @@ class _CorePageState extends State<CorePage> {
                               playerController: widget.playerController,
                               downloaderController: widget.downloaderController,
                               coreController: widget.coreController,
+                              getPlaylistUsecase: widget.getPlaylistUsecase,
                               getAlbumUsecase: widget.getAlbumUsecase,
                               getPlayableItemUsecase:
                                   widget.getPlayableItemUsecase,
