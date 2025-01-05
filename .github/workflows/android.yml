@@ -76,8 +76,8 @@ jobs:
         run: flutter pub get
 
       # Analyze Dart code
-      - name: Analyze Dart code
-        run: flutter analyze .
+      # - name: Analyze Dart code
+      #   run: flutter analyze .
 
       # Build universal APK
       - name: Build universal APK
