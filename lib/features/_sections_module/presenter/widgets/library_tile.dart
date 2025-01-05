@@ -68,6 +68,7 @@ class LibraryTile extends StatelessWidget {
                 item.album!.tracks.isEmpty
                     ? AsyncAlbumPage(
                         albumId: item.album!.id,
+                        getPlaylistUsecase: getPlaylistUsecase,
                         coreController: coreController,
                         playerController: playerController,
                         getAlbumUsecase: getAlbumUsecase,
@@ -84,6 +85,7 @@ class LibraryTile extends StatelessWidget {
                         album: item.album!,
                         playerController: playerController,
                         getAlbumUsecase: getAlbumUsecase,
+                        getPlaylistUsecase: getPlaylistUsecase,
                         downloaderController: downloaderController,
                         getPlayableItemUsecase: getPlayableItemUsecase,
                         libraryController: libraryController,
@@ -131,6 +133,7 @@ class LibraryTile extends StatelessWidget {
                     ? AsyncPlaylistPage(
                         origin: ContentOrigin.library,
                         playlistId: item.playlist!.id,
+                        getPlaylistUsecase: getPlaylistUsecase,
                         coreController: coreController,
                         playerController: playerController,
                         downloaderController: downloaderController,
@@ -145,6 +148,7 @@ class LibraryTile extends StatelessWidget {
                     : PlaylistPage(
                         playlist: item.playlist!,
                         coreController: coreController,
+                        getPlaylistUsecase: getPlaylistUsecase,
                         playerController: playerController,
                         downloaderController: downloaderController,
                         getPlayableItemUsecase: getPlayableItemUsecase,
@@ -207,6 +211,7 @@ class LibraryTile extends StatelessWidget {
                         artistId: item.artist!.id,
                         coreController: coreController,
                         playerController: playerController,
+                        getPlaylistUsecase: getPlaylistUsecase,
                         downloaderController: downloaderController,
                         getPlayableItemUsecase: getPlayableItemUsecase,
                         libraryController: libraryController,
@@ -220,6 +225,7 @@ class LibraryTile extends StatelessWidget {
                         artist: item.artist!,
                         coreController: coreController,
                         playerController: playerController,
+                        getPlaylistUsecase: getPlaylistUsecase,
                         downloaderController: downloaderController,
                         getPlayableItemUsecase: getPlayableItemUsecase,
                         libraryController: libraryController,

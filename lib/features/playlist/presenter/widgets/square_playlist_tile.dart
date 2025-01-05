@@ -57,6 +57,7 @@ class SquarePlaylistTile extends StatelessWidget {
           context.showingPageContext,
           playlist.tracks.isEmpty
               ? AsyncPlaylistPage(
+                  getPlaylistUsecase: getPlaylistUsecase,
                   origin: ContentOrigin.dataFetch,
                   playlistId: playlist.id,
                   coreController: coreController,
@@ -71,6 +72,7 @@ class SquarePlaylistTile extends StatelessWidget {
                   getArtistUsecase: getArtistUsecase,
                 )
               : PlaylistPage(
+                  getPlaylistUsecase: getPlaylistUsecase,
                   playlist: playlist,
                   coreController: coreController,
                   playerController: playerController,

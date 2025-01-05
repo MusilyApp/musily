@@ -377,6 +377,8 @@ class SectionsPage extends StatelessWidget {
                                                       album: content,
                                                       coreController:
                                                           coreController,
+                                                      getPlaylistUsecase:
+                                                          getPlaylistUsecase,
                                                       getAlbumUsecase:
                                                           getAlbumUsecase,
                                                       downloaderController:

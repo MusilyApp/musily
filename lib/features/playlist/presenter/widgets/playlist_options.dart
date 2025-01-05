@@ -10,6 +10,7 @@ import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_menu.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -22,6 +23,7 @@ class PlaylistOptions extends StatelessWidget {
   final PlaylistEntity playlist;
   final CoreController coreController;
   final PlayerController playerController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetAlbumUsecase getAlbumUsecase;
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
@@ -40,6 +42,7 @@ class PlaylistOptions extends StatelessWidget {
     required this.libraryController,
     this.onPlaylistDeleted,
     this.tonal = false,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -239,6 +242,7 @@ class PlaylistOptions extends StatelessWidget {
                                     child: PlaylistAdderWidget(
                                       coreController: coreController,
                                       libraryController: libraryController,
+                                      getPlaylistUsecase: getPlaylistUsecase,
                                       tracks: playlist.tracks,
                                     ),
                                   ),
@@ -251,6 +255,7 @@ class PlaylistOptions extends StatelessWidget {
                             coreController.coreContext!,
                             PlaylistAdderWidget(
                               coreController: coreController,
+                              getPlaylistUsecase: getPlaylistUsecase,
                               libraryController: libraryController,
                               tracks: playlist.tracks,
                             ),

@@ -13,6 +13,7 @@ import 'package:musily/features/artist/data/usecases/get_artist_tracks_usecase_i
 import 'package:musily/features/artist/data/usecases/get_artist_usecase_impl.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/playlist/data/usecases/get_playlist_usecase_impl.dart';
 
 class SearchModule extends Module {
   @override
@@ -34,6 +35,7 @@ class SearchModule extends Module {
         resultsPageController: Modular.get<ResultsPageController>(),
         getArtistAlbumsUsecase: Modular.get<GetArtistAlbumsUsecaseImpl>(),
         getArtistTracksUsecase: Modular.get<GetArtistTracksUsecaseImpl>(),
+        getPlaylistUsecase: Modular.get<GetPlaylistUsecaseImpl>(),
         getArtistSinglesUsecase: Modular.get<GetArtistSinglesUsecaseImpl>(),
         getSearchSuggestionsUsecase:
             Modular.get<GetSearchSuggestionsUsecaseImpl>(),

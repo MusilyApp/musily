@@ -5,6 +5,7 @@ import 'package:musily/core/presenter/routers/sized_router.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_creator.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_tile_thumb.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
@@ -13,6 +14,7 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 class PlaylistAdder extends StatefulWidget {
   final LibraryController libraryController;
   final CoreController coreController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final Widget Function(
     BuildContext context,
     Function() showAdder,
@@ -28,6 +30,7 @@ class PlaylistAdder extends StatefulWidget {
     this.asyncTracks,
     this.onAdded,
     super.key,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -46,6 +49,7 @@ class _PlaylistAdderState extends State<PlaylistAdder> {
             builder: (context) => PlaylistAdderWidget(
               onAdded: widget.onAdded,
               coreController: widget.coreController,
+              getPlaylistUsecase: widget.getPlaylistUsecase,
               libraryController: widget.libraryController,
               tracks: widget.tracks,
               asyncTracks: widget.asyncTracks,
@@ -61,6 +65,7 @@ class PlaylistAdderWidget extends StatelessWidget {
   final List<TrackEntity> tracks;
   final Future<List<TrackEntity>> Function()? asyncTracks;
   final LibraryController libraryController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final CoreController coreController;
   final void Function()? onAdded;
   const PlaylistAdderWidget({
@@ -70,6 +75,7 @@ class PlaylistAdderWidget extends StatelessWidget {
     this.asyncTracks,
     this.onAdded,
     required this.coreController,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -83,6 +89,7 @@ class PlaylistAdderWidget extends StatelessWidget {
         floatingActionButton: PlaylistCreator(
           libraryController,
           coreController: coreController,
+          getPlaylistUsecase: getPlaylistUsecase,
           builder: (context, showCreator) => FloatingActionButton(
             onPressed: showCreator,
             child: const Icon(

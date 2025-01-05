@@ -70,6 +70,7 @@ class PlaylistTile extends StatelessWidget {
               context.showingPageContext,
               playlist.tracks.isNotEmpty
                   ? PlaylistPage(
+                      getPlaylistUsecase: getPlaylistUsecase,
                       coreController: coreController,
                       playlist: playlist,
                       playerController: playerController,
@@ -83,6 +84,7 @@ class PlaylistTile extends StatelessWidget {
                       getArtistUsecase: getArtistUsecase,
                     )
                   : AsyncPlaylistPage(
+                      getPlaylistUsecase: getPlaylistUsecase,
                       origin: ContentOrigin.library,
                       playlistId: playlist.id,
                       coreController: coreController,
@@ -128,6 +130,7 @@ class PlaylistTile extends StatelessWidget {
                   coreController: coreController,
                   playerController: playerController,
                   getAlbumUsecase: getAlbumUsecase,
+                  getPlaylistUsecase: getPlaylistUsecase,
                   downloaderController: downloaderController,
                   getPlayableItemUsecase: getPlayableItemUsecase,
                   libraryController: libraryController,

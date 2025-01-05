@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 
 class ResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -23,6 +24,7 @@ class ResultsPage extends StatefulWidget {
   final CoreController coreController;
   final GetAlbumUsecase getAlbumUsecase;
   final LibraryController libraryController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final GetArtistUsecase getArtistUsecase;
@@ -45,6 +47,7 @@ class ResultsPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -123,6 +126,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       searchQuery: widget.searchQuery,
                       libraryController: widget.libraryController,
                       getAlbumUsecase: widget.getAlbumUsecase,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
                       coreController: widget.coreController,
                       downloaderController: widget.downloaderController,
                       getPlayableItemUsecase: widget.getPlayableItemUsecase,
@@ -141,6 +145,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       downloaderController: widget.downloaderController,
                       getPlayableItemUsecase: widget.getPlayableItemUsecase,
                       playerController: widget.playerController,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
                       getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                       getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                       getArtistTracksUsecase: widget.getArtistTracksUsecase,
@@ -153,6 +158,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       playerController: widget.playerController,
                       downloaderController: widget.downloaderController,
                       getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
                       libraryController: widget.libraryController,
                       getAlbumUsecase: widget.getAlbumUsecase,
                       getArtistUsecase: widget.getArtistUsecase,
