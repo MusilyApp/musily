@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dart_ytmusic_api/dart_ytmusic_api.dart';
+import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/core/utils/generate_section_id.dart';
 import 'package:musily/core/utils/generate_track_hash.dart';
 import 'package:musily/features/_sections_module/domain/entities/section_entity.dart';
@@ -320,47 +321,54 @@ class YoutubeDatasource {
   }
 
   Future<List<TrackEntity>> getRelatedTracks(List<TrackEntity> tracks) async {
-    final shuffledTracks = List<TrackEntity>.from(tracks)..shuffle();
-    final selectedTracks = shuffledTracks.sublist(
-      0,
-      min(3, shuffledTracks.length),
-    );
-    final random = Random();
-
-    final explode = YoutubeExplode();
-    final List<TrackEntity> relatedTracks = [...tracks];
-
-    for (final track in selectedTracks) {
-      final results =
-          await explode.search('${track.title} ${track.artist.name}');
-      if (results.isEmpty) {
-        continue;
-      }
-      final relatedVideosList =
-          await explode.videos.getRelatedVideos(results.first);
-      final selectedVideos = (relatedVideosList?.toList() ?? []).sublist(
+    try {
+      final shuffledTracks = List<TrackEntity>.from(tracks)..shuffle();
+      final selectedTracks = shuffledTracks.sublist(
         0,
-        min(3, relatedVideosList?.length ?? 0),
+        min(3, shuffledTracks.length),
       );
+      final random = Random();
 
-      for (final video in selectedVideos) {
-        final relatedSearch = await searchTracks(
-          '${video.title} ${video.author}',
-          includeVideos: false,
+      final explode = YoutubeExplode();
+      final List<TrackEntity> relatedTracks = [...tracks];
+
+      for (final track in selectedTracks) {
+        final results =
+            await explode.search('${track.title} ${track.artist.name}');
+        if (results.isEmpty) {
+          continue;
+        }
+        final relatedVideosList =
+            await explode.videos.getRelatedVideos(results.first);
+        final selectedVideos = (relatedVideosList?.toList() ?? []).sublist(
+          0,
+          min(3, relatedVideosList?.length ?? 0),
         );
-        final relatedTrack = relatedSearch.firstOrNull;
-        if (relatedTrack != null) {
-          if (relatedTracks.map((e) => e.hash).contains(relatedTrack.hash)) {
-            continue;
-          }
-          relatedTracks.insert(
-            random.nextInt(relatedTracks.length),
-            relatedTrack..fromSmartQueue = true,
+
+        for (final video in selectedVideos) {
+          final relatedSearch = await searchTracks(
+            '${video.title} ${video.author}',
+            includeVideos: false,
           );
+          final relatedTrack = relatedSearch.firstOrNull;
+          if (relatedTrack != null) {
+            if (relatedTracks.map((e) => e.hash).contains(relatedTrack.hash)) {
+              continue;
+            }
+            relatedTracks.insert(
+              random.nextInt(relatedTracks.length),
+              relatedTrack..fromSmartQueue = true,
+            );
+          }
         }
       }
+      return relatedTracks;
+    } catch (e) {
+      LySnackbar.show(
+        'Smart Queue isn’t available right now :c',
+      );
+      return tracks;
     }
-    return relatedTracks;
   }
 
   Future<List<String>> getSearchSuggestions(String query) async {
