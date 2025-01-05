@@ -1,3 +1,19 @@
+## 3.1.0
+
+**Features**
+
+- Added the ability to import playlists from YouTube to your library.
+
+**Improvements**
+
+- Improved library backup.
+- Other UI improvments.
+
+**Fixes**
+
+- Fixed inconsistencies in the library.
+- Resolved an issue where albums were not added to playlists or the queue from the menu.
+
 ## 3.0.0
 
 **Features**

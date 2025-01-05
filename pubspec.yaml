@@ -2,7 +2,7 @@
 name: musily
 description: "A great music app."
 publish_to: "none" # Set to 'none' to prevent publishing to pub.dev
-version: 3.0.0
+version: 3.1.0
 
 # Flutter SDK Environment
 environment:
