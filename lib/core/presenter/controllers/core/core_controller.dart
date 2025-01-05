@@ -10,7 +10,7 @@ import 'package:musily/core/presenter/controllers/core/core_data.dart';
 import 'package:musily/core/presenter/controllers/core/core_methods.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
-import 'package:musily/core/presenter/ui/utils/ly_error_handler.dart';
+import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -22,6 +22,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -42,6 +43,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
 
   late final BackupService backupService;
 
@@ -51,6 +53,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
     required this.libraryController,
     required this.getPlayableItemUsecase,
     required this.getTrackUsecase,
+    required this.getPlaylistUsecase,
     required this.getAlbumUsecase,
     required this.getArtistUsecase,
     required this.getArtistAlbumsUsecase,
@@ -115,8 +118,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
             ),
           );
         } catch (e) {
-          print(e);
-          LyErrorHandler.snackBar(':P');
+          LySnackbar.show(':P');
         }
       },
       restoreLibraryBackup: () async {
@@ -239,6 +241,7 @@ https://musily.app/album/${album.id}
                     context,
                     AsyncArtistPage(
                       artistId: id,
+                      getPlaylistUsecase: getPlaylistUsecase,
                       coreController: this,
                       playerController: playerController,
                       downloaderController: downloaderController,
@@ -277,6 +280,7 @@ https://musily.app/album/${album.id}
                       playerController: playerController,
                       downloaderController: downloaderController,
                       getPlayableItemUsecase: getPlayableItemUsecase,
+                      getPlaylistUsecase: getPlaylistUsecase,
                       libraryController: libraryController,
                       getAlbumUsecase: getAlbumUsecase,
                       getArtistUsecase: getArtistUsecase,
@@ -301,6 +305,7 @@ https://musily.app/album/${album.id}
                       getAlbumUsecase: getAlbumUsecase,
                       getArtistUsecase: getArtistUsecase,
                       getArtistTracksUsecase: getArtistTracksUsecase,
+                      getPlaylistUsecase: getPlaylistUsecase,
                       getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                       getArtistSinglesUsecase: getArtistSinglesUsecase,
                       origin: extra == 'library'

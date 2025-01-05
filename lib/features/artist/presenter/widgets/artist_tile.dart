@@ -17,6 +17,7 @@ import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 
 class ArtistTile extends StatefulWidget {
   final ArtistEntity artist;
@@ -26,6 +27,7 @@ class ArtistTile extends StatefulWidget {
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
   final PlayerController playerController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
@@ -46,6 +48,7 @@ class ArtistTile extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.contentOrigin,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -76,6 +79,7 @@ class _ArtistTileState extends State<ArtistTile> {
                     libraryController: widget.libraryController,
                     getAlbumUsecase: widget.getAlbumUsecase,
                     getArtistUsecase: widget.getArtistUsecase,
+                    getPlaylistUsecase: widget.getPlaylistUsecase,
                     getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                     getArtistTracksUsecase: widget.getArtistTracksUsecase,
                     getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
@@ -85,6 +89,7 @@ class _ArtistTileState extends State<ArtistTile> {
                     artist: widget.artist,
                     coreController: widget.coreController,
                     playerController: widget.playerController,
+                    getPlaylistUsecase: widget.getPlaylistUsecase,
                     downloaderController: widget.downloaderController,
                     getPlayableItemUsecase: widget.getPlayableItemUsecase,
                     libraryController: widget.libraryController,

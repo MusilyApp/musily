@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 
 class SquareAlbumTile extends StatelessWidget {
   final AlbumEntity album;
@@ -25,6 +26,7 @@ class SquareAlbumTile extends StatelessWidget {
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final GetArtistUsecase getArtistUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
@@ -43,6 +45,7 @@ class SquareAlbumTile extends StatelessWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -57,6 +60,7 @@ class SquareAlbumTile extends StatelessWidget {
                   playerController: playerController,
                   album: album,
                   getAlbumUsecase: getAlbumUsecase,
+                  getPlaylistUsecase: getPlaylistUsecase,
                   downloaderController: downloaderController,
                   getPlayableItemUsecase: getPlayableItemUsecase,
                   libraryController: libraryController,
@@ -69,6 +73,7 @@ class SquareAlbumTile extends StatelessWidget {
                   albumId: album.id,
                   coreController: coreController,
                   playerController: playerController,
+                  getPlaylistUsecase: getPlaylistUsecase,
                   getAlbumUsecase: getAlbumUsecase,
                   downloaderController: downloaderController,
                   getPlayableItemUsecase: getPlayableItemUsecase,

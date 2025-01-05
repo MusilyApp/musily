@@ -19,6 +19,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 
 class AlbumTile extends StatefulWidget {
   final AlbumEntity album;
@@ -30,6 +31,7 @@ class AlbumTile extends StatefulWidget {
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
   final GetArtistUsecase getArtistUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
@@ -50,6 +52,7 @@ class AlbumTile extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.contentOrigin,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -75,6 +78,7 @@ class _AlbumTileState extends State<AlbumTile> {
                   widget.album.tracks.isNotEmpty
                       ? AlbumPage(
                           album: widget.album,
+                          getPlaylistUsecase: widget.getPlaylistUsecase,
                           coreController: widget.coreController,
                           playerController: widget.playerController,
                           getAlbumUsecase: widget.getAlbumUsecase,
@@ -89,6 +93,7 @@ class _AlbumTileState extends State<AlbumTile> {
                         )
                       : AsyncAlbumPage(
                           albumId: widget.album.id,
+                          getPlaylistUsecase: widget.getPlaylistUsecase,
                           coreController: widget.coreController,
                           playerController: widget.playerController,
                           getAlbumUsecase: widget.getAlbumUsecase,
@@ -157,6 +162,7 @@ class _AlbumTileState extends State<AlbumTile> {
                 coreController: widget.coreController,
                 playerController: widget.playerController,
                 getAlbumUsecase: widget.getAlbumUsecase,
+                getPlaylistUsecase: widget.getPlaylistUsecase,
                 downloaderController: widget.downloaderController,
                 getPlayableItemUsecase: widget.getPlayableItemUsecase,
                 libraryController: widget.libraryController,

@@ -17,6 +17,7 @@ import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart'
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/mini_player_desktop.dart';
 import 'package:musily/features/player/presenter/widgets/player_widget.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 
 class MiniPlayerWidget extends StatefulWidget {
   final DownloaderController downloaderController;
@@ -28,6 +29,7 @@ class MiniPlayerWidget extends StatefulWidget {
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final CoreController coreController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
 
   const MiniPlayerWidget({
@@ -42,6 +44,7 @@ class MiniPlayerWidget extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.coreController,
     required this.getArtistUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -60,6 +63,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                   playerController: widget.playerController,
                   downloaderController: widget.downloaderController,
                   libraryController: widget.libraryController,
+                  getPlaylistUsecase: widget.getPlaylistUsecase,
                   getAlbumUsecase: widget.getAlbumUsecase,
                   getPlayableItemUsecase: widget.getPlayableItemUsecase,
                   coreController: widget.coreController,
@@ -82,6 +86,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                           getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                           getArtistSinglesUsecase:
                               widget.getArtistSinglesUsecase,
+                          getPlaylistUsecase: widget.getPlaylistUsecase,
                           getArtistTracksUsecase: widget.getArtistTracksUsecase,
                           getArtistUsecase: widget.getArtistUsecase,
                         ),

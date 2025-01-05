@@ -31,6 +31,7 @@ import 'package:musily/features/artist/presenter/pages/artist_tracks_page.dart';
 import 'package:musily/features/artist/presenter/widgets/artist_tile.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -43,6 +44,7 @@ class ArtistPage extends StatefulWidget {
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
   final GetAlbumUsecase getAlbumUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
@@ -63,6 +65,7 @@ class ArtistPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     this.isAsync = false,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -353,6 +356,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                 builder: (context) => ArtistTracksPage(
                                   tracks: allTracks,
                                   artist: widget.artist,
+                                  getPlaylistUsecase: widget.getPlaylistUsecase,
                                   getArtistSinglesUsecase:
                                       widget.getArtistSinglesUsecase,
                                   getArtistUsecase: widget.getArtistUsecase,
@@ -388,6 +392,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       track: track,
                       coreController: widget.coreController,
                       playerController: widget.playerController,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
                       downloaderController: widget.downloaderController,
                       getPlayableItemUsecase: widget.getPlayableItemUsecase,
                       libraryController: widget.libraryController,
@@ -460,6 +465,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                 builder: (context) => ArtistAlbumsPage(
                                   albums: allAlbums,
                                   artist: widget.artist,
+                                  getPlaylistUsecase: widget.getPlaylistUsecase,
                                   getArtistAlbumsUsecase:
                                       widget.getArtistAlbumsUsecase,
                                   getArtistTracksUsecase:
@@ -500,6 +506,7 @@ class _ArtistPageState extends State<ArtistPage> {
                             child: SquareAlbumTile(
                               album: album,
                               coreController: widget.coreController,
+                              getPlaylistUsecase: widget.getPlaylistUsecase,
                               playerController: widget.playerController,
                               getAlbumUsecase: widget.getAlbumUsecase,
                               downloaderController: widget.downloaderController,
@@ -551,6 +558,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               context,
                               DownupRouter(
                                 builder: (context) => ArtistSinglesPage(
+                                  getPlaylistUsecase: widget.getPlaylistUsecase,
                                   singles: allSingles,
                                   artist: widget.artist,
                                   getArtistSinglesUsecase:
@@ -595,6 +603,7 @@ class _ArtistPageState extends State<ArtistPage> {
                             child: SquareAlbumTile(
                               album: album,
                               coreController: widget.coreController,
+                              getPlaylistUsecase: widget.getPlaylistUsecase,
                               playerController: widget.playerController,
                               getAlbumUsecase: widget.getAlbumUsecase,
                               downloaderController: widget.downloaderController,
@@ -641,6 +650,7 @@ class _ArtistPageState extends State<ArtistPage> {
                       ...widget.artist.similarArtists.map(
                         (similarArtist) => ArtistTile(
                           contentOrigin: ContentOrigin.dataFetch,
+                          getPlaylistUsecase: widget.getPlaylistUsecase,
                           getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                           getArtistTracksUsecase: widget.getArtistTracksUsecase,
                           artist: similarArtist,
@@ -678,6 +688,7 @@ class AsyncArtistPage extends StatefulWidget {
   final GetArtistUsecase getArtistUsecase;
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetAlbumUsecase getAlbumUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
@@ -696,6 +707,7 @@ class AsyncArtistPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -770,6 +782,7 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
               coreController: widget.coreController,
               playerController: widget.playerController,
               downloaderController: widget.downloaderController,
+              getPlaylistUsecase: widget.getPlaylistUsecase,
               getPlayableItemUsecase: widget.getPlayableItemUsecase,
               libraryController: widget.libraryController,
               getAlbumUsecase: widget.getAlbumUsecase,

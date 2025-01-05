@@ -19,6 +19,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_searcher.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -34,6 +35,7 @@ class AlbumPage extends StatefulWidget {
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
@@ -54,6 +56,7 @@ class AlbumPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     this.isAsync = false,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -92,6 +95,7 @@ class _AlbumPageState extends State<AlbumPage> {
                       ),
                       child: TrackSearcher(
                         tracks: widget.album.tracks,
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
                         coreController: widget.coreController,
                         playerController: widget.playerController,
                         getPlayableItemUsecase: widget.getPlayableItemUsecase,
@@ -373,6 +377,7 @@ class _AlbumPageState extends State<AlbumPage> {
                           playerController: widget.playerController,
                           getAlbumUsecase: widget.getAlbumUsecase,
                           downloaderController: widget.downloaderController,
+                          getPlaylistUsecase: widget.getPlaylistUsecase,
                           getPlayableItemUsecase: widget.getPlayableItemUsecase,
                           libraryController: widget.libraryController,
                           getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
@@ -390,6 +395,7 @@ class _AlbumPageState extends State<AlbumPage> {
                     ),
                     ...widget.album.tracks.map(
                       (track) => TrackTile(
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
                         getAlbumUsecase: widget.getAlbumUsecase,
                         leading: isAlbumPlaying &&
                                 data.currentPlayingItem?.hash == track.hash &&
@@ -462,6 +468,7 @@ class _AlbumPageState extends State<AlbumPage> {
 
 class AsyncAlbumPage extends StatefulWidget {
   final CoreController coreController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final PlayerController playerController;
   final GetAlbumUsecase getAlbumUsecase;
   final String albumId;
@@ -472,6 +479,7 @@ class AsyncAlbumPage extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final LibraryController libraryController;
+
   const AsyncAlbumPage({
     super.key,
     required this.albumId,
@@ -485,6 +493,7 @@ class AsyncAlbumPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -558,6 +567,7 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
             return AlbumPage(
               isAsync: true,
               coreController: widget.coreController,
+              getPlaylistUsecase: widget.getPlaylistUsecase,
               getAlbumUsecase: widget.getAlbumUsecase,
               album: album!,
               playerController: widget.playerController,

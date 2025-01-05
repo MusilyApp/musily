@@ -76,6 +76,7 @@ class SharedModule extends Module {
         getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
         getTrackUsecase: i.get<GetTrackUsecaseImpl>(),
         getAlbumUsecase: i.get<GetAlbumUsecaseImpl>(),
+        getPlaylistUsecase: i.get<GetPlaylistUsecaseImpl>(),
         getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
         getArtistAlbumsUsecase: i.get<GetArtistAlbumsUsecaseImpl>(),
         getArtistTracksUsecase: i.get<GetArtistTracksUsecaseImpl>(),

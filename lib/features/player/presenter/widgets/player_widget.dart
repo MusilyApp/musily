@@ -24,6 +24,7 @@ import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/player_background.dart';
 import 'package:musily/features/player/presenter/widgets/player_banner.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 
@@ -33,6 +34,7 @@ class PlayerWidget extends StatefulWidget {
   final LibraryController libraryController;
   final GetAlbumUsecase getAlbumUsecase;
   final GetPlayableItemUsecase getPlayableItemUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
@@ -51,6 +53,7 @@ class PlayerWidget extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.coreController,
     required this.getArtistUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -164,6 +167,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                               ],
                             ),
                             TrackOptions(
+                              getPlaylistUsecase: widget.getPlaylistUsecase,
                               track: data.currentPlayingItem!,
                               playerController: widget.playerController,
                               getAlbumUsecase: widget.getAlbumUsecase,
@@ -196,6 +200,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                         downloaderController: widget.downloaderController,
                         getPlayableItemUsecase: widget.getPlayableItemUsecase,
                         libraryController: widget.libraryController,
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
                         getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                         getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                         getArtistTracksUsecase: widget.getArtistTracksUsecase,
@@ -223,6 +228,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                       artistId:
                                           data.currentPlayingItem!.artist.id,
                                       coreController: widget.coreController,
+                                      getPlaylistUsecase:
+                                          widget.getPlaylistUsecase,
                                       playerController: widget.playerController,
                                       getAlbumUsecase: widget.getAlbumUsecase,
                                       downloaderController:

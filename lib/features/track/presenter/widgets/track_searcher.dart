@@ -9,6 +9,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -21,6 +22,7 @@ class TrackSearcher extends StatelessWidget {
   final LibraryController libraryController;
   final DownloaderController downloaderController;
   final GetAlbumUsecase getAlbumUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
@@ -43,6 +45,7 @@ class TrackSearcher extends StatelessWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     this.clickAction,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -94,6 +97,7 @@ class TrackSearcher extends StatelessWidget {
                   playerController: playerController,
                   getPlayableItemUsecase: getPlayableItemUsecase,
                   libraryController: libraryController,
+                  getPlaylistUsecase: getPlaylistUsecase,
                   downloaderController: downloaderController,
                   getAlbumUsecase: getAlbumUsecase,
                   getArtistUsecase: getArtistUsecase,

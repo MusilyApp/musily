@@ -6,6 +6,7 @@ import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_menu.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
@@ -31,6 +32,7 @@ class TrackOptions extends StatelessWidget {
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final LibraryController libraryController;
   final GetAlbumUsecase getAlbumUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final List<AppMenuEntry> Function(BuildContext context)? customActions;
   final List<TrackTileOptions> hideOptions;
   final GetArtistUsecase getArtistUsecase;
@@ -53,6 +55,7 @@ class TrackOptions extends StatelessWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -114,6 +117,7 @@ class TrackOptions extends StatelessWidget {
                           ),
                         ),
                         child: PlaylistAdderWidget(
+                          getPlaylistUsecase: getPlaylistUsecase,
                           coreController: coreController,
                           libraryController: libraryController,
                           tracks: [track],
@@ -128,6 +132,7 @@ class TrackOptions extends StatelessWidget {
                 coreController.coreContext!,
                 PlaylistAdderWidget(
                   coreController: coreController,
+                  getPlaylistUsecase: getPlaylistUsecase,
                   libraryController: libraryController,
                   tracks: [track],
                 ),
@@ -172,6 +177,7 @@ class TrackOptions extends StatelessWidget {
                     playerController: playerController,
                     getAlbumUsecase: getAlbumUsecase,
                     downloaderController: downloaderController,
+                    getPlaylistUsecase: getPlaylistUsecase,
                     getPlayableItemUsecase: getPlayableItemUsecase,
                     libraryController: libraryController,
                     getArtistAlbumsUsecase: getArtistAlbumsUsecase,
@@ -203,6 +209,7 @@ class TrackOptions extends StatelessWidget {
                   playerController: playerController,
                   downloaderController: downloaderController,
                   getPlayableItemUsecase: getPlayableItemUsecase,
+                  getPlaylistUsecase: getPlaylistUsecase,
                   libraryController: libraryController,
                   getAlbumUsecase: getAlbumUsecase,
                   getArtistUsecase: getArtistUsecase,

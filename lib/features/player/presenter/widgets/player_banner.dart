@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/track_lyrics.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class PlayerBanner extends StatefulWidget {
@@ -29,6 +30,7 @@ class PlayerBanner extends StatefulWidget {
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final CoreController coreController;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
 
   const PlayerBanner({
@@ -44,6 +46,7 @@ class PlayerBanner extends StatefulWidget {
     required this.coreController,
     required this.getArtistUsecase,
     required this.downloaderController,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -124,6 +127,8 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                         albumId:
                                             data.currentPlayingItem!.album.id,
                                         coreController: widget.coreController,
+                                        getPlaylistUsecase:
+                                            widget.getPlaylistUsecase,
                                         playerController:
                                             widget.playerController,
                                         getAlbumUsecase: widget.getAlbumUsecase,
