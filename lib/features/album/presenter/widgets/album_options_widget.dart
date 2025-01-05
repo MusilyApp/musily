@@ -19,7 +19,9 @@ import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
+import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class AlbumOptions extends StatelessWidget {
   final AlbumEntity album;
@@ -29,6 +31,7 @@ class AlbumOptions extends StatelessWidget {
   final GetAlbumUsecase getAlbumUsecase;
   final DownloaderController downloaderController;
   final GetPlayableItemUsecase getPlayableItemUsecase;
+  final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
@@ -51,6 +54,7 @@ class AlbumOptions extends StatelessWidget {
     required this.libraryController,
     this.onFocus,
     this.tonal = false,
+    required this.getPlaylistUsecase,
   });
 
   @override
@@ -114,6 +118,7 @@ class AlbumOptions extends StatelessWidget {
                       getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                       getArtistTracksUsecase: getArtistTracksUsecase,
                       getArtistSinglesUsecase: getArtistSinglesUsecase,
+                      getPlaylistUsecase: getPlaylistUsecase,
                     ),
                   );
                 },
@@ -186,10 +191,15 @@ class AlbumOptions extends StatelessWidget {
                 ),
               ),
               AppMenuEntry(
-                onTap: () {
-                  playerController.methods.addToQueue(
-                    album.tracks,
-                  );
+                onTap: () async {
+                  late final List<TrackEntity> tracksToAdd;
+                  if (album.tracks.isEmpty) {
+                    final asyncAlbum = await getAlbumUsecase.exec(album.id);
+                    tracksToAdd = asyncAlbum?.tracks ?? [];
+                  } else {
+                    tracksToAdd = album.tracks;
+                  }
+                  playerController.methods.addToQueue(tracksToAdd);
                 },
                 leading: Icon(
                   Icons.playlist_add,
@@ -215,6 +225,12 @@ class AlbumOptions extends StatelessWidget {
                     coreController.coreContext!,
                     PlaylistAdderWidget(
                       coreController: coreController,
+                      getPlaylistUsecase: getPlaylistUsecase,
+                      asyncTracks: () async {
+                        final asyncAlbum = await getAlbumUsecase.exec(album.id);
+                        final tracks = asyncAlbum?.tracks ?? [];
+                        return tracks;
+                      },
                       libraryController: libraryController,
                       tracks: album.tracks,
                     ),
