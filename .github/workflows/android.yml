@@ -111,7 +111,7 @@ jobs:
           CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
 
           # Format the Telegram message
-          MESSAGE="Version: ${{ steps.extract_version.outputs.version }}\n\n${{ steps.extract_description.outputs.description }}"
+          MESSAGE="${{ steps.extract_description.outputs.description }}"
 
           # Send message with download button
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
