@@ -8,7 +8,7 @@ This repository contains the source code for Musily, a music app built with Flut
 
 ### Download
 
-Get it on [Telegram](https://t.me/MusilyApp).
+Get it on [Telegram](https://t.me/MusilyApp) or [GitHub](https://github.com/MusilyApp/musily/releases).
 
 ### Features
 
