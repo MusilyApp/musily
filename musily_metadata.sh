@@ -21,7 +21,8 @@ get_description() {
     exit 1
   fi
 
-  echo $description
+  # Use printf to preserve newlines
+  printf "%s" "$description"
 }
 
 # Function to display help
