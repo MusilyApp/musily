@@ -55,32 +55,20 @@ jobs:
             libgtk-3-dev liblzma-dev libglu1-mesa \
             libstdc++-12-dev libmpv-dev \
             libjsoncpp-dev libsecret-1-dev
-
-      # Extract version from pubspec
-      - name: Extract version
-        id: extract_version
+       # Extract version and description from CHANGELOG.md
+      - name: Extract metadata
+        id: extract_metadata
         run: |
           version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
-          echo "version=${version}" >> $GITHUB_ENV
-          echo "version=${version}" >> $GITHUB_OUTPUT
-
-      # Extract description from CHANGELOG.md
-      - name: Extract description
-        id: extract_description
-        run: |
           description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
-          # Escape special characters for GitHub Actions output
-          description="${description//'%'/'%25'}"
-          description="${description//$'\n'/'%0A'}"
-          description="${description//$'\r'/'%0D'}"
-          echo "description=${escaped_description}" >> $GITHUB_ENV
-          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
-      # set the output of the job
-      - name: Set job output
-        id: set_job_output
-        run: |
-          echo "description=${{ steps.extract_description.outputs.description }}" >> "$GITHUB_OUTPUT"
 
+           # Escape special characters for GitHub Actions output
+          escaped_description=$(echo "$description" | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g; s/\*/\\*/g; s/_/\\_/g')
+
+          echo "version=${version}" >> $GITHUB_ENV
+          echo "description=${escaped_description}" >> $GITHUB_ENV
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
 
       # Set up Java environment (only for android)
       - name: Set up Java
@@ -163,26 +151,11 @@ jobs:
           repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ matrix.target == 'android' && matrix.artifact_path || env.ARCHIVE_NAME }}
-          asset_name: ${{ matrix.asset_name_prefix }}-${{ steps.extract_version.outputs.version }}.${{ matrix.target == 'android' && 'apk' || matrix.target == 'windows' && 'zip' || matrix.target == 'linux' && 'tar.gz'  }}
-          tag: ${{ steps.extract_version.outputs.version }}
-          body: "${{ steps.extract_description.outputs.description }}"
+          asset_name: ${{ matrix.asset_name_prefix }}-${{ steps.extract_metadata.outputs.version }}.${{ matrix.target == 'android' && 'apk' || matrix.target == 'windows' && 'zip' || matrix.target == 'linux' && 'tar.gz'  }}
+          tag: ${{ steps.extract_metadata.outputs.version }}
+          body: "${{ steps.extract_metadata.outputs.description }}"
           prerelease: false
           overwrite: true
-      # Add SHA256 checksum to release (only for windows and linux)
-      - name: Add SHA256 checksum to release
-        if: matrix.target != 'android'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_name: MusilyApp/musily
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{env.ARCHIVE_NAME}}.sha256
-          asset_name: ${{env.ARCHIVE_NAME}}.sha256
-          tag: ${{ steps.extract_version.outputs.version }}
-          body: "${{ steps.extract_description.outputs.description }}"
-          prerelease: false
-          overwrite: true
-    outputs:
-        description: ${{ steps.set_job_output.outputs.description }}
 
   notify_telegram:
     name: Notify Telegram Release
@@ -191,6 +164,24 @@ jobs:
 
     steps:
       # Get the latest release info from GitHub API
+      - name: Extract metadata
+        id: extract_metadata
+        run: |
+          version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
+          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
+
+          # Escape special characters for GitHub Actions output
+          description="${description//'%'/'%25'}"
+          description="${description//$'\n'/'%0A'}"
+          description="${description//$'\r'/'%0D'}"
+          description="${description//\*/\\*}"
+          description="${description//_/\\_}"
+
+          echo "version=${version}" >> $GITHUB_ENV
+          echo "description=${description}" >> $GITHUB_ENV
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "description=${description}" >> $GITHUB_OUTPUT
+          
       - name: Get Latest Release Info
         id: get_release_info
         run: |
@@ -205,19 +196,13 @@ jobs:
           echo "apk_url=${apk_url}" >> $GITHUB_OUTPUT
           echo "win_url=${win_url}" >> $GITHUB_OUTPUT
           echo "linux_url=${linux_url}" >> $GITHUB_OUTPUT
-
-      # Get description from the previous job
-      - name: Get Description
-        id: get_description
-        run: |
-          echo "description=${{ needs.build_and_release.outputs.description }}" >> $GITHUB_OUTPUT
-          echo "description=${{ needs.build_and_release.outputs.description }}" >> $GITHUB_ENV
+      
       # Post on Telegram
       - name: Post on Telegram
         run: |
           TELEGRAM_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
           CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
-          MESSAGE="${{ steps.get_description.outputs.description }}"
+          MESSAGE="${{ steps.extract_metadata.outputs.description }}"
 
           # Send message with download buttons
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
