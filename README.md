@@ -42,6 +42,8 @@ Musily has been tested and works seamlessly on the following platforms:
 - **Operating Systems**:
   - **Ubuntu 24.04 LTS** (GNOME)
   - **Nobara Linux 40** (GNOME Edition)
+  - **Windows 10**
+  - **Windows 11**
 
 Make sure you have the correct Flutter version and system dependencies installed for an optimal experience.
 
