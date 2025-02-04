@@ -23,7 +23,10 @@ dependencies:
   dio: ^5.5.0+1
 
   # YouTube APIs
-  youtube_explode_dart: ^2.3.6
+  youtube_explode_dart: 
+    git:
+      url: https://github.com/Hexer10/youtube_explode_dart.git
+      ref: e519db65ad0b0a40b12f69285932f9db509da3cf
   dart_ytmusic_api: ^1.0.7
 
   # UI and Animations
