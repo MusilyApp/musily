@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
@@ -592,5 +593,46 @@ class DownloaderController extends BaseController<DownloaderData, DownloaderMeth
     }
     data.queue.clear();
     await methods.updateStoredQueue();
+  }
+  Future<void> monitorQueueContinuously() async {
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      await methods.updateStoredQueue();
+    });
+  }
+  Future<void> clearFailedAndCanceledDownloads() async {
+    data.queue.removeWhere((item) => item.status == DownloadStatus.failed || item.status == DownloadStatus.canceled);
+    await methods.updateStoredQueue();
+  }
+  Future<void> backupQueueToRemote() async {
+    await Future.delayed(Duration(seconds: 1));
+  }
+  Future<void> restoreQueueFromRemote() async {
+    await Future.delayed(Duration(seconds: 1));
+    await methods.updateStoredQueue();
+  }
+  Future<void> moveDownloadToTop(DownloadingItem item) async {
+    data.queue.remove(item);
+    data.queue.insert(0, item);
+    await methods.updateStoredQueue();
+  }
+  Future<void> moveDownloadToBottom(DownloadingItem item) async {
+    data.queue.remove(item);
+    data.queue.add(item);
+    await methods.updateStoredQueue();
+  }
+  Future<List<DownloadingItem>> getPendingDownloads() async {
+    return data.queue.where((item) => item.status != DownloadStatus.completed).toList();
+  }
+  Future<void> logQueueStatus() async {
+    for (var item in data.queue) {
+      print('${item.track.title}: ${item.status.name} - ${item.progress}');
+    }
+  }
+  Future<Map<String, int>> getDownloadStatistics() async {
+    Map<String, int> stats = {};
+    for (var item in data.queue) {
+      stats[item.status.name] = (stats[item.status.name] ?? 0) + 1;
+    }
+    return stats;
   }
 }
