@@ -1,3 +1,9 @@
+## 3.1.1
+
+**Improvements**
+
+- Magic Queue: Fixed and completely redesigned for a smoother and smarter experience.
+
 ## 3.1.0
 
 **Features**
