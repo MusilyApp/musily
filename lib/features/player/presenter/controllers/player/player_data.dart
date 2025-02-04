@@ -32,6 +32,8 @@ class PlayerData implements BaseControllerData {
 
   bool mediaAvailable;
   List<String> tracksFromSmartQueue;
+  bool autoSmartQueue;
+  bool isPositionTriggered;
   bool loadingSmartQueue;
 
   bool addingToFavorites;
@@ -61,6 +63,8 @@ class PlayerData implements BaseControllerData {
     required this.addingToFavorites,
     required this.showQueue,
     required this.showDownloadManager,
+    required this.autoSmartQueue,
+    required this.isPositionTriggered,
     this.themeMode,
   });
 
@@ -82,6 +86,8 @@ class PlayerData implements BaseControllerData {
     bool? syncedLyrics,
     bool? mediaAvailable,
     List<String>? tracksFromSmartQueue,
+    bool? autoSmartQueue,
+    bool? isPositionTriggered,
     bool? loadingSmartQueue,
     bool? addingToFavorites,
     bool? showQueue,
@@ -110,6 +116,8 @@ class PlayerData implements BaseControllerData {
       showQueue: showQueue ?? this.showQueue,
       showDownloadManager: showDownloadManager ?? this.showDownloadManager,
       themeMode: themeMode ?? this.themeMode,
+      autoSmartQueue: autoSmartQueue ?? this.autoSmartQueue,
+      isPositionTriggered: isPositionTriggered ?? this.isPositionTriggered,
     );
   }
 }

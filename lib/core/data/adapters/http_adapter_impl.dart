@@ -8,7 +8,7 @@ class HttpAdapterImpl extends HttpAdapter {
 
   HttpAdapterImpl()
       // TODO Set Api Url
-      : super('') {
+      : super('https://api.musily.app') {
     _dio.options.baseUrl = baseUrl;
     _dio.interceptors.add(
       InterceptorsWrapper(

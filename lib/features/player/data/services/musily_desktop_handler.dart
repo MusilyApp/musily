@@ -32,9 +32,9 @@ import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:queue/queue.dart';
 
-class MusilyLinuxHandler extends BaseAudioHandler
+class MusilyDesktopHandler extends BaseAudioHandler
     implements MusilyAudioHandler {
-  MusilyLinuxHandler() {
+  MusilyDesktopHandler() {
     _setupEventSubscriptions();
     _updatePlaybackState();
   }

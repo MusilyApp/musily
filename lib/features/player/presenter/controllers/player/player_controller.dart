@@ -66,6 +66,21 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
     _musilyPlayer.setOnPositionChanged((newPosition) {
       if (data.currentPlayingItem != null) {
         data.currentPlayingItem!.position = newPosition;
+        if (data.autoSmartQueue) {
+          final duration = data.currentPlayingItem!.duration;
+          final position = data.currentPlayingItem!.position;
+          if (duration > Duration.zero) {
+            final percentage =
+                position.inMilliseconds / duration.inMilliseconds;
+            if (percentage >= 0.35 && !data.isPositionTriggered) {
+              methods.getSmartQueue();
+              data = data.copyWith(isPositionTriggered: true);
+            }
+            if (percentage < 0.35) {
+              data = data.copyWith(isPositionTriggered: false);
+            }
+          }
+        }
         updateData(data);
       }
     });
@@ -148,10 +163,12 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         lyrics: null,
       ),
       tracksFromSmartQueue: [],
+      autoSmartQueue: false,
       loadingSmartQueue: false,
       addingToFavorites: false,
       showQueue: false,
       showDownloadManager: false,
+      isPositionTriggered: false,
     );
   }
 
@@ -178,8 +195,17 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       },
       toggleSmartQueue: () {
         if (data.tracksFromSmartQueue.isEmpty) {
-          methods.getSmartQueue();
+          updateData(
+            data.copyWith(
+              autoSmartQueue: true,
+            ),
+          );
         } else {
+          updateData(
+            data.copyWith(
+              autoSmartQueue: false,
+            ),
+          );
           if (data.tracksFromSmartQueue
               .contains(data.currentPlayingItem?.hash)) {
             updateData(

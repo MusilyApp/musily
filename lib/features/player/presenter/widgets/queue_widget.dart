@@ -57,10 +57,10 @@ class _QueueWidgetState extends State<QueueWidget> {
                               size: 20,
                             )
                           : Icon(
-                              data.tracksFromSmartQueue.isEmpty
+                              !data.autoSmartQueue
                                   ? CupertinoIcons.wand_rays_inverse
                                   : CupertinoIcons.wand_stars,
-                              color: data.tracksFromSmartQueue.isEmpty
+                              color: !data.autoSmartQueue
                                   ? IconTheme.of(context).color
                                   : context.themeData.colorScheme.primary,
                             ),

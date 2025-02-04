@@ -145,9 +145,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                               .withOpacity(0.1),
                                           activeColor: context
                                               .themeData.colorScheme.primary,
-                                          value: data.tracksFromSmartQueue
-                                                  .isNotEmpty ||
-                                              data.loadingSmartQueue,
+                                          value: data.autoSmartQueue,
                                           thumbIcon: WidgetStatePropertyAll(
                                             Icon(
                                               CupertinoIcons.wand_rays,
