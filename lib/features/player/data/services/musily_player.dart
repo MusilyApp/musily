@@ -217,4 +217,82 @@ class MusilyPlayer implements MusilyAudioHandler {
       return _audioHandler!.setUriGetter(callback);
     }
   }
+
+  MusilyPlayerState _currentState = MusilyPlayerState.stopped;
+  TrackEntity? _currentTrack;
+
+  bool get isPlaying => _currentState == MusilyPlayerState.playing;
+  int get queueLength => getQueue().length;
+  TrackEntity? get currentTrack => _currentTrack;
+
+  Future<void> togglePlayPause() async {
+    if (_audioHandler != null) {
+      if (isPlaying) {
+        await pause();
+      } else {
+        await play();
+      }
+    }
+  }
+
+  Future<void> addMultipleToQueue(List<TrackEntity> tracks) async {
+    if (_audioHandler != null) {
+      for (var track in tracks) {
+        await addToQueue(track);
+      }
+    }
+  }
+
+  Future<void> clearQueue() async {
+    if (_audioHandler != null) {
+      await setQueue([]);
+    }
+  }
+
+  Future<void> restartTrack() async {
+    if (_audioHandler != null) {
+      await seek(Duration.zero);
+    }
+  }
+
+  Future<void> toggleShuffle() async {
+    if (_audioHandler != null) {
+      await toggleShuffleMode(!getShuffleMode());
+    }
+  }
+
+  Future<void> cycleRepeatMode() async {
+    if (_audioHandler != null) {
+      var current = getRepeatMode();
+      MusilyRepeatMode next;
+      switch (current) {
+        case MusilyRepeatMode.noRepeat:
+          next = MusilyRepeatMode.repeatAll;
+          break;
+        case MusilyRepeatMode.repeatAll:
+          next = MusilyRepeatMode.repeatOne;
+          break;
+        case MusilyRepeatMode.repeatOne:
+          next = MusilyRepeatMode.noRepeat;
+          break;
+      }
+      await toggleRepeatMode(next);
+    }
+  }
+
+  void initializeInternalStateListener() {
+    if (_audioHandler != null) {
+      _audioHandler!.setOnPlayerStateChanged((state) {
+        _currentState = state;
+      });
+    }
+  }
+
+  void initializeActiveTrackListener() {
+    if (_audioHandler != null) {
+      _audioHandler!.setOnActiveTrackChange((track) {
+        _currentTrack = track;
+      });
+    }
+  }
 }
