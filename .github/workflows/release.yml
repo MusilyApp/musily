@@ -1,0 +1,225 @@
+name: Build, Release, and Notify
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_and_release:
+    name: Build and Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2022]
+        target: [android, windows, linux]
+        include:
+          - os: ubuntu-latest
+            target: android
+            build_command: flutter build apk --release --flavor stable
+            artifact_path: build/app/outputs/flutter-apk/app-stable-release.apk
+            asset_name_prefix: musily-android
+          - os: windows-2022
+            target: windows
+            build_command: flutter build windows --release
+            archive_name: musily-windows-x64.zip
+            artifact_path: build/windows/x64/runner/Release
+            asset_name_prefix: musily-windows
+          - os: ubuntu-latest
+            target: linux
+            build_command: flutter build linux --release
+            archive_name: musily-linux-x64.tar.gz
+            artifact_path: build/linux/x64/release/bundle
+            asset_name_prefix: musily-linux
+    env:
+      ARCHIVE_NAME: ${{ matrix.archive_name }}
+      BUILD_DIR: ${{ matrix.artifact_path }}
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install Linux dependencies (only for linux builds)
+      - name: Install Linux dependencies
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            curl git unzip xz-utils zip \
+            clang cmake ninja-build pkg-config \
+            libgtk-3-dev liblzma-dev libglu1-mesa \
+            libstdc++-12-dev libmpv-dev \
+            libjsoncpp-dev libsecret-1-dev
+
+      # Extract version from pubspec
+      - name: Extract version
+        id: extract_version
+        run: |
+          version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
+          echo "version=${version}" >> $GITHUB_ENV
+          echo "version=${version}" >> $GITHUB_OUTPUT
+
+      # Extract description from CHANGELOG.md
+      - name: Extract description
+        id: extract_description
+        run: |
+          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
+          # Escape special characters for GitHub Actions output
+          escaped_description=$(echo "$description" | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g; s/\*/\\*/g; s/_/\\_/g')
+          echo "description=${escaped_description}" >> $GITHUB_ENV
+          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
+      # set the output of the job
+      - name: Set job output
+        id: set_job_output
+        run: |
+          echo "description=${{ steps.extract_description.outputs.description }}" >> "$GITHUB_OUTPUT"
+
+
+      # Set up Java environment (only for android)
+      - name: Set up Java
+        if: matrix.target == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17.x"
+
+      # Gradle cache for faster builds (only for android)
+      - name: Cache Gradle dependencies
+        if: matrix.target == 'android'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Set up Flutter environment
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: 3.22.3
+
+      # Enable Windows desktop support (only for windows)
+      - name: Enable Windows Desktop Support
+        if: matrix.target == 'windows'
+        run: flutter config --enable-windows-desktop
+
+      # Create key.properties file (only for android)
+      - name: Create key.properties
+        if: matrix.target == 'android'
+        run: echo "${{ secrets.KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/key.properties
+
+      # Create key.jks file (only for android)
+      - name: Create key.jks
+        if: matrix.target == 'android'
+        run: echo "${{ secrets.KEY_STORE_BASE64 }}" | base64 --decode > android/app/key.jks
+
+      # Get Flutter dependencies
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      # Analyze Dart code (optional)
+      # - name: Analyze Dart code
+      #   run: flutter analyze .
+
+      # Build the App
+      - name: Build App
+        run: ${{ matrix.build_command }}
+
+      # Create archive (only for windows and linux)
+      - name: Create archive
+        if: matrix.target != 'android'
+        run: |
+          if [ "${{ matrix.target }}" = "windows" ]; then
+            Compress-Archive -Path ${{env.BUILD_DIR}}\* -DestinationPath ${{env.ARCHIVE_NAME}}
+            echo "Archive created: ${{env.ARCHIVE_NAME}}"
+          elif [ "${{ matrix.target }}" = "linux" ]; then
+            tar -czvf ${{env.ARCHIVE_NAME}} -C ${{env.BUILD_DIR}} .
+            echo "Archive created: ${{env.ARCHIVE_NAME}}"
+          fi
+      # Calculate SHA256 checksum (only for windows and linux)
+      - name: Calculate SHA256 checksum
+        if: matrix.target != 'android'
+        id: sha256_checksum
+        run: |
+           sha256=$(sha256sum ${{env.ARCHIVE_NAME}} | awk '{print $1}')
+           echo "$sha256  ${{env.ARCHIVE_NAME}}" > ${{env.ARCHIVE_NAME}}.sha256
+           echo "sha256_checksum=$sha256" >> $GITHUB_OUTPUT
+
+      # Release the artifact
+      - name: Release Artifact
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: MusilyApp/musily
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ matrix.target == 'android' && matrix.artifact_path || env.ARCHIVE_NAME }}
+          asset_name: ${{ matrix.asset_name_prefix }}-${{ steps.extract_version.outputs.version }}.${{ matrix.target == 'android' && 'apk' || matrix.target == 'windows' && 'zip' || matrix.target == 'linux' && 'tar.gz'  }}
+          tag: ${{ steps.extract_version.outputs.version }}
+          body: "${{ steps.extract_description.outputs.description }}"
+          prerelease: false
+          overwrite: true
+      # Add SHA256 checksum to release (only for windows and linux)
+      - name: Add SHA256 checksum to release
+        if: matrix.target != 'android'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: MusilyApp/musily
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{env.ARCHIVE_NAME}}.sha256
+          asset_name: ${{env.ARCHIVE_NAME}}.sha256
+          tag: ${{ steps.extract_version.outputs.version }}
+          body: "${{ steps.extract_description.outputs.description }}"
+          prerelease: false
+          overwrite: true
+    outputs:
+        description: ${{ steps.set_job_output.outputs.description }}
+
+  notify_telegram:
+    name: Notify Telegram Release
+    needs: build_and_release
+    runs-on: ubuntu-latest
+
+    steps:
+      # Get the latest release info from GitHub API
+      - name: Get Latest Release Info
+        id: get_release_info
+        run: |
+          release_info=$(curl -s https://api.github.com/repos/MusilyApp/musily/releases/latest)
+          apk_url=$(echo "$release_info" | jq -r '.assets[] | select(.name | endswith(".apk")) | .browser_download_url')
+          win_url=$(echo "$release_info" | jq -r '.assets[] | select(.name | endswith(".zip")) | .browser_download_url')
+          linux_url=$(echo "$release_info" | jq -r '.assets[] | select(.name | endswith(".tar.gz")) | .browser_download_url')
+          
+          echo "apk_url=${apk_url}" >> $GITHUB_ENV
+          echo "win_url=${win_url}" >> $GITHUB_ENV
+          echo "linux_url=${linux_url}" >> $GITHUB_ENV
+          echo "apk_url=${apk_url}" >> $GITHUB_OUTPUT
+          echo "win_url=${win_url}" >> $GITHUB_OUTPUT
+          echo "linux_url=${linux_url}" >> $GITHUB_OUTPUT
+
+      # Get description from the previous job
+      - name: Get Description
+        id: get_description
+        run: |
+          echo "description=${{ needs.build_and_release.outputs.description }}" >> $GITHUB_OUTPUT
+          echo "description=${{ needs.build_and_release.outputs.description }}" >> $GITHUB_ENV
+      # Post on Telegram
+      - name: Post on Telegram
+        run: |
+          TELEGRAM_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+          MESSAGE="${{ steps.get_description.outputs.description }}"
+
+          # Send message with download buttons
+          curl -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
+               -d "chat_id=$CHAT_ID" \
+               -d "text=$MESSAGE" \
+               -d "parse_mode=Markdown" \
+               -d "reply_markup={\"inline_keyboard\":[[{\"text\":\"📱 Download para Android\",\"url\":\"${{ steps.get_release_info.outputs.apk_url }}\"}],[{\"text\":\"🖥️ Download para Windows\",\"url\":\"${{ steps.get_release_info.outputs.win_url }}\"}],[{\"text\":\"🐧 Download para Linux\",\"url\":\"${{ steps.get_release_info.outputs.linux_url }}\"}]]}"

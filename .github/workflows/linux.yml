@@ -1,9 +1,9 @@
-on:
-  push:
-    branches:
-      - releases
-
 name: Build and Release Linux App
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
 
 env:
   BUILD_DIR: build/linux/x64/release/bundle

@@ -3,9 +3,6 @@ permissions:
   contents: write
 
 on:
-  push:
-    branches:
-      - releases
   workflow_dispatch:
 
 jobs:
