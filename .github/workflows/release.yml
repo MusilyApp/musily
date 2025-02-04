@@ -70,7 +70,9 @@ jobs:
         run: |
           description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
           # Escape special characters for GitHub Actions output
-          escaped_description=$(echo "$description" | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g; s/\*/\\*/g; s/_/\\_/g')
+          description="${description//'%'/'%25'}"
+          description="${description//$'\n'/'%0A'}"
+          description="${description//$'\r'/'%0D'}"
           echo "description=${escaped_description}" >> $GITHUB_ENV
           echo "description=${escaped_description}" >> $GITHUB_OUTPUT
       # set the output of the job
