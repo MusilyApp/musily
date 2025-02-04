@@ -10,8 +10,70 @@ on:
   workflow_dispatch:
 
 jobs:
+  create_tag:
+    name: Create Tag with Description
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract_metadata.outputs.version }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Extract version and description from CHANGELOG.md
+      - name: Extract metadata
+        id: extract_metadata
+        run: |
+          version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
+          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
+
+          # Escape special characters for GitHub Actions output
+          description="${description//'%'/'%25'}"
+          description="${description//$'\n'/'%0A'}"
+          description="${description//$'\r'/'%0D'}"
+
+          echo "version=${version}" >> $GITHUB_ENV
+          echo "description=${description}" >> $GITHUB_ENV
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "description=${description}" >> $GITHUB_OUTPUT
+
+      # Create the tag and release with curl
+      - name: Create Release Tag
+        run: |
+          VERSION="${{ steps.extract_metadata.outputs.version }}"
+          DESCRIPTION="${{ steps.extract_metadata.outputs.description }}"
+          
+          # Create tag ref
+          TAG_REF="refs/tags/$VERSION"
+          
+          # Check if tag already exists
+          if curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ github.repository }}/git/ref/$TAG_REF" | grep -q "message.*not found"; then
+             echo "Tag $VERSION does not exists and will be created"
+            # Create the tag (ref)
+            curl -s -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: application/json" \
+              -d '{"ref": "'"$TAG_REF"'", "sha": "'"${{ github.sha }}"'"}' \
+              "https://api.github.com/repos/${{ github.repository }}/git/refs"
+
+          fi
+
+           # Create the release
+           curl -s -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+            "tag_name": "'"$VERSION"'",
+             "name": "'"$VERSION"'",
+             "body": "'"$DESCRIPTION"'",
+             "prerelease": false
+            }' \
+            "https://api.github.com/repos/${{ github.repository }}/releases"
+
+
   build_and_release:
     name: Build and Release
+    needs: create_tag
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -38,6 +100,7 @@ jobs:
     env:
       ARCHIVE_NAME: ${{ matrix.archive_name }}
       BUILD_DIR: ${{ matrix.artifact_path }}
+      VERSION: ${{ needs.create_tag.outputs.version }}
 
     steps:
       # Checkout code
@@ -55,22 +118,6 @@ jobs:
             libgtk-3-dev liblzma-dev libglu1-mesa \
             libstdc++-12-dev libmpv-dev \
             libjsoncpp-dev libsecret-1-dev
-       # Extract version and description from CHANGELOG.md
-      - name: Extract metadata
-        id: extract_metadata
-        run: |
-          version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
-          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
-
-           # Escape special characters for GitHub Actions output
-          description="${description//'%'/'%25'}"
-          description="${description//$'\n'/'%0A'}"
-          description="${description//$'\r'/'%0D'}"
-
-          echo "version=${version}" >> $GITHUB_ENV
-          echo "description=${escaped_description}" >> $GITHUB_ENV
-          echo "version=${version}" >> $GITHUB_OUTPUT
-          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
 
       # Set up Java environment (only for android)
       - name: Set up Java
@@ -146,16 +193,15 @@ jobs:
            echo "$sha256  ${{env.ARCHIVE_NAME}}" > ${{env.ARCHIVE_NAME}}.sha256
            echo "sha256_checksum=$sha256" >> $GITHUB_OUTPUT
 
-      # Release the artifact
-      - name: Release Artifact
+      # Upload the artifact to the existing release
+      - name: Upload Release Asset
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: MusilyApp/musily
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ matrix.target == 'android' && matrix.artifact_path || env.ARCHIVE_NAME }}
-          asset_name: ${{ matrix.asset_name_prefix }}-${{ steps.extract_metadata.outputs.version }}.${{ matrix.target == 'android' && 'apk' || matrix.target == 'windows' && 'zip' || matrix.target == 'linux' && 'tar.gz'  }}
-          tag: ${{ steps.extract_metadata.outputs.version }}
-          body: "${{ steps.extract_metadata.outputs.description }}"
+          asset_name: ${{ matrix.asset_name_prefix }}-${{ env.VERSION }}.${{ matrix.target == 'android' && 'apk' || matrix.target == 'windows' && 'zip' || matrix.target == 'linux' && 'tar.gz'  }}
+          tag: ${{ needs.create_tag.outputs.version }}
+          body: ""
           prerelease: false
           overwrite: true
 
@@ -165,7 +211,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Get the latest release info from GitHub API
+        # Checkout code again because this is another job
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Extract version and description from CHANGELOG.md again
       - name: Extract metadata
         id: extract_metadata
         run: |
@@ -181,7 +231,9 @@ jobs:
           echo "description=${description}" >> $GITHUB_ENV
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "description=${description}" >> $GITHUB_OUTPUT
+        
 
+      # Get the latest release info from GitHub API
       - name: Get Latest Release Info
         id: get_release_info
         run: |
