@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:async';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
@@ -16,33 +16,24 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DownloaderController
-    extends BaseController<DownloaderData, DownloaderMethods> {
-  static final DownloaderController _instance =
-      DownloaderController._internal();
-
+class DownloaderController extends BaseController<DownloaderData, DownloaderMethods> {
+  static final DownloaderController _instance = DownloaderController._internal();
   factory DownloaderController() {
     return _instance;
   }
-
   DownloaderController._internal();
-
   int _gettingUrl = 0;
   bool _gettingUrlLocked = false;
-
   final DownloadManager downloadManager = DownloadManager();
   PlayerController? playerController;
-
   Future<void> init() async {
     await methods.loadStoredQueue();
   }
-
   void setPlayerController(
     PlayerController playerController,
   ) {
     this.playerController = playerController;
   }
-
   @override
   DownloaderData defineData() {
     return DownloaderData(
@@ -50,7 +41,6 @@ class DownloaderController
       downloadingKey: '',
     );
   }
-
   @override
   DownloaderMethods defineMethods() {
     return DownloaderMethods(
@@ -69,10 +59,9 @@ class DownloaderController
           await methods.cancelDownload(item.track.url!);
           updateData(
             data.copyWith(
-              queue: data.queue
-                ..remove(
-                  item,
-                ),
+              queue: data.queue..remove(
+                item,
+              ),
             ),
           );
         }
@@ -288,7 +277,6 @@ class DownloaderController
             Icons.play_arrow_rounded,
           ),
         );
-
         final downloadingTrailing = Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -337,9 +325,7 @@ class DownloaderController
               playerController!.builder(
                 builder: (context, data) {
                   final isPlayingOffline = data.playingId == 'offline';
-                  final isPlayingThisItem = (data.currentPlayingItem?.hash ??
-                          data.currentPlayingItem?.id) ==
-                      item.track.hash;
+                  final isPlayingThisItem = (data.currentPlayingItem?.hash ?? data.currentPlayingItem?.id) == item.track.hash;
                   late final IconData icon;
                   if (isPlayingOffline && isPlayingThisItem && data.isPlaying) {
                     icon = Icons.pause_rounded;
@@ -378,7 +364,6 @@ class DownloaderController
               ),
           ],
         );
-
         switch (item.status) {
           case DownloadStatus.queued:
             return queuedTrailing;
@@ -399,7 +384,6 @@ class DownloaderController
           final bytes = await file.readAsBytes();
           final digest = md5.convert(bytes);
           final md5Hash = digest.toString();
-
           final md5File = File('${file.path}.md5');
           await md5File.writeAsString(md5Hash);
         } catch (e) {
@@ -409,22 +393,18 @@ class DownloaderController
       checkFileIntegrity: (path) async {
         File file = File(path);
         File md5File = File('$path.md5');
-
         if (!await file.exists()) {
           return false;
         }
-
         if (!await md5File.exists()) {
           if (!await file.exists()) {
             await file.delete();
           }
           return false;
         }
-
         try {
           String storedMd5 = await md5File.readAsString();
           String currentMd5 = md5.convert(await file.readAsBytes()).toString();
-
           if (storedMd5 == currentMd5) {
             return true;
           } else {
@@ -510,10 +490,9 @@ class DownloaderController
         if (currentItem != null) {
           updateData(
             data.copyWith(
-              queue: data.queue
-                ..remove(
-                  currentItem,
-                ),
+              queue: data.queue..remove(
+                currentItem,
+              ),
             ),
           );
         }
@@ -525,10 +504,9 @@ class DownloaderController
         );
         updateData(
           data.copyWith(
-            queue: data.queue
-              ..add(
-                downloadItem,
-              ),
+            queue: data.queue..add(
+              downloadItem,
+            ),
           ),
         );
         if (track.url == null) {
@@ -568,5 +546,93 @@ class DownloaderController
         await methods.updateStoredQueue();
       },
     );
+  }
+  Future<void> clearDownloadQueue() async {
+    data.queue.clear();
+    await methods.updateStoredQueue();
+  }
+  Future<double> getOverallDownloadProgress() async {
+    if (data.queue.isEmpty) return 0.0;
+    double total = 0.0;
+    for (final item in data.queue) {
+      total += item.progress;
+    }
+    return total / data.queue.length;
+  }
+  Future<void> pauseAllDownloads() async {
+    for (final item in data.queue) {
+      if (item.status == DownloadStatus.downloading && item.track.url != null) {
+        await downloadManager.pauseDownload(item.track.url!);
+      }
+    }
+  }
+  Future<void> resumeAllDownloads() async {
+    for (final item in data.queue) {
+      if (item.status == DownloadStatus.paused && item.track.url != null) {
+        await downloadManager.resumeDownload(item.track.url!);
+      }
+    }
+  }
+  Future<void> reorderQueue(List<DownloadingItem> newOrder) async {
+    updateData(data.copyWith(queue: newOrder));
+    await methods.updateStoredQueue();
+  }
+  Future<void> retryFailedDownloads() async {
+    List<DownloadingItem> failedItems = data.queue.where((e) => e.status == DownloadStatus.failed || e.status == DownloadStatus.canceled).toList();
+    for (final item in failedItems) {
+      final index = data.queue.indexOf(item);
+      data.queue.removeAt(index);
+      await methods.addDownload(item.track, position: index);
+    }
+  }
+  Future<void> cancelAllDownloads() async {
+    for (final item in data.queue) {
+      if (item.track.url != null) {
+        await downloadManager.cancelDownload(item.track.url!);
+      }
+    }
+    data.queue.clear();
+    await methods.updateStoredQueue();
+  }
+  Future<void> monitorQueueContinuously() async {
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      await methods.updateStoredQueue();
+    });
+  }
+  Future<void> clearFailedAndCanceledDownloads() async {
+    data.queue.removeWhere((item) => item.status == DownloadStatus.failed || item.status == DownloadStatus.canceled);
+    await methods.updateStoredQueue();
+  }
+  Future<void> backupQueueToRemote() async {
+    await Future.delayed(Duration(seconds: 1));
+  }
+  Future<void> restoreQueueFromRemote() async {
+    await Future.delayed(Duration(seconds: 1));
+    await methods.updateStoredQueue();
+  }
+  Future<void> moveDownloadToTop(DownloadingItem item) async {
+    data.queue.remove(item);
+    data.queue.insert(0, item);
+    await methods.updateStoredQueue();
+  }
+  Future<void> moveDownloadToBottom(DownloadingItem item) async {
+    data.queue.remove(item);
+    data.queue.add(item);
+    await methods.updateStoredQueue();
+  }
+  Future<List<DownloadingItem>> getPendingDownloads() async {
+    return data.queue.where((item) => item.status != DownloadStatus.completed).toList();
+  }
+  Future<void> logQueueStatus() async {
+    for (var item in data.queue) {
+      print('${item.track.title}: ${item.status.name} - ${item.progress}');
+    }
+  }
+  Future<Map<String, int>> getDownloadStatistics() async {
+    Map<String, int> stats = {};
+    for (var item in data.queue) {
+      stats[item.status.name] = (stats[item.status.name] ?? 0) + 1;
+    }
+    return stats;
   }
 }
