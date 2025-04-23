@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/icons/ic_launcher_round.png" alt="Descrição da imagem" width="100px">
+  <img src="assets/icons/ic_launcher_round.png" alt="Musily Logo" width="100px">
 </div>
 
 # Musily: A great music app.
@@ -38,11 +38,9 @@ Get it on [Telegram](https://t.me/MusilyApp) or [GitHub](https://github.com/Musi
 
 Musily has been tested and works seamlessly on the following platforms:
 
-- **Flutter SDK**: Version 3.22.3
+- **Flutter SDK**: 3.29.3 (Minimum required)
 - **Operating Systems**:
-  - **Ubuntu 24.04 LTS** (GNOME)
-  - **Nobara Linux 40** (GNOME Edition)
-  - **Windows 10**
+  - **Debian 13 Trixie** (GNOME)
   - **Windows 11**
 
 Make sure you have the correct Flutter version and system dependencies installed for an optimal experience.
@@ -50,6 +48,7 @@ Make sure you have the correct Flutter version and system dependencies installed
 ---
 
 ### Linux Support
+> Note: In the last update, the tray feature was added, which requires installing libayatana-appindicator3 to be used. This has not yet been tested on other Linux systems, only on Debian 13.
 
 Musily is compatible with most Linux-based distributions. To ensure the app functions properly, please install the following required dependencies.
 
@@ -60,27 +59,28 @@ The following libraries must be installed to run Musily on Linux:
 - **libmpv**: For audio playback using MPV media player.
 - **libsecret**: For secure storage of user credentials and sensitive information.
 - **libjsoncpp**: Required for JSON handling, as a dependency of Flutter Secure Storage.
+- **libayatana-appindicator3 / libappindicator-gtk3**: For system tray integration (displaying the app icon and menu in the system tray/indicator area).
 
 #### Install Dependencies on Ubuntu/Debian-based Systems
 
 To install these dependencies on Ubuntu or Debian-based systems, use
 
 ```bash
-sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev
+sudo apt update && sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev libayatana-appindicator3-dev
 ```
 
 ### Installation on Other Linux Distributions
 
-- **Fedora/RHEL**:
+- **Fedora/RHEL (Not Tested)**:
 
 ```bash
-sudo dnf install mpv-devel libsecret-devel jsoncpp-devel
+sudo dnf update && sudo dnf install mpv-devel libsecret-devel jsoncpp-devel libappindicator-gtk3-devel
 ```
 
-- **Arch/Manjaro**:
+- **Arch/Manjaro (Not Tested)**:
 
 ```bash
-sudo pacman -S mpv libsecret jsoncpp
+sudo pacman -Syu mpv libsecret jsoncpp libappindicator-gtk3
 ```
 
 ---
@@ -91,6 +91,7 @@ sudo pacman -S mpv libsecret jsoncpp
 
 ```shell
 git clone https://github.com/MusilyApp/musily.git
+cd musily
 ```
 
 2. **Install dependencies:**
