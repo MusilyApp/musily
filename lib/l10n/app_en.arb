@@ -109,5 +109,9 @@
   "musicSavedToDownloads": "Music saved to downloads",
   "saveToDownloads": "Save to Downloads",
   "importingPlaylist": "Importing Playlist",
-  "playlistNameOrUrl": "Playlist name or URL"
+  "playlistNameOrUrl": "Playlist name or URL",
+  "hide": "Hide",
+  "whenClosingTheApplication": "When closing the application",
+  "showWindow": "Show Window",
+  "closeWindow": "Close Window"
 }

@@ -109,5 +109,9 @@
   "musicSavedToDownloads": "Музика збережена у завантаженнях",
   "saveToDownloads": "Зберегти у завантаження",
   "importingPlaylist": "Імпортування Плейлиста",
-  "playlistNameOrUrl": "Назва або URL плейлиста"
+  "playlistNameOrUrl": "Назва або URL плейлиста",
+  "hide": "Сховати",
+  "whenClosingTheApplication": "Під час закриття програми",
+  "showWindow": "Показати вікно",
+  "closeWindow": "Закрити вікно"
 }
