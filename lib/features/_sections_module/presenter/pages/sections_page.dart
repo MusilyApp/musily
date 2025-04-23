@@ -69,25 +69,17 @@ class SectionsPage extends StatelessWidget {
       contextKey: 'SectionsPage',
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
+          title: const Row(
             children: [
-              const MusilyLogo(
+              MusilyLogo(
                 width: 40,
               ),
-              const SizedBox(
+              SizedBox(
                 width: 12,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  'Musily',
-                  style: context.themeData.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: context.isDarkMode
-                        ? const Color(0xffe8def7)
-                        : const Color(0xff68548f),
-                  ),
-                ),
+                padding: EdgeInsets.only(top: 4),
+                child: MusilyTitle(),
               ),
             ],
           ),
