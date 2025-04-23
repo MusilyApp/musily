@@ -1,0 +1,4 @@
+enum ClosePreference {
+  hide,
+  close,
+}

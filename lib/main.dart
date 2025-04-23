@@ -7,6 +7,8 @@ import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/database/database.dart';
 import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/data/services/library_migration.dart';
+import 'package:musily/core/data/services/tray_service.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/services/musily_service.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/widgets/app_material.dart';
@@ -20,6 +22,11 @@ void main() async {
 
   if (Platform.isAndroid) {
     await MediaStore.ensureInitialized();
+  }
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await WindowService.init();
+    await TrayService.init();
   }
 
   final userService = UserService();

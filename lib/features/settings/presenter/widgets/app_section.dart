@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_dropdown_button.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
 class AppSection extends StatefulWidget {
@@ -109,6 +112,31 @@ class _AppSectionState extends State<AppSection> {
                   onChanged: (value) {
                     widget.controller.methods.changeTheme(value);
                   },
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+                  LyDropdownButton<ClosePreference>(
+                    labelText: context.localization.whenClosingTheApplication,
+                    density: LyDensity.dense,
+                    value: data.closePreference,
+                    onChanged: (value) {
+                      widget.controller.methods.setClosePreference(value!);
+                    },
+                    items: [
+                      DropdownMenuItem(
+                        value: ClosePreference.hide,
+                        child: Text(context.localization.hide),
+                      ),
+                      DropdownMenuItem(
+                        value: ClosePreference.close,
+                        child: Text(context.localization.close),
+                      ),
+                    ],
+                  ),
+                const SizedBox(
+                  height: 8,
                 ),
               ],
             ),

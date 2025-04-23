@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musily/features/settings/domain/enums/close_preference.dart';
 
 class SettingsMethods {
   final Future<void> Function(
@@ -8,6 +9,8 @@ class SettingsMethods {
   final Future<void> Function() loadLanguage;
   final Future<void> Function() loadThemeMode;
   final void Function() setBrightness;
+  final void Function() getClosePreference;
+  final void Function(ClosePreference preference) setClosePreference;
 
   SettingsMethods({
     required this.changeLanguage,
@@ -15,5 +18,7 @@ class SettingsMethods {
     required this.loadLanguage,
     required this.loadThemeMode,
     required this.setBrightness,
+    required this.getClosePreference,
+    required this.setClosePreference,
   });
 }

@@ -4,6 +4,7 @@ import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/core/presenter/ui/window/ly_header_bar.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/widgets/library_backup.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -23,9 +24,13 @@ class BackupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.localization.backupLibrary),
-      ),
+      appBar: context.display.isDesktop
+          ? LyHeaderBar(
+              middle: Text(context.localization.backupLibrary),
+            )
+          : AppBar(
+              title: Text(context.localization.backupLibrary),
+            ),
       body: ListView(
         children: [
           LyListTile(

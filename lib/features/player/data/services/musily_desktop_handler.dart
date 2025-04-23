@@ -24,6 +24,7 @@ import 'dart:developer';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
 import 'package:musily/features/player/data/services/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
@@ -136,9 +137,21 @@ class MusilyDesktopHandler extends BaseAudioHandler
     _onActiveTrackChanged = callback;
   }
 
+  void setVolume(double volume) async {
+    await audioPlayer.setVolume(volume);
+  }
+
+  double get volume => audioPlayer.volume;
+
   Future<void> _handlePlaybackEvent(PlaybackEvent event) async {
     try {
       shuffleEnabled = audioPlayer.shuffleModeEnabled;
+      if (activeTrack != null) {
+        WindowService.setWindowTitle(
+          '${activeTrack!.title} (${activeTrack!.artist.name}) - Musily',
+          defaultTitle: !audioPlayer.playing,
+        );
+      }
       if (event.processingState == ProcessingState.completed) {
         switch (repeatMode) {
           case MusilyRepeatMode.noRepeat:

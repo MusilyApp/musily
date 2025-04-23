@@ -1,8 +1,13 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:musily/core/data/services/window_service.dart';
+import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
+import 'package:tray_manager/tray_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 class AppMaterial extends StatefulWidget {
   const AppMaterial({super.key});
@@ -11,17 +16,22 @@ class AppMaterial extends StatefulWidget {
   State<AppMaterial> createState() => _AppMaterialState();
 }
 
-class _AppMaterialState extends State<AppMaterial> with WidgetsBindingObserver {
+class _AppMaterialState extends State<AppMaterial>
+    with WidgetsBindingObserver, TrayListener, WindowListener {
   final settingsController = Modular.get<SettingsController>();
 
   @override
   void initState() {
     super.initState();
+    trayManager.addListener(this);
+    windowManager.addListener(this);
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    trayManager.removeListener(this);
+    windowManager.removeListener(this);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -38,43 +48,86 @@ class _AppMaterialState extends State<AppMaterial> with WidgetsBindingObserver {
   }
 
   @override
+  void onTrayIconMouseDown() {
+    trayManager.popUpContextMenu();
+  }
+
+  @override
+  void onTrayMenuItemClick(MenuItem menuItem) {
+    if (menuItem.key == 'show_window') {
+      WindowService.showWindow();
+    } else if (menuItem.key == 'exit_app') {
+      WindowService.close(ClosePreference.close);
+    }
+  }
+
+  @override
+  void onWindowClose() {
+    super.onWindowClose();
+    WindowService.close(settingsController.data.closePreference);
+  }
+
+  @override
+  void onWindowMaximize() {
+    super.onWindowMaximize();
+    WindowService().isMaximized = true;
+  }
+
+  @override
+  void onWindowUnmaximize() {
+    super.onWindowUnmaximize();
+    WindowService().isMaximized = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     Modular.setInitialRoute('/sections/');
     return settingsController.builder(
       builder: (context, data) {
-        return MaterialApp.router(
-          locale: data.locale,
-          themeMode: data.themeMode,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple,
-            ),
-            useMaterial3: true,
-            cardTheme: const CardTheme(
-              shadowColor: Colors.transparent,
-            ),
-          ),
-          darkTheme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple,
-              brightness: Brightness.dark,
-            ),
-            scaffoldBackgroundColor: Colors.black,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.black,
-            ),
-            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-              backgroundColor: Colors.black,
-            ),
-            cardTheme: const CardTheme(
-              color: Color.fromARGB(255, 10, 10, 10),
-            ),
-          ),
-          routerConfig: Modular.routerConfig,
-        );
+        return FutureBuilder(
+            future: DynamicColorPlugin.getAccentColor(),
+            builder: (context, snapshot) {
+              late final Color accentColor;
+              if (snapshot.data != null) {
+                accentColor = snapshot.data!;
+              } else {
+                accentColor = Colors.deepPurple;
+              }
+              print(accentColor.toARGB32());
+              return MaterialApp.router(
+                locale: data.locale,
+                themeMode: data.themeMode,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: accentColor,
+                  ),
+                  useMaterial3: true,
+                  cardTheme: const CardTheme(
+                    shadowColor: Colors.transparent,
+                  ),
+                ),
+                darkTheme: ThemeData(
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: accentColor,
+                    brightness: Brightness.dark,
+                  ),
+                  scaffoldBackgroundColor: Colors.black,
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: Colors.black,
+                  ),
+                  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                    backgroundColor: Colors.black,
+                  ),
+                  cardTheme: const CardTheme(
+                    color: Color.fromARGB(255, 10, 10, 10),
+                  ),
+                ),
+                routerConfig: Modular.routerConfig,
+              );
+            });
       },
     );
   }

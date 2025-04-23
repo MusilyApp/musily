@@ -80,7 +80,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                     top: 4,
                   ),
                   child: SizedBox(
-                    height: availableHeight - 83,
+                    height: availableHeight - 80,
                     child: InContextDialog(
                       show: data.showQueue,
                       width: 350,
@@ -110,7 +110,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                     top: 4,
                   ),
                   child: SizedBox(
-                    height: availableHeight - 83,
+                    height: availableHeight - 80,
                     child: InContextDialog(
                       show: data.showLyrics,
                       width: 350,
