@@ -103,10 +103,19 @@ jobs:
         with:
           python-version: '3.x'
       
-      - name: Archive Windows build using Python
+      - name: Install Inno Setup
+        if: matrix.os == 'windows-latest'
+        run: choco install innosetup --yes
+
+      - name: Generate Windows Installer with Inno Setup
         if: matrix.os == 'windows-latest'
         run: |
-          python -c "import shutil; shutil.make_archive('build/musily-windows-x64', 'zip', 'build/windows/x64/runner/Release')"
+          iscc musily_installer.iss
+
+      - name: Move installer to build folder
+        if: matrix.os == 'windows-latest'
+        run: |
+          mv Output/musily-installer.exe build/musily-windows-installer.exe
 
 
       - name: Build macOS
@@ -124,6 +133,7 @@ jobs:
           name: Flutter-Build-${{ matrix.os }}
           path: |
             build/*.zip
+            build/*.exe
             build/*.tar.gz
             build/app/outputs/flutter-apk/*.apk
 
@@ -154,4 +164,5 @@ jobs:
           files: |
             dist/**/*.zip
             dist/**/*.tar.gz
+            dist/**/*.exe
             dist/musily-${{ needs.metadata.outputs.version }}.apk
