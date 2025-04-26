@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -6,6 +8,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -79,55 +82,81 @@ class _AppMaterialState extends State<AppMaterial>
     WindowService().isMaximized = false;
   }
 
+  getMaterialApp(
+    Color accentColor,
+    SettingsData data, {
+    ColorScheme? dakColorScheme,
+    ColorScheme? lightColorScheme,
+  }) {
+    return MaterialApp.router(
+      locale: data.locale,
+      themeMode: data.themeMode,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: lightColorScheme ??
+            ColorScheme.fromSeed(
+              seedColor: accentColor,
+            ),
+        useMaterial3: true,
+        cardTheme: const CardTheme(
+          shadowColor: Colors.transparent,
+        ),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: dakColorScheme ??
+            ColorScheme.fromSeed(
+              seedColor: accentColor,
+              brightness: Brightness.dark,
+            ),
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.black,
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.black,
+        ),
+        cardTheme: const CardTheme(
+          color: Color.fromARGB(255, 10, 10, 10),
+        ),
+      ),
+      routerConfig: Modular.routerConfig,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Modular.setInitialRoute('/sections/');
     return settingsController.builder(
       builder: (context, data) {
-        return FutureBuilder(
-            future: DynamicColorPlugin.getAccentColor(),
-            builder: (context, snapshot) {
-              late final Color accentColor;
-              if (snapshot.data != null) {
-                accentColor = snapshot.data!;
-              } else {
-                accentColor = Colors.deepPurple;
-              }
-              print(accentColor.toARGB32());
-              return MaterialApp.router(
-                locale: data.locale,
-                themeMode: data.themeMode,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  colorScheme: ColorScheme.fromSeed(
-                    seedColor: accentColor,
-                  ),
-                  useMaterial3: true,
-                  cardTheme: const CardTheme(
-                    shadowColor: Colors.transparent,
-                  ),
-                ),
-                darkTheme: ThemeData(
-                  colorScheme: ColorScheme.fromSeed(
-                    seedColor: accentColor,
-                    brightness: Brightness.dark,
-                  ),
-                  scaffoldBackgroundColor: Colors.black,
-                  appBarTheme: const AppBarTheme(
-                    backgroundColor: Colors.black,
-                  ),
-                  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                    backgroundColor: Colors.black,
-                  ),
-                  cardTheme: const CardTheme(
-                    color: Color.fromARGB(255, 10, 10, 10),
-                  ),
-                ),
-                routerConfig: Modular.routerConfig,
+        if (Platform.isAndroid) {
+          return DynamicColorBuilder(
+            builder: (lightDynamic, darkDynamic) {
+              return getMaterialApp(
+                Colors.deepPurple,
+                data,
+                dakColorScheme: darkDynamic,
+                lightColorScheme: lightDynamic,
               );
-            });
+            },
+          );
+        }
+        if (Platform.isIOS) {
+          return getMaterialApp(Colors.deepPurple, data);
+        }
+        return FutureBuilder(
+          future: DynamicColorPlugin.getAccentColor(),
+          builder: (context, snapshot) {
+            late final Color accentColor;
+            if (snapshot.data != null) {
+              accentColor = snapshot.data!;
+            } else {
+              accentColor = Colors.deepPurple;
+            }
+            return getMaterialApp(accentColor, data);
+          },
+        );
       },
     );
   }
