@@ -6,6 +6,14 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+name: Build and Release Flutter App
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -17,16 +25,22 @@ jobs:
     outputs:
       version: ${{ steps.extract_version.outputs.version }}
       description: ${{ steps.extract_description.outputs.description }}
+      version: ${{ steps.extract_version.outputs.version }}
+      description: ${{ steps.extract_description.outputs.description }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Extract version
         id: extract_version
+      - name: Extract version
+        id: extract_version
         run: |
           version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
           echo "version=${version}" >> $GITHUB_OUTPUT
 
+      - name: Extract description
+        id: extract_description
       - name: Extract description
         id: extract_description
         run: |
