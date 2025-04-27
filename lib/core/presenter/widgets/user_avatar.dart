@@ -44,26 +44,20 @@ class UserAvatar extends StatelessWidget {
       },
       child: CircleAvatar(
         radius: 19,
-        backgroundColor: context.isDarkMode
-            ? const Color(0xffe8def7)
-            : const Color(0xff68548f),
+        backgroundColor: context.themeData.buttonTheme.colorScheme?.primary,
         child: authController.builder(builder: (context, data) {
           if (data.user != null) {
             return Text(
               data.user!.name[0],
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: !context.isDarkMode
-                    ? const Color(0xffe8def7)
-                    : const Color(0xff68548f),
+                color: context.themeData.buttonTheme.colorScheme?.onPrimary,
               ),
             );
           }
           return Icon(
             Icons.person_rounded,
-            color: !context.isDarkMode
-                ? const Color(0xffe8def7)
-                : const Color(0xff68548f),
+            color: context.themeData.buttonTheme.colorScheme?.onPrimary,
           );
         }),
       ),

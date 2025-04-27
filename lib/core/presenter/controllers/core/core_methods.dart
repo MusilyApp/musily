@@ -11,6 +11,7 @@ class CoreMethods {
   final Future<void> Function() restoreLibraryBackup;
   final Future<void> Function() pickBackupfile;
   final Future<void> Function(TrackEntity track) saveTrackToDownload;
+  final Future<void> Function() loadWindowProperties;
 
   CoreMethods({
     required this.handleDeepLink,
@@ -21,5 +22,6 @@ class CoreMethods {
     required this.restoreLibraryBackup,
     required this.pickBackupfile,
     required this.saveTrackToDownload,
+    required this.loadWindowProperties,
   });
 }

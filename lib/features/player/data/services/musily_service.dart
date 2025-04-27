@@ -81,7 +81,7 @@ class MusilyService {
     if (Platform.isAndroid) {
       platformAudioHandler = MusilyAndroidHandler();
     }
-    if (Platform.isLinux || Platform.isWindows) {
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
       platformAudioHandler = MusilyDesktopHandler();
     }
     final audioHandler = await AudioService.init<BaseAudioHandler>(

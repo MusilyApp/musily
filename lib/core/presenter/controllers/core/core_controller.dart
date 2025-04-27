@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/services/library_backup_service.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
@@ -79,6 +80,10 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   BuildContext? get coreContext => coreKey.currentContext;
   BuildContext? get coreShowingContext => coreShowingKey.currentContext;
 
+  bool get showDesktopProperties =>
+      Platform.isLinux || Platform.isWindows || Platform.isMacOS;
+  bool get showWindowBorder => showDesktopProperties && !data.isMaximized;
+
   @override
   CoreData defineData() {
     return CoreData(
@@ -87,12 +92,19 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       hadlingDeepLink: false,
       backupInProgress: false,
       backupFileDir: '',
+      isMaximized: false,
+      windowTitle: 'Musily',
     );
   }
 
   @override
   CoreMethods defineMethods() {
     return CoreMethods(
+      loadWindowProperties: () async {
+        data.isMaximized = WindowService().isMaximized;
+        data.windowTitle = WindowService().currentTitle;
+        updateData(data);
+      },
       pickBackupfile: () async {
         final backupFile = await backupService.pickBackupFile();
         if (backupFile != null) {
