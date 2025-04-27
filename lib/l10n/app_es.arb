@@ -109,5 +109,9 @@
   "musicSavedToDownloads": "Música guardada en descargas",
   "saveToDownloads": "Guardar en Descargas",
   "importingPlaylist": "Importando Playlist",
-  "playlistNameOrUrl": "Nombre o URL de la lista de reproducción"
+  "playlistNameOrUrl": "Nombre o URL de la lista de reproducción",
+  "hide": "Ocultar",
+  "whenClosingTheApplication": "Al cerrar la aplicación",
+  "showWindow": "Mostrar ventana",
+  "closeWindow": "Cerrar ventana"
 }
