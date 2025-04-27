@@ -93,7 +93,7 @@ jobs:
         run: |
           tar -czvf build/musily-linux-x64.tar.gz -C $BUILD_DIR_LINUX .
 
-      - name: Install Rust
+      - name: Install Rust on Windows
         if: matrix.os == 'windows-latest'
         uses: dtolnay/rust-toolchain@stable
 
