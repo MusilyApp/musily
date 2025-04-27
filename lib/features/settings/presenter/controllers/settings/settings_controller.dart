@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:musily/core/data/services/tray_service.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
+import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_methods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +18,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   }) {
     methods.loadLanguage();
     methods.loadThemeMode();
+    methods.getClosePreference();
     showSyncSection = httpAdapter.baseUrl.isNotEmpty;
   }
 
@@ -28,6 +32,34 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   @override
   SettingsMethods defineMethods() {
     return SettingsMethods(
+      getClosePreference: () async {
+        final prefs = await SharedPreferences.getInstance();
+        final closePreference = ClosePreference.values.byName(
+          prefs.getString('settings.app.close') ?? 'hide',
+        );
+        WindowService.setPreventClose(closePreference);
+        updateData(
+          data.copyWith(
+            closePreference: closePreference,
+          ),
+        );
+        while (data.context == null) {
+          await Future.delayed(
+            const Duration(
+              seconds: 1,
+            ),
+          );
+        }
+        TrayService.initContextMenu(data.context!);
+      },
+      setClosePreference: (preference) async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('settings.app.close', preference.name);
+        await WindowService.setPreventClose(preference);
+        updateData(
+          data.copyWith(closePreference: preference),
+        );
+      },
       setBrightness: () async {
         if (!Platform.isAndroid) {
           return;
@@ -71,6 +103,10 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         }
         data.locale = Locale(locale);
         updateData(data);
+        TrayService.initContextMenu(
+          data.context!,
+          locale: Locale(locale),
+        );
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('locale', locale);
       },

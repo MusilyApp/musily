@@ -21,9 +21,11 @@
 
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
 import 'package:musily/features/player/data/services/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
@@ -31,6 +33,41 @@ import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:queue/queue.dart';
+import 'package:smtc_windows/smtc_windows.dart';
+
+extension on MusilyRepeatMode {
+  RepeatMode toSMTC() {
+    switch (this) {
+      case MusilyRepeatMode.noRepeat:
+        return RepeatMode.none;
+      case MusilyRepeatMode.repeat:
+        return RepeatMode.list;
+      case MusilyRepeatMode.repeatOne:
+        return RepeatMode.track;
+    }
+  }
+}
+
+extension on MusilyPlayerState {
+  PlaybackStatus toPlaybackStatus() {
+    switch (this) {
+      case MusilyPlayerState.paused:
+        return PlaybackStatus.paused;
+      case MusilyPlayerState.playing:
+        return PlaybackStatus.playing;
+      case MusilyPlayerState.buffering:
+        return PlaybackStatus.changing;
+      case MusilyPlayerState.completed:
+        return PlaybackStatus.stopped;
+      case MusilyPlayerState.stopped:
+        return PlaybackStatus.stopped;
+      case MusilyPlayerState.disposed:
+        return PlaybackStatus.closed;
+      case MusilyPlayerState.loading:
+        return PlaybackStatus.changing;
+    }
+  }
+}
 
 class MusilyDesktopHandler extends BaseAudioHandler
     implements MusilyAudioHandler {
@@ -40,12 +77,15 @@ class MusilyDesktopHandler extends BaseAudioHandler
   }
 
   AudioPlayer audioPlayer = AudioPlayer();
+  SMTCWindows? smtc;
+
   List<TrackEntity> shuffledQueue = [];
   List<TrackEntity> mediaQueue = [];
   TrackEntity? activeTrack;
   bool shuffleEnabled = false;
   bool loadingTrackAudio = false;
   MusilyRepeatMode repeatMode = MusilyRepeatMode.noRepeat;
+  MusilyPlayerState playerState = MusilyPlayerState.disposed;
   final taskQueue = Queue(
     delay: const Duration(
       microseconds: 10,
@@ -136,9 +176,21 @@ class MusilyDesktopHandler extends BaseAudioHandler
     _onActiveTrackChanged = callback;
   }
 
+  void setVolume(double volume) async {
+    await audioPlayer.setVolume(volume);
+  }
+
+  double get volume => audioPlayer.volume;
+
   Future<void> _handlePlaybackEvent(PlaybackEvent event) async {
     try {
       shuffleEnabled = audioPlayer.shuffleModeEnabled;
+      if (activeTrack != null) {
+        WindowService.setWindowTitle(
+          '${activeTrack!.title} (${activeTrack!.artist.name}) - Musily',
+          defaultTitle: !audioPlayer.playing,
+        );
+      }
       if (event.processingState == ProcessingState.completed) {
         switch (repeatMode) {
           case MusilyRepeatMode.noRepeat:
@@ -234,11 +286,60 @@ class MusilyDesktopHandler extends BaseAudioHandler
   }
 
   void _setupEventSubscriptions() {
+    if (Platform.isWindows) {
+      smtc = SMTCWindows(
+        metadata: const MusicMetadata(
+          album: '',
+          albumArtist: '',
+          artist: '',
+          thumbnail: '',
+          title: '',
+        ),
+        repeatMode: repeatMode.toSMTC(),
+        shuffleEnabled: shuffleEnabled,
+        status: playerState.toPlaybackStatus(),
+        timeline: const PlaybackTimeline(
+          startTimeMs: 0,
+          endTimeMs: 0,
+          positionMs: 0,
+        ),
+        config: const SMTCConfig(
+          playEnabled: true,
+          pauseEnabled: true,
+          stopEnabled: false,
+          nextEnabled: true,
+          prevEnabled: true,
+          fastForwardEnabled: false,
+          rewindEnabled: false,
+        ),
+        enabled: false,
+      );
+      smtc!.buttonPressStream.listen(
+        (event) async {
+          switch (event) {
+            case PressedButton.play:
+              await play();
+              break;
+            case PressedButton.next:
+              await skipToNext();
+              break;
+            case PressedButton.previous:
+              await skipToPrevious();
+              break;
+            case PressedButton.pause:
+              await pause();
+              break;
+            default:
+              break;
+          }
+        },
+      );
+    }
     _playbackEventSubscription = audioPlayer.playbackEventStream.listen(
       (playbackEvent) async {
         await _handlePlaybackEvent(playbackEvent);
         if (_onPlayerStateChanged != null) {
-          MusilyPlayerState playerState = MusilyPlayerState.disposed;
+          playerState = MusilyPlayerState.disposed;
           switch (playbackEvent.processingState) {
             case ProcessingState.idle:
               playerState = MusilyPlayerState.stopped;
@@ -285,31 +386,89 @@ class MusilyDesktopHandler extends BaseAudioHandler
   }
 
   void _updatePlaybackState() {
-    playbackState.add(
-      playbackState.value.copyWith(
-        controls: [
-          MediaControl.skipToPrevious,
-          if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
-          MediaControl.skipToNext
-        ],
-        systemActions: const {
-          MediaAction.seek,
-          MediaAction.seekForward,
-          MediaAction.seekBackward,
-        },
-        androidCompactActionIndices: const [0, 1, 2],
-        processingState: processingStateMap[audioPlayer.processingState]!,
-        repeatMode: repeatModeMap[audioPlayer.loopMode]!,
-        shuffleMode: audioPlayer.shuffleModeEnabled
-            ? AudioServiceShuffleMode.all
-            : AudioServiceShuffleMode.none,
-        playing: audioPlayer.playing,
-        updatePosition: audioPlayer.position,
-        bufferedPosition: audioPlayer.bufferedPosition,
-        speed: audioPlayer.speed,
-        queueIndex: audioPlayer.currentIndex ?? 0,
-      ),
-    );
+    if (Platform.isWindows && activeTrack != null) {
+      if (smtc!.metadata.title != activeTrack!.title) {
+        smtc!.setTitle(activeTrack!.title);
+      }
+
+      if (smtc!.metadata.album != activeTrack!.album.title) {
+        smtc!.setAlbum(activeTrack!.album.title);
+      }
+
+      if (smtc!.metadata.artist != activeTrack!.artist.name) {
+        smtc!.setArtist(activeTrack!.artist.name);
+      }
+
+      if (smtc!.metadata.thumbnail != activeTrack!.highResImg!) {
+        smtc!.setThumbnail(activeTrack!.highResImg!);
+      }
+
+      if (smtc!.metadata.albumArtist != activeTrack!.artist.name) {
+        smtc!.setAlbumArtist(activeTrack!.artist.name);
+      }
+
+      if (smtc!.timeline.endTimeMs != activeTrack!.duration.inMilliseconds) {
+        smtc!.setEndTime(activeTrack!.duration);
+      }
+
+      if (smtc!.timeline.startTimeMs != 0) {
+        smtc!.setStartTime(const Duration(seconds: 0));
+      }
+
+      if (smtc!.timeline.positionMs != activeTrack!.position.inMilliseconds) {
+        smtc!.setPosition(activeTrack!.position);
+      }
+
+      if (smtc!.repeatMode != repeatMode.toSMTC()) {
+        smtc!.setRepeatMode(repeatMode.toSMTC());
+      }
+
+      if (smtc!.isShuffleEnabled != shuffleEnabled) {
+        smtc!.setShuffleEnabled(shuffleEnabled);
+      }
+
+      smtc!.setIsNextEnabled(
+        hasNext || shuffleEnabled || repeatMode == MusilyRepeatMode.repeat,
+      );
+
+      smtc!.setIsPrevEnabled(
+        hasPrevious || shuffleEnabled || repeatMode == MusilyRepeatMode.repeat,
+      );
+
+      if (smtc!.status != playerState.toPlaybackStatus()) {
+        smtc!.setPlaybackStatus(playerState.toPlaybackStatus());
+      }
+
+      smtc!.enableSmtc();
+    } else if (Platform.isWindows && activeTrack == null) {
+      smtc!.disableSmtc();
+    } else {
+      playbackState.add(
+        playbackState.value.copyWith(
+          controls: [
+            MediaControl.skipToPrevious,
+            if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
+            MediaControl.skipToNext
+          ],
+          systemActions: const {
+            MediaAction.seek,
+            MediaAction.seekForward,
+            MediaAction.seekBackward,
+          },
+          androidCompactActionIndices: const [0, 1, 2],
+          processingState: processingStateMap[audioPlayer.processingState]!,
+          repeatMode: repeatModeMap[audioPlayer.loopMode]!,
+          shuffleMode: audioPlayer.shuffleModeEnabled
+              ? AudioServiceShuffleMode.all
+              : AudioServiceShuffleMode.none,
+          playing: audioPlayer.playing,
+          updatePosition: audioPlayer.position,
+          bufferedPosition: audioPlayer.bufferedPosition,
+          speed: audioPlayer.speed,
+          queueIndex: audioPlayer.currentIndex ?? 0,
+        ),
+      );
+    }
   }
 
   @override
@@ -321,6 +480,10 @@ class MusilyDesktopHandler extends BaseAudioHandler
     await _currentIndexSubscription.cancel();
     await _sequenceStateSubscription.cancel();
     await _positionChangeSubscription.cancel();
+    if (Platform.isWindows) {
+      smtc!.disableSmtc();
+      smtc!.dispose();
+    }
     taskQueue.dispose();
 
     await super.onTaskRemoved();
@@ -531,6 +694,13 @@ class MusilyDesktopHandler extends BaseAudioHandler
     final List<TrackEntity> _mediaQueue = List.from(mediaQueue);
     shuffledQueue = _mediaQueue..shuffle();
     _onShuffleChanged?.call(shuffleEnabled);
+    if (Platform.isWindows) {
+      smtc!.setIsNextEnabled(
+          shuffleEnabled || hasNext || repeatMode == MusilyRepeatMode.repeat);
+      smtc!.setIsPrevEnabled(shuffleEnabled ||
+          hasPrevious ||
+          repeatMode == MusilyRepeatMode.repeat);
+    }
     updateMediaItemQueue();
     _onAction?.call(MusilyPlayerAction.queueChanged);
   }
@@ -602,6 +772,13 @@ class MusilyDesktopHandler extends BaseAudioHandler
   Future<void> toggleRepeatMode(MusilyRepeatMode repeatMode) async {
     this.repeatMode = repeatMode;
     _onRepeatModeChanged?.call(repeatMode);
+    if (Platform.isWindows) {
+      smtc!.setIsNextEnabled(
+          shuffleEnabled || hasNext || repeatMode == MusilyRepeatMode.repeat);
+      smtc!.setIsPrevEnabled(shuffleEnabled ||
+          hasPrevious ||
+          repeatMode == MusilyRepeatMode.repeat);
+    }
   }
 
   @override
