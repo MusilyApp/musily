@@ -4,12 +4,15 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musily/core/data/services/tray_service.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_disposable.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/ui/window/ly_header_bar.dart';
 import 'package:musily/core/presenter/widgets/animated_size_widget.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/pages/library_page.dart';
@@ -22,6 +25,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/data/services/musily_desktop_handler.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/mini_player_widget.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
@@ -81,6 +85,11 @@ class _CorePageState extends State<CorePage> {
   void initState() {
     super.initState();
     initDeepLinks();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        TrayService.initContextMenu(context);
+      },
+    );
   }
 
   @override
@@ -110,12 +119,79 @@ class _CorePageState extends State<CorePage> {
       },
       child: widget.coreController.builder(
         builder: (context, data) {
+          widget.coreController.methods.loadWindowProperties();
           return LayoutBuilder(
             builder: (context, constraints) {
               final availableHeight = constraints.maxHeight;
               return LyPage(
                 mainPage: true,
                 child: Scaffold(
+                  appBar: widget.coreController.showDesktopProperties
+                      ? LyHeaderBar(
+                          middle: Text(WindowService().currentTitle),
+                          leading: [
+                            IconButton(
+                              onPressed: () async {
+                                final RenderBox button =
+                                    context.findRenderObject() as RenderBox;
+                                final RenderBox overlay = Overlay.of(context)
+                                    .context
+                                    .findRenderObject() as RenderBox;
+                                final Offset position = button.localToGlobal(
+                                    Offset.zero,
+                                    ancestor: overlay);
+                                await showMenu(
+                                  context: context,
+                                  color: Colors.transparent,
+                                  position: RelativeRect.fromLTRB(
+                                    position.dx,
+                                    50,
+                                    position.dx + button.size.width,
+                                    position.dy + button.size.height,
+                                  ),
+                                  items: [
+                                    PopupMenuItem(
+                                      enabled: true,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: context.themeData.cardColor,
+                                          border: Border.all(
+                                            color: Colors.black.withValues(
+                                              blue: .15,
+                                              green: .15,
+                                              red: .15,
+                                            ),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        height: 150,
+                                        width: 40,
+                                        child: RotatedBox(
+                                          quarterTurns: -1,
+                                          child: Slider(
+                                            value:
+                                                MusilyDesktopHandler().volume,
+                                            min: 0,
+                                            max: 1,
+                                            onChanged: (value) {
+                                              MusilyDesktopHandler()
+                                                  .setVolume(value);
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.volume_down_rounded,
+                              ),
+                            ),
+                          ],
+                        )
+                      : null,
                   key: widget.coreController.coreKey,
                   bottomNavigationBar: context.display.isDesktop
                       ? null
@@ -163,7 +239,7 @@ class _CorePageState extends State<CorePage> {
                             AnimatedSizeWidget(
                               width: context.display.width,
                               height: data.currentPlayingItem != null
-                                  ? availableHeight - 75
+                                  ? availableHeight - 120
                                   : availableHeight,
                               child: Row(
                                 children: [
@@ -193,7 +269,7 @@ class _CorePageState extends State<CorePage> {
                                                     onTap: () {
                                                       setState(() {
                                                         _selected = 0;
-                                                        LyNavigator.navigateTo(
+                                                        LyNavigator.redirectTo(
                                                           routes[0],
                                                         );
                                                       });
@@ -223,7 +299,7 @@ class _CorePageState extends State<CorePage> {
                                                     onTap: () {
                                                       setState(() {
                                                         _selected = 1;
-                                                        LyNavigator.navigateTo(
+                                                        LyNavigator.redirectTo(
                                                           routes[1],
                                                         );
                                                       });
@@ -254,7 +330,7 @@ class _CorePageState extends State<CorePage> {
                                                     onTap: () {
                                                       setState(() {
                                                         _selected = 3;
-                                                        LyNavigator.navigateTo(
+                                                        LyNavigator.redirectTo(
                                                           routes[3],
                                                         );
                                                       });
@@ -345,16 +421,6 @@ class _CorePageState extends State<CorePage> {
                                       ),
                                       child: Card(
                                         margin: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          side: BorderSide(
-                                            strokeAlign: 1,
-                                            color: context
-                                                .themeData.dividerColor
-                                                .withOpacity(.2),
-                                          ),
-                                        ),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(12),

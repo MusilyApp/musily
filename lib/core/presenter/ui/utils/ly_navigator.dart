@@ -142,6 +142,10 @@ class LyNavigator {
     );
   }
 
+  static redirectTo(NavigatorPages page) {
+    Modular.to.navigate(NavigatorPages.getRoute(page));
+  }
+
   static push(
     BuildContext context,
     Widget widget, {
