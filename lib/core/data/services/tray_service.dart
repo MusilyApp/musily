@@ -11,6 +11,8 @@ class TrayService {
 
     if (Platform.isWindows) {
       icon = 'assets/icons/tray/tray_icon_windows.ico';
+    } else if (runningInSandbox()) {
+      icon = 'musily_tray';
     } else {
       icon = 'assets/icons/tray/tray_icon.png';
     }
@@ -74,5 +76,10 @@ class TrayService {
       ],
     );
     await trayManager.setContextMenu(menu);
+  }
+
+  static bool runningInSandbox() {
+    return Platform.environment.containsKey('FLATPAK_ID') ||
+        Platform.environment.containsKey('SNAP');
   }
 }
