@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/database/database.dart';
 import 'package:musily/core/data/repositories/musily_repository_impl.dart';
+import 'package:musily/core/data/services/ipc_service.dart';
 import 'package:musily/core/data/services/library_migration.dart';
 import 'package:musily/core/data/services/tray_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
@@ -19,6 +20,14 @@ final mediaStorePlugin = MediaStore();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    final isFirstInstance = await IPCService.initializeIpcServer();
+    if (!isFirstInstance) {
+      exit(0);
+    }
+  }
+
   await Database().init();
 
   if (Platform.isAndroid) {
@@ -55,8 +64,8 @@ void main() async {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Colors.black.withOpacity(0.002),
-        systemNavigationBarColor: Colors.black.withOpacity(0.002),
+        statusBarColor: Colors.black.withValues(alpha: 0.002),
+        systemNavigationBarColor: Colors.black.withValues(alpha: 0.002),
       ),
     );
   }
