@@ -176,11 +176,13 @@ class MusilyDesktopHandler extends BaseAudioHandler
     _onActiveTrackChanged = callback;
   }
 
-  void setVolume(double volume) async {
-    await audioPlayer.setVolume(volume);
+  void setVolume(double volume) {
+    audioPlayer.setVolume(volume);
   }
 
   double get volume => audioPlayer.volume;
+
+  Stream<double> get volumeStream => audioPlayer.volumeStream;
 
   Future<void> _handlePlaybackEvent(PlaybackEvent event) async {
     try {

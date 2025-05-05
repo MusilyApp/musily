@@ -3,6 +3,7 @@ import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/player/data/services/musily_desktop_handler.dart';
 
 class MusilyPlayer implements MusilyAudioHandler {
   static final MusilyPlayer _instance = MusilyPlayer._internal();
@@ -215,6 +216,26 @@ class MusilyPlayer implements MusilyAudioHandler {
   void setUriGetter(Future<Uri> Function(TrackEntity track) callback) {
     if (_audioHandler != null) {
       return _audioHandler!.setUriGetter(callback);
+    }
+  }
+
+  double get volume {
+    if (_audioHandler != null) {
+      return (_audioHandler as MusilyDesktopHandler).volume;
+    }
+    return 1.0;
+  }
+
+  Stream<double> get volumeStream {
+    if (_audioHandler != null) {
+      return (_audioHandler as MusilyDesktopHandler).volumeStream;
+    }
+    return Stream.value(1.0);
+  }
+
+  void setVolume(double volume) {
+    if (_audioHandler != null) {
+      (_audioHandler as MusilyDesktopHandler).setVolume(volume);
     }
   }
 }

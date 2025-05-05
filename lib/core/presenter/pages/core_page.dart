@@ -25,7 +25,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/data/services/musily_desktop_handler.dart';
+import 'package:musily/features/player/data/services/musily_player.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/mini_player_widget.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
@@ -72,6 +72,7 @@ class CorePage extends StatefulWidget {
 class _CorePageState extends State<CorePage> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
+  bool _showVolumeControl = false;
 
   int _selected = 0;
   final routes = [
@@ -130,64 +131,57 @@ class _CorePageState extends State<CorePage> {
                       ? LyHeaderBar(
                           middle: Text(WindowService().currentTitle),
                           leading: [
-                            IconButton(
-                              onPressed: () async {
-                                final RenderBox button =
-                                    context.findRenderObject() as RenderBox;
-                                final RenderBox overlay = Overlay.of(context)
-                                    .context
-                                    .findRenderObject() as RenderBox;
-                                final Offset position = button.localToGlobal(
-                                    Offset.zero,
-                                    ancestor: overlay);
-                                await showMenu(
-                                  context: context,
-                                  color: Colors.transparent,
-                                  position: RelativeRect.fromLTRB(
-                                    position.dx,
-                                    50,
-                                    position.dx + button.size.width,
-                                    position.dy + button.size.height,
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _showVolumeControl = !_showVolumeControl;
+                                    });
+                                  },
+                                  icon: StreamBuilder<double>(
+                                    stream: MusilyPlayer().volumeStream,
+                                    builder: (context, snapshot) {
+                                      final volume = snapshot.data ??
+                                          MusilyPlayer().volume;
+                                      return Icon(
+                                        volume > 0
+                                            ? Icons.volume_up_rounded
+                                            : Icons.volume_off_rounded,
+                                        color: context
+                                            .themeData.colorScheme.onSurface,
+                                      );
+                                    },
                                   ),
-                                  items: [
-                                    PopupMenuItem(
-                                      enabled: true,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: context.themeData.cardColor,
-                                          border: Border.all(
-                                            color: Colors.black.withValues(
-                                              blue: .15,
-                                              green: .15,
-                                              red: .15,
-                                            ),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        height: 150,
-                                        width: 40,
-                                        child: RotatedBox(
-                                          quarterTurns: -1,
-                                          child: Slider(
-                                            value:
-                                                MusilyDesktopHandler().volume,
-                                            min: 0,
-                                            max: 1,
-                                            onChanged: (value) {
-                                              MusilyDesktopHandler()
-                                                  .setVolume(value);
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.volume_down_rounded,
-                              ),
+                                ),
+                                AnimatedSizeWidget(
+                                  duration: const Duration(milliseconds: 100),
+                                  width: _showVolumeControl ? 200 : 0,
+                                  height: 40,
+                                  child: _showVolumeControl
+                                      ? StreamBuilder<double>(
+                                          stream: MusilyPlayer().volumeStream,
+                                          builder: (context, snapshot) {
+                                            final volume = snapshot.data ??
+                                                MusilyPlayer().volume;
+                                            return Slider(
+                                              value: volume,
+                                              onChanged: (value) =>
+                                                  MusilyPlayer()
+                                                      .setVolume(value),
+                                              min: 0.0,
+                                              max: 1.0,
+                                              activeColor: context.themeData
+                                                  .colorScheme.primary,
+                                              inactiveColor: context
+                                                  .themeData.colorScheme.primary
+                                                  .withValues(alpha: 0.3),
+                                            );
+                                          },
+                                        )
+                                      : const SizedBox.shrink(),
+                                ),
+                              ],
                             ),
                           ],
                         )
@@ -259,7 +253,7 @@ class _CorePageState extends State<CorePage> {
                                                 strokeAlign: 1,
                                                 color: context
                                                     .themeData.dividerColor
-                                                    .withOpacity(.2),
+                                                    .withValues(alpha: .2),
                                               ),
                                             ),
                                             child: Scaffold(
@@ -379,7 +373,7 @@ class _CorePageState extends State<CorePage> {
                                                   strokeAlign: 1,
                                                   color: context
                                                       .themeData.dividerColor
-                                                      .withOpacity(.2),
+                                                      .withValues(alpha: .2),
                                                 ),
                                               ),
                                               child: LibraryPage(
@@ -479,7 +473,7 @@ class _CorePageState extends State<CorePage> {
                                     : 0,
                                 duration: const Duration(milliseconds: 300),
                                 color: context.themeData.scaffoldBackgroundColor
-                                    .withOpacity(.7),
+                                    .withValues(alpha: .7),
                                 child: Center(
                                   child: LoadingAnimationWidget.halfTriangleDot(
                                     color:
