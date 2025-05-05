@@ -107,7 +107,7 @@ jobs:
         run: |
           rm -rf musily_installer/assets/app/*
           mkdir -p musily_installer/assets/app
-  
+
       - name: Build musily_installer (Uninstaller mode)
         if: matrix.os == 'ubuntu-22.04'
         working-directory: musily_installer
@@ -142,6 +142,22 @@ jobs:
           chmod +x musily_installer/builder.sh
           cd musily_installer
           ./builder.sh
+
+      - name: Prepare executable .run installer for distribution
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          # Make the .run file executable
+          chmod +x musily_installer/output/musily_installer.run
+
+          # Create a zip with the executable .run file
+          mkdir -p build/zip
+          cp musily_installer/output/musily_installer.run build/zip/musily-installer-${{ needs.metadata.outputs.version }}.run
+          cd build/zip
+          zip -r ../musily-linux-installer-${{ needs.metadata.outputs.version }}.zip *.run
+          cd ../..
+
+          # Clean up temp directory
+          rm -rf build/zip
 
       - name: Install Rust on Windows
         if: matrix.os == 'windows-latest'
@@ -187,7 +203,7 @@ jobs:
           path: |
             build/*.zip
             build/*.exe
-            musily_installer/output/musily_installer.run
+            musily_installer/**/*.zip
             build/*.tar.gz
             build/app/outputs/flutter-apk/*.apk
 
