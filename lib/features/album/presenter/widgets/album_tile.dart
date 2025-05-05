@@ -117,7 +117,8 @@ class _AlbumTileState extends State<AlbumTile> {
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(
               width: 1,
-              color: context.themeData.colorScheme.outline.withOpacity(.2),
+              color:
+                  context.themeData.colorScheme.outline.withValues(alpha: .2),
             ),
           ),
           child: Builder(
@@ -139,7 +140,8 @@ class _AlbumTileState extends State<AlbumTile> {
                 height: 40,
                 child: Icon(
                   Icons.album_rounded,
-                  color: context.themeData.iconTheme.color?.withOpacity(.7),
+                  color:
+                      context.themeData.iconTheme.color?.withValues(alpha: .7),
                 ),
               );
             },

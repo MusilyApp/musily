@@ -72,8 +72,8 @@ class _LyListTileState extends State<LyListTile> {
         onTap: widget.enabled ? widget.onTap : null,
         borderRadius: widget.borderRadius ??
             (hasFocus ? BorderRadius.circular(8) : BorderRadius.zero),
-        focusColor: colorScheme.primary.withOpacity(0.1),
-        highlightColor: colorScheme.primary.withOpacity(0.3),
+        focusColor: colorScheme.primary.withValues(alpha: 0.1),
+        highlightColor: colorScheme.primary.withValues(alpha: 0.3),
         splashColor: Colors.transparent,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
@@ -89,7 +89,7 @@ class _LyListTileState extends State<LyListTile> {
             borderRadius: widget.borderRadius ??
                 (hasFocus ? BorderRadius.circular(8) : BorderRadius.zero),
             color: widget.selected
-                ? colorScheme.primary.withOpacity(0.15)
+                ? colorScheme.primary.withValues(alpha: 0.15)
                 : Colors.transparent,
             border: Border.all(
               color: hasFocus ? colorScheme.primary : Colors.transparent,

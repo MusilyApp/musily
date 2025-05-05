@@ -13,7 +13,7 @@ class LyDialogRouter<T> extends ModalRoute<T> {
   });
 
   @override
-  Color? get barrierColor => Colors.black.withOpacity(.5);
+  Color? get barrierColor => Colors.black.withValues(alpha: .5);
 
   @override
   bool get barrierDismissible => true;

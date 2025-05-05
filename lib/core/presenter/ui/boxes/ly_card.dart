@@ -99,7 +99,7 @@ class _LyCardState extends State<LyCard> {
           elevation: widget.elevation,
           color: hasFocus
               ? context.themeData.colorScheme.surfaceContainerHighest
-                  .withOpacity(0.1)
+                  .withValues(alpha: 0.1)
               : context.themeData.colorScheme.surface,
           shape: widget.shape ??
               RoundedRectangleBorder(
@@ -110,7 +110,7 @@ class _LyCardState extends State<LyCard> {
                       )
                     : BorderSide(
                         color: context.themeData.colorScheme.primary
-                            .withOpacity(.1),
+                            .withValues(alpha: .1),
                         width: 2.0,
                       ),
                 borderRadius: widget.borderRadius ?? BorderRadius.circular(12),

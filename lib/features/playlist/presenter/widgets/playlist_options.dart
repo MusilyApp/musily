@@ -234,8 +234,8 @@ class PlaylistOptions extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(12),
                                       side: BorderSide(
                                         color: context.themeData.dividerColor
-                                            .withOpacity(
-                                          .3,
+                                            .withValues(
+                                          alpha: .3,
                                         ),
                                       ),
                                     ),

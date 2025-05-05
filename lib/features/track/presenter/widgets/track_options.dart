@@ -111,8 +111,8 @@ class TrackOptions extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
-                            color:
-                                context.themeData.dividerColor.withOpacity(.3),
+                            color: context.themeData.dividerColor
+                                .withValues(alpha: .3),
                             width: 1,
                           ),
                         ),

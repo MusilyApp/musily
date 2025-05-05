@@ -110,13 +110,14 @@ class PlaylistAdderWidget extends StatelessWidget {
                     Icon(
                       Icons.playlist_add,
                       size: 40,
-                      color: context.themeData.iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .7),
                     ),
                     Text(
                       context.localization.noPlaylists,
                       style: TextStyle(
-                        color:
-                            context.themeData.iconTheme.color?.withOpacity(.7),
+                        color: context.themeData.iconTheme.color
+                            ?.withValues(alpha: .7),
                       ),
                     ),
                     const SizedBox(

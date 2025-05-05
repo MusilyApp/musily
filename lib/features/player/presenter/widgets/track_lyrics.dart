@@ -83,7 +83,8 @@ class _TrackLyricsState extends State<TrackLyrics> {
                     textAlign: TextAlign.center,
                     style: context.themeData.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: context.themeData.iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .7),
                     ),
                   ),
                   const SizedBox(height: 180),
@@ -100,7 +101,8 @@ class _TrackLyricsState extends State<TrackLyrics> {
               end: Alignment.bottomCenter,
               colors: [
                 context.themeData.colorScheme.inversePrimary,
-                context.themeData.colorScheme.inversePrimary.withOpacity(.003),
+                context.themeData.colorScheme.inversePrimary
+                    .withValues(alpha: .003),
               ],
             ),
           ),
@@ -115,7 +117,7 @@ class _TrackLyricsState extends State<TrackLyrics> {
                 end: Alignment.bottomCenter,
                 colors: [
                   context.themeData.colorScheme.inversePrimary
-                      .withOpacity(.003),
+                      .withValues(alpha: .003),
                   context.themeData.colorScheme.inversePrimary,
                 ],
               ),

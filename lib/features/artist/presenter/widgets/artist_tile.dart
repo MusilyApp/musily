@@ -111,7 +111,8 @@ class _ArtistTileState extends State<ArtistTile> {
             borderRadius: BorderRadius.circular(360),
             side: BorderSide(
               width: 1,
-              color: context.themeData.colorScheme.outline.withOpacity(.2),
+              color:
+                  context.themeData.colorScheme.outline.withValues(alpha: .2),
             ),
           ),
           child: Builder(

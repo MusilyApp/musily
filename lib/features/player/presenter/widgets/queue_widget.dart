@@ -91,7 +91,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                       color: data.tracksFromSmartQueue
                               .contains(data.queue[index].hash)
                           ? context.themeData.colorScheme.primary
-                              .withOpacity(.2)
+                              .withValues(alpha: .2)
                           : Colors.transparent,
                       margin: EdgeInsets.zero,
                       key: Key(index.toString()),
@@ -144,7 +144,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                                   side: BorderSide(
                                     width: 1,
                                     color: context.themeData.colorScheme.outline
-                                        .withOpacity(.2),
+                                        .withValues(alpha: .2),
                                   ),
                                 ),
                                 child: Builder(
@@ -171,7 +171,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                                       child: Icon(
                                         Icons.music_note,
                                         color: context.themeData.iconTheme.color
-                                            ?.withOpacity(.7),
+                                            ?.withValues(alpha: .7),
                                       ),
                                     );
                                   },

@@ -139,10 +139,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                       : Switch(
                                           inactiveThumbColor: context
                                               .themeData.colorScheme.primary
-                                              .withOpacity(.6),
+                                              .withValues(alpha: .6),
                                           inactiveTrackColor: context
                                               .themeData.colorScheme.primary
-                                              .withOpacity(0.1),
+                                              .withValues(alpha: 0.1),
                                           activeColor: context
                                               .themeData.colorScheme.primary,
                                           value: data.autoSmartQueue,
@@ -289,7 +289,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                           Slider(
                             inactiveColor: context
                                 .themeData.buttonTheme.colorScheme?.primary
-                                .withOpacity(.3),
+                                .withValues(alpha: .3),
                             min: 0,
                             max: currentPlayingItem.duration.inSeconds
                                 .toDouble(),

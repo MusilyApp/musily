@@ -555,7 +555,8 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
                     Icon(
                       Icons.error_rounded,
                       size: 50,
-                      color: context.themeData.iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .7),
                     ),
                     Text(
                       context.localization.albumNotFound,

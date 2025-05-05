@@ -115,9 +115,8 @@ class _ArtistPageState extends State<ArtistPage> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor:
-              context.themeData.scaffoldBackgroundColor.withOpacity(
-            .002,
+          backgroundColor: context.themeData.scaffoldBackgroundColor.withValues(
+            alpha: .002,
           ),
         ),
         body: Builder(
@@ -145,8 +144,8 @@ class _ArtistPageState extends State<ArtistPage> {
                             colors: [
                               context.themeData.scaffoldBackgroundColor,
                               context.themeData.scaffoldBackgroundColor
-                                  .withOpacity(
-                                .45,
+                                  .withValues(
+                                alpha: .45,
                               ),
                             ],
                             begin: Alignment.bottomCenter,
@@ -769,7 +768,8 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
                     Icon(
                       Icons.error_rounded,
                       size: 50,
-                      color: context.themeData.iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .7),
                     ),
                     Text(context.localization.artistNotFound),
                   ],

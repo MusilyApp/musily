@@ -99,7 +99,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                       side: BorderSide(
                         width: 1,
                         color: context.themeData.colorScheme.outline
-                            .withOpacity(.2),
+                            .withValues(alpha: .2),
                       ),
                     ),
                     child: Column(
@@ -119,7 +119,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                                         width: 1,
                                         color: context
                                             .themeData.colorScheme.outline
-                                            .withOpacity(.2),
+                                            .withValues(alpha: .2),
                                       ),
                                     ),
                                     child: Builder(
@@ -147,7 +147,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                                             Icons.music_note,
                                             color: context
                                                 .themeData.iconTheme.color
-                                                ?.withOpacity(.7),
+                                                ?.withValues(alpha: .7),
                                           ),
                                         );
                                       },
@@ -254,7 +254,8 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                               }
                               return LinearProgressIndicator(
                                 value: progressBarValue,
-                                backgroundColor: Colors.white.withOpacity(.2),
+                                backgroundColor:
+                                    Colors.white.withValues(alpha: .2),
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   context.themeData.buttonTheme.colorScheme!
                                       .primary,

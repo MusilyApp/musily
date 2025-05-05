@@ -130,7 +130,7 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                         style: TextStyle(
                           color: isDisabled
                               ? context.themeData.colorScheme.onSurface
-                                  .withOpacity(0.38)
+                                  .withValues(alpha: 0.38)
                               : widget.color == null
                                   ? (hasFocus
                                       ? context.themeData.colorScheme.primary

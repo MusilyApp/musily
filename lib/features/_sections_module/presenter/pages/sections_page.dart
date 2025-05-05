@@ -157,8 +157,8 @@ class SectionsPage extends StatelessWidget {
                           padding: const EdgeInsets.all(16),
                           child: DottedBorder(
                             color: context.themeData.colorScheme.outline
-                                .withOpacity(
-                              .2,
+                                .withValues(
+                              alpha: .2,
                             ),
                             borderType: BorderType.RRect,
                             radius: const Radius.circular(12),
@@ -177,8 +177,8 @@ class SectionsPage extends StatelessWidget {
                                       size: 70,
                                       color: context
                                           .themeData.colorScheme.outline
-                                          .withOpacity(
-                                        .6,
+                                          .withValues(
+                                        alpha: .6,
                                       ),
                                     ),
                                     Text(
@@ -186,8 +186,8 @@ class SectionsPage extends StatelessWidget {
                                       style: TextStyle(
                                         color: context
                                             .themeData.colorScheme.outline
-                                            .withOpacity(
-                                          .6,
+                                            .withValues(
+                                          alpha: .6,
                                         ),
                                       ),
                                     ),
@@ -208,7 +208,7 @@ class SectionsPage extends StatelessWidget {
                           ),
                           child: Container(
                             color: context.themeData.colorScheme.primary
-                                .withOpacity(.01),
+                                .withValues(alpha: .01),
                             child: Builder(builder: (context) {
                               final limit = context.display.isDesktop ? 6 : 4;
                               final items = data.items.length < limit

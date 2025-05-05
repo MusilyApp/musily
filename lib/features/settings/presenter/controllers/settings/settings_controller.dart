@@ -75,16 +75,16 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
           SystemChrome.setSystemUIOverlayStyle(
             SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.light,
-              statusBarColor: Colors.black.withOpacity(0.002),
-              systemNavigationBarColor: Colors.black.withOpacity(0.002),
+              statusBarColor: Colors.black.withValues(alpha: 0.002),
+              systemNavigationBarColor: Colors.black.withValues(alpha: 0.002),
             ),
           );
         } else {
           SystemChrome.setSystemUIOverlayStyle(
             SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.dark,
-              statusBarColor: Colors.black.withOpacity(0.002),
-              systemNavigationBarColor: Colors.black.withOpacity(0.002),
+              statusBarColor: Colors.black.withValues(alpha: 0.002),
+              systemNavigationBarColor: Colors.black.withValues(alpha: 0.002),
             ),
           );
         }

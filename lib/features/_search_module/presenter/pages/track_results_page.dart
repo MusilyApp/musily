@@ -112,12 +112,14 @@ class _TrackResultsPageState extends State<TrackResultsPage> {
                   Icon(
                     Icons.search_off,
                     size: 50,
-                    color: context.themeData.iconTheme.color?.withOpacity(.5),
+                    color: context.themeData.iconTheme.color
+                        ?.withValues(alpha: .5),
                   ),
                   Text(
                     context.localization.noResults,
                     style: TextStyle(
-                      color: context.themeData.iconTheme.color?.withOpacity(.5),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .5),
                     ),
                   ),
                 ],

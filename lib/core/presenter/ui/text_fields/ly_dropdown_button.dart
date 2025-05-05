@@ -83,7 +83,7 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
                   color: hasFocus
                       ? context.themeData.colorScheme.primary
                       : context.themeData.colorScheme.onSurface
-                          .withOpacity(0.9),
+                          .withValues(alpha: 0.9),
                 ),
               ),
             ),
@@ -104,14 +104,14 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
                   color: hasFocus
                       ? context.themeData.colorScheme.primary
                       : context.themeData.colorScheme.onSurface
-                          .withOpacity(0.4),
+                          .withValues(alpha: 0.4),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
                 borderSide: BorderSide(
-                  color:
-                      context.themeData.colorScheme.onSurface.withOpacity(0.4),
+                  color: context.themeData.colorScheme.onSurface
+                      .withValues(alpha: 0.4),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -123,14 +123,16 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
               ),
               filled: true,
               fillColor: hasFocus
-                  ? context.themeData.colorScheme.onPrimary.withOpacity(0.1)
+                  ? context.themeData.colorScheme.onPrimary
+                      .withValues(alpha: 0.1)
                   : context.themeData.colorScheme.surface,
             ),
             icon: Icon(
               Icons.arrow_drop_down,
               color: hasFocus
                   ? context.themeData.colorScheme.primary
-                  : context.themeData.colorScheme.onSurface.withOpacity(0.6),
+                  : context.themeData.colorScheme.onSurface
+                      .withValues(alpha: 0.6),
             ),
             dropdownColor: context.themeData.colorScheme.surface,
             style: TextStyle(

@@ -119,7 +119,8 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
                     Icon(
                       Icons.album_rounded,
                       size: 50,
-                      color: context.themeData.iconTheme.color?.withOpacity(.5),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .5),
                     ),
                     const SizedBox(
                       height: 12,

@@ -89,9 +89,9 @@ class _LyTonalButtonState extends State<LyTonalButton> {
         color: widget.onPressed == null // Verifica se está desabilitado
             ? (widget.disabledColor ??
                 context.themeData.colorScheme.onSurface
-                    .withOpacity(0.38)) // Cor desativada padrão
+                    .withValues(alpha: 0.38)) // Cor desativada padrão
             : (hasFocus
-                ? context.themeData.colorScheme.secondary.withOpacity(0.1)
+                ? context.themeData.colorScheme.secondary.withValues(alpha: 0.1)
                 : context.themeData.colorScheme.surfaceContainerHighest),
         minWidth: widget.fullWidth ? double.maxFinite : null,
         child: Padding(

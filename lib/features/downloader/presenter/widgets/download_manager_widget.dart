@@ -61,8 +61,8 @@ class DownloadManagerWidget extends StatelessWidget {
                           ),
                           side: BorderSide(
                             width: 1,
-                            color: context.themeData.dividerColor.withOpacity(
-                              .2,
+                            color: context.themeData.dividerColor.withValues(
+                              alpha: .2,
                             ),
                           ),
                         ),

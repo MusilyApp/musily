@@ -116,7 +116,8 @@ class _LyTextFieldState extends State<LyTextField> {
               ),
           hintStyle: widget.hintStyle ??
               TextStyle(
-                color: context.themeData.colorScheme.onSurface.withOpacity(0.5),
+                color: context.themeData.colorScheme.onSurface
+                    .withValues(alpha: 0.5),
               ),
           contentPadding: widget.contentPadding ??
               EdgeInsets.symmetric(
@@ -128,13 +129,15 @@ class _LyTextFieldState extends State<LyTextField> {
             borderSide: BorderSide(
               color: hasFocus
                   ? context.themeData.colorScheme.primary
-                  : context.themeData.colorScheme.onSurface.withOpacity(0.4),
+                  : context.themeData.colorScheme.onSurface
+                      .withValues(alpha: 0.4),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: context.themeData.colorScheme.onSurface.withOpacity(0.4),
+              color: context.themeData.colorScheme.onSurface
+                  .withValues(alpha: 0.4),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -146,7 +149,7 @@ class _LyTextFieldState extends State<LyTextField> {
           ),
           filled: true,
           fillColor: hasFocus
-              ? context.themeData.colorScheme.onPrimary.withOpacity(0.1)
+              ? context.themeData.colorScheme.onPrimary.withValues(alpha: 0.1)
               : context.themeData.colorScheme.surface,
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.suffixIcon,

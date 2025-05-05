@@ -90,8 +90,8 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
                             strokeAlign: 1,
-                            color: context.themeData.dividerColor.withOpacity(
-                              .2,
+                            color: context.themeData.dividerColor.withValues(
+                              alpha: .2,
                             ),
                           ),
                         ),
@@ -119,8 +119,8 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
                             strokeAlign: 1,
-                            color: context.themeData.dividerColor.withOpacity(
-                              .2,
+                            color: context.themeData.dividerColor.withValues(
+                              alpha: .2,
                             ),
                           ),
                         ),
@@ -213,7 +213,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                           width: 1,
                                           color: context
                                               .themeData.colorScheme.outline
-                                              .withOpacity(.2),
+                                              .withValues(alpha: .2),
                                         ),
                                       ),
                                       child: InkWell(
@@ -274,7 +274,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                                 Icons.music_note,
                                                 color: context
                                                     .themeData.iconTheme.color
-                                                    ?.withOpacity(.7),
+                                                    ?.withValues(alpha: .7),
                                               ),
                                             );
                                           },
@@ -300,7 +300,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                                     .primary,
                                                 context.themeData.colorScheme
                                                     .primary
-                                                    .withOpacity(.2),
+                                                    .withValues(alpha: .2),
                                               ],
                                             ),
                                           ),

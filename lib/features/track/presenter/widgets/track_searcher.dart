@@ -71,8 +71,8 @@ class TrackSearcher extends StatelessWidget {
                 12,
               ),
               side: BorderSide(
-                color: context.themeData.dividerColor.withOpacity(
-                  .2,
+                color: context.themeData.dividerColor.withValues(
+                  alpha: .2,
                 ),
               ),
             )

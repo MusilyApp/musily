@@ -132,9 +132,9 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                       ),
               ),
         disabledColor:
-            context.themeData.colorScheme.onSurface.withOpacity(0.12),
+            context.themeData.colorScheme.onSurface.withValues(alpha: 0.12),
         color: (hasFocus
-            ? context.themeData.colorScheme.secondary.withOpacity(0.1)
+            ? context.themeData.colorScheme.secondary.withValues(alpha: 0.1)
             : context.themeData.colorScheme.surfaceContainerHighest),
         minWidth: buttonSize.width, // Largura dinâmica do botão
         height: buttonSize.height, // Altura dinâmica do botão
@@ -155,7 +155,7 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                         size: _getIconSize(),
                         color: isDisabled
                             ? context.themeData.colorScheme.onSurface
-                                .withOpacity(0.38)
+                                .withValues(alpha: 0.38)
                             : (hasFocus
                                 ? context.themeData.colorScheme.primary
                                 : context
@@ -180,7 +180,7 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
                         style: TextStyle(
                           color: isDisabled
                               ? context.themeData.colorScheme.onSurface
-                                  .withOpacity(0.38)
+                                  .withValues(alpha: 0.38)
                               : hasFocus
                                   ? context.themeData.colorScheme.primary
                                   : context

@@ -81,7 +81,8 @@ class _LyOutlinedButtonState extends State<LyOutlinedButton> {
                 width: hasFocus ? 2 : 1,
                 color: hasFocus
                     ? context.themeData.colorScheme.primary
-                    : context.themeData.colorScheme.onSurface.withOpacity(0.5),
+                    : context.themeData.colorScheme.onSurface
+                        .withValues(alpha: 0.5),
               ),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             ),

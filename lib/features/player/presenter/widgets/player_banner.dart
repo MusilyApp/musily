@@ -165,7 +165,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                             side: BorderSide(
                                               color: context
                                                   .themeData.dividerColor
-                                                  .withOpacity(.2),
+                                                  .withValues(alpha: .2),
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(12),
@@ -190,7 +190,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                             width: 1,
                                             color: context
                                                 .themeData.colorScheme.outline
-                                                .withOpacity(.2),
+                                                .withValues(alpha: .2),
                                           ),
                                         ),
                                         child: Row(
@@ -205,7 +205,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                                 size: 75,
                                                 color: context
                                                     .themeData.iconTheme.color
-                                                    ?.withOpacity(.8),
+                                                    ?.withValues(alpha: .8),
                                               ),
                                             ),
                                           ],
@@ -234,7 +234,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                                 .themeData.colorScheme.primary,
                                             context
                                                 .themeData.colorScheme.primary
-                                                .withOpacity(.2),
+                                                .withValues(alpha: .2),
                                           ],
                                         ),
                                       ),

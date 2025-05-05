@@ -160,7 +160,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                     side: BorderSide(
                                       strokeAlign: 1,
                                       color: context.themeData.dividerColor
-                                          .withOpacity(.1),
+                                          .withValues(alpha: .1),
                                     ),
                                   ),
                                   child: const SizedBox(
@@ -321,14 +321,14 @@ class _LibraryPageState extends State<LibraryPage> {
                                     Icons.library_music_rounded,
                                     size: 70,
                                     color: context.themeData.colorScheme.outline
-                                        .withOpacity(.9),
+                                        .withValues(alpha: .9),
                                   ),
                                   Text(
                                     context.localization.emptyLibrary,
                                     style: TextStyle(
                                       color: context
                                           .themeData.colorScheme.outline
-                                          .withOpacity(.9),
+                                          .withValues(alpha: .9),
                                     ),
                                   ),
                                 ],
@@ -347,14 +347,14 @@ class _LibraryPageState extends State<LibraryPage> {
                                     Icons.filter_alt_off,
                                     size: 70,
                                     color: context.themeData.colorScheme.outline
-                                        .withOpacity(.9),
+                                        .withValues(alpha: .9),
                                   ),
                                   Text(
                                     context.localization.noResults,
                                     style: TextStyle(
                                       color: context
                                           .themeData.colorScheme.outline
-                                          .withOpacity(.9),
+                                          .withValues(alpha: .9),
                                     ),
                                   ),
                                 ],

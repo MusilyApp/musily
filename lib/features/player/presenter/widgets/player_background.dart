@@ -100,7 +100,7 @@ class _PlayerBackgroundState extends State<PlayerBackground> {
                   widget.imageUrl,
                   fit: BoxFit.cover,
                   color: context.themeData.scaffoldBackgroundColor
-                      .withOpacity(0.9),
+                      .withValues(alpha: 0.9),
                   colorBlendMode:
                       context.isDarkMode ? BlendMode.darken : BlendMode.lighten,
                 ),

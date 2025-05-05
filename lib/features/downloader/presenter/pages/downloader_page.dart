@@ -38,14 +38,14 @@ class DownloaderPage extends StatelessWidget {
                           Icon(
                             Icons.downloading_rounded,
                             color: context.themeData.iconTheme.color
-                                ?.withOpacity(.5),
+                                ?.withValues(alpha: .5),
                             size: 50,
                           ),
                           Text(
                             context.localization.noDownloads,
                             style: TextStyle(
                               color: context.themeData.iconTheme.color
-                                  ?.withOpacity(.5),
+                                  ?.withValues(alpha: .5),
                             ),
                           ),
                         ],

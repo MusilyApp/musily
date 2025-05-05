@@ -120,7 +120,8 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
                     Icon(
                       Icons.music_off_rounded,
                       size: 50,
-                      color: context.themeData.iconTheme.color?.withOpacity(.7),
+                      color: context.themeData.iconTheme.color
+                          ?.withValues(alpha: .7),
                     ),
                     Text(
                       context.localization.songsNotFound,

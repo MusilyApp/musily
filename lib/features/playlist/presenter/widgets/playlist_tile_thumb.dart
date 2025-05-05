@@ -24,7 +24,7 @@ class PlaylistTileThumb extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
           width: 1,
-          color: context.themeData.colorScheme.outline.withOpacity(.2),
+          color: context.themeData.colorScheme.outline.withValues(alpha: .2),
         ),
       ),
       child: ClipRRect(
@@ -57,8 +57,8 @@ class PlaylistTileThumb extends StatelessWidget {
                       height: 40,
                       child: Icon(
                         Icons.playlist_play_rounded,
-                        color:
-                            context.themeData.iconTheme.color?.withOpacity(.7),
+                        color: context.themeData.iconTheme.color
+                            ?.withValues(alpha: .7),
                       ),
                     ),
                   ),
