@@ -50,6 +50,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure Git Safe Directory
+        run: |
+          git config --global --add safe.directory /__w/musily/musily
+          git config --global --add safe.directory /__w/musily/musily/musily_installer
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -77,7 +84,7 @@ jobs:
             libgtk-3-dev liblzma-dev libglu1-mesa \
             libstdc++-12-dev libmpv-dev \
             libjsoncpp-dev libsecret-1-dev \
-            libayatana-appindicator3-dev
+            libayatana-appindicator3-dev xxd
 
       - name: Build APK (Android)
         if: matrix.os == 'ubuntu-22.04'
@@ -94,6 +101,47 @@ jobs:
         if: matrix.os == 'ubuntu-22.04'
         run: |
           tar -czvf build/musily-linux-x64.tar.gz -C $BUILD_DIR_LINUX .
+
+      - name: Clean musily_installer/assets/app
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          rm -rf musily_installer/assets/app/*
+          mkdir -p musily_installer/assets/app
+  
+      - name: Build musily_installer (Uninstaller mode)
+        if: matrix.os == 'ubuntu-22.04'
+        working-directory: musily_installer
+        run: flutter build linux --release
+
+      - name: Copy uninstaller to musily/assets/uninstaller
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          mkdir -p assets/uninstaller
+          tar -czvf assets/uninstaller/musily_installer.tar.gz -C musily_installer/build/linux/x64/release/bundle .
+
+      - name: Build Musily (with embedded uninstaller)
+        if: matrix.os == 'ubuntu-22.04'
+        run: flutter build linux --release
+
+      - name: Copy musily build to musily_installer/assets/app
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          rm -rf musily_installer/assets/app/*
+          cp LICENSE musily_installer/assets/app
+          echo ${{ needs.metadata.outputs.version }} > musily_installer/assets/app/version.txt
+          tar -czvf musily_installer/assets/app/musily.tar.gz -C build/linux/x64/release/bundle .
+
+      - name: Rebuild musily_installer (Installer mode)
+        if: matrix.os == 'ubuntu-22.04'
+        working-directory: musily_installer
+        run: flutter build linux --release
+
+      - name: Create .run installer
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          chmod +x musily_installer/builder.sh
+          cd musily_installer
+          ./builder.sh
 
       - name: Install Rust on Windows
         if: matrix.os == 'windows-latest'
@@ -139,6 +187,7 @@ jobs:
           path: |
             build/*.zip
             build/*.exe
+            musily_installer/output/musily_installer.run
             build/*.tar.gz
             build/app/outputs/flutter-apk/*.apk
 
@@ -170,6 +219,7 @@ jobs:
             dist/**/*.zip
             dist/**/*.tar.gz
             dist/**/*.exe
+            dist/**/*.run
             dist/musily-${{ needs.metadata.outputs.version }}.apk
 
   flatpak:
