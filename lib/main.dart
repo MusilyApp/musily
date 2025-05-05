@@ -7,6 +7,8 @@ import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/database/database.dart';
 import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/data/services/ipc_service.dart';
+import 'package:musily/core/data/services/ipc_service_unix.dart';
+import 'package:musily/core/data/services/ipc_service_windows.dart';
 import 'package:musily/core/data/services/library_migration.dart';
 import 'package:musily/core/data/services/tray_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
@@ -22,7 +24,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    final isFirstInstance = await IPCService.initializeIpcServer();
+    late IPCService ipcService;
+    if (Platform.isWindows) {
+      ipcService = IPCServiceWindows();
+    } else {
+      ipcService = IPCServiceUnix();
+    }
+    final isFirstInstance = await ipcService.initializeIpcServer();
     if (!isFirstInstance) {
       exit(0);
     }
