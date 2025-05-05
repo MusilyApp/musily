@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async';
 
 import 'package:dart_ipc/dart_ipc.dart' as ipc;
 import 'package:musily/core/data/services/window_service.dart';
@@ -36,16 +37,13 @@ class IPCService {
     final socketPath = await getIpcPath();
 
     try {
+      if (await _tryConnectExisting(socketPath)) {
+        return false;
+      }
+
       final server = await ipc.bind(socketPath);
 
-      ProcessSignal.sigint.watch().listen((_) async {
-        await cleanupSocket();
-        exit(0);
-      });
-      ProcessSignal.sigterm.watch().listen((_) async {
-        await cleanupSocket();
-        exit(0);
-      });
+      _setupSignalHandlers();
 
       server.listen((socket) {
         socket.listen(
@@ -58,37 +56,72 @@ class IPCService {
           onDone: () => print('Client disconnected'),
         );
       });
+
+      print('IPC server started successfully');
       return true;
     } catch (e) {
-      try {
-        final socket = await ipc.connect(socketPath);
-        socket.add(utf8.encode('show_window'));
-        await socket.close();
-        return false;
-      } catch (e) {
-        print(
-          'Failed to connect to existing instance, cleaning up stale socket',
-        );
+      print('Failed to initialize IPC server: $e');
+      return false;
+    }
+  }
+
+  static Future<bool> _tryConnectExisting(String socketPath) async {
+    try {
+      print('Trying to connect to existing instance at $socketPath');
+      final socket = await ipc.connect(socketPath).timeout(
+        const Duration(seconds: 1),
+        onTimeout: () {
+          throw TimeoutException('Connection timed out');
+        },
+      );
+
+      print('Connected to existing instance, sending show_window command');
+      socket.add(utf8.encode('show_window'));
+      await socket.flush();
+
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      await socket.close();
+      print('Successfully notified existing instance');
+      return true;
+    } catch (e) {
+      print('Failed to connect to existing instance: $e');
+
+      if (Platform.isWindows) {
+        await Future.delayed(const Duration(milliseconds: 200));
+      } else {
         await cleanupSocket();
-        try {
-          final server = await ipc.bind(socketPath);
-          server.listen((socket) {
-            socket.listen(
-              (data) {
-                if (utf8.decode(data) == 'show_window') {
-                  WindowService.showWindow();
-                }
-              },
-              onError: (e) => print('Server socket error: $e'),
-              onDone: () => print('Client disconnected'),
-            );
-          });
-          return true;
-        } catch (e) {
-          print('Failed to create server after cleanup: $e');
-          return false;
-        }
       }
+
+      return false;
+    }
+  }
+
+  static void _setupSignalHandlers() {
+    if (!Platform.isWindows) {
+      ProcessSignal.sigint.watch().listen((_) async {
+        await cleanupSocket();
+        exit(0);
+      });
+      ProcessSignal.sigterm.watch().listen((_) async {
+        await cleanupSocket();
+        exit(0);
+      });
+    } else {
+      ProcessSignal.sigint.watch().listen((_) => exit(0));
+    }
+  }
+
+  static Future<bool> isAnotherInstanceRunning() async {
+    final socketPath = await getIpcPath();
+    try {
+      final socket = await ipc.connect(socketPath).timeout(
+            const Duration(milliseconds: 500),
+          );
+      await socket.close();
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
