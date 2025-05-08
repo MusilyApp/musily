@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:musily/core/data/services/library_backup_service.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -46,7 +48,9 @@ class BackupPage extends StatelessWidget {
                 builder: (context) => Center(
                   child: LibraryBackup(
                     onBackup: (options) async {
-                      await coreController.methods.requestStoragePermission();
+                      if (Platform.isAndroid || Platform.isIOS) {
+                        await coreController.methods.requestStoragePermission();
+                      }
                       return backupService.backupLibrary(options);
                     },
                   ),
