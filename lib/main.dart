@@ -11,6 +11,7 @@ import 'package:musily/core/data/services/ipc_service_unix.dart';
 import 'package:musily/core/data/services/ipc_service_windows.dart';
 import 'package:musily/core/data/services/library_migration.dart';
 import 'package:musily/core/data/services/tray_service.dart';
+import 'package:musily/core/data/services/updater_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/services/musily_service.dart';
 import 'package:musily/core/data/services/user_service.dart';
@@ -41,6 +42,8 @@ void main() async {
   if (Platform.isAndroid) {
     await MediaStore.ensureInitialized();
   }
+
+  await UpdaterService.checkForUpdates();
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await WindowService.init();

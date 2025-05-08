@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/data/services/tray_service.dart';
+import 'package:musily/core/data/services/updater_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -14,6 +15,7 @@ import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/ui/window/ly_header_bar.dart';
 import 'package:musily/core/presenter/widgets/animated_size_widget.dart';
+import 'package:musily/core/presenter/widgets/updater_dialog.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/pages/library_page.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
@@ -89,6 +91,9 @@ class _CorePageState extends State<CorePage> {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         TrayService.initContextMenu(context);
+        if (UpdaterService.instance.hasUpdate) {
+          UpdaterDialog.show(context);
+        }
       },
     );
   }
