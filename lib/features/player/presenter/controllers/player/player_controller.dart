@@ -76,7 +76,9 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
             final percentage =
                 position.inMilliseconds / duration.inMilliseconds;
             if (percentage >= 0.35 && !data.isPositionTriggered) {
-              methods.getSmartQueue();
+              methods.getSmartQueue(customItems: [
+                data.currentPlayingItem!,
+              ]);
               data = data.copyWith(isPositionTriggered: true);
             }
             if (percentage < 0.35) {
