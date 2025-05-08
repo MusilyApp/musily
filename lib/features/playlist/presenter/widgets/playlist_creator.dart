@@ -41,6 +41,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
   submitNameTextField(BuildContext context) async {
     final String textContent = playlistNameController.text;
     final RegExp playlistIdRegex = RegExp(r'([?&])list=([a-zA-Z0-9_-]+)');
+    bool alreadyClosedDialog = false;
     late final PlaylistEntity playlist;
 
     if (_formKey.currentState!.validate()) {
@@ -49,7 +50,10 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
         if (match != null) {
           final playlistId = match.group(2);
           if (playlistId != null) {
-            Navigator.pop(widget.coreController.coreContext!);
+            if (!alreadyClosedDialog) {
+              alreadyClosedDialog = true;
+              Navigator.pop(widget.coreController.coreContext!);
+            }
             LySnackbar.show('${context.localization.importingPlaylist}...');
             final retrievedPlaylist = await widget.getPlaylistUsecase.exec(
               playlistId,
@@ -76,7 +80,11 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
         );
       }
 
-      Navigator.pop(widget.coreController.coreContext!);
+      if (!alreadyClosedDialog) {
+        alreadyClosedDialog = true;
+        Navigator.pop(widget.coreController.coreContext!);
+      }
+
       widget.libraryController.methods.createPlaylist(
         CreatePlaylistDTO(
           title: playlist.title,
