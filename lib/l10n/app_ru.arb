@@ -113,5 +113,7 @@
   "hide": "Скрыть",
   "whenClosingTheApplication": "При закрытии приложения",
   "showWindow": "Показать окно",
-  "closeWindow": "Закрыть окно"
+  "closeWindow": "Закрыть окно",
+  "newUpdateAvailable": "Доступно новое обновление",
+  "newUpdateAvailable": "Доступне нове оновлення"
 }

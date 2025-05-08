@@ -113,5 +113,6 @@
   "hide": "Сховати",
   "whenClosingTheApplication": "Під час закриття програми",
   "showWindow": "Показати вікно",
-  "closeWindow": "Закрити вікно"
+  "closeWindow": "Закрити вікно",
+  "newUpdateAvailable": "Доступне нове оновлення"
 }

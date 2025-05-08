@@ -113,5 +113,6 @@
   "hide": "Hide",
   "whenClosingTheApplication": "When closing the application",
   "showWindow": "Show Window",
-  "closeWindow": "Close Window"
+  "closeWindow": "Close Window",
+  "newUpdateAvailable": "New Update Available"
 }
