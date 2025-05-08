@@ -1,3 +1,4 @@
+import 'package:dart_ytmusic_api/dart_ytmusic_api.dart';
 import 'package:musily/features/_sections_module/domain/entities/section_entity.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
@@ -37,6 +38,10 @@ abstract class MusilyRepository {
   Future<String?> getTrackLyrics(
     String trackId,
   );
+  Future<TimedLyricsRes?> getTimedLyrics(
+    String trackId,
+  );
+
   Future<List<TrackEntity>> getRelatedTracks(
     List<TrackEntity> tracks,
   );

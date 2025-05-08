@@ -1,3 +1,4 @@
+import 'package:dart_ytmusic_api/types.dart';
 import 'package:musily/core/domain/datasources/base_datasource.dart';
 import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -54,6 +55,14 @@ class TrackDatasourceImpl extends BaseDatasource implements TrackDatasource {
     return exec<String?>(() async {
       final lyrics = await _musilyRepository.getTrackLyrics(id);
       return lyrics;
+    });
+  }
+
+  @override
+  Future<TimedLyricsRes?> getTimedLyrics(String id) {
+    return exec<TimedLyricsRes?>(() async {
+      final timedLyrics = await _musilyRepository.getTimedLyrics(id);
+      return timedLyrics;
     });
   }
 }

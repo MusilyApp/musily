@@ -175,7 +175,12 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                 currentPosition:
                                     data.currentPlayingItem!.position,
                                 lyrics: data.lyrics.lyrics!,
+                                timedLyrics: data.lyrics.timedLyrics,
                                 synced: data.syncedLyrics,
+                                onTimeSelected: (duration) =>
+                                    widget.playerController.methods.seek(
+                                  duration,
+                                ),
                               );
                             }),
                           ),

@@ -12,6 +12,7 @@ import 'package:musily/features/player/domain/usecases/get_smart_queue_usecase.d
 import 'package:musily/features/player/presenter/controllers/player/player_data.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_methods.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_timed_lyrics_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.dart';
 
 class PlayerController extends BaseController<PlayerData, PlayerMethods> {
@@ -20,12 +21,14 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
 
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final GetTrackLyricsUsecase getTrackLyricsUsecase;
+  final GetTimedLyricsUsecase getTimedLyricsUsecase;
   final GetSmartQueueUsecase getSmartQueueUsecase;
 
   PlayerController({
     required this.getPlayableItemUsecase,
     required this.getSmartQueueUsecase,
     required this.getTrackLyricsUsecase,
+    required this.getTimedLyricsUsecase,
   }) {
     updateData(
       data.copyWith(
@@ -161,6 +164,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       lyrics: Lyrics(
         trackId: '',
         lyrics: null,
+        timedLyrics: null,
       ),
       tracksFromSmartQueue: [],
       autoSmartQueue: false,
@@ -319,11 +323,13 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           ),
         );
         final lyrics = await getTrackLyricsUsecase.exec(trackId);
+        final timedLyrics = await getTimedLyricsUsecase.exec(trackId);
         updateData(
           data.copyWith(
             lyrics: Lyrics(
               trackId: trackId,
               lyrics: lyrics,
+              timedLyrics: timedLyrics,
             ),
             loadingLyrics: false,
           ),

@@ -102,7 +102,12 @@ class _PlayerBannerState extends State<PlayerBanner> {
                     totalDuration: widget.track.duration,
                     currentPosition: widget.track.position,
                     synced: data.syncedLyrics,
+                    timedLyrics: data.lyrics.timedLyrics,
                     lyrics: data.lyrics.lyrics!,
+                    onTimeSelected: (duration) =>
+                        widget.playerController.methods.seek(
+                      duration,
+                    ),
                   );
                 }),
               ),

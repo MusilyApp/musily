@@ -56,6 +56,7 @@ import 'package:musily/features/playlist/data/repositories/playlist_repository_i
 import 'package:musily/features/playlist/data/usecases/get_playlist_usecase_impl.dart';
 import 'package:musily/features/track/data/datasources/track_datasource_impl.dart';
 import 'package:musily/features/track/data/repositories/track_respository_impl.dart';
+import 'package:musily/features/track/data/usecases/get_timed_lyrics_usecase_impl.dart';
 import 'package:musily/features/track/data/usecases/get_track_lyrics_usecase_impl.dart';
 import 'package:musily/features/track/data/usecases/get_track_usecase_impl.dart';
 import 'package:musily/features/track/data/usecases/get_tracks_usecase_impl.dart';
@@ -104,10 +105,16 @@ class SharedModule extends Module {
       ),
     );
     i.addLazySingleton(
+      () => GetTimedLyricsUsecaseImpl(
+        trackRepository: i.get<TrackRespositoryImpl>(),
+      ),
+    );
+    i.addLazySingleton(
       () => PlayerController(
         getPlayableItemUsecase: i.get<GetPlayableItemUsecaseImpl>(),
         getTrackLyricsUsecase: i.get<GetTrackLyricsUsecaseImpl>(),
         getSmartQueueUsecase: i.get<GetSmartQueueUsecaseImpl>(),
+        getTimedLyricsUsecase: i.get<GetTimedLyricsUsecaseImpl>(),
       ),
     );
 

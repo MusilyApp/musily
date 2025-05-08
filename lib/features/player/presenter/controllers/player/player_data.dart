@@ -1,3 +1,4 @@
+import 'package:dart_ytmusic_api/types.dart';
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
@@ -6,10 +7,12 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 class Lyrics {
   final String trackId;
   final String? lyrics;
+  final TimedLyricsRes? timedLyrics;
 
   Lyrics({
     required this.trackId,
     required this.lyrics,
+    required this.timedLyrics,
   });
 }
 

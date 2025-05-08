@@ -1,3 +1,4 @@
+import 'package:dart_ytmusic_api/types.dart';
 import 'package:musily/core/data/datasources/youtube_datasource.dart';
 import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/features/_sections_module/domain/entities/section_entity.dart';
@@ -112,5 +113,11 @@ class MusilyRepositoryImpl implements MusilyRepository {
   Future<List<TrackEntity>> searchTracks(String query) async {
     final tracks = await youtubeDatasource.searchTracks(query);
     return tracks;
+  }
+
+  @override
+  Future<TimedLyricsRes?> getTimedLyrics(String trackId) {
+    final timedLyrics = youtubeDatasource.getTimedLyrics(trackId);
+    return timedLyrics;
   }
 }

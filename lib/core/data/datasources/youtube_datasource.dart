@@ -412,6 +412,11 @@ class YoutubeDatasource {
     return lyrics;
   }
 
+  Future<TimedLyricsRes?> getTimedLyrics(String trackId) async {
+    final timedLyrics = await ytMusic.getTimedLyrics(trackId);
+    return timedLyrics;
+  }
+
   Future<List<AlbumEntity>> searchAlbums(
     String query,
   ) async {
