@@ -158,7 +158,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
                 ScaffoldMessenger.of(coreContext!).showSnackBar(
                   SnackBar(
                     content: Text(
-                      coreContext!.localization.backupCompletedSuccessfully,
+                      coreContext!.localization.backupRestoredSuccessfully,
                     ),
                   ),
                 );
