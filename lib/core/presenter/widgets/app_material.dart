@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:musily/core/data/services/window_service.dart';
+import 'package:musily/features/settings/domain/enums/accent_color_preference.dart';
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
@@ -141,25 +142,51 @@ class _AppMaterialState extends State<AppMaterial>
           return DynamicColorBuilder(
             builder: (lightDynamic, darkDynamic) {
               return getMaterialApp(
-                Colors.deepPurple,
+                data.accentColorPreference == AccentColorPreference.defaultColor
+                    ? Colors.deepPurple
+                    : data.accentColorPreference == AccentColorPreference.system
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.deepPurple,
                 data,
-                dakColorScheme: darkDynamic,
-                lightColorScheme: lightDynamic,
+                dakColorScheme: data.accentColorPreference ==
+                        AccentColorPreference.defaultColor
+                    ? ColorScheme.fromSeed(
+                        seedColor: Colors.deepPurple,
+                        brightness: Brightness.dark,
+                      )
+                    : darkDynamic,
+                lightColorScheme: data.accentColorPreference ==
+                        AccentColorPreference.defaultColor
+                    ? ColorScheme.fromSeed(
+                        seedColor: Colors.deepPurple,
+                        brightness: Brightness.light,
+                      )
+                    : lightDynamic,
               );
             },
           );
         }
         if (Platform.isIOS) {
-          return getMaterialApp(Colors.deepPurple, data);
+          return getMaterialApp(
+            data.accentColorPreference == AccentColorPreference.defaultColor
+                ? Colors.deepPurple
+                : data.accentColorPreference == AccentColorPreference.system
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.deepPurple,
+            data,
+          );
         }
         return FutureBuilder(
           future: DynamicColorPlugin.getAccentColor(),
           builder: (context, snapshot) {
             late final Color accentColor;
-            if (snapshot.data != null) {
-              accentColor = snapshot.data!;
+            if (data.accentColorPreference == AccentColorPreference.system) {
+              accentColor = snapshot.data ?? Colors.deepPurple;
             } else {
-              accentColor = Colors.deepPurple;
+              accentColor = data.accentColorPreference ==
+                      AccentColorPreference.defaultColor
+                  ? Colors.deepPurple
+                  : Theme.of(context).colorScheme.primary;
             }
             return getMaterialApp(accentColor, data);
           },

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_dropdown_button.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/settings/domain/enums/accent_color_preference.dart';
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
@@ -112,6 +113,26 @@ class _AppSectionState extends State<AppSection> {
                   onChanged: (value) {
                     widget.controller.methods.changeTheme(value);
                   },
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                LyDropdownButton<AccentColorPreference>(
+                  labelText: context.localization.accentColor,
+                  value: data.accentColorPreference,
+                  onChanged: (value) {
+                    widget.controller.methods.setAccentColorPreference(value!);
+                  },
+                  items: [
+                    DropdownMenuItem(
+                      value: AccentColorPreference.system,
+                      child: Text(context.localization.system),
+                    ),
+                    DropdownMenuItem(
+                      value: AccentColorPreference.defaultColor,
+                      child: Text(context.localization.defaultColor),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 8,

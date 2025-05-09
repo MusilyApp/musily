@@ -6,6 +6,7 @@ import 'package:musily/core/data/services/tray_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
+import 'package:musily/features/settings/domain/enums/accent_color_preference.dart';
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_methods.dart';
@@ -18,7 +19,8 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   }) {
     methods.loadLanguage();
     methods.loadThemeMode();
-    methods.getClosePreference();
+    methods.loadClosePreference();
+    methods.loadAccentColorPreference();
     showSyncSection = httpAdapter.baseUrl.isNotEmpty;
   }
 
@@ -32,7 +34,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
   @override
   SettingsMethods defineMethods() {
     return SettingsMethods(
-      getClosePreference: () async {
+      loadClosePreference: () async {
         final prefs = await SharedPreferences.getInstance();
         final closePreference = ClosePreference.values.byName(
           prefs.getString('settings.app.close') ?? 'hide',
@@ -140,6 +142,20 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
           updateData(data);
           methods.changeLanguage(data.locale.toString());
         }
+      },
+      setAccentColorPreference: (preference) async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accentColorPreference', preference.name);
+        updateData(data.copyWith(accentColorPreference: preference));
+      },
+      loadAccentColorPreference: () async {
+        final prefs = await SharedPreferences.getInstance();
+        final savedAccentColorPreference =
+            prefs.getString('accentColorPreference');
+        data.accentColorPreference = AccentColorPreference.values.byName(
+          savedAccentColorPreference ?? 'defaultColor',
+        );
+        updateData(data);
       },
     );
   }

@@ -1,0 +1,4 @@
+enum AccentColorPreference {
+  system,
+  defaultColor,
+}
