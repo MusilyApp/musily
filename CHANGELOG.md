@@ -1,3 +1,20 @@
+## 4.0.0
+
+**Features**
+
+- Introduced timed lyrics support, allowing lyrics to synchronize with playback.
+- Implemented accent color detection: system accent on desktop and wallpaper accent on Android.
+- Added desktop support, enabling downloads and usage on Linux and Windows.
+- Implemented native Android 12+ splash screen API for faster and smoother app launch experience.
+- Enhanced queue management with intuitive song ordering: next songs appear first followed by previous tracks.
+- Added smooth track transition animations in the now playing section.
+- Added *in-app updater*, allowing users to update the app directly without leaving it (Android & Desktop only).
+
+**Fixes**
+
+- Fixed an issue where the app would close after importing a playlist from YouTube.
+- Resolved an issue where the app would freeze after restoring a library backup.
+
 ## 3.1.1
 
 **Improvements**
