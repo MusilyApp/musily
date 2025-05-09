@@ -114,5 +114,7 @@
   "whenClosingTheApplication": "Під час закриття програми",
   "showWindow": "Показати вікно",
   "closeWindow": "Закрити вікно",
-  "newUpdateAvailable": "Доступне нове оновлення"
+  "newUpdateAvailable": "Доступне нове оновлення",
+  "defaultColor": "Колір за замовчуванням",
+  "accentColor": "Акцентний колір"
 }

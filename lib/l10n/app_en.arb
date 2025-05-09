@@ -114,5 +114,7 @@
   "whenClosingTheApplication": "When closing the application",
   "showWindow": "Show Window",
   "closeWindow": "Close Window",
-  "newUpdateAvailable": "New Update Available"
+  "newUpdateAvailable": "New Update Available",
+  "defaultColor": "Default Color",
+  "accentColor": "Accent Color"
 }

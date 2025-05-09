@@ -114,5 +114,7 @@
   "whenClosingTheApplication": "Ao fechar o aplicativo",
   "showWindow": "Mostrar janela",
   "closeWindow": "Fechar janela",
-  "newUpdateAvailable": "Nova atualização disponível"
+  "newUpdateAvailable": "Nova atualização disponível",
+  "defaultColor": "Cor padrão",
+  "accentColor": "Cor de destaque"
 }

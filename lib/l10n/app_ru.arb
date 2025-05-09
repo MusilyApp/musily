@@ -115,5 +115,7 @@
   "showWindow": "Показать окно",
   "closeWindow": "Закрыть окно",
   "newUpdateAvailable": "Доступно новое обновление",
-  "newUpdateAvailable": "Доступне нове оновлення"
+  "newUpdateAvailable": "Доступне нове оновлення",
+  "defaultColor": "Цвет по умолчанию",
+  "accentColor": "Акцентный цвет"
 }

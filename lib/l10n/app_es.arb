@@ -114,5 +114,7 @@
   "whenClosingTheApplication": "Al cerrar la aplicación",
   "showWindow": "Mostrar ventana",
   "closeWindow": "Cerrar ventana",
-  "newUpdateAvailable": "Nueva actualización disponible"
+  "newUpdateAvailable": "Nueva actualización disponible",
+  "defaultColor": "Color predeterminado",
+  "accentColor": "Color de acento"
 }
