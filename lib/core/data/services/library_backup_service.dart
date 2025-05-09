@@ -255,7 +255,9 @@ class BackupService {
       }
 
       // Extract downloads.json if present
-      final downloadsFile = archive.files.firstOrNull;
+      final downloadsFile = archive.files
+          .where((file) => file.name == 'downloads.json')
+          .firstOrNull;
 
       if (downloadsFile != null && downloadsFile.content is List<int>) {
         final downloadsJson = utf8.decode(downloadsFile.content as List<int>);
