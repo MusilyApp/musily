@@ -203,7 +203,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         if (data.tracksFromSmartQueue.isEmpty) {
           updateData(
             data.copyWith(
-              autoSmartQueue: true,
+              autoSmartQueue: !data.autoSmartQueue,
             ),
           );
         } else {
@@ -262,9 +262,16 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           final List<TrackEntity> queueClone = List.from(data.queue);
           final random = Random();
           for (final item in smartItems) {
-            final indexToInsert = random.nextInt(queueClone.length - 1);
+            late final indexToInsert;
+
+            if (queueClone.length - 1 > 0) {
+              indexToInsert = random.nextInt(queueClone.length - 1);
+            } else {
+              indexToInsert = 0;
+            }
+
             queueClone.insert(
-              indexToInsert,
+              max(indexToInsert, 0),
               item,
             );
           }
