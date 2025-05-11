@@ -1,0 +1,6 @@
+flutter_launcher_icons:
+  windows:
+    generate: true
+    image_path: "assets/icons/ic_launcher_round.png"
+    icon_size: 48
+
