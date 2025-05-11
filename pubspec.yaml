@@ -115,6 +115,7 @@ flutter:
     - assets/icons/
     - assets/icons/tray/
     - assets/uninstaller/
+    - assets/audio/
 
 # Splash Screen Configuration
 flutter_native_splash:
