@@ -1,12 +1,10 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
-import 'package:musily/features/player/data/services/musily_android_handler.dart';
 import 'package:musily/features/player/data/services/musily_audio_handler.dart';
-import 'package:musily/features/player/data/services/musily_desktop_handler.dart';
+import 'package:musily/features/player/data/services/musily_audio_handler_impl.dart';
 import 'package:musily/features/player/data/services/musily_player.dart';
 
 class MusilyServiceConfig {
@@ -77,15 +75,9 @@ class MusilyService {
       linux: true,
       windows: true,
     );
-    late final BaseAudioHandler platformAudioHandler;
-    if (Platform.isAndroid) {
-      platformAudioHandler = MusilyAndroidHandler();
-    }
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      platformAudioHandler = MusilyDesktopHandler();
-    }
+    late final BaseAudioHandler musilyAudioHandler = MusilyAudioHandlerImpl();
     final audioHandler = await AudioService.init<BaseAudioHandler>(
-      builder: () => platformAudioHandler,
+      builder: () => musilyAudioHandler,
       config: config.toAudioServiceConfig(),
     );
     MusilyPlayer().setAudioHandler(audioHandler as MusilyAudioHandler);
