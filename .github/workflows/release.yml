@@ -177,6 +177,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: choco install innosetup --yes
 
+      - name: Create iss File
+        if: matrix.os == 'windows-latest'
+        run: |
+          dart run create_iss_file.dart --version "${{ needs.metadata.outputs.version }}"
+
       - name: Generate Windows Installer with Inno Setup
         if: matrix.os == 'windows-latest'
         run: |
