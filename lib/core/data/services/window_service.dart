@@ -22,6 +22,8 @@ class WindowService {
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.hidden,
+      minimumSize: Size(800, 720),
+      title: 'Musily',
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
