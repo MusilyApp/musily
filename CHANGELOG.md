@@ -1,3 +1,19 @@
+## 4.0.1
+
+**Fixes**
+
+- Resolved an issue where the Smart Queue couldn't be disabled when empty.
+- Fixed Smart Queue not working when when only one item is present in the queue.
+
+**Improvments**
+
+- Completely rewrote the audio playback system for better performance and stability.
+
+**Desktop**
+
+- Improved Windows icon resolution.
+- Added a minimum window size to enhance window management.
+
 ## 4.0.0
 
 **Features**
