@@ -38,6 +38,23 @@ class TrackEntity {
     this.url,
   });
 
+  TrackEntity copyWith({String? url}) {
+    return TrackEntity(
+      id: id,
+      title: title,
+      hash: hash,
+      artist: artist,
+      album: album,
+      highResImg: highResImg,
+      lowResImg: lowResImg,
+      url: url ?? this.url,
+      source: source,
+      fromSmartQueue: fromSmartQueue,
+      duration: duration,
+      position: position,
+    );
+  }
+
   @override
   String toString() {
     return 'TrackEntity(id: $id, title: $title, hash: $hash, artist: $artist, album: $album, highResImg: $highResImg, lowResImg: $lowResImg, url: $url, source: $source, fromSmartQueue: $fromSmartQueue)';
