@@ -7,7 +7,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
-import 'package:musily/features/player/data/services/musily_audio_handler.dart';
+import 'package:musily/features/player/domain/entities/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';

@@ -1,4 +1,4 @@
-import 'package:musily/features/player/data/services/musily_audio_handler.dart';
+import 'package:musily/features/player/domain/entities/musily_audio_handler.dart';
 import 'package:musily/features/player/data/services/musily_audio_handler_impl.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
