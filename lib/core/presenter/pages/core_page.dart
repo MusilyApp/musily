@@ -420,6 +420,16 @@ class _CorePageState extends State<CorePage> {
                                       ),
                                       child: Card(
                                         margin: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                            strokeAlign: 1,
+                                            color: context
+                                                .themeData.dividerColor
+                                                .withValues(alpha: .2),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(12),

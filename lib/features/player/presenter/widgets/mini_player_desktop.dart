@@ -192,8 +192,19 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: SizedBox(
+                child: Container(
                   height: 75,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border(
+                      top: BorderSide(
+                        width: 1,
+                        color: context.themeData.dividerColor.withValues(
+                          alpha: .2,
+                        ),
+                      ),
+                    ),
+                  ),
                   child: Card(
                     margin: EdgeInsets.zero,
                     shape: const RoundedRectangleBorder(),
