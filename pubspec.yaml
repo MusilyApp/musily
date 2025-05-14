@@ -92,7 +92,8 @@ dependencies:
   process_run: ^0.14.2
   dart_ipc: ^1.0.0
   package_info_plus: ^8.3.0
-  gpt_markdown: ^1.0.18
+  gpt_markdown: 1.0.0
+  flutter_curl: ^0.5.1
 
 # Development Dependencies
 dev_dependencies:
