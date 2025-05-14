@@ -101,6 +101,12 @@ class _QueueWidgetState extends State<QueueWidget>
         _animationController.reset();
         _animationController.forward();
       }
+
+      _scrollController.animateTo(
+        _scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
