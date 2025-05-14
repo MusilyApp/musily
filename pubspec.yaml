@@ -27,7 +27,7 @@ dependencies:
     git:
       url: https://github.com/Hexer10/youtube_explode_dart.git
       ref: e519db65ad0b0a40b12f69285932f9db509da3cf
-  dart_ytmusic_api: ^1.1.1
+  dart_ytmusic_api: 1.2.0
 
   # UI and Animations
   loading_animation_widget: ^1.2.1
