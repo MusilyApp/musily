@@ -6,6 +6,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
 import 'package:musily/features/player/domain/entities/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
@@ -615,9 +616,34 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     _onAction = callback;
   }
 
+  void updateWindowTitle(TrackEntity? track) {
+    if (track != null) {
+      late final String windowTitle;
+      late final String artistName;
+      if (track.title.length > 20) {
+        windowTitle = '${track.title.substring(0, 20).trim()}...';
+      } else {
+        windowTitle = track.title;
+      }
+      if (track.artist.name.length > 15) {
+        artistName = '${track.artist.name.substring(0, 15).trim()}...';
+      } else {
+        artistName = track.artist.name;
+      }
+      WindowService.setWindowTitle(
+        'Musily - $windowTitle ($artistName)',
+      );
+    } else {
+      WindowService.setWindowTitle('Musily');
+    }
+  }
+
   @override
   void setOnActiveTrackChange(Function(TrackEntity? track) callback) {
-    _onActiveTrackChanged = callback;
+    _onActiveTrackChanged = (track) {
+      callback(track);
+      updateWindowTitle(track);
+    };
   }
 
   @override
