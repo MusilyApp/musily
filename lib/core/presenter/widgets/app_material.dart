@@ -90,6 +90,12 @@ class _AppMaterialState extends State<AppMaterial>
     WindowService().isMaximized = false;
   }
 
+  @override
+  onWindowEvent(String event) {
+    super.onWindowEvent(event);
+    WindowService.saveLastWindowState();
+  }
+
   getMaterialApp(
     Color accentColor,
     SettingsData data, {
