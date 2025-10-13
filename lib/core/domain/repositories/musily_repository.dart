@@ -46,6 +46,11 @@ abstract class MusilyRepository {
     List<TrackEntity> tracks,
   );
 
+  // UpNext Use Cases
+  Future<List<TrackEntity>> getUpNext(
+    TrackEntity track,
+  );
+
   // Search Use Cases
   Future<List<String>> getSearchSuggestions(
     String query,

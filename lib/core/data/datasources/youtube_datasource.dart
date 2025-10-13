@@ -329,43 +329,63 @@ class YoutubeDatasource {
       );
       final random = Random();
 
-      final explode = YoutubeExplode();
       final List<TrackEntity> relatedTracks = [...tracks];
+      final Set<String> existingHashes = tracks.map((e) => e.hash).toSet();
 
       for (final track in selectedTracks) {
-        final results =
-            await explode.search('${track.title} ${track.artist.name}');
-        if (results.isEmpty) {
-          continue;
-        }
-        final relatedVideosList =
-            await explode.videos.getRelatedVideos(results.first);
-        final selectedVideos = (relatedVideosList?.toList() ?? []).sublist(
-          0,
-          min(3, relatedVideosList?.length ?? 0),
-        );
+        try {
+          final upNextTracks = await ytMusic.getUpNexts(track.id);
 
-        for (final video in selectedVideos) {
-          final relatedSearch = await searchTracks(
-            '${video.title} ${video.author}',
-            includeVideos: false,
-          );
-          final relatedTrack = relatedSearch.firstOrNull;
-          if (relatedTrack != null) {
-            if (relatedTracks.map((e) => e.hash).contains(relatedTrack.hash)) {
-              continue;
-            }
-            relatedTracks.insert(
-              random.nextInt(relatedTracks.length),
-              relatedTrack..fromSmartQueue = true,
+          for (final upNextTrack in upNextTracks.take(5)) {
+            final trackEntity = TrackEntity(
+              id: upNextTrack.videoId,
+              hash: generateTrackHash(
+                title: upNextTrack.title,
+                artist: upNextTrack.artists.name,
+                albumTitle: upNextTrack.album?.name,
+              ),
+              title: upNextTrack.title,
+              artist: SimplifiedArtist(
+                id: upNextTrack.artists.artistId ?? '',
+                name: upNextTrack.artists.name,
+              ),
+              album: SimplifiedAlbum(
+                id: upNextTrack.album?.albumId ?? '',
+                title: upNextTrack.album?.name ?? '',
+              ),
+              lowResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w100-h100',
+                    )
+                  : null,
+              highResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w600-h600',
+                    )
+                  : null,
+              duration: Duration(seconds: upNextTrack.duration),
+              fromSmartQueue: true,
             );
+
+            if (!existingHashes.contains(trackEntity.hash)) {
+              relatedTracks.insert(
+                random.nextInt(relatedTracks.length),
+                trackEntity,
+              );
+              existingHashes.add(trackEntity.hash);
+            }
           }
+        } catch (e) {
+          // Skip this track if getUpNexts fails
+          continue;
         }
       }
       return relatedTracks;
     } catch (e) {
       LySnackbar.show(
-        'Smart Queue isn’t available right now :c',
+        'Smart Queue isn\'t available right now :c',
       );
       return tracks;
     }
@@ -582,5 +602,51 @@ class YoutubeDatasource {
           ),
         )
         .toList();
+  }
+
+  Future<List<TrackEntity>> getUpNext(TrackEntity track) async {
+    try {
+      final upNextTracks = await ytMusic.getUpNexts(track.id);
+
+      return upNextTracks
+          .map((upNextTrack) {
+            return TrackEntity(
+              id: upNextTrack.videoId,
+              hash: generateTrackHash(
+                title: upNextTrack.title,
+                artist: upNextTrack.artists.name,
+                albumTitle: upNextTrack.album?.name,
+              ),
+              title: upNextTrack.title,
+              artist: SimplifiedArtist(
+                id: upNextTrack.artists.artistId ?? '',
+                name: upNextTrack.artists.name,
+              ),
+              album: SimplifiedAlbum(
+                id: upNextTrack.album?.albumId ?? '',
+                title: upNextTrack.album?.name ?? '',
+              ),
+              lowResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w100-h100',
+                    )
+                  : null,
+              highResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w600-h600',
+                    )
+                  : null,
+              duration: Duration(seconds: upNextTrack.duration),
+              fromSmartQueue: false,
+            );
+          })
+          .take(15)
+          .toList(); // Limit to 15 tracks as requested
+    } catch (e) {
+      LySnackbar.show('Error getting UpNext: ${e.toString()}');
+      return [];
+    }
   }
 }

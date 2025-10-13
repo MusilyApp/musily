@@ -16,6 +16,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
@@ -33,6 +34,7 @@ class AlbumResultsPage extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const AlbumResultsPage({
     required this.resultsPageController,
@@ -49,6 +51,7 @@ class AlbumResultsPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -117,6 +120,7 @@ class _AlbumResultsPageState extends State<AlbumResultsPage> {
             children: [
               ...data.albumsResult.items.map(
                 (album) => AlbumTile(
+                  getTrackUsecase: widget.getTrackUsecase,
                   contentOrigin: ContentOrigin.dataFetch,
                   playerController: widget.playerController,
                   album: album,

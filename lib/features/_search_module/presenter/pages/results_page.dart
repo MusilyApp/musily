@@ -17,6 +17,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class ResultsPage extends StatefulWidget {
   final String searchQuery;
@@ -32,6 +33,7 @@ class ResultsPage extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const ResultsPage({
     required this.searchQuery,
@@ -48,6 +50,7 @@ class ResultsPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -135,6 +138,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                       getArtistTracksUsecase: widget.getArtistTracksUsecase,
                       getArtistUsecase: widget.getArtistUsecase,
+                      getTrackUsecase: widget.getTrackUsecase,
                     ),
                     AlbumResultsPage(
                       resultsPageController: widget.resultsPageController,
@@ -150,6 +154,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                       getArtistTracksUsecase: widget.getArtistTracksUsecase,
                       getArtistUsecase: widget.getArtistUsecase,
+                      getTrackUsecase: widget.getTrackUsecase,
                     ),
                     ArtistResultsPage(
                       resultsPageController: widget.resultsPageController,
@@ -163,6 +168,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       getAlbumUsecase: widget.getAlbumUsecase,
                       getArtistUsecase: widget.getArtistUsecase,
                       getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                      getTrackUsecase: widget.getTrackUsecase,
                       getArtistTracksUsecase: widget.getArtistTracksUsecase,
                       getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
                     ),

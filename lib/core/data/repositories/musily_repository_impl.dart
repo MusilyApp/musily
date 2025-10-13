@@ -74,6 +74,12 @@ class MusilyRepositoryImpl implements MusilyRepository {
   }
 
   @override
+  Future<List<TrackEntity>> getUpNext(TrackEntity track) async {
+    final upNextTracks = await youtubeDatasource.getUpNext(track);
+    return upNextTracks;
+  }
+
+  @override
   Future<List<String>> getSearchSuggestions(String query) async {
     final suggestions = await youtubeDatasource.getSearchSuggestions(query);
     return suggestions;

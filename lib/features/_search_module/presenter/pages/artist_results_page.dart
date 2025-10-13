@@ -18,6 +18,7 @@ import 'package:musily/features/player/presenter/controllers/player/player_contr
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class ArtistResultsPage extends StatefulWidget {
   final ResultsPageController resultsPageController;
@@ -33,6 +34,7 @@ class ArtistResultsPage extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const ArtistResultsPage({
     required this.resultsPageController,
@@ -49,6 +51,7 @@ class ArtistResultsPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -123,6 +126,7 @@ class _ArtistResultsPageState extends State<ArtistResultsPage> {
                   getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                   getArtistTracksUsecase: widget.getArtistTracksUsecase,
                   getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  getTrackUsecase: widget.getTrackUsecase,
                   contentOrigin: ContentOrigin.dataFetch,
                 ),
               ),

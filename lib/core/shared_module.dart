@@ -3,6 +3,7 @@ import 'package:musily/core/data/adapters/http_adapter_impl.dart';
 import 'package:musily/core/data/database/library_database.dart';
 import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/data/usecases/get_playable_item_usecase_impl.dart';
+import 'package:musily/core/data/usecases/get_upnext_usecase_impl.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/features/_library_module/data/datasources/library_datasource_impl.dart';
 import 'package:musily/features/_library_module/data/repositories/library_repository_impl.dart';
@@ -138,6 +139,7 @@ class SharedModule extends Module {
       () => SectionsController(
         getSectionsUsecase: i.get<GetSectionsUsecaseImpl>(),
         getLibraryItemsUsecase: i.get<GetLibraryItemsUsecaseImpl>(),
+        getUpNextUsecase: i.get<GetUpNextUsecaseImpl>(),
       ),
     );
 
@@ -247,6 +249,11 @@ class SharedModule extends Module {
     // Downloader dependencies
     i.addLazySingleton(
       () => GetPlayableItemUsecaseImpl(
+        musilyRepository: musilyRepository,
+      ),
+    );
+    i.addLazySingleton(
+      () => GetUpNextUsecaseImpl(
         musilyRepository: musilyRepository,
       ),
     );
