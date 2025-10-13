@@ -78,7 +78,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
             SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.light,
               statusBarColor: Colors.black.withValues(alpha: 0.002),
-              systemNavigationBarColor: Colors.black.withValues(alpha: 0.002),
+              systemNavigationBarColor: Colors.black,
             ),
           );
         } else {
@@ -86,7 +86,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
             SystemUiOverlayStyle(
               systemNavigationBarIconBrightness: Brightness.dark,
               statusBarColor: Colors.black.withValues(alpha: 0.002),
-              systemNavigationBarColor: Colors.black.withValues(alpha: 0.002),
+              systemNavigationBarColor: Colors.black,
             ),
           );
         }
