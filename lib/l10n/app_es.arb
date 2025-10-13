@@ -116,5 +116,8 @@
   "closeWindow": "Cerrar ventana",
   "newUpdateAvailable": "Nueva actualización disponible",
   "defaultColor": "Color predeterminado",
-  "accentColor": "Color de acento"
+  "accentColor": "Color de acento",
+  "recommendedAlbums": "Álbumes Recomendados",
+  "recommendedMusic": "Música Recomendada",
+  "moreRecommendations": "Más Recomendaciones"
 }

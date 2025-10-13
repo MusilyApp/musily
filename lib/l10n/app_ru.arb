@@ -115,7 +115,9 @@
   "showWindow": "Показать окно",
   "closeWindow": "Закрыть окно",
   "newUpdateAvailable": "Доступно новое обновление",
-  "newUpdateAvailable": "Доступне нове оновлення",
   "defaultColor": "Цвет по умолчанию",
-  "accentColor": "Акцентный цвет"
+  "accentColor": "Акцентный цвет",
+  "recommendedAlbums": "Рекомендуемые Альбомы",
+  "recommendedMusic": "Рекомендуемая Музыка",
+  "moreRecommendations": "Больше рекомендаций"
 }

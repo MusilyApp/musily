@@ -116,5 +116,8 @@
   "closeWindow": "Закрити вікно",
   "newUpdateAvailable": "Доступне нове оновлення",
   "defaultColor": "Колір за замовчуванням",
-  "accentColor": "Акцентний колір"
+  "accentColor": "Акцентний колір",
+  "recommendedAlbums": "Рекомендовані Альбоми",
+  "recommendedMusic": "Рекомендована Музика",
+  "moreRecommendations": "Більше рекомендацій"
 }
