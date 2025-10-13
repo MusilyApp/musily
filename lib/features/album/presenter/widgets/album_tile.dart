@@ -20,6 +20,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class AlbumTile extends StatefulWidget {
   final AlbumEntity album;
@@ -36,6 +37,7 @@ class AlbumTile extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final ContentOrigin contentOrigin;
+  final GetTrackUsecase getTrackUsecase;
 
   const AlbumTile({
     required this.album,
@@ -53,6 +55,7 @@ class AlbumTile extends StatefulWidget {
     required this.getArtistSinglesUsecase,
     required this.contentOrigin,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -78,6 +81,7 @@ class _AlbumTileState extends State<AlbumTile> {
                   widget.album.tracks.isNotEmpty
                       ? AlbumPage(
                           album: widget.album,
+                          getTrackUsecase: widget.getTrackUsecase,
                           getPlaylistUsecase: widget.getPlaylistUsecase,
                           coreController: widget.coreController,
                           playerController: widget.playerController,
@@ -92,6 +96,7 @@ class _AlbumTileState extends State<AlbumTile> {
                           getArtistUsecase: widget.getArtistUsecase,
                         )
                       : AsyncAlbumPage(
+                          getTrackUsecase: widget.getTrackUsecase,
                           albumId: widget.album.id,
                           getPlaylistUsecase: widget.getPlaylistUsecase,
                           coreController: widget.coreController,
@@ -160,6 +165,7 @@ class _AlbumTileState extends State<AlbumTile> {
         trailing: widget.staticTile
             ? null
             : AlbumOptions(
+                getTrackUsecase: widget.getTrackUsecase,
                 album: widget.album,
                 coreController: widget.coreController,
                 playerController: widget.playerController,

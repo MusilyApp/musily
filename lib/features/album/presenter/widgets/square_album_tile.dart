@@ -17,6 +17,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class SquareAlbumTile extends StatelessWidget {
   final AlbumEntity album;
@@ -31,6 +32,7 @@ class SquareAlbumTile extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final LibraryController libraryController;
+  final GetTrackUsecase getTrackUsecase;
 
   const SquareAlbumTile({
     required this.album,
@@ -46,6 +48,7 @@ class SquareAlbumTile extends StatelessWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -56,6 +59,7 @@ class SquareAlbumTile extends StatelessWidget {
           context.showingPageContext,
           album.tracks.isNotEmpty
               ? AlbumPage(
+                  getTrackUsecase: getTrackUsecase,
                   coreController: coreController,
                   playerController: playerController,
                   album: album,
@@ -70,6 +74,7 @@ class SquareAlbumTile extends StatelessWidget {
                   getArtistUsecase: getArtistUsecase,
                 )
               : AsyncAlbumPage(
+                  getTrackUsecase: getTrackUsecase,
                   albumId: album.id,
                   coreController: coreController,
                   playerController: playerController,

@@ -11,6 +11,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
@@ -27,6 +28,7 @@ class TrackSearcher extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final void Function(TrackEntity track, SearchController controller)?
       clickAction;
   final List<TrackEntity> tracks;
@@ -46,6 +48,7 @@ class TrackSearcher extends StatelessWidget {
     required this.getArtistSinglesUsecase,
     this.clickAction,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -91,6 +94,7 @@ class TrackSearcher extends StatelessWidget {
               )
               .map<Widget>(
                 (e) => TrackTile(
+                  getTrackUsecase: getTrackUsecase,
                   customAction: () => clickAction?.call(e, controller),
                   track: e,
                   coreController: coreController,

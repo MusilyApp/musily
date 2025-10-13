@@ -27,6 +27,7 @@ import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.da
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class LibraryPage extends StatefulWidget {
   final PlayerController playerController;
@@ -40,6 +41,7 @@ class LibraryPage extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const LibraryPage({
     required this.playerController,
@@ -54,6 +56,7 @@ class LibraryPage extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -194,6 +197,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                       offlinePlaylist
                                               .playlist!.tracks.isNotEmpty
                                           ? PlaylistPage(
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                               playlist:
                                                   offlinePlaylist.playlist!,
                                               playerController:
@@ -220,6 +225,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                   widget.getArtistUsecase,
                                             )
                                           : AsyncPlaylistPage(
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                               origin: ContentOrigin.library,
                                               playlistId: offlinePlaylist.id,
                                               coreController:
@@ -372,6 +379,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                         builder: (context) {
                                           if (item.album != null) {
                                             return AlbumTile(
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                               contentOrigin:
                                                   ContentOrigin.library,
                                               getPlaylistUsecase:
@@ -401,6 +410,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                           }
                                           if (item.playlist != null) {
                                             return PlaylistTile(
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                               contentOrigin:
                                                   ContentOrigin.library,
                                               playlist: item.playlist!,
@@ -455,6 +466,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                   widget.getArtistTracksUsecase,
                                               getArtistSinglesUsecase: widget
                                                   .getArtistSinglesUsecase,
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                             );
                                           }
                                           return Container();

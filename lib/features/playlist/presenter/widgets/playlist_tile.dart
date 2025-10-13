@@ -19,6 +19,7 @@ import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PlaylistTile extends StatelessWidget {
@@ -35,8 +36,9 @@ class PlaylistTile extends StatelessWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final ContentOrigin contentOrigin;
-
+  final GetTrackUsecase getTrackUsecase;
   final void Function()? customClickAction;
+
   const PlaylistTile({
     required this.playlist,
     required this.libraryController,
@@ -53,6 +55,7 @@ class PlaylistTile extends StatelessWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     required this.contentOrigin,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -70,6 +73,7 @@ class PlaylistTile extends StatelessWidget {
               context.showingPageContext,
               playlist.tracks.isNotEmpty
                   ? PlaylistPage(
+                      getTrackUsecase: getTrackUsecase,
                       getPlaylistUsecase: getPlaylistUsecase,
                       coreController: coreController,
                       playlist: playlist,
@@ -84,6 +88,7 @@ class PlaylistTile extends StatelessWidget {
                       getArtistUsecase: getArtistUsecase,
                     )
                   : AsyncPlaylistPage(
+                      getTrackUsecase: getTrackUsecase,
                       getPlaylistUsecase: getPlaylistUsecase,
                       origin: ContentOrigin.library,
                       playlistId: playlist.id,

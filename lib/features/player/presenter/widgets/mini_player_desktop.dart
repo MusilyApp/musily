@@ -25,6 +25,7 @@ import 'package:musily/features/player/presenter/controllers/player/player_contr
 import 'package:musily/features/player/presenter/widgets/in_context_dialog.dart';
 import 'package:musily/features/player/presenter/widgets/track_lyrics.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 
@@ -40,6 +41,7 @@ class MiniPlayerDesktop extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final CoreController coreController;
   final GetArtistUsecase getArtistUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const MiniPlayerDesktop({
     required this.playerController,
@@ -54,6 +56,7 @@ class MiniPlayerDesktop extends StatefulWidget {
     required this.coreController,
     required this.getArtistUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -227,6 +230,8 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                           LyNavigator.push(
                                             context.showingPageContext,
                                             AsyncAlbumPage(
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                               albumId: data
                                                   .currentPlayingItem!.album.id,
                                               getPlaylistUsecase:
@@ -347,6 +352,8 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                           LyNavigator.push(
                                             context.showingPageContext,
                                             AsyncArtistPage(
+                                              getTrackUsecase:
+                                                  widget.getTrackUsecase,
                                               artistId: data.currentPlayingItem!
                                                   .artist.id,
                                               coreController:
@@ -744,6 +751,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                   ],
                                 ),
                                 TrackOptions(
+                                  getTrackUsecase: widget.getTrackUsecase,
                                   getPlaylistUsecase: widget.getPlaylistUsecase,
                                   track: data.currentPlayingItem!,
                                   playerController: widget.playerController,

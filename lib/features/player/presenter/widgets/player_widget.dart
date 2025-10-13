@@ -25,6 +25,7 @@ import 'package:musily/features/player/presenter/controllers/player/player_contr
 import 'package:musily/features/player/presenter/widgets/player_background.dart';
 import 'package:musily/features/player/presenter/widgets/player_banner.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 
@@ -40,6 +41,7 @@ class PlayerWidget extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final CoreController coreController;
   final GetArtistUsecase getArtistUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const PlayerWidget({
     required this.playerController,
@@ -54,6 +56,7 @@ class PlayerWidget extends StatefulWidget {
     required this.coreController,
     required this.getArtistUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -165,6 +168,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                               ],
                             ),
                             TrackOptions(
+                              getTrackUsecase: widget.getTrackUsecase,
                               getPlaylistUsecase: widget.getPlaylistUsecase,
                               track: data.currentPlayingItem!,
                               playerController: widget.playerController,
@@ -191,6 +195,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                         ),
                       ),
                       PlayerBanner(
+                        getTrackUsecase: widget.getTrackUsecase,
                         track: currentPlayingItem,
                         playerController: widget.playerController,
                         coreController: widget.coreController,
@@ -223,6 +228,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                   LyNavigator.push(
                                     context.showingPageContext,
                                     AsyncArtistPage(
+                                      trackId: data.currentPlayingItem!.id,
+                                      getTrackUsecase: widget.getTrackUsecase,
                                       artistId:
                                           data.currentPlayingItem!.artist.id,
                                       coreController: widget.coreController,

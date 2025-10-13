@@ -18,6 +18,7 @@ import 'package:musily/features/player/presenter/controllers/player/player_contr
 import 'package:musily/features/player/presenter/widgets/track_lyrics.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class PlayerBanner extends StatefulWidget {
   final TrackEntity track;
@@ -32,6 +33,7 @@ class PlayerBanner extends StatefulWidget {
   final CoreController coreController;
   final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const PlayerBanner({
     super.key,
@@ -47,6 +49,7 @@ class PlayerBanner extends StatefulWidget {
     required this.getArtistUsecase,
     required this.downloaderController,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -129,6 +132,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                                     LyNavigator.push(
                                       context.showingPageContext,
                                       AsyncAlbumPage(
+                                        getTrackUsecase: widget.getTrackUsecase,
                                         albumId:
                                             data.currentPlayingItem!.album.id,
                                         coreController: widget.coreController,

@@ -33,6 +33,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
@@ -49,6 +50,7 @@ class ArtistPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final bool isAsync;
 
   const ArtistPage({
@@ -64,6 +66,7 @@ class ArtistPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getTrackUsecase,
     this.isAsync = false,
     required this.getPlaylistUsecase,
   });
@@ -355,6 +358,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                 builder: (context) => ArtistTracksPage(
                                   tracks: allTracks,
                                   artist: widget.artist,
+                                  getTrackUsecase: widget.getTrackUsecase,
                                   getPlaylistUsecase: widget.getPlaylistUsecase,
                                   getArtistSinglesUsecase:
                                       widget.getArtistSinglesUsecase,
@@ -387,6 +391,7 @@ class _ArtistPageState extends State<ArtistPage> {
                   ),
                   ...widget.artist.topTracks.map(
                     (track) => TrackTile(
+                      getTrackUsecase: widget.getTrackUsecase,
                       getAlbumUsecase: widget.getAlbumUsecase,
                       track: track,
                       coreController: widget.coreController,
@@ -464,6 +469,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                 builder: (context) => ArtistAlbumsPage(
                                   albums: allAlbums,
                                   artist: widget.artist,
+                                  getTrackUsecase: widget.getTrackUsecase,
                                   getPlaylistUsecase: widget.getPlaylistUsecase,
                                   getArtistAlbumsUsecase:
                                       widget.getArtistAlbumsUsecase,
@@ -503,6 +509,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               horizontal: 12,
                             ),
                             child: SquareAlbumTile(
+                              getTrackUsecase: widget.getTrackUsecase,
                               album: album,
                               coreController: widget.coreController,
                               getPlaylistUsecase: widget.getPlaylistUsecase,
@@ -557,6 +564,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               context,
                               DownupRouter(
                                 builder: (context) => ArtistSinglesPage(
+                                  getTrackUsecase: widget.getTrackUsecase,
                                   getPlaylistUsecase: widget.getPlaylistUsecase,
                                   singles: allSingles,
                                   artist: widget.artist,
@@ -600,6 +608,7 @@ class _ArtistPageState extends State<ArtistPage> {
                               horizontal: 12,
                             ),
                             child: SquareAlbumTile(
+                              getTrackUsecase: widget.getTrackUsecase,
                               album: album,
                               coreController: widget.coreController,
                               getPlaylistUsecase: widget.getPlaylistUsecase,
@@ -648,6 +657,7 @@ class _ArtistPageState extends State<ArtistPage> {
                     children: [
                       ...widget.artist.similarArtists.map(
                         (similarArtist) => ArtistTile(
+                          getTrackUsecase: widget.getTrackUsecase,
                           contentOrigin: ContentOrigin.dataFetch,
                           getPlaylistUsecase: widget.getPlaylistUsecase,
                           getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
@@ -681,6 +691,7 @@ class _ArtistPageState extends State<ArtistPage> {
 
 class AsyncArtistPage extends StatefulWidget {
   final String artistId;
+  final String? trackId;
   final CoreController coreController;
   final PlayerController playerController;
   final DownloaderController downloaderController;
@@ -692,10 +703,12 @@ class AsyncArtistPage extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const AsyncArtistPage({
     super.key,
     required this.artistId,
+    this.trackId,
     required this.coreController,
     required this.playerController,
     required this.downloaderController,
@@ -707,6 +720,7 @@ class AsyncArtistPage extends StatefulWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -722,13 +736,21 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
       loadingArtist = true;
     });
     try {
+      TrackEntity? track;
+      print('LOADING ARTIST -> ${widget.artistId.isEmpty}');
+      if (widget.artistId.isEmpty) {
+        track = await widget.getTrackUsecase.exec(widget.trackId ?? '');
+        print('TRACK -> ${track?.artist.id}');
+      }
       final fetchedArtist = await widget.getArtistUsecase.exec(
-        widget.artistId,
+        track?.artist.id ?? widget.artistId,
       );
       setState(() {
         artist = fetchedArtist;
       });
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('ERROR -> $e');
+      print('STACK TRACE -> $stackTrace');
       setState(() {
         artist = null;
       });
@@ -790,6 +812,7 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
               getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
               getArtistTracksUsecase: widget.getArtistTracksUsecase,
               getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+              getTrackUsecase: widget.getTrackUsecase,
             );
           },
         ),

@@ -18,6 +18,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class ArtistSinglesPage extends StatefulWidget {
   final List<AlbumEntity> singles;
@@ -34,6 +35,7 @@ class ArtistSinglesPage extends StatefulWidget {
   final void Function(List<AlbumEntity> albums) onLoadedSingles;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const ArtistSinglesPage({
     super.key,
@@ -51,6 +53,7 @@ class ArtistSinglesPage extends StatefulWidget {
     required this.getArtistUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -139,6 +142,7 @@ class _ArtistSinglesPageState extends State<ArtistSinglesPage> {
                     itemBuilder: (context, index) {
                       final album = allSingles[index];
                       return AlbumTile(
+                        getTrackUsecase: widget.getTrackUsecase,
                         album: album,
                         contentOrigin: ContentOrigin.dataFetch,
                         coreController: widget.coreController,

@@ -20,6 +20,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class SearchPage extends StatefulWidget {
   final CoreController coreController;
@@ -35,7 +36,7 @@ class SearchPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final GetSearchSuggestionsUsecase getSearchSuggestionsUsecase;
-
+  final GetTrackUsecase getTrackUsecase;
   const SearchPage({
     required this.coreController,
     required this.downloaderController,
@@ -51,6 +52,7 @@ class SearchPage extends StatefulWidget {
     required this.getArtistSinglesUsecase,
     required this.getSearchSuggestionsUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -102,6 +104,7 @@ class _SearchPageState extends State<SearchPage> {
     final action = await Navigator.of(context).push(
       DownupRouter(
         builder: (context) => ResultsPage(
+          getTrackUsecase: widget.getTrackUsecase,
           searchQuery: searchTextController.text,
           getPlaylistUsecase: widget.getPlaylistUsecase,
           resultsPageController: widget.resultsPageController,

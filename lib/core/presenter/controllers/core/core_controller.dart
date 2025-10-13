@@ -264,6 +264,7 @@ https://musily.app/album/${album.id}
                       getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                       getArtistTracksUsecase: getArtistTracksUsecase,
                       getArtistSinglesUsecase: getArtistSinglesUsecase,
+                      getTrackUsecase: getTrackUsecase,
                     ),
                   );
                 }
@@ -288,6 +289,7 @@ https://musily.app/album/${album.id}
                     context,
                     AsyncAlbumPage(
                       albumId: id,
+                      getTrackUsecase: getTrackUsecase,
                       coreController: this,
                       playerController: playerController,
                       downloaderController: downloaderController,
@@ -308,6 +310,7 @@ https://musily.app/album/${album.id}
                   LyNavigator.push(
                     context,
                     AsyncPlaylistPage(
+                      getTrackUsecase: getTrackUsecase,
                       playlistId: id,
                       coreController: this,
                       playerController: playerController,

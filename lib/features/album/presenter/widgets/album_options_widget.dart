@@ -22,6 +22,7 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class AlbumOptions extends StatelessWidget {
   final AlbumEntity album;
@@ -36,6 +37,7 @@ class AlbumOptions extends StatelessWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final LibraryController libraryController;
   final bool tonal;
 
@@ -48,6 +50,7 @@ class AlbumOptions extends StatelessWidget {
     required this.downloaderController,
     required this.getPlayableItemUsecase,
     required this.getArtistUsecase,
+    required this.getTrackUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
@@ -119,6 +122,7 @@ class AlbumOptions extends StatelessWidget {
                       getArtistTracksUsecase: getArtistTracksUsecase,
                       getArtistSinglesUsecase: getArtistSinglesUsecase,
                       getPlaylistUsecase: getPlaylistUsecase,
+                      getTrackUsecase: getTrackUsecase,
                     ),
                   );
                 },

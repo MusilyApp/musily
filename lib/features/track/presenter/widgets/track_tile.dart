@@ -16,6 +16,7 @@ import 'package:musily/features/downloader/presenter/widgets/download_button.dar
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
 
 enum TrackTileOptions {
@@ -40,6 +41,7 @@ class TrackTile extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final Widget? leading;
   final void Function()? customAction;
   final List<AppMenuEntry> Function(BuildContext context)? customOptions;
@@ -62,6 +64,7 @@ class TrackTile extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -145,6 +148,7 @@ class _TrackTileState extends State<TrackTile> {
               track: widget.track,
             ),
             TrackOptions(
+              getTrackUsecase: widget.getTrackUsecase,
               getPlaylistUsecase: widget.getPlaylistUsecase,
               hideOptions: widget.hideOptions,
               coreController: widget.coreController,
