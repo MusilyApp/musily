@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
@@ -56,7 +57,8 @@ class UserAvatar extends StatelessWidget {
             );
           }
           return Icon(
-            Icons.person_rounded,
+            LucideIcons.userRound,
+            size: 20,
             color: context.themeData.buttonTheme.colorScheme?.onPrimary,
           );
         }),

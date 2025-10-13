@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -19,6 +20,7 @@ import 'package:musily/features/downloader/presenter/widgets/downloader_menu_ent
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -39,6 +41,9 @@ class TrackOptions extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
+
+  final Color? color;
 
   const TrackOptions({
     super.key,
@@ -55,7 +60,9 @@ class TrackOptions extends StatelessWidget {
     required this.getArtistTracksUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getTrackUsecase,
     required this.getPlaylistUsecase,
+    this.color,
   });
 
   @override
@@ -88,7 +95,8 @@ class TrackOptions extends StatelessWidget {
                 context.localization.saveToDownloads,
               ),
               leading: Icon(
-                Icons.folder_copy_rounded,
+                LucideIcons.folders,
+                size: 20,
                 color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
             )
@@ -96,7 +104,8 @@ class TrackOptions extends StatelessWidget {
         if (!hideOptions.contains(TrackTileOptions.addToPlaylist))
           AppMenuEntry(
             leading: Icon(
-              Icons.playlist_add_rounded,
+              LucideIcons.listPlus,
+              size: 20,
               color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
             onTap: () {
@@ -156,7 +165,8 @@ class TrackOptions extends StatelessWidget {
               context.localization.addToQueue,
             ),
             leading: Icon(
-              Icons.queue_music_rounded,
+              LucideIcons.listMusic,
+              size: 20,
               color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
@@ -172,6 +182,7 @@ class TrackOptions extends StatelessWidget {
                 LyNavigator.push(
                   context.showingPageContext,
                   AsyncAlbumPage(
+                    getTrackUsecase: getTrackUsecase,
                     albumId: track.album.id,
                     coreController: coreController,
                     playerController: playerController,
@@ -189,7 +200,8 @@ class TrackOptions extends StatelessWidget {
               },
               title: Text(context.localization.goToAlbum),
               leading: Icon(
-                Icons.album_rounded,
+                LucideIcons.disc3,
+                size: 20,
                 color: context.themeData.buttonTheme.colorScheme?.primary,
               ),
             ),
@@ -216,12 +228,14 @@ class TrackOptions extends StatelessWidget {
                   getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                   getArtistTracksUsecase: getArtistTracksUsecase,
                   getArtistSinglesUsecase: getArtistSinglesUsecase,
+                  getTrackUsecase: getTrackUsecase,
                 ),
               );
             },
             title: Text(context.localization.goToArtist),
             leading: Icon(
-              Icons.person_rounded,
+              LucideIcons.userRound,
+              size: 20,
               color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
@@ -232,7 +246,8 @@ class TrackOptions extends StatelessWidget {
               coreController.methods.shareSong(track);
             },
             leading: Icon(
-              Icons.share_rounded,
+              LucideIcons.share2,
+              size: 20,
               color: context.themeData.buttonTheme.colorScheme?.primary,
             ),
           ),
@@ -240,14 +255,16 @@ class TrackOptions extends StatelessWidget {
       coreController: coreController,
       toggler: (context, invoke) {
         return IconButton(
+          visualDensity: VisualDensity.compact,
           onPressed: invoke,
-          style: ButtonStyle(
+          style: const ButtonStyle(
             iconSize: WidgetStatePropertyAll(
-              context.display.isDesktop ? 20 : null,
+              20,
             ),
           ),
-          icon: const Icon(
-            Icons.more_vert,
+          icon: Icon(
+            LucideIcons.ellipsisVertical,
+            color: color,
           ),
         );
       },

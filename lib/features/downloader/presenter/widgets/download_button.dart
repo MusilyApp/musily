@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -10,10 +11,12 @@ import 'package:percent_indicator/percent_indicator.dart';
 class DownloadButton extends StatelessWidget {
   final DownloaderController controller;
   final TrackEntity track;
+  final Color? color;
   const DownloadButton({
     super.key,
     required this.controller,
     required this.track,
+    this.color,
   });
 
   @override
@@ -28,8 +31,8 @@ class DownloadButton extends StatelessWidget {
               onPressed: () {},
               iconSize: iconSize,
               icon: Icon(
-                Icons.hourglass_bottom_rounded,
-                color: context.themeData.colorScheme.primary,
+                LucideIcons.hourglass,
+                color: color ?? context.themeData.colorScheme.primary,
               ),
             );
           }
@@ -42,7 +45,7 @@ class DownloadButton extends StatelessWidget {
                 child: CircularPercentIndicator(
                   lineWidth: 4,
                   startAngle: 180,
-                  progressColor: context.themeData.colorScheme.primary,
+                  progressColor: color ?? context.themeData.colorScheme.primary,
                   backgroundColor: context.themeData.colorScheme.inversePrimary,
                   percent: item.progress,
                   radius: 10,
@@ -56,8 +59,8 @@ class DownloadButton extends StatelessWidget {
               onPressed: () {},
               iconSize: iconSize,
               icon: Icon(
-                Icons.download_done_rounded,
-                color: context.themeData.colorScheme.primary,
+                LucideIcons.circleCheckBig,
+                color: color ?? context.themeData.colorScheme.primary,
               ),
             );
           }
@@ -70,8 +73,8 @@ class DownloadButton extends StatelessWidget {
           },
           iconSize: iconSize,
           icon: Icon(
-            Icons.download_rounded,
-            color: context.themeData.colorScheme.primary,
+            LucideIcons.download,
+            color: color ?? context.themeData.colorScheme.primary,
           ),
         );
       },

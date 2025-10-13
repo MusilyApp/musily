@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/widgets/menu_entry.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -23,7 +24,8 @@ class DownloaderMenuEntry {
           );
         },
         leading: Icon(
-          Icons.download_rounded,
+          LucideIcons.download,
+          size: 20,
           color: context.themeData.colorScheme.primary,
         ),
         child: Text(
@@ -39,7 +41,8 @@ class DownloaderMenuEntry {
           );
         },
         leading: Icon(
-          Icons.delete_rounded,
+          LucideIcons.trash2,
+          size: 20,
           color: context.themeData.colorScheme.primary,
         ),
         child: Text(
@@ -59,7 +62,8 @@ class DownloaderMenuEntry {
         }
       },
       leading: Icon(
-        Icons.cancel_rounded,
+        LucideIcons.circleX,
+        size: 20,
         color: context.themeData.colorScheme.primary,
       ),
       child: Text(context.localization.cancelDownload),
