@@ -62,7 +62,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: "3.27.4"
+          flutter-version: "3.35.6"
 
       - name: Set up Java
         if: matrix.os == 'ubuntu-22.04'
@@ -340,7 +340,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: "3.27.4"
+          flutter-version: "3.35.6"
 
       - name: Install Dependencies
         run: flutter pub get

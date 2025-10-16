@@ -44,7 +44,7 @@ Before you begin, ensure you have Flutter installed. You can find installation i
 
 Musily has been tested and works seamlessly on the following platforms:
 
-- **Flutter SDK**: 3.27.4
+- **Flutter SDK**: 3.35.6
 - **Operating Systems**:
   - **Debian 13 Trixie** (GNOME)
   - **Kubuntu 25.04** (KDE)
