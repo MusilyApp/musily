@@ -38,10 +38,7 @@ class AppImage extends StatelessWidget {
           width: width,
           height: height,
           padding: const EdgeInsets.all(8),
-          child: MusilyLogo(
-            width: width,
-            height: height,
-          ),
+          child: MusilyLogo(width: width, height: height),
         );
       },
     );
