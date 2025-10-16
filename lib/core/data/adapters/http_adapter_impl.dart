@@ -213,6 +213,7 @@ class HttpAdapterImpl extends HttpAdapter {
       throw MusilyError(
         code: 403,
         id: 'refresh_token_failed',
+        stackTrace: StackTrace.current,
       );
     }
   }
