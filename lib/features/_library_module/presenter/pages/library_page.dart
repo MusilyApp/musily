@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
@@ -9,6 +10,7 @@ import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/pages/backup_page.dart';
+import 'package:musily/features/_library_module/presenter/widgets/library_filter_chip.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_creator.dart';
@@ -64,7 +66,7 @@ class LibraryPage extends StatefulWidget {
 }
 
 class _LibraryPageState extends State<LibraryPage> {
-  Set<String> filters = {};
+  int _selectedFilter = 0; // 0 = all, 1 = albums, 2 = artists, 3 = playlists
 
   @override
   Widget build(BuildContext context) {
@@ -95,20 +97,25 @@ class _LibraryPageState extends State<LibraryPage> {
                 0,
                 offlinePlaylist,
               );
-              final albums = listClone.where((e) => e.album != null);
-              final playlists = listClone.where((e) => e.playlist != null);
-              final artists = listClone.where((e) => e.artist != null);
+              final albums = listClone.where((e) => e.album != null).toList();
+              final playlists =
+                  listClone.where((e) => e.playlist != null).toList();
+              final artists = listClone.where((e) => e.artist != null).toList();
 
-              final filteredList = <LibraryItemEntity>[
-                if (filters.contains('album') || filters.isEmpty) ...albums,
-                if (filters.contains('playlist') || filters.isEmpty)
-                  ...playlists,
-                if (filters.contains('artist') || filters.isEmpty) ...artists,
-              ];
-
-              final itemList = (filters.isEmpty || filters.length == 3)
-                  ? listClone
-                  : filteredList;
+              final List<LibraryItemEntity> itemList;
+              switch (_selectedFilter) {
+                case 1: // Albums
+                  itemList = albums;
+                  break;
+                case 2: // Artists
+                  itemList = artists;
+                  break;
+                case 3: // Playlists
+                  itemList = playlists;
+                  break;
+                default: // All
+                  itemList = listClone;
+              }
 
               return Scaffold(
                 appBar: AppBar(
@@ -124,7 +131,8 @@ class _LibraryPageState extends State<LibraryPage> {
                         builder: (context, showCreator) => IconButton(
                           onPressed: showCreator,
                           icon: const Icon(
-                            Icons.add,
+                            LucideIcons.plus,
+                            size: 20,
                           ),
                         ),
                       ),
@@ -139,7 +147,10 @@ class _LibraryPageState extends State<LibraryPage> {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.settings_backup_restore),
+                      icon: const Icon(
+                        LucideIcons.databaseBackup,
+                        size: 20,
+                      ),
                     ),
                   ],
                 ),
@@ -266,49 +277,58 @@ class _LibraryPageState extends State<LibraryPage> {
                                       '${offlinePlaylist.playlist!.trackCount} ${context.localization.songs}',
                                     ),
                                   ),
-                                if (showOffline && data.items.isNotEmpty)
-                                  const Divider(),
                                 if (data.items.isNotEmpty) ...[
-                                  SegmentedButton(
-                                    emptySelectionAllowed: true,
-                                    segments: const [
-                                      ButtonSegment(
-                                        value: 'album',
-                                        label: Icon(
-                                          Icons.album_rounded,
+                                  const SizedBox(height: 8),
+                                  SizedBox(
+                                    height: 40,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16),
+                                      children: [
+                                        LibraryFilterChip(
+                                          label: context.localization.all,
+                                          isSelected: _selectedFilter == 0,
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedFilter = 0;
+                                            });
+                                          },
                                         ),
-                                        icon: Icon(
-                                          Icons.filter_alt_rounded,
+                                        const SizedBox(width: 8),
+                                        LibraryFilterChip(
+                                          label: context.localization.albums,
+                                          isSelected: _selectedFilter == 1,
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedFilter = 1;
+                                            });
+                                          },
                                         ),
-                                      ),
-                                      ButtonSegment(
-                                        value: 'artist',
-                                        label: Icon(
-                                          Icons.person_rounded,
+                                        const SizedBox(width: 8),
+                                        LibraryFilterChip(
+                                          label: context.localization.artists,
+                                          isSelected: _selectedFilter == 2,
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedFilter = 2;
+                                            });
+                                          },
                                         ),
-                                        icon: Icon(
-                                          Icons.filter_alt_rounded,
+                                        const SizedBox(width: 8),
+                                        LibraryFilterChip(
+                                          label: context.localization.playlists,
+                                          isSelected: _selectedFilter == 3,
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedFilter = 3;
+                                            });
+                                          },
                                         ),
-                                      ),
-                                      ButtonSegment(
-                                        value: 'playlist',
-                                        label: Icon(
-                                          Icons.playlist_play_rounded,
-                                        ),
-                                        icon: Icon(
-                                          Icons.filter_alt_rounded,
-                                        ),
-                                      ),
-                                    ],
-                                    selected: filters,
-                                    onSelectionChanged: (value) {
-                                      setState(() {
-                                        filters = value;
-                                      });
-                                    },
-                                    multiSelectionEnabled: true,
+                                      ],
+                                    ),
                                   ),
-                                  const Divider()
+                                  const SizedBox(height: 8),
                                 ],
                               ],
                             );

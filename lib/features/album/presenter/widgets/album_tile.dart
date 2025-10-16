@@ -119,7 +119,7 @@ class _AlbumTileState extends State<AlbumTile> {
               },
         leading: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             side: BorderSide(
               width: 1,
               color:
@@ -131,7 +131,7 @@ class _AlbumTileState extends State<AlbumTile> {
               if (widget.album.highResImg != null &&
                   widget.album.highResImg!.isNotEmpty) {
                 return ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                   child: AppImage(
                     widget.album.lowResImg!,
                     width: 40,

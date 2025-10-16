@@ -32,6 +32,7 @@ class DownloadButton extends StatelessWidget {
               iconSize: iconSize,
               icon: Icon(
                 LucideIcons.hourglass,
+                size: iconSize ?? 20,
                 color: color ?? context.themeData.colorScheme.primary,
               ),
             );
@@ -60,6 +61,7 @@ class DownloadButton extends StatelessWidget {
               iconSize: iconSize,
               icon: Icon(
                 LucideIcons.circleCheckBig,
+                size: iconSize ?? 20,
                 color: color ?? context.themeData.colorScheme.primary,
               ),
             );
@@ -74,6 +76,7 @@ class DownloadButton extends StatelessWidget {
           iconSize: iconSize,
           icon: Icon(
             LucideIcons.download,
+            size: iconSize ?? 20,
             color: color ?? context.themeData.colorScheme.primary,
           ),
         );

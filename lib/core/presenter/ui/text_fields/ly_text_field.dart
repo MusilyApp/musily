@@ -125,7 +125,7 @@ class _LyTextFieldState extends State<LyTextField> {
                 horizontal: 16,
               ),
           border: OutlineInputBorder(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(60),
             borderSide: BorderSide(
               color: hasFocus
                   ? context.themeData.colorScheme.primary
@@ -134,14 +134,14 @@ class _LyTextFieldState extends State<LyTextField> {
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(60),
             borderSide: BorderSide(
               color: context.themeData.colorScheme.onSurface
                   .withValues(alpha: 0.4),
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(60),
             borderSide: BorderSide(
               color: context.themeData.colorScheme.primary,
               width: 2,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -20,7 +22,7 @@ class DownloaderPage extends StatelessWidget {
     return LyPage(
       contextKey: 'DownloaderPage',
       child: Scaffold(
-        appBar: AppBar(
+        appBar: MusilyAppBar(
           title: Text(
             context.localization.downloadManager,
           ),
@@ -36,7 +38,7 @@ class DownloaderPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.downloading_rounded,
+                            LucideIcons.download,
                             color: context.themeData.iconTheme.color
                                 ?.withValues(alpha: .5),
                             size: 50,

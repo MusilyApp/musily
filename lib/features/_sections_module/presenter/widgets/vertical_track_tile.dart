@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_controller.dart';
@@ -97,7 +98,6 @@ class VerticalTrackTile extends StatelessWidget {
                 track.title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
                     ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -106,7 +106,6 @@ class VerticalTrackTile extends StatelessWidget {
               Text(
                 track.artist.name,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                 maxLines: 1,
@@ -118,6 +117,12 @@ class VerticalTrackTile extends StatelessWidget {
         const SizedBox(width: 12),
         // Play button
         IconButton.filledTonal(
+          color: context.themeData.colorScheme.onPrimary,
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(
+              context.themeData.colorScheme.primary,
+            ),
+          ),
           onPressed: () {
             final index =
                 sectionsController.data.moreRecommendedTracks.indexOf(track);
@@ -128,9 +133,8 @@ class VerticalTrackTile extends StatelessWidget {
             );
             libraryController.methods.updateLastTimePlayed(track.hash);
           },
-          icon: Icon(
+          icon: const Icon(
             LucideIcons.play,
-            color: Colors.white.withValues(alpha: 0.8),
             size: 20,
           ),
         ),

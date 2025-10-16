@@ -87,62 +87,58 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.themeData.colorScheme.surface
-                          .withValues(alpha: 0.7),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 8),
-                          child: Row(
-                            children: [
-                              // Album artwork
-                              _AlbumArtwork(
-                                imageUrl: data.currentPlayingItem!.lowResImg,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: context.themeData.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
+                        child: Row(
+                          children: [
+                            // Album artwork
+                            _AlbumArtwork(
+                              imageUrl: data.currentPlayingItem!.lowResImg,
+                            ),
+                            const SizedBox(width: 10),
+                            // Track info
+                            Expanded(
+                              child: _TrackInfo(
+                                title: data.currentPlayingItem!.title,
+                                artist: data.currentPlayingItem!.artist.name,
                               ),
-                              const SizedBox(width: 10),
-                              // Track info
-                              Expanded(
-                                child: _TrackInfo(
-                                  title: data.currentPlayingItem!.title,
-                                  artist: data.currentPlayingItem!.artist.name,
-                                ),
-                              ),
-                              // Controls
-                              FavoriteButton(
-                                libraryController: widget.libraryController,
-                                track: data.currentPlayingItem!,
-                              ),
-                              _PlayPauseButton(
-                                isPlaying: data.isPlaying,
-                                isLoading: data.currentPlayingItem?.duration
-                                        .inSeconds ==
-                                    0,
-                                onPlayPause: () {
-                                  if (data.isPlaying) {
-                                    widget.playerController.methods.pause();
-                                  } else {
-                                    widget.playerController.methods.resume();
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                            // Controls
+                            FavoriteButton(
+                              libraryController: widget.libraryController,
+                              track: data.currentPlayingItem!,
+                            ),
+                            _PlayPauseButton(
+                              isPlaying: data.isPlaying,
+                              isLoading:
+                                  data.currentPlayingItem?.duration.inSeconds ==
+                                      0,
+                              onPlayPause: () {
+                                if (data.isPlaying) {
+                                  widget.playerController.methods.pause();
+                                } else {
+                                  widget.playerController.methods.resume();
+                                }
+                              },
+                            ),
+                          ],
                         ),
-                        // Progress bar
-                        _ProgressBar(
-                          position: data.currentPlayingItem!.position,
-                          duration: data.currentPlayingItem!.duration,
-                        ),
-                      ],
-                    ),
+                      ),
+                      // Progress bar
+                      _ProgressBar(
+                        position: data.currentPlayingItem!.position,
+                        duration: data.currentPlayingItem!.duration,
+                      ),
+                    ],
                   ),
                 ),
               ),

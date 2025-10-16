@@ -76,40 +76,36 @@ class CoreBottomNavbar extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(60),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: context.themeData.colorScheme.surface
-                        .withValues(alpha: 0.7),
-                    borderRadius: BorderRadius.circular(60),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _NavItem(
-                        icon: LucideIcons.house,
-                        isSelected: selectedIndex == 0,
-                        onTap: () => onItemSelected(0),
-                      ),
-                      _NavItem(
-                        icon: LucideIcons.search,
-                        isSelected: selectedIndex == 1,
-                        onTap: () => onItemSelected(1),
-                      ),
-                      _NavItem(
-                        icon: LucideIcons.library,
-                        isSelected: selectedIndex == 2,
-                        onTap: () => onItemSelected(2),
-                      ),
-                      _NavItem(
-                        icon: LucideIcons.download,
-                        isSelected: selectedIndex == 3,
-                        onTap: () => onItemSelected(3),
-                      ),
-                    ],
-                  ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: context.themeData.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(60),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _NavItem(
+                      icon: LucideIcons.house,
+                      isSelected: selectedIndex == 0,
+                      onTap: () => onItemSelected(0),
+                    ),
+                    _NavItem(
+                      icon: LucideIcons.search,
+                      isSelected: selectedIndex == 1,
+                      onTap: () => onItemSelected(1),
+                    ),
+                    _NavItem(
+                      icon: LucideIcons.library,
+                      isSelected: selectedIndex == 2,
+                      onTap: () => onItemSelected(2),
+                    ),
+                    _NavItem(
+                      icon: LucideIcons.download,
+                      isSelected: selectedIndex == 3,
+                      onTap: () => onItemSelected(3),
+                    ),
+                  ],
                 ),
               ),
             ),

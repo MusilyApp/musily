@@ -83,13 +83,6 @@ class MSectionsPage extends StatelessWidget {
                           playerData.currentPlayingItem!.highResImg!,
                           fit: BoxFit.cover,
                         ),
-                        // Blur effect
-                        BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: Container(
-                            color: Colors.transparent,
-                          ),
-                        ),
                         // Dark overlay
                         Container(
                           decoration: BoxDecoration(
@@ -100,9 +93,7 @@ class MSectionsPage extends StatelessWidget {
                                 context.themeData.scaffoldBackgroundColor
                                     .withValues(alpha: 1),
                                 context.themeData.scaffoldBackgroundColor
-                                    .withValues(alpha: 1.8),
-                                context.themeData.scaffoldBackgroundColor
-                                    .withValues(alpha: 0.7),
+                                    .withValues(alpha: 0.8),
                                 context.themeData.scaffoldBackgroundColor
                                     .withValues(alpha: 0.9),
                               ],
