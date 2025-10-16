@@ -30,7 +30,7 @@ dependencies:
 
   # UI and Animations
   loading_animation_widget: ^1.2.1
-  skeletonizer: ^1.4.1+1
+  skeletonizer: ^2.1.0+1
   dotted_border: ^2.1.0
   flutter_svg: ^2.0.10+1
   percent_indicator: ^4.2.3
@@ -92,7 +92,7 @@ dependencies:
   dart_ipc: ^1.0.0
   package_info_plus: ^8.3.0
   gpt_markdown: ^1.1.4
-  flutter_curl: ^0.5.1
+  flutter_curl: ^0.7.0
 
 # Development Dependencies
 dev_dependencies:
