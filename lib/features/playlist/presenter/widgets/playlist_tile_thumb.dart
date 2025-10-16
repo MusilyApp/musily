@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
@@ -56,9 +57,10 @@ class PlaylistTileThumb extends StatelessWidget {
                       width: 40,
                       height: 40,
                       child: Icon(
-                        Icons.playlist_play_rounded,
+                        LucideIcons.listMusic,
+                        size: 20,
                         color: context.themeData.iconTheme.color
-                            ?.withValues(alpha: .7),
+                            ?.withValues(alpha: 0.6),
                       ),
                     ),
                   ),

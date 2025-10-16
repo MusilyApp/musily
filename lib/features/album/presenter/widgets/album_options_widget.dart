@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -89,10 +90,9 @@ class AlbumOptions extends StatelessWidget {
                   }
                 },
                 leading: Icon(
-                  isAlbumDownloading
-                      ? Icons.cancel_rounded
-                      : Icons.download_rounded,
+                  isAlbumDownloading ? LucideIcons.x : LucideIcons.download,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
+                  size: 20,
                 ),
                 title: Text(
                   isAlbumDownloading
@@ -128,7 +128,8 @@ class AlbumOptions extends StatelessWidget {
                 },
                 title: Text(context.localization.goToArtist),
                 leading: Icon(
-                  Icons.person_rounded,
+                  LucideIcons.userRound,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
               ),
@@ -155,8 +156,9 @@ class AlbumOptions extends StatelessWidget {
                 },
                 leading: Icon(
                   isAlbumPlaying && playerData.isPlaying
-                      ? Icons.pause_rounded
-                      : Icons.play_arrow_rounded,
+                      ? LucideIcons.pause
+                      : LucideIcons.play,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -187,7 +189,8 @@ class AlbumOptions extends StatelessWidget {
                   );
                 },
                 leading: Icon(
-                  Icons.shuffle_rounded,
+                  LucideIcons.shuffle,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -206,7 +209,8 @@ class AlbumOptions extends StatelessWidget {
                   playerController.methods.addToQueue(tracksToAdd);
                 },
                 leading: Icon(
-                  Icons.playlist_add,
+                  LucideIcons.listPlus,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -218,7 +222,8 @@ class AlbumOptions extends StatelessWidget {
               ),
               AppMenuEntry(
                 leading: Icon(
-                  Icons.queue_music,
+                  LucideIcons.listMusic,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -254,9 +259,8 @@ class AlbumOptions extends StatelessWidget {
                   }
                 },
                 leading: Icon(
-                  isAlbumInLibrary
-                      ? Icons.delete_rounded
-                      : Icons.library_add_rounded,
+                  isAlbumInLibrary ? LucideIcons.trash : LucideIcons.circlePlus,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -270,7 +274,8 @@ class AlbumOptions extends StatelessWidget {
                   coreController.methods.shareAlbum(album);
                 },
                 leading: Icon(
-                  Icons.share_rounded,
+                  LucideIcons.share2,
+                  size: 20,
                   color: Theme.of(context).buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(context.localization.share),

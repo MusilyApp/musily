@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
@@ -162,7 +163,7 @@ class _SearchPageState extends State<SearchPage> {
                         onSubmitted: submitSearch,
                         autofocus: true,
                         prefixIcon: const Icon(
-                          Icons.search,
+                          LucideIcons.search,
                         ),
                       ),
                     ),
@@ -182,7 +183,7 @@ class _SearchPageState extends State<SearchPage> {
                           );
                         },
                         child: const Icon(
-                          Icons.close,
+                          LucideIcons.x,
                         ),
                       ),
                     ),
@@ -198,7 +199,7 @@ class _SearchPageState extends State<SearchPage> {
                           searchTextController.text = suggestion;
                           getSearchSuggestions();
                         },
-                        leading: const Icon(Icons.search_rounded),
+                        leading: const Icon(LucideIcons.search),
                         title: Text(suggestion),
                         trailing: IconButton(
                           onPressed: () {
@@ -206,7 +207,7 @@ class _SearchPageState extends State<SearchPage> {
                             getSearchSuggestions();
                           },
                           icon: const Icon(
-                            Icons.north_west,
+                            LucideIcons.moveUpLeft,
                           ),
                         ),
                       ),

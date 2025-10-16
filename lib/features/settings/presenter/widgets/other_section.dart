@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
@@ -24,7 +25,8 @@ class OtherSection extends StatelessWidget {
         ),
         LyListTile(
           leading: const Icon(
-            Icons.description_rounded,
+            LucideIcons.scale,
+            size: 20,
           ),
           onTap: () {
             showLicensePage(
@@ -49,7 +51,8 @@ class OtherSection extends StatelessWidget {
             );
           },
           leading: const Icon(
-            Icons.info_rounded,
+            LucideIcons.info,
+            size: 20,
           ),
           title: Text(context.localization.about),
         ),
