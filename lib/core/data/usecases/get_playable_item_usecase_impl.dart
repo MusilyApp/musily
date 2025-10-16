@@ -12,7 +12,13 @@ Future<String?> _getYoutubeAudioUrl(String ytId) async {
   try {
     final yt = YoutubeExplode();
     final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId));
-    final audioStreamInfo = manifest.audioOnly.withHighestBitrate();
+    final audioStreamInfoSorted = List<AudioOnlyStreamInfo>.from(
+      manifest.audioOnly,
+    )..sort(
+      (a, b) => a.bitrate.bitsPerSecond.compareTo(b.bitrate.bitsPerSecond),
+    );
+
+    final audioStreamInfo = audioStreamInfoSorted.last;
     final url = audioStreamInfo.url.toString();
     yt.close();
     return url;
@@ -25,9 +31,7 @@ Future<String?> _getYoutubeAudioUrl(String ytId) async {
 class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
   late final MusilyRepository _musilyRepository;
 
-  GetPlayableItemUsecaseImpl({
-    required MusilyRepository musilyRepository,
-  }) {
+  GetPlayableItemUsecaseImpl({required MusilyRepository musilyRepository}) {
     _musilyRepository = musilyRepository;
   }
 
