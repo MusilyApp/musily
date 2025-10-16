@@ -152,18 +152,6 @@ abstract class AppLocalizations {
   /// **'Artists'**
   String get artists;
 
-  /// No description provided for @all.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get all;
-
-  /// No description provided for @playlists.
-  ///
-  /// In en, this message translates to:
-  /// **'Playlists'**
-  String get playlists;
-
   /// No description provided for @download.
   ///
   /// In en, this message translates to:
@@ -283,12 +271,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
-
-  /// No description provided for @back.
-  ///
-  /// In en, this message translates to:
-  /// **'Back'**
-  String get back;
 
   /// No description provided for @create.
   ///
