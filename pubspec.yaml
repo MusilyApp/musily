@@ -6,7 +6,7 @@ version: 4.0.2
 
 # Flutter SDK Environment
 environment:
-  sdk: ">=3.4.1 <4.0.0"
+  sdk: ">=3.7.0 <4.0.0"
 
 # Dependencies
 dependencies:
@@ -27,7 +27,9 @@ dependencies:
     git:
       url: https://github.com/Hexer10/youtube_explode_dart.git
       ref: e519db65ad0b0a40b12f69285932f9db509da3cf
-  dart_ytmusic_api: 1.2.1
+  dart_ytmusic_api:
+    git:
+      url: https://github.com/MusilyApp/dart_ytmusic_api.git
 
   # UI and Animations
   loading_animation_widget: ^1.2.1
@@ -62,7 +64,7 @@ dependencies:
   # Localization
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
+  intl: ^0.20.2
 
   # Permissions and App Links
   permission_handler: ^11.3.1
@@ -92,7 +94,7 @@ dependencies:
   process_run: ^0.14.2
   dart_ipc: ^1.0.0
   package_info_plus: ^8.3.0
-  gpt_markdown: 1.0.0
+  gpt_markdown: ^1.1.4
   flutter_curl: ^0.5.1
 
 # Development Dependencies
