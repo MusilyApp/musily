@@ -6,4 +6,7 @@ class InternalError implements MusilyError {
 
   @override
   String get id => 'internal_error';
+
+  @override
+  StackTrace? get stackTrace => StackTrace.current;
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/errors/musily_error.dart';
@@ -43,6 +44,7 @@ abstract class BaseController<Data extends BaseControllerData, Methods> {
   void catchError(dynamic error) {
     if (error is MusilyError) {
       LySnackbar.show(error.message);
+      log('error: $error', stackTrace: error.stackTrace);
     }
   }
 

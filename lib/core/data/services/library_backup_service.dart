@@ -214,6 +214,7 @@ class BackupService {
       throw MusilyError(
         code: 401,
         id: 'backup_file_does_not_exist',
+        stackTrace: StackTrace.current,
       );
     }
 
@@ -313,6 +314,7 @@ class BackupService {
       throw MusilyError(
         code: 401,
         id: 'backup_failed',
+        stackTrace: StackTrace.current,
       );
     }
   }

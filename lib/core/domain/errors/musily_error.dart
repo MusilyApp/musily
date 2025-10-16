@@ -4,10 +4,12 @@ import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 class MusilyError implements Exception {
   final int code;
   final String id;
+  final StackTrace? stackTrace;
 
   MusilyError({
     required this.code,
     required this.id,
+    required this.stackTrace,
   });
 
   static String getErrorStringById(String errorId) {
