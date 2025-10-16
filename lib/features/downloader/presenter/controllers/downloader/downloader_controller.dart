@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
@@ -251,7 +252,8 @@ class DownloaderController
             );
           },
           icon: const Icon(
-            Icons.delete_rounded,
+            LucideIcons.trash,
+            size: 20,
           ),
         );
         final queuedButton = IconButton(
@@ -261,7 +263,8 @@ class DownloaderController
             );
           },
           icon: const Icon(
-            Icons.hourglass_bottom_rounded,
+            LucideIcons.hourglass,
+            size: 20,
           ),
         );
         final cancelButton = IconButton(
@@ -269,7 +272,8 @@ class DownloaderController
             methods.cancelDownload(item.track.url!);
           },
           icon: const Icon(
-            Icons.close_rounded,
+            LucideIcons.x,
+            size: 20,
           ),
         );
         final pauseButton = IconButton(
@@ -277,7 +281,8 @@ class DownloaderController
             downloadManager.pauseDownload(item.track.url!);
           },
           icon: const Icon(
-            Icons.pause_rounded,
+            LucideIcons.pause,
+            size: 20,
           ),
         );
         final resumeButton = IconButton(
@@ -285,7 +290,8 @@ class DownloaderController
             downloadManager.resumeDownload(item.track.url!);
           },
           icon: const Icon(
-            Icons.play_arrow_rounded,
+            LucideIcons.play,
+            size: 20,
           ),
         );
 
@@ -309,7 +315,8 @@ class DownloaderController
                 );
               },
               icon: const Icon(
-                Icons.refresh_rounded,
+                LucideIcons.refreshCcw,
+                size: 20,
               ),
             ),
             deleteButton,
@@ -342,9 +349,9 @@ class DownloaderController
                       item.track.hash;
                   late final IconData icon;
                   if (isPlayingOffline && isPlayingThisItem && data.isPlaying) {
-                    icon = Icons.pause_rounded;
+                    icon = LucideIcons.pause;
                   } else {
-                    icon = Icons.play_arrow_rounded;
+                    icon = LucideIcons.play;
                   }
                   return IconButton(
                     onPressed: () {
@@ -372,6 +379,7 @@ class DownloaderController
                     },
                     icon: Icon(
                       icon,
+                      size: 20,
                     ),
                   );
                 },

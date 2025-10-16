@@ -97,7 +97,7 @@ class LibraryTile extends StatelessWidget {
                 ),
                 child: Icon(
                   LucideIcons.listMusic,
-                  size: 24,
+                  size: 20,
                   color:
                       context.themeData.iconTheme.color?.withValues(alpha: 0.6),
                 ),
@@ -126,65 +126,61 @@ class LibraryTile extends StatelessWidget {
       onTap: onTap,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            decoration: BoxDecoration(
-              color:
-                  context.themeData.colorScheme.surface.withValues(alpha: 0.7),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: context.themeData.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                width: 1,
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: context.themeData.colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: context.themeData.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.5),
+              width: 1,
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Row(
-                children: [
-                  // Leading image or custom widget
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: customLeading ??
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: context
-                                .themeData.colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: imageUrl != null && imageUrl.isNotEmpty
-                              ? AppImage(
-                                  imageUrl,
-                                  width: 48,
-                                  height: 48,
-                                  fit: BoxFit.cover,
-                                )
-                              : Icon(
-                                  LucideIcons.music,
-                                  color: context.themeData.iconTheme.color
-                                      ?.withValues(alpha: 0.6),
-                                  size: 24,
-                                ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Row(
+              children: [
+                // Leading image or custom widget
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: customLeading ??
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: context
+                              .themeData.colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                  ),
-                  const SizedBox(width: 12),
-                  // Title
-                  Expanded(
-                    child: InfinityMarquee(
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        child: imageUrl != null && imageUrl.isNotEmpty
+                            ? AppImage(
+                                imageUrl,
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                              )
+                            : Icon(
+                                LucideIcons.music,
+                                color: context.themeData.iconTheme.color
+                                    ?.withValues(alpha: 0.6),
+                                size: 24,
+                              ),
+                      ),
+                ),
+                const SizedBox(width: 12),
+                // Title
+                Expanded(
+                  child: InfinityMarquee(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
