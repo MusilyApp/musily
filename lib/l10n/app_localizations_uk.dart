@@ -33,6 +33,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get artists => 'Виконавці';
 
   @override
+  String get all => 'Всі';
+
+  @override
+  String get playlists => 'Плейлисти';
+
+  @override
   String get download => 'Завантажити';
 
   @override
@@ -91,6 +97,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get cancel => 'Скасувати';
+
+  @override
+  String get back => 'Назад';
 
   @override
   String get create => 'Створити';

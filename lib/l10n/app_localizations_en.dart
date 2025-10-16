@@ -33,6 +33,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get artists => 'Artists';
 
   @override
+  String get all => 'All';
+
+  @override
+  String get playlists => 'Playlists';
+
+  @override
   String get download => 'Download';
 
   @override
@@ -91,6 +97,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get back => 'Back';
 
   @override
   String get create => 'Create';
