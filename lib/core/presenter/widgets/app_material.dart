@@ -9,9 +9,9 @@ import 'package:musily/features/settings/domain/enums/accent_color_preference.da
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
-import 'package:musily/l10n/app_localizations.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppMaterial extends StatefulWidget {
   const AppMaterial({super.key});
@@ -115,8 +115,7 @@ class _AppMaterialState extends State<AppMaterial>
         cardTheme: const CardThemeData(shadowColor: Colors.transparent),
       ),
       darkTheme: ThemeData(
-        colorScheme:
-            dakColorScheme ??
+        colorScheme: dakColorScheme ??
             ColorScheme.fromSeed(
               seedColor: accentColor,
               brightness: Brightness.dark,
@@ -144,25 +143,23 @@ class _AppMaterialState extends State<AppMaterial>
                 data.accentColorPreference == AccentColorPreference.defaultColor
                     ? Colors.deepPurple
                     : data.accentColorPreference == AccentColorPreference.system
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.deepPurple,
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.deepPurple,
                 data,
-                dakColorScheme:
-                    data.accentColorPreference ==
-                            AccentColorPreference.defaultColor
-                        ? ColorScheme.fromSeed(
-                          seedColor: Colors.deepPurple,
-                          brightness: Brightness.dark,
-                        )
-                        : darkDynamic,
-                lightColorScheme:
-                    data.accentColorPreference ==
-                            AccentColorPreference.defaultColor
-                        ? ColorScheme.fromSeed(
-                          seedColor: Colors.deepPurple,
-                          brightness: Brightness.light,
-                        )
-                        : lightDynamic,
+                dakColorScheme: data.accentColorPreference ==
+                        AccentColorPreference.defaultColor
+                    ? ColorScheme.fromSeed(
+                        seedColor: Colors.deepPurple,
+                        brightness: Brightness.dark,
+                      )
+                    : darkDynamic,
+                lightColorScheme: data.accentColorPreference ==
+                        AccentColorPreference.defaultColor
+                    ? ColorScheme.fromSeed(
+                        seedColor: Colors.deepPurple,
+                        brightness: Brightness.light,
+                      )
+                    : lightDynamic,
               );
             },
           );
@@ -172,8 +169,8 @@ class _AppMaterialState extends State<AppMaterial>
             data.accentColorPreference == AccentColorPreference.defaultColor
                 ? Colors.deepPurple
                 : data.accentColorPreference == AccentColorPreference.system
-                ? Theme.of(context).colorScheme.primary
-                : Colors.deepPurple,
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.deepPurple,
             data,
           );
         }
@@ -184,11 +181,10 @@ class _AppMaterialState extends State<AppMaterial>
             if (data.accentColorPreference == AccentColorPreference.system) {
               accentColor = snapshot.data ?? Colors.deepPurple;
             } else {
-              accentColor =
-                  data.accentColorPreference ==
-                          AccentColorPreference.defaultColor
-                      ? Colors.deepPurple
-                      : Theme.of(context).colorScheme.primary;
+              accentColor = data.accentColorPreference ==
+                      AccentColorPreference.defaultColor
+                  ? Colors.deepPurple
+                  : Theme.of(context).colorScheme.primary;
             }
             return getMaterialApp(accentColor, data);
           },

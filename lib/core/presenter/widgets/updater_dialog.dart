@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpt_markdown/gpt_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:musily/core/data/services/updater_service.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
@@ -57,8 +57,12 @@ class UpdaterDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            GptMarkdown(
-              UpdaterService.instance.releaseNotes,
+            SizedBox(
+              height: 200,
+              child: MarkdownWidget(
+                data: UpdaterService.instance.releaseNotes,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
             ),
           ],
         ),
