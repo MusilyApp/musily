@@ -83,99 +83,115 @@ class _QueueWidgetState extends State<QueueWidget> {
               child: Scrollbar(
                 thumbVisibility: true,
                 controller: _scrollController,
-                child: ReorderableListView.builder(
-                  scrollController: _scrollController,
-                  itemCount: queue.length,
-                  onReorder: (oldIndex, newIndex) async {
-                    newIndex += prevSongs.length;
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    widget.playerController.methods.reorderQueue(
-                      newIndex,
-                      oldIndex,
-                    );
+                child: ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.white,
+                        Colors.white,
+                        Colors.transparent,
+                      ],
+                      stops: [0.0, 0.05, 0.95, 1],
+                    ).createShader(bounds);
                   },
-                  itemBuilder: (context, index) {
-                    final track = queue[index];
-                    return Container(
-                      color:
-                          data.tracksFromSmartQueue.contains(track.hash)
-                              ? context.themeData.colorScheme.primary
-                                  .withValues(alpha: .2)
-                              : Colors.transparent,
-                      margin: EdgeInsets.zero,
-                      key: Key(index.toString()),
-                      child: LyListTile(
-                        onTap: () async {
-                          final actualIndex = data.queue.indexWhere(
-                            (item) => item.id == track.id,
-                          );
-                          await widget.playerController.methods.queueJumpTo(
-                            actualIndex,
-                          );
-                        },
-                        title: InfinityMarquee(child: Text(track.title)),
-                        subtitle: InfinityMarquee(
-                          child: Text(track.artist.name),
-                        ),
-                        leading: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(
-                              width: 1,
-                              color: context.themeData.colorScheme.outline
-                                  .withValues(alpha: .2),
-                            ),
+                  blendMode: BlendMode.dstIn,
+                  child: ReorderableListView.builder(
+                    scrollController: _scrollController,
+                    itemCount: queue.length,
+                    onReorder: (oldIndex, newIndex) async {
+                      newIndex += prevSongs.length;
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      widget.playerController.methods.reorderQueue(
+                        newIndex,
+                        oldIndex,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      final track = queue[index];
+                      return Container(
+                        color:
+                            data.tracksFromSmartQueue.contains(track.hash)
+                                ? context.themeData.colorScheme.primary
+                                    .withValues(alpha: .2)
+                                : Colors.transparent,
+                        margin: EdgeInsets.zero,
+                        key: Key(index.toString()),
+                        child: LyListTile(
+                          onTap: () async {
+                            final actualIndex = data.queue.indexWhere(
+                              (item) => item.id == track.id,
+                            );
+                            await widget.playerController.methods.queueJumpTo(
+                              actualIndex,
+                            );
+                          },
+                          title: InfinityMarquee(child: Text(track.title)),
+                          subtitle: InfinityMarquee(
+                            child: Text(track.artist.name),
                           ),
-                          child: Builder(
-                            builder: (context) {
-                              if (track.lowResImg != null &&
-                                  track.lowResImg!.isNotEmpty) {
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: SizedBox(
-                                    width: 40,
-                                    child: AppImage(
-                                      track.lowResImg!,
+                          leading: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(
+                                width: 1,
+                                color: context.themeData.colorScheme.outline
+                                    .withValues(alpha: .2),
+                              ),
+                            ),
+                            child: Builder(
+                              builder: (context) {
+                                if (track.lowResImg != null &&
+                                    track.lowResImg!.isNotEmpty) {
+                                  return ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: SizedBox(
                                       width: 40,
-                                      height: 40,
-                                      fit: BoxFit.cover,
+                                      child: AppImage(
+                                        track.lowResImg!,
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
+                                  );
+                                }
+                                return SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: Icon(
+                                    Icons.music_note,
+                                    color: context.themeData.iconTheme.color
+                                        ?.withValues(alpha: .7),
                                   ),
                                 );
-                              }
-                              return SizedBox(
-                                height: 40,
-                                width: 40,
-                                child: Icon(
-                                  Icons.music_note,
-                                  color: context.themeData.iconTheme.color
-                                      ?.withValues(alpha: .7),
-                                ),
-                              );
-                            },
+                              },
+                            ),
                           ),
+                          trailing:
+                              data.tracksFromSmartQueue.contains(
+                                    queue[index].hash,
+                                  )
+                                  ? Padding(
+                                    padding: EdgeInsets.only(
+                                      right: context.display.isDesktop ? 24 : 0,
+                                    ),
+                                    child: Icon(
+                                      CupertinoIcons.wand_stars,
+                                      color:
+                                          context.themeData.colorScheme.primary,
+                                    ),
+                                  )
+                                  : null,
+                          key: Key('$index'),
                         ),
-                        trailing:
-                            data.tracksFromSmartQueue.contains(
-                                  queue[index].hash,
-                                )
-                                ? Padding(
-                                  padding: EdgeInsets.only(
-                                    right: context.display.isDesktop ? 24 : 0,
-                                  ),
-                                  child: Icon(
-                                    CupertinoIcons.wand_stars,
-                                    color:
-                                        context.themeData.colorScheme.primary,
-                                  ),
-                                )
-                                : null,
-                        key: Key('$index'),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

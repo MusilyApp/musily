@@ -64,16 +64,8 @@ class _PlayerBannerState extends State<PlayerBanner> {
     return widget.playerController.builder(
       builder: (context, data) {
         return SizedBox(
-          height: data.playerMode == PlayerMode.queue
-              ? MediaQuery.of(context).size.height - 290
-              : MediaQuery.of(context).size.height - 414,
           width: MediaQuery.of(context).size.width,
-          child: data.playerMode == PlayerMode.queue
-              ? _buildContent(context, data)
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _buildContent(context, data),
-                ),
+          child: _buildContent(context, data),
         );
       },
     );
@@ -88,13 +80,9 @@ class _PlayerBannerState extends State<PlayerBanner> {
         return FadeTransition(
           opacity: animation,
           child: ScaleTransition(
-            scale: Tween<double>(
-              begin: 0.8,
-              end: 1.0,
-            ).animate(CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeInOut,
-            )),
+            scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+            ),
             child: child,
           ),
         );
@@ -114,7 +102,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
         break;
       case PlayerMode.queue:
         content = _buildQueueContent(context, data);
-        key = 'queue_${data.currentPlayingItem?.id ?? 'no_track'}';
+        key = 'queue';
         break;
       case PlayerMode.artwork:
       default:
@@ -123,18 +111,18 @@ class _PlayerBannerState extends State<PlayerBanner> {
         break;
     }
 
-    return Container(
-      key: ValueKey(key),
-      child: content,
-    );
+    return Container(key: ValueKey(key), child: content);
   }
 
   Widget _buildLyricsContent(BuildContext context, dynamic data) {
     if (data.loadingLyrics) {
       return Center(
-        child: LoadingAnimationWidget.waveDots(
-          color: IconTheme.of(context).color ?? Colors.white,
-          size: 45,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: LoadingAnimationWidget.waveDots(
+            color: IconTheme.of(context).color ?? Colors.white,
+            size: 45,
+          ),
         ),
       );
     }
@@ -143,19 +131,14 @@ class _PlayerBannerState extends State<PlayerBanner> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.music_off_rounded,
-              size: 45,
-            ),
-            const SizedBox(
-              height: 12,
-            ),
+            const Icon(Icons.music_off_rounded, size: 45),
+            const SizedBox(height: 12),
             Text(
               context.localization.lyricsNotFound,
               style: context.themeData.textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w400,
               ),
-            )
+            ),
           ],
         ),
       );
@@ -166,142 +149,126 @@ class _PlayerBannerState extends State<PlayerBanner> {
       synced: data.syncedLyrics,
       timedLyrics: data.lyrics.timedLyrics,
       lyrics: data.lyrics.lyrics!,
-      onTimeSelected: (duration) => widget.playerController.methods.seek(
-        duration,
-      ),
+      onTimeSelected:
+          (duration) => widget.playerController.methods.seek(duration),
     );
   }
 
   Widget _buildQueueContent(BuildContext context, dynamic data) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.transparent,
-            Colors.white,
-            Colors.white,
-            Colors.transparent,
-          ],
-          stops: [0.0, 0.05, 0.95, 1],
-        ).createShader(bounds);
-      },
-      blendMode: BlendMode.dstIn,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 1),
-        child: QueueWidget(
-          playerController: widget.playerController,
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 1),
+      child: QueueWidget(playerController: widget.playerController),
     );
   }
 
   Widget _buildArtworkContent(BuildContext context, dynamic data) {
     return Center(
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {
-            LyNavigator.close('player');
-            LyNavigator.push(
-              context.showingPageContext,
-              AsyncAlbumPage(
-                getTrackUsecase: widget.getTrackUsecase,
-                albumId: data.currentPlayingItem!.album.id,
-                coreController: widget.coreController,
-                getPlaylistUsecase: widget.getPlaylistUsecase,
-                playerController: widget.playerController,
-                getAlbumUsecase: widget.getAlbumUsecase,
-                downloaderController: widget.downloaderController,
-                getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                libraryController: widget.libraryController,
-                getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                getArtistUsecase: widget.getArtistUsecase,
-              ),
-            );
-          },
-          child: Stack(
-            children: [
-              Builder(
-                builder: (context) {
-                  if (widget.track.highResImg != null &&
-                      widget.track.highResImg!.isNotEmpty) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: context.themeData.dividerColor
-                              .withValues(alpha: .2),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              LyNavigator.close('player');
+              LyNavigator.push(
+                context.showingPageContext,
+                AsyncAlbumPage(
+                  getTrackUsecase: widget.getTrackUsecase,
+                  albumId: data.currentPlayingItem!.album.id,
+                  coreController: widget.coreController,
+                  getPlaylistUsecase: widget.getPlaylistUsecase,
+                  playerController: widget.playerController,
+                  getAlbumUsecase: widget.getAlbumUsecase,
+                  downloaderController: widget.downloaderController,
+                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                  libraryController: widget.libraryController,
+                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                  getArtistUsecase: widget.getArtistUsecase,
+                ),
+              );
+            },
+            child: Stack(
+              children: [
+                Builder(
+                  builder: (context) {
+                    if (widget.track.highResImg != null &&
+                        widget.track.highResImg!.isNotEmpty) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: context.themeData.dividerColor.withValues(
+                              alpha: .2,
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: AppImage(
-                          height: 350,
-                          width: 350,
-                          widget.track.highResImg!,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  }
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(
-                        width: 1,
-                        color: context.themeData.colorScheme.outline
-                            .withValues(alpha: .2),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 350,
-                          width: 350,
-                          child: Icon(
-                            Icons.music_note,
-                            size: 75,
-                            color: context.themeData.iconTheme.color
-                                ?.withValues(alpha: .8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: AppImage(
+                            height: 350,
+                            width: 350,
+                            widget.track.highResImg!,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ],
+                      );
+                    }
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(
+                          width: 1,
+                          color: context.themeData.colorScheme.outline
+                              .withValues(alpha: .2),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 350,
+                            width: 350,
+                            child: Icon(
+                              Icons.music_note,
+                              size: 75,
+                              color: context.themeData.iconTheme.color
+                                  ?.withValues(alpha: .8),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                if (data.tracksFromSmartQueue.contains(widget.track.hash))
+                  Container(
+                    height: 350,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          context.themeData.colorScheme.primary,
+                          context.themeData.colorScheme.primary.withValues(
+                            alpha: .2,
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                },
-              ),
-              if (data.tracksFromSmartQueue.contains(
-                widget.track.hash,
-              ))
-                Container(
-                  height: 350,
-                  width: 350,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        context.themeData.colorScheme.primary,
-                        context.themeData.colorScheme.primary
-                            .withValues(alpha: .2),
-                      ],
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.wand_stars,
+                        color: context.themeData.colorScheme.onPrimary,
+                        size: 60,
+                      ),
                     ),
                   ),
-                  child: Center(
-                    child: Icon(
-                      CupertinoIcons.wand_stars,
-                      color: context.themeData.colorScheme.onPrimary,
-                      size: 60,
-                    ),
-                  ),
-                )
-            ],
+              ],
+            ),
           ),
         ),
       ),

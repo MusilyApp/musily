@@ -24,7 +24,7 @@ import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/player_background.dart';
 import 'package:musily/features/player/presenter/widgets/player_banner.dart';
-import 'package:musily/features/player/presenter/widgets/player_switches.dart';
+import 'package:musily/features/player/presenter/widgets/player_title.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
@@ -82,19 +82,13 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               children: [
                 if (currentPlayingItem.highResImg != null &&
                     currentPlayingItem.highResImg!.isNotEmpty)
-                  PlayerBackground(
-                    imageUrl: currentPlayingItem.highResImg!,
-                    playerController: widget.playerController,
-                  ),
+                  PlayerBackground(imageUrl: currentPlayingItem.highResImg!),
                 SafeArea(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 12,
-                          right: 12,
-                        ),
+                        padding: const EdgeInsets.only(left: 12, right: 12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -111,46 +105,18 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                 );
                               },
                             ),
-                            if (data.playerMode == PlayerMode.queue)
-                              Expanded(
-                                child: Center(
-                                  child: Column(
-                                    children: [
-                                      InfinityMarquee(
-                                        child: Text(
-                                          currentPlayingItem.title,
-                                          style: context
-                                              .themeData.textTheme.titleMedium
-                                              ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      Opacity(
-                                        opacity: 0.7,
-                                        child: InfinityMarquee(
-                                          child: Text(
-                                            currentPlayingItem.artist.name,
-                                            style: context
-                                                .themeData.textTheme.bodyMedium
-                                                ?.copyWith(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                            Expanded(
+                              child: Center(
+                                child: PlayerTitle(
+                                  playerController: widget.playerController,
+                                  playerMode: data.playerMode,
+                                  syncedLyrics: data.syncedLyrics,
+                                  autoSmartQueue: data.autoSmartQueue,
+                                  loadingSmartQueue: data.loadingSmartQueue,
+                                  currentTrack: currentPlayingItem,
                                 ),
-                              )
-                            else
-                              PlayerSwitches(
-                                playerController: widget.playerController,
-                                playerMode: data.playerMode,
-                                syncedLyrics: data.syncedLyrics,
-                                autoSmartQueue: data.autoSmartQueue,
-                                loadingSmartQueue: data.loadingSmartQueue,
                               ),
+                            ),
                             TrackOptions(
                               getTrackUsecase: widget.getTrackUsecase,
                               getPlaylistUsecase: widget.getPlaylistUsecase,
@@ -178,117 +144,159 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                           ],
                         ),
                       ),
-                      PlayerBanner(
-                        getTrackUsecase: widget.getTrackUsecase,
-                        track: currentPlayingItem,
-                        playerController: widget.playerController,
-                        coreController: widget.coreController,
-                        getAlbumUsecase: widget.getAlbumUsecase,
-                        downloaderController: widget.downloaderController,
-                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                        libraryController: widget.libraryController,
-                        getPlaylistUsecase: widget.getPlaylistUsecase,
-                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                        getArtistUsecase: widget.getArtistUsecase,
+                      Expanded(
+                        child: PlayerBanner(
+                          getTrackUsecase: widget.getTrackUsecase,
+                          track: currentPlayingItem,
+                          playerController: widget.playerController,
+                          coreController: widget.coreController,
+                          getAlbumUsecase: widget.getAlbumUsecase,
+                          downloaderController: widget.downloaderController,
+                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                          libraryController: widget.libraryController,
+                          getPlaylistUsecase: widget.getPlaylistUsecase,
+                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase:
+                              widget.getArtistSinglesUsecase,
+                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                          getArtistUsecase: widget.getArtistUsecase,
+                        ),
                       ),
                       Column(
                         children: [
-                          if (data.playerMode != PlayerMode.queue)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: LyListTile(
-                                title: InfinityMarquee(
-                                  child: Text(
-                                    currentPlayingItem.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                subtitle: InkWell(
-                                  onTap: () {
-                                    LyNavigator.close('player');
-                                    LyNavigator.push(
-                                      context.showingPageContext,
-                                      AsyncArtistPage(
-                                        trackId: data.currentPlayingItem!.id,
-                                        getTrackUsecase: widget.getTrackUsecase,
-                                        artistId:
-                                            data.currentPlayingItem!.artist.id,
-                                        coreController: widget.coreController,
-                                        getPlaylistUsecase:
-                                            widget.getPlaylistUsecase,
-                                        playerController:
-                                            widget.playerController,
-                                        getAlbumUsecase: widget.getAlbumUsecase,
-                                        downloaderController:
-                                            widget.downloaderController,
-                                        getPlayableItemUsecase:
-                                            widget.getPlayableItemUsecase,
-                                        libraryController:
-                                            widget.libraryController,
-                                        getArtistAlbumsUsecase:
-                                            widget.getArtistAlbumsUsecase,
-                                        getArtistSinglesUsecase:
-                                            widget.getArtistSinglesUsecase,
-                                        getArtistTracksUsecase:
-                                            widget.getArtistTracksUsecase,
-                                        getArtistUsecase:
-                                            widget.getArtistUsecase,
-                                      ),
-                                    );
-                                  },
-                                  child: InfinityMarquee(
-                                    child: Text(
-                                      currentPlayingItem.artist.name,
-                                    ),
-                                  ),
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    DownloadButton(
-                                      controller: widget.downloaderController,
-                                      track: data.currentPlayingItem!,
-                                    ),
-                                    if (data.tracksFromSmartQueue
-                                        .contains(currentPlayingItem.hash))
-                                      IconButton(
-                                        onPressed: () {
-                                          widget.libraryController.methods
-                                              .addTracksToPlaylist(
-                                            widget.playerController.data
-                                                .playingId,
-                                            [
-                                              currentPlayingItem,
+                          AnimatedSize(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 200),
+                              opacity:
+                                  data.playerMode != PlayerMode.queue
+                                      ? 1.0
+                                      : 0.0,
+                              child:
+                                  data.playerMode != PlayerMode.queue
+                                      ? Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: LyListTile(
+                                          title: InfinityMarquee(
+                                            child: Text(
+                                              currentPlayingItem.title,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          subtitle: InkWell(
+                                            onTap: () {
+                                              LyNavigator.close('player');
+                                              LyNavigator.push(
+                                                context.showingPageContext,
+                                                AsyncArtistPage(
+                                                  trackId:
+                                                      data
+                                                          .currentPlayingItem!
+                                                          .id,
+                                                  getTrackUsecase:
+                                                      widget.getTrackUsecase,
+                                                  artistId:
+                                                      data
+                                                          .currentPlayingItem!
+                                                          .artist
+                                                          .id,
+                                                  coreController:
+                                                      widget.coreController,
+                                                  getPlaylistUsecase:
+                                                      widget.getPlaylistUsecase,
+                                                  playerController:
+                                                      widget.playerController,
+                                                  getAlbumUsecase:
+                                                      widget.getAlbumUsecase,
+                                                  downloaderController:
+                                                      widget
+                                                          .downloaderController,
+                                                  getPlayableItemUsecase:
+                                                      widget
+                                                          .getPlayableItemUsecase,
+                                                  libraryController:
+                                                      widget.libraryController,
+                                                  getArtistAlbumsUsecase:
+                                                      widget
+                                                          .getArtistAlbumsUsecase,
+                                                  getArtistSinglesUsecase:
+                                                      widget
+                                                          .getArtistSinglesUsecase,
+                                                  getArtistTracksUsecase:
+                                                      widget
+                                                          .getArtistTracksUsecase,
+                                                  getArtistUsecase:
+                                                      widget.getArtistUsecase,
+                                                ),
+                                              );
+                                            },
+                                            child: InfinityMarquee(
+                                              child: Text(
+                                                currentPlayingItem.artist.name,
+                                              ),
+                                            ),
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              DownloadButton(
+                                                controller:
+                                                    widget.downloaderController,
+                                                track: data.currentPlayingItem!,
+                                              ),
+                                              if (data.tracksFromSmartQueue
+                                                  .contains(
+                                                    currentPlayingItem.hash,
+                                                  ))
+                                                IconButton(
+                                                  onPressed: () {
+                                                    widget
+                                                        .libraryController
+                                                        .methods
+                                                        .addTracksToPlaylist(
+                                                          widget
+                                                              .playerController
+                                                              .data
+                                                              .playingId,
+                                                          [currentPlayingItem],
+                                                        );
+                                                  },
+                                                  color:
+                                                      context
+                                                          .themeData
+                                                          .colorScheme
+                                                          .primary,
+                                                  icon: const Icon(
+                                                    LucideIcons.circlePlus,
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                              FavoriteButton(
+                                                libraryController:
+                                                    widget.libraryController,
+                                                track: data.currentPlayingItem!,
+                                              ),
                                             ],
-                                          );
-                                        },
-                                        color: context
-                                            .themeData.colorScheme.primary,
-                                        icon: const Icon(
-                                          LucideIcons.circlePlus,
-                                          size: 20,
+                                          ),
                                         ),
-                                      ),
-                                    FavoriteButton(
-                                      libraryController:
-                                          widget.libraryController,
-                                      track: data.currentPlayingItem!,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                      )
+                                      : const SizedBox.shrink(),
                             ),
+                          ),
                           Slider(
                             inactiveColor: context
-                                .themeData.buttonTheme.colorScheme?.primary
+                                .themeData
+                                .buttonTheme
+                                .colorScheme
+                                ?.primary
                                 .withValues(alpha: .3),
                             min: 0,
-                            max: currentPlayingItem.duration.inSeconds
-                                .toDouble(),
+                            max:
+                                currentPlayingItem.duration.inSeconds
+                                    .toDouble(),
                             value: () {
                               if (currentPlayingItem.position.inSeconds >
                                   currentPlayingItem.duration.inSeconds) {
@@ -308,16 +316,18 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                             onChanged: (value) {
                               setState(() {
                                 _useSeekDuration = true;
-                                _seekDuration =
-                                    Duration(seconds: value.toInt());
+                                _seekDuration = Duration(
+                                  seconds: value.toInt(),
+                                );
                               });
                             },
                             onChangeEnd: (value) async {
                               setState(() {
                                 _useSeekDuration = false;
                               });
-                              await widget.playerController.methods
-                                  .seek(_seekDuration);
+                              await widget.playerController.methods.seek(
+                                _seekDuration,
+                              );
                               await widget.playerController.methods.resume();
                             },
                           ),
@@ -326,17 +336,17 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Builder(builder: (context) {
-                                  late final Duration duration;
-                                  if (_useSeekDuration) {
-                                    duration = _seekDuration;
-                                  } else {
-                                    duration = currentPlayingItem.position;
-                                  }
-                                  return Text(
-                                    duration.formatDuration,
-                                  );
-                                }),
+                                Builder(
+                                  builder: (context) {
+                                    late final Duration duration;
+                                    if (_useSeekDuration) {
+                                      duration = _seekDuration;
+                                    } else {
+                                      duration = currentPlayingItem.position;
+                                    }
+                                    return Text(duration.formatDuration);
+                                  },
+                                ),
                                 Text(
                                   currentPlayingItem.duration.formatDuration,
                                 ),
@@ -359,10 +369,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                       icon: Icon(
                                         LucideIcons.shuffle,
                                         size: 20,
-                                        color: data.shuffleEnabled
-                                            ? context.themeData.buttonTheme
-                                                .colorScheme?.primary
-                                            : null,
+                                        color:
+                                            data.shuffleEnabled
+                                                ? context
+                                                    .themeData
+                                                    .buttonTheme
+                                                    .colorScheme
+                                                    ?.primary
+                                                : null,
                                       ),
                                     ),
                                     if (data.shuffleEnabled) ...[
@@ -374,8 +388,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                         child: Icon(
                                           LucideIcons.circle,
                                           size: 4,
-                                          color: context.themeData.buttonTheme
-                                              .colorScheme?.primary,
+                                          color:
+                                              context
+                                                  .themeData
+                                                  .buttonTheme
+                                                  .colorScheme
+                                                  ?.primary,
                                         ),
                                       ),
                                       Padding(
@@ -386,134 +404,155 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                         child: Icon(
                                           Icons.fiber_manual_record,
                                           size: 8,
-                                          color: context.themeData.buttonTheme
-                                              .colorScheme?.primary,
+                                          color:
+                                              context
+                                                  .themeData
+                                                  .buttonTheme
+                                                  .colorScheme
+                                                  ?.primary,
                                         ),
                                       ),
-                                    ]
+                                    ],
                                   ],
                                 ),
-                                Builder(builder: (context) {
-                                  bool previousEnabled = true;
-                                  if (data.queue.first.id ==
-                                      currentPlayingItem.id) {
-                                    if (!data.shuffleEnabled) {
-                                      if (data.repeatMode ==
-                                              MusilyRepeatMode.noRepeat ||
-                                          data.repeatMode ==
-                                              MusilyRepeatMode.repeatOne) {
-                                        if (currentPlayingItem
-                                                .position.inSeconds <
-                                            5) {
-                                          previousEnabled = false;
+                                Builder(
+                                  builder: (context) {
+                                    bool previousEnabled = true;
+                                    if (data.queue.first.id ==
+                                        currentPlayingItem.id) {
+                                      if (!data.shuffleEnabled) {
+                                        if (data.repeatMode ==
+                                                MusilyRepeatMode.noRepeat ||
+                                            data.repeatMode ==
+                                                MusilyRepeatMode.repeatOne) {
+                                          if (currentPlayingItem
+                                                  .position
+                                                  .inSeconds <
+                                              5) {
+                                            previousEnabled = false;
+                                          }
                                         }
                                       }
                                     }
-                                  }
-                                  return IconButton(
-                                    onPressed: !previousEnabled
-                                        ? null
-                                        : () async {
-                                            if (currentPlayingItem
-                                                    .position.inSeconds <
-                                                5) {
-                                              await widget
-                                                  .playerController.methods
-                                                  .previousInQueue();
+                                    return IconButton(
+                                      onPressed:
+                                          !previousEnabled
+                                              ? null
+                                              : () async {
+                                                if (currentPlayingItem
+                                                        .position
+                                                        .inSeconds <
+                                                    5) {
+                                                  await widget
+                                                      .playerController
+                                                      .methods
+                                                      .previousInQueue();
+                                                } else {
+                                                  widget
+                                                      .playerController
+                                                      .methods
+                                                      .seek(Duration.zero);
+                                                }
+                                              },
+                                      icon: const Icon(
+                                        LucideIcons.skipBack,
+                                        size: 30,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Builder(
+                                  builder: (context) {
+                                    if (currentPlayingItem.duration.inSeconds ==
+                                        0) {
+                                      return const SizedBox(
+                                        width: 70,
+                                        height: 70,
+                                        child: Center(
+                                          child: MusilyLoading(size: 45),
+                                        ),
+                                      );
+                                    }
+                                    return InkWell(
+                                      onTap: () {
+                                        if (data.isPlaying) {
+                                          widget.playerController.methods
+                                              .pause();
+                                        } else {
+                                          widget.playerController.methods
+                                              .resume();
+                                        }
+                                      },
+                                      child: Container(
+                                        width: 70,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              context
+                                                  .themeData
+                                                  .colorScheme
+                                                  .primary,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(6),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            if (data.isPlaying) {
+                                              widget.playerController.methods
+                                                  .pause();
                                             } else {
                                               widget.playerController.methods
-                                                  .seek(
-                                                Duration.zero,
-                                              );
+                                                  .resume();
                                             }
                                           },
-                                    icon: const Icon(
-                                      LucideIcons.skipBack,
-                                      size: 30,
-                                    ),
-                                  );
-                                }),
-                                Builder(builder: (context) {
-                                  if (currentPlayingItem.duration.inSeconds ==
-                                      0) {
-                                    return const SizedBox(
-                                      width: 70,
-                                      height: 70,
-                                      child: Center(
-                                        child: MusilyLoading(
-                                          size: 45,
+                                          visualDensity: VisualDensity.standard,
+                                          iconSize: 35,
+                                          icon: Icon(
+                                            data.isPlaying
+                                                ? LucideIcons.pause
+                                                : LucideIcons.play,
+                                            color:
+                                                context
+                                                    .themeData
+                                                    .colorScheme
+                                                    .onPrimary,
+                                          ),
                                         ),
                                       ),
                                     );
-                                  }
-                                  return InkWell(
-                                    onTap: () {
-                                      if (data.isPlaying) {
-                                        widget.playerController.methods.pause();
-                                      } else {
-                                        widget.playerController.methods
-                                            .resume();
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 70,
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                        color: context
-                                            .themeData.colorScheme.primary,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      padding: const EdgeInsets.all(6),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          if (data.isPlaying) {
-                                            widget.playerController.methods
-                                                .pause();
-                                          } else {
-                                            widget.playerController.methods
-                                                .resume();
-                                          }
-                                        },
-                                        visualDensity: VisualDensity.standard,
-                                        iconSize: 35,
-                                        icon: Icon(
-                                          data.isPlaying
-                                              ? LucideIcons.pause
-                                              : LucideIcons.play,
-                                          color: context
-                                              .themeData.colorScheme.onPrimary,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                                Builder(builder: (context) {
-                                  bool nextEnabled = true;
-                                  if (data.queue.last.id ==
-                                      currentPlayingItem.id) {
-                                    if (!data.shuffleEnabled) {
-                                      if (data.repeatMode ==
-                                              MusilyRepeatMode.noRepeat ||
-                                          data.repeatMode ==
-                                              MusilyRepeatMode.repeatOne) {
-                                        nextEnabled = false;
+                                  },
+                                ),
+                                Builder(
+                                  builder: (context) {
+                                    bool nextEnabled = true;
+                                    if (data.queue.last.id ==
+                                        currentPlayingItem.id) {
+                                      if (!data.shuffleEnabled) {
+                                        if (data.repeatMode ==
+                                                MusilyRepeatMode.noRepeat ||
+                                            data.repeatMode ==
+                                                MusilyRepeatMode.repeatOne) {
+                                          nextEnabled = false;
+                                        }
                                       }
                                     }
-                                  }
-                                  return IconButton(
-                                    onPressed: !nextEnabled
-                                        ? null
-                                        : () async {
-                                            await widget
-                                                .playerController.methods
-                                                .nextInQueue();
-                                          },
-                                    icon: const Icon(
-                                      LucideIcons.skipForward,
-                                      size: 30,
-                                    ),
-                                  );
-                                }),
+                                    return IconButton(
+                                      onPressed:
+                                          !nextEnabled
+                                              ? null
+                                              : () async {
+                                                await widget
+                                                    .playerController
+                                                    .methods
+                                                    .nextInQueue();
+                                              },
+                                      icon: const Icon(
+                                        LucideIcons.skipForward,
+                                        size: 30,
+                                      ),
+                                    );
+                                  },
+                                ),
                                 IconButton(
                                   onPressed: () async {
                                     await widget.playerController.methods
@@ -533,11 +572,15 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                           }
                                         }(),
                                         size: 20,
-                                        color: data.repeatMode !=
-                                                MusilyRepeatMode.noRepeat
-                                            ? context.themeData.buttonTheme
-                                                .colorScheme?.primary
-                                            : null,
+                                        color:
+                                            data.repeatMode !=
+                                                    MusilyRepeatMode.noRepeat
+                                                ? context
+                                                    .themeData
+                                                    .buttonTheme
+                                                    .colorScheme
+                                                    ?.primary
+                                                : null,
                                       ),
                                       if (data.repeatMode ==
                                           MusilyRepeatMode.repeat)
@@ -549,8 +592,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                           child: Icon(
                                             Icons.fiber_manual_record,
                                             size: 6,
-                                            color: context.themeData.buttonTheme
-                                                .colorScheme?.primary,
+                                            color:
+                                                context
+                                                    .themeData
+                                                    .buttonTheme
+                                                    .colorScheme
+                                                    ?.primary,
                                           ),
                                         ),
                                     ],
@@ -568,10 +615,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                     currentPlayingItem,
                                   );
                                 },
-                                icon: const Icon(
-                                  LucideIcons.share2,
-                                  size: 20,
-                                ),
+                                icon: const Icon(LucideIcons.share2, size: 20),
                               ),
                               IconButton(
                                 onPressed: () {
@@ -579,8 +623,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                       data.playerMode == PlayerMode.lyrics
                                           ? PlayerMode.artwork
                                           : PlayerMode.lyrics;
-                                  widget.playerController.methods
-                                      .setPlayerMode(newMode);
+                                  widget.playerController.methods.setPlayerMode(
+                                    newMode,
+                                  );
                                 },
                                 iconSize: 20,
                                 icon: Icon(
@@ -608,9 +653,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 12,
-                          ),
+                          const SizedBox(height: 12),
                         ],
                       ),
                     ],
