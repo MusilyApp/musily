@@ -8,6 +8,7 @@ import 'package:musily/features/_search_module/presenter/controllers/results_pag
 import 'package:musily/features/_search_module/presenter/pages/album_results_page.dart';
 import 'package:musily/features/_search_module/presenter/pages/artist_results_page.dart';
 import 'package:musily/features/_search_module/presenter/pages/track_results_page.dart';
+import 'package:musily/features/_search_module/presenter/widgets/search_filter_chip.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
@@ -59,6 +60,7 @@ class ResultsPage extends StatefulWidget {
 
 class _ResultsPageState extends State<ResultsPage> {
   final TextEditingController searchTextController = TextEditingController();
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -70,113 +72,136 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget build(BuildContext context) {
     return LyPage(
       contextKey: 'SearchResultsPage',
-      child: DefaultTabController(
-        initialIndex: 0,
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: LyTextField(
-                      prefixIcon: const Icon(
-                        Icons.search_rounded,
-                      ),
-                      onFocus: () {
-                        Navigator.pop(context, 'edit');
-                      },
-                      controller: searchTextController,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(300),
-                      onTap: () {
-                        Navigator.pop(context, 'clear');
-                      },
-                      child: const Icon(Icons.close),
-                    ),
-                  ),
-                ],
-              ),
+      child: Scaffold(
+        appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
+          title: Padding(
+            padding: const EdgeInsets.only(
+              top: 8,
             ),
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  child: Text(context.localization.songs),
+            child: Row(
+              children: [
+                Expanded(
+                  child: LyTextField(
+                    prefixIcon: const Icon(
+                      Icons.search_rounded,
+                    ),
+                    onFocus: () {
+                      Navigator.pop(context, 'edit');
+                    },
+                    controller: searchTextController,
+                  ),
                 ),
-                Tab(
-                  child: Text(context.localization.albums),
-                ),
-                Tab(
-                  child: Text(context.localization.artists),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(300),
+                    onTap: () {
+                      Navigator.pop(context, 'clear');
+                    },
+                    child: const Icon(Icons.close),
+                  ),
                 ),
               ],
             ),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    TrackResultsPage(
-                      resultsPageController: widget.resultsPageController,
-                      searchQuery: widget.searchQuery,
-                      libraryController: widget.libraryController,
-                      getAlbumUsecase: widget.getAlbumUsecase,
-                      getPlaylistUsecase: widget.getPlaylistUsecase,
-                      coreController: widget.coreController,
-                      downloaderController: widget.downloaderController,
-                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                      playerController: widget.playerController,
-                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                      getArtistUsecase: widget.getArtistUsecase,
-                      getTrackUsecase: widget.getTrackUsecase,
-                    ),
-                    AlbumResultsPage(
-                      resultsPageController: widget.resultsPageController,
-                      searchQuery: widget.searchQuery,
-                      getAlbumUsecase: widget.getAlbumUsecase,
-                      coreController: widget.coreController,
-                      libraryController: widget.libraryController,
-                      downloaderController: widget.downloaderController,
-                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                      playerController: widget.playerController,
-                      getPlaylistUsecase: widget.getPlaylistUsecase,
-                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                      getArtistUsecase: widget.getArtistUsecase,
-                      getTrackUsecase: widget.getTrackUsecase,
-                    ),
-                    ArtistResultsPage(
-                      resultsPageController: widget.resultsPageController,
-                      searchQuery: widget.searchQuery,
-                      coreController: widget.coreController,
-                      playerController: widget.playerController,
-                      downloaderController: widget.downloaderController,
-                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                      getPlaylistUsecase: widget.getPlaylistUsecase,
-                      libraryController: widget.libraryController,
-                      getAlbumUsecase: widget.getAlbumUsecase,
-                      getArtistUsecase: widget.getArtistUsecase,
-                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                      getTrackUsecase: widget.getTrackUsecase,
-                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                    ),
-                  ],
-                ),
+        ),
+        body: Column(
+          children: [
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  SearchFilterChip(
+                    label: context.localization.songs,
+                    isSelected: _selectedIndex == 0,
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = 0;
+                      });
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  SearchFilterChip(
+                    label: context.localization.albums,
+                    isSelected: _selectedIndex == 1,
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = 1;
+                      });
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  SearchFilterChip(
+                    label: context.localization.artists,
+                    isSelected: _selectedIndex == 2,
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = 2;
+                      });
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: IndexedStack(
+                index: _selectedIndex,
+                children: [
+                  TrackResultsPage(
+                    resultsPageController: widget.resultsPageController,
+                    searchQuery: widget.searchQuery,
+                    libraryController: widget.libraryController,
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    getPlaylistUsecase: widget.getPlaylistUsecase,
+                    coreController: widget.coreController,
+                    downloaderController: widget.downloaderController,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    playerController: widget.playerController,
+                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                    getArtistUsecase: widget.getArtistUsecase,
+                    getTrackUsecase: widget.getTrackUsecase,
+                  ),
+                  AlbumResultsPage(
+                    resultsPageController: widget.resultsPageController,
+                    searchQuery: widget.searchQuery,
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    coreController: widget.coreController,
+                    libraryController: widget.libraryController,
+                    downloaderController: widget.downloaderController,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    playerController: widget.playerController,
+                    getPlaylistUsecase: widget.getPlaylistUsecase,
+                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                    getArtistUsecase: widget.getArtistUsecase,
+                    getTrackUsecase: widget.getTrackUsecase,
+                  ),
+                  ArtistResultsPage(
+                    resultsPageController: widget.resultsPageController,
+                    searchQuery: widget.searchQuery,
+                    coreController: widget.coreController,
+                    playerController: widget.playerController,
+                    downloaderController: widget.downloaderController,
+                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                    getPlaylistUsecase: widget.getPlaylistUsecase,
+                    libraryController: widget.libraryController,
+                    getAlbumUsecase: widget.getAlbumUsecase,
+                    getArtistUsecase: widget.getArtistUsecase,
+                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                    getTrackUsecase: widget.getTrackUsecase,
+                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
