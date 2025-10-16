@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -10,6 +9,7 @@ import 'package:musily/features/settings/domain/enums/accent_color_preference.da
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
+import 'package:musily/l10n/app_localizations.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -109,31 +109,24 @@ class _AppMaterialState extends State<AppMaterial>
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: lightColorScheme ??
-            ColorScheme.fromSeed(
-              seedColor: accentColor,
-            ),
+        colorScheme:
+            lightColorScheme ?? ColorScheme.fromSeed(seedColor: accentColor),
         useMaterial3: true,
-        cardTheme: const CardTheme(
-          shadowColor: Colors.transparent,
-        ),
+        cardTheme: const CardThemeData(shadowColor: Colors.transparent),
       ),
       darkTheme: ThemeData(
-        colorScheme: dakColorScheme ??
+        colorScheme:
+            dakColorScheme ??
             ColorScheme.fromSeed(
               seedColor: accentColor,
               brightness: Brightness.dark,
             ),
         scaffoldBackgroundColor: Colors.black,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black,
-        ),
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.black,
         ),
-        cardTheme: const CardTheme(
-          color: Color.fromARGB(255, 10, 10, 10),
-        ),
+        cardTheme: const CardThemeData(color: Color.fromARGB(255, 10, 10, 10)),
       ),
       routerConfig: Modular.routerConfig,
     );
@@ -151,23 +144,25 @@ class _AppMaterialState extends State<AppMaterial>
                 data.accentColorPreference == AccentColorPreference.defaultColor
                     ? Colors.deepPurple
                     : data.accentColorPreference == AccentColorPreference.system
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.deepPurple,
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.deepPurple,
                 data,
-                dakColorScheme: data.accentColorPreference ==
-                        AccentColorPreference.defaultColor
-                    ? ColorScheme.fromSeed(
-                        seedColor: Colors.deepPurple,
-                        brightness: Brightness.dark,
-                      )
-                    : darkDynamic,
-                lightColorScheme: data.accentColorPreference ==
-                        AccentColorPreference.defaultColor
-                    ? ColorScheme.fromSeed(
-                        seedColor: Colors.deepPurple,
-                        brightness: Brightness.light,
-                      )
-                    : lightDynamic,
+                dakColorScheme:
+                    data.accentColorPreference ==
+                            AccentColorPreference.defaultColor
+                        ? ColorScheme.fromSeed(
+                          seedColor: Colors.deepPurple,
+                          brightness: Brightness.dark,
+                        )
+                        : darkDynamic,
+                lightColorScheme:
+                    data.accentColorPreference ==
+                            AccentColorPreference.defaultColor
+                        ? ColorScheme.fromSeed(
+                          seedColor: Colors.deepPurple,
+                          brightness: Brightness.light,
+                        )
+                        : lightDynamic,
               );
             },
           );
@@ -177,8 +172,8 @@ class _AppMaterialState extends State<AppMaterial>
             data.accentColorPreference == AccentColorPreference.defaultColor
                 ? Colors.deepPurple
                 : data.accentColorPreference == AccentColorPreference.system
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.deepPurple,
+                ? Theme.of(context).colorScheme.primary
+                : Colors.deepPurple,
             data,
           );
         }
@@ -189,10 +184,11 @@ class _AppMaterialState extends State<AppMaterial>
             if (data.accentColorPreference == AccentColorPreference.system) {
               accentColor = snapshot.data ?? Colors.deepPurple;
             } else {
-              accentColor = data.accentColorPreference ==
-                      AccentColorPreference.defaultColor
-                  ? Colors.deepPurple
-                  : Theme.of(context).colorScheme.primary;
+              accentColor =
+                  data.accentColorPreference ==
+                          AccentColorPreference.defaultColor
+                      ? Colors.deepPurple
+                      : Theme.of(context).colorScheme.primary;
             }
             return getMaterialApp(accentColor, data);
           },
