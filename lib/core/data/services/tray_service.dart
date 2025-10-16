@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
+import 'package:musily/l10n/app_localizations.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:tray_manager/tray_manager.dart';
 
@@ -18,15 +18,9 @@ class TrayService {
     }
     Menu menu = Menu(
       items: [
-        MenuItem(
-          key: 'show_window',
-          label: 'Show Window',
-        ),
+        MenuItem(key: 'show_window', label: 'Show Window'),
         MenuItem.separator(),
-        MenuItem(
-          key: 'exit_app',
-          label: 'Exit App',
-        ),
+        MenuItem(key: 'exit_app', label: 'Exit App'),
       ],
     );
     await trayManager.setIcon(icon);
@@ -51,28 +45,13 @@ class TrayService {
     }
     Menu menu = Menu(
       items: [
-        MenuItem(
-          key: 'show_window',
-          label: localization.showWindow,
-        ),
+        MenuItem(key: 'show_window', label: localization.showWindow),
         MenuItem.separator(),
-        MenuItem(
-          key: 'library',
-          label: localization.library,
-        ),
-        MenuItem(
-          key: 'settings',
-          label: localization.settings,
-        ),
-        MenuItem(
-          key: 'downloads',
-          label: localization.downloads,
-        ),
+        MenuItem(key: 'library', label: localization.library),
+        MenuItem(key: 'settings', label: localization.settings),
+        MenuItem(key: 'downloads', label: localization.downloads),
         MenuItem.separator(),
-        MenuItem(
-          key: 'exit_app',
-          label: localization.closeWindow,
-        ),
+        MenuItem(key: 'exit_app', label: localization.closeWindow),
       ],
     );
     await trayManager.setContextMenu(menu);

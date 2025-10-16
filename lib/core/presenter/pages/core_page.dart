@@ -72,14 +72,12 @@ class _CorePageState extends State<CorePage> {
   void initState() {
     super.initState();
     initDeepLinks();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        TrayService.initContextMenu(context);
-        if (UpdaterService.instance.hasUpdate) {
-          UpdaterDialog.show(context);
-        }
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      TrayService.initContextMenu(context);
+      if (UpdaterService.instance.hasUpdate) {
+        UpdaterDialog.show(context);
+      }
+    });
   }
 
   @override
@@ -102,9 +100,7 @@ class _CorePageState extends State<CorePage> {
     return LyDisposable(
       onInitState: () {
         widget.settingsController.updateData(
-          widget.settingsController.data.copyWith(
-            context: context,
-          ),
+          widget.settingsController.data.copyWith(context: context),
         );
       },
       child: widget.coreController.builder(

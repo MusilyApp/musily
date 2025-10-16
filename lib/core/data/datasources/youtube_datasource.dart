@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dart_ytmusic_api/dart_ytmusic_api.dart';
+import 'package:musily/core/data/services/curl_service.dart';
 import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/core/utils/generate_section_id.dart';
 import 'package:musily/core/utils/generate_track_hash.dart';
@@ -16,9 +17,36 @@ class YoutubeDatasource {
   final ytMusic = YTMusic();
 
   Future<void> initialize() async {
+    await getYtMusicRawHomeHtml();
     final prefs = await SharedPreferences.getInstance();
     final locale = prefs.getString('locale');
-    await ytMusic.initialize(hl: locale);
+    try {
+      await ytMusic.initialize(
+        hl: locale,
+      );
+    } catch (e) {
+      final ytMusicHomeRawHtml = await getYtMusicRawHomeHtml();
+      await ytMusic.initialize(
+        hl: locale,
+        ytMusicHomeRawHtml: ytMusicHomeRawHtml,
+      );
+    }
+  }
+
+  Future<String?> getYtMusicRawHomeHtml() async {
+    final curlService = CurlService();
+    await curlService.init();
+
+    final response = await curlService.get(
+      'https://music.youtube.com/',
+      headers: {
+        'User-Agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.5',
+      },
+    );
+
+    return response;
   }
 
   Future<AlbumEntity?> getAlbum(String albumId) async {

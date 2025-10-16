@@ -31,7 +31,7 @@ if (flutterVersionName == null) {
 android {
     namespace = 'app.musily.music'
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = '27.0.12077973'
     flavorDimensions 'default'
 
     compileOptions {
@@ -95,4 +95,46 @@ android {
 
 flutter {
     source = '../..'
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                compileSdkVersion 35
+
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+        
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = JavaVersion.VERSION_17.toString()
+            }
+        }
+
+        if (project.plugins.hasPlugin('com.android.library')) {
+            android {
+                defaultConfig {
+                    def androidManifest = android.sourceSets.main.manifest.srcFile
+                    if (androidManifest.exists()) {
+                        def parsedManifest = new XmlParser().parse(androidManifest)
+                        def packageName = parsedManifest.attribute('package')
+
+                        if (packageName == null) {
+                            namespace = "app.musily.music"
+                        }
+
+                        if (namespace == null) {
+                            namespace project.group
+                        }
+                    }
+                }
+            }
+        }
+    }
+    project.evaluationDependsOn(':app')
 }

@@ -10,10 +10,7 @@ import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
 
 class QueueWidget extends StatefulWidget {
   final PlayerController playerController;
-  const QueueWidget({
-    required this.playerController,
-    super.key,
-  });
+  const QueueWidget({required this.playerController, super.key});
 
   @override
   State<QueueWidget> createState() => _QueueWidgetState();
@@ -40,8 +37,9 @@ class _QueueWidgetState extends State<QueueWidget> {
         int currentIndex = 0;
 
         if (data.currentPlayingItem != null) {
-          currentIndex = data.queue
-              .indexWhere((item) => item.id == data.currentPlayingItem!.id);
+          currentIndex = data.queue.indexWhere(
+            (item) => item.id == data.currentPlayingItem!.id,
+          );
         }
 
         final List<TrackEntity> nextSongs = [];
@@ -67,11 +65,7 @@ class _QueueWidgetState extends State<QueueWidget> {
               TrackTileStatic(track: data.currentPlayingItem!),
               // TODO: Localize String
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  top: 12,
-                  bottom: 12,
-                ),
+                padding: const EdgeInsets.only(left: 16, top: 12, bottom: 12),
                 child: Row(
                   children: [
                     Text(
@@ -97,16 +91,19 @@ class _QueueWidgetState extends State<QueueWidget> {
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
                     }
-                    widget.playerController.methods
-                        .reorderQueue(newIndex, oldIndex);
+                    widget.playerController.methods.reorderQueue(
+                      newIndex,
+                      oldIndex,
+                    );
                   },
                   itemBuilder: (context, index) {
                     final track = queue[index];
                     return Container(
-                      color: data.tracksFromSmartQueue.contains(track.hash)
-                          ? context.themeData.colorScheme.primary
-                              .withValues(alpha: .2)
-                          : Colors.transparent,
+                      color:
+                          data.tracksFromSmartQueue.contains(track.hash)
+                              ? context.themeData.colorScheme.primary
+                                  .withValues(alpha: .2)
+                              : Colors.transparent,
                       margin: EdgeInsets.zero,
                       key: Key(index.toString()),
                       child: LyListTile(
@@ -114,18 +111,13 @@ class _QueueWidgetState extends State<QueueWidget> {
                           final actualIndex = data.queue.indexWhere(
                             (item) => item.id == track.id,
                           );
-                          await widget.playerController.methods
-                              .queueJumpTo(actualIndex);
+                          await widget.playerController.methods.queueJumpTo(
+                            actualIndex,
+                          );
                         },
-                        title: InfinityMarquee(
-                          child: Text(
-                            track.title,
-                          ),
-                        ),
+                        title: InfinityMarquee(child: Text(track.title)),
                         subtitle: InfinityMarquee(
-                          child: Text(
-                            track.artist.name,
-                          ),
+                          child: Text(track.artist.name),
                         ),
                         leading: Card(
                           shape: RoundedRectangleBorder(
@@ -165,18 +157,21 @@ class _QueueWidgetState extends State<QueueWidget> {
                             },
                           ),
                         ),
-                        trailing: data.tracksFromSmartQueue
-                                .contains(queue[index].hash)
-                            ? Padding(
-                                padding: EdgeInsets.only(
-                                  right: context.display.isDesktop ? 24 : 0,
-                                ),
-                                child: Icon(
-                                  CupertinoIcons.wand_stars,
-                                  color: context.themeData.colorScheme.primary,
-                                ),
-                              )
-                            : null,
+                        trailing:
+                            data.tracksFromSmartQueue.contains(
+                                  queue[index].hash,
+                                )
+                                ? Padding(
+                                  padding: EdgeInsets.only(
+                                    right: context.display.isDesktop ? 24 : 0,
+                                  ),
+                                  child: Icon(
+                                    CupertinoIcons.wand_stars,
+                                    color:
+                                        context.themeData.colorScheme.primary,
+                                  ),
+                                )
+                                : null,
                         key: Key('$index'),
                       ),
                     );

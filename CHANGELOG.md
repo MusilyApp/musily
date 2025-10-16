@@ -1,3 +1,20 @@
+## 4.0.3
+
+**Fixes**
+
+- Fixed an issue where users were unable to load music streams.
+
+## 4.0.2
+
+**Fixes**
+
+- Fixed an issue where the window title did not update when the song changed.
+- Resolved regional issues by adding `CurlService`
+
+**Features**
+
+- New: Automatically scrolls to the start of the queue when the song changes.
+
 ## 4.0.1
 
 **Fixes**

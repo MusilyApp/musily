@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:isolate';
+
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/core/domain/repositories/musily_repository.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
@@ -5,21 +8,37 @@ import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+Future<String?> _getYoutubeAudioUrl(String ytId) async {
+  try {
+    final yt = YoutubeExplode();
+    final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId));
+    final audioStreamInfoSorted = List<AudioOnlyStreamInfo>.from(
+      manifest.audioOnly,
+    )..sort(
+      (a, b) => a.bitrate.bitsPerSecond.compareTo(b.bitrate.bitsPerSecond),
+    );
+
+    final audioStreamInfo = audioStreamInfoSorted.last;
+    final url = audioStreamInfo.url.toString();
+    yt.close();
+    return url;
+  } catch (e) {
+    log('Error getting YouTube audio URL in isolate: $e');
+    return null;
+  }
+}
+
 class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
   late final MusilyRepository _musilyRepository;
 
-  GetPlayableItemUsecaseImpl({
-    required MusilyRepository musilyRepository,
-  }) {
+  GetPlayableItemUsecaseImpl({required MusilyRepository musilyRepository}) {
     _musilyRepository = musilyRepository;
   }
 
   @override
   Future<TrackEntity> exec(TrackEntity track, {String? youtubeId}) async {
-    final yt = YoutubeExplode();
     late final String ytId;
 
-    late final String url;
     if (youtubeId != null) {
       ytId = youtubeId;
     } else {
@@ -27,10 +46,11 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
     }
 
     try {
-      final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId));
-      final audioSteamInfo = manifest.audioOnly.withHighestBitrate();
+      final url = await Isolate.run(() => _getYoutubeAudioUrl(ytId));
 
-      url = audioSteamInfo.url.toString();
+      if (url == null) {
+        throw Exception('Failed to get audio URL from YouTube');
+      }
 
       if (!(track.lowResImg?.isUrl ?? false) ||
           !(track.highResImg?.isUrl ?? false)) {
@@ -51,8 +71,9 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
         fromSmartQueue: track.fromSmartQueue,
         duration: track.duration,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       LySnackbar.show(e.toString());
+      log('error: $e', stackTrace: stackTrace);
       return track;
     }
   }
