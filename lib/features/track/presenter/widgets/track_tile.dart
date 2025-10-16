@@ -102,7 +102,7 @@ class _TrackTileState extends State<TrackTile> {
         leading: widget.leading ??
             Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 side: BorderSide(
                   width: 1,
                   color: context.themeData.colorScheme.outline
@@ -114,7 +114,7 @@ class _TrackTileState extends State<TrackTile> {
                   if (widget.track.lowResImg != null &&
                       widget.track.lowResImg!.isNotEmpty) {
                     return ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
                       child: AppImage(
                         widget.track.lowResImg!,
                         width: 40,

@@ -18,9 +18,9 @@ class AlbumStaticTile extends StatelessWidget {
     return LyListTile(
       leading: LyCard(
         width: 40,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           side: BorderSide(
             width: 1,
             color: context.themeData.colorScheme.outline.withValues(alpha: .2),
@@ -28,7 +28,7 @@ class AlbumStaticTile extends StatelessWidget {
         ),
         padding: EdgeInsets.zero,
         content: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           child: AppImage(
             album.lowResImg ?? '',
             width: 40,
