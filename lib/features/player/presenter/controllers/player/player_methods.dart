@@ -1,3 +1,4 @@
+import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class PlayerMethods {
@@ -18,13 +19,12 @@ class PlayerMethods {
   Future<void> Function(List<TrackEntity> items) addToQueue;
   Future<void> Function(int index) queueJumpTo;
   Future<void> Function(int newIndex, int oldIndex) reorderQueue;
-  void Function(String trackId) toggleLyrics;
+  void Function(PlayerMode mode) setPlayerMode;
   Future<String?> Function(String trackId) getLyrics;
   void Function() toggleSyncedLyrics;
 
   Future<void> Function({List<TrackEntity>? customItems}) getSmartQueue;
   void Function() toggleSmartQueue;
-  void Function() toggleShowQueue;
   void Function() toggleShowDownloadManager;
 
   Future<void> Function(
@@ -48,12 +48,11 @@ class PlayerMethods {
     required this.queueJumpTo,
     required this.reorderQueue,
     required this.playPlaylist,
-    required this.toggleLyrics,
+    required this.setPlayerMode,
     required this.getLyrics,
     required this.toggleSyncedLyrics,
     required this.getSmartQueue,
     required this.toggleSmartQueue,
-    required this.toggleShowQueue,
     required this.toggleShowDownloadManager,
   });
 }

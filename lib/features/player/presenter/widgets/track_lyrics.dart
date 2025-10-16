@@ -256,9 +256,24 @@ class _TrackLyricsState extends State<TrackLyrics> {
       }
     });
 
-    return Stack(
-      children: [
-        Align(
+    return ShaderMask(
+      shaderCallback: (Rect bounds) {
+        return const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.transparent,
+            Colors.white,
+            Colors.white,
+            Colors.transparent,
+          ],
+          stops: [0.0, 0.05, 0.95, 1],
+        ).createShader(bounds);
+      },
+      blendMode: BlendMode.dstIn,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 1),
+        child: Align(
           alignment: Alignment.center,
           child: SingleChildScrollView(
             controller: _scrollController,
@@ -285,38 +300,7 @@ class _TrackLyricsState extends State<TrackLyrics> {
             ),
           ),
         ),
-        Container(
-          height: 30,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                context.themeData.colorScheme.inversePrimary,
-                context.themeData.colorScheme.inversePrimary
-                    .withValues(alpha: 0.003),
-              ],
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 30,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  context.themeData.colorScheme.inversePrimary
-                      .withValues(alpha: 0.003),
-                  context.themeData.colorScheme.inversePrimary,
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

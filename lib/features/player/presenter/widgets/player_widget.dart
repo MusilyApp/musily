@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -9,6 +8,7 @@ import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -18,12 +18,13 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/downloader/presenter/widgets/download_button.dart';
-import 'package:musily/features/player/presenter/widgets/queue_widget.dart';
+import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/favorite/presenter/widgets/favorite_button.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/player_background.dart';
 import 'package:musily/features/player/presenter/widgets/player_banner.dart';
+import 'package:musily/features/player/presenter/widgets/player_switches.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_options.dart';
@@ -104,69 +105,52 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                     LyNavigator.close('player');
                                   },
                                   icon: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 30,
+                                    LucideIcons.chevronDown,
+                                    size: 20,
                                   ),
                                 );
                               },
                             ),
-                            Stack(
-                              children: [
-                                AnimatedOpacity(
-                                  duration: const Duration(
-                                    milliseconds: 200,
-                                  ),
-                                  opacity: data.showLyrics ? 1 : 0,
-                                  child: Switch(
-                                    activeColor:
-                                        context.themeData.colorScheme.onPrimary,
-                                    thumbIcon: const WidgetStatePropertyAll(
-                                      Icon(Icons.sync_rounded),
-                                    ),
-                                    value: data.syncedLyrics,
-                                    onChanged: data.showLyrics
-                                        ? (value) {
-                                            widget.playerController.methods
-                                                .toggleSyncedLyrics();
-                                          }
-                                        : null,
-                                  ),
-                                ),
-                                AnimatedOpacity(
-                                  opacity: data.showLyrics ? 0 : 1,
-                                  duration: const Duration(
-                                    milliseconds: 200,
-                                  ),
-                                  child: data.showLyrics
-                                      ? const SizedBox.shrink()
-                                      : Switch(
-                                          inactiveThumbColor: context
-                                              .themeData.colorScheme.primary
-                                              .withValues(alpha: .6),
-                                          inactiveTrackColor: context
-                                              .themeData.colorScheme.primary
-                                              .withValues(alpha: 0.1),
-                                          activeColor: context
-                                              .themeData.colorScheme.primary,
-                                          value: data.autoSmartQueue,
-                                          thumbIcon: WidgetStatePropertyAll(
-                                            Icon(
-                                              CupertinoIcons.wand_rays,
-                                              color: context.themeData
-                                                  .colorScheme.onPrimary,
+                            if (data.playerMode == PlayerMode.queue)
+                              Expanded(
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      InfinityMarquee(
+                                        child: Text(
+                                          currentPlayingItem.title,
+                                          style: context
+                                              .themeData.textTheme.titleMedium
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      Opacity(
+                                        opacity: 0.7,
+                                        child: InfinityMarquee(
+                                          child: Text(
+                                            currentPlayingItem.artist.name,
+                                            style: context
+                                                .themeData.textTheme.bodyMedium
+                                                ?.copyWith(
+                                              fontWeight: FontWeight.w400,
                                             ),
                                           ),
-                                          onChanged: data.loadingSmartQueue
-                                              ? null
-                                              : (value) {
-                                                  widget
-                                                      .playerController.methods
-                                                      .toggleSmartQueue();
-                                                },
                                         ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
+                              )
+                            else
+                              PlayerSwitches(
+                                playerController: widget.playerController,
+                                playerMode: data.playerMode,
+                                syncedLyrics: data.syncedLyrics,
+                                autoSmartQueue: data.autoSmartQueue,
+                                loadingSmartQueue: data.loadingSmartQueue,
+                              ),
                             TrackOptions(
                               getTrackUsecase: widget.getTrackUsecase,
                               getPlaylistUsecase: widget.getPlaylistUsecase,
@@ -211,88 +195,93 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                       ),
                       Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: LyListTile(
-                              title: InfinityMarquee(
-                                child: Text(
-                                  currentPlayingItem.title,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
+                          if (data.playerMode != PlayerMode.queue)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: LyListTile(
+                                title: InfinityMarquee(
+                                  child: Text(
+                                    currentPlayingItem.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              subtitle: InkWell(
-                                onTap: () {
-                                  LyNavigator.close('player');
-                                  LyNavigator.push(
-                                    context.showingPageContext,
-                                    AsyncArtistPage(
-                                      trackId: data.currentPlayingItem!.id,
-                                      getTrackUsecase: widget.getTrackUsecase,
-                                      artistId:
-                                          data.currentPlayingItem!.artist.id,
-                                      coreController: widget.coreController,
-                                      getPlaylistUsecase:
-                                          widget.getPlaylistUsecase,
-                                      playerController: widget.playerController,
-                                      getAlbumUsecase: widget.getAlbumUsecase,
-                                      downloaderController:
-                                          widget.downloaderController,
-                                      getPlayableItemUsecase:
-                                          widget.getPlayableItemUsecase,
+                                subtitle: InkWell(
+                                  onTap: () {
+                                    LyNavigator.close('player');
+                                    LyNavigator.push(
+                                      context.showingPageContext,
+                                      AsyncArtistPage(
+                                        trackId: data.currentPlayingItem!.id,
+                                        getTrackUsecase: widget.getTrackUsecase,
+                                        artistId:
+                                            data.currentPlayingItem!.artist.id,
+                                        coreController: widget.coreController,
+                                        getPlaylistUsecase:
+                                            widget.getPlaylistUsecase,
+                                        playerController:
+                                            widget.playerController,
+                                        getAlbumUsecase: widget.getAlbumUsecase,
+                                        downloaderController:
+                                            widget.downloaderController,
+                                        getPlayableItemUsecase:
+                                            widget.getPlayableItemUsecase,
+                                        libraryController:
+                                            widget.libraryController,
+                                        getArtistAlbumsUsecase:
+                                            widget.getArtistAlbumsUsecase,
+                                        getArtistSinglesUsecase:
+                                            widget.getArtistSinglesUsecase,
+                                        getArtistTracksUsecase:
+                                            widget.getArtistTracksUsecase,
+                                        getArtistUsecase:
+                                            widget.getArtistUsecase,
+                                      ),
+                                    );
+                                  },
+                                  child: InfinityMarquee(
+                                    child: Text(
+                                      currentPlayingItem.artist.name,
+                                    ),
+                                  ),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    DownloadButton(
+                                      controller: widget.downloaderController,
+                                      track: data.currentPlayingItem!,
+                                    ),
+                                    if (data.tracksFromSmartQueue
+                                        .contains(currentPlayingItem.hash))
+                                      IconButton(
+                                        onPressed: () {
+                                          widget.libraryController.methods
+                                              .addTracksToPlaylist(
+                                            widget.playerController.data
+                                                .playingId,
+                                            [
+                                              currentPlayingItem,
+                                            ],
+                                          );
+                                        },
+                                        color: context
+                                            .themeData.colorScheme.primary,
+                                        icon: const Icon(
+                                          LucideIcons.circlePlus,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    FavoriteButton(
                                       libraryController:
                                           widget.libraryController,
-                                      getArtistAlbumsUsecase:
-                                          widget.getArtistAlbumsUsecase,
-                                      getArtistSinglesUsecase:
-                                          widget.getArtistSinglesUsecase,
-                                      getArtistTracksUsecase:
-                                          widget.getArtistTracksUsecase,
-                                      getArtistUsecase: widget.getArtistUsecase,
+                                      track: data.currentPlayingItem!,
                                     ),
-                                  );
-                                },
-                                child: InfinityMarquee(
-                                  child: Text(
-                                    currentPlayingItem.artist.name,
-                                  ),
+                                  ],
                                 ),
                               ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  DownloadButton(
-                                    controller: widget.downloaderController,
-                                    track: data.currentPlayingItem!,
-                                  ),
-                                  if (data.tracksFromSmartQueue
-                                      .contains(currentPlayingItem.hash))
-                                    IconButton(
-                                      onPressed: () {
-                                        widget.libraryController.methods
-                                            .addTracksToPlaylist(
-                                          widget
-                                              .playerController.data.playingId,
-                                          [
-                                            currentPlayingItem,
-                                          ],
-                                        );
-                                      },
-                                      color:
-                                          context.themeData.colorScheme.primary,
-                                      icon: const Icon(
-                                        Icons.add_circle_rounded,
-                                      ),
-                                    ),
-                                  FavoriteButton(
-                                    libraryController: widget.libraryController,
-                                    track: data.currentPlayingItem!,
-                                  ),
-                                ],
-                              ),
                             ),
-                          ),
                           Slider(
                             inactiveColor: context
                                 .themeData.buttonTheme.colorScheme?.primary
@@ -368,8 +357,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                             .toggleShuffle();
                                       },
                                       icon: Icon(
-                                        Icons.shuffle_rounded,
-                                        size: 30,
+                                        LucideIcons.shuffle,
+                                        size: 20,
                                         color: data.shuffleEnabled
                                             ? context.themeData.buttonTheme
                                                 .colorScheme?.primary
@@ -379,12 +368,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                     if (data.shuffleEnabled) ...[
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                          left: 21.5,
-                                          top: 28,
+                                          left: 21,
+                                          top: 30,
                                         ),
                                         child: Icon(
-                                          Icons.fiber_manual_record,
-                                          size: 5,
+                                          LucideIcons.circle,
+                                          size: 4,
                                           color: context.themeData.buttonTheme
                                               .colorScheme?.primary,
                                         ),
@@ -392,7 +381,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                       Padding(
                                         padding: const EdgeInsets.only(
                                           left: 11,
-                                          top: 19,
+                                          top: 20,
                                         ),
                                         child: Icon(
                                           Icons.fiber_manual_record,
@@ -439,30 +428,26 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                             }
                                           },
                                     icon: const Icon(
-                                      Icons.skip_previous_rounded,
-                                      size: 50,
+                                      LucideIcons.skipBack,
+                                      size: 30,
                                     ),
                                   );
                                 }),
                                 Builder(builder: (context) {
                                   if (currentPlayingItem.duration.inSeconds ==
                                       0) {
-                                    return SizedBox(
-                                      width: 86,
-                                      height: 86,
+                                    return const SizedBox(
+                                      width: 70,
+                                      height: 70,
                                       child: Center(
-                                        child: LoadingAnimationWidget
-                                            .halfTriangleDot(
-                                          color: context
-                                                  .themeData.iconTheme.color ??
-                                              Colors.white,
-                                          size: 30,
+                                        child: MusilyLoading(
+                                          size: 45,
                                         ),
                                       ),
                                     );
                                   }
-                                  return IconButton(
-                                    onPressed: () {
+                                  return InkWell(
+                                    onTap: () {
                                       if (data.isPlaying) {
                                         widget.playerController.methods.pause();
                                       } else {
@@ -470,11 +455,35 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                             .resume();
                                       }
                                     },
-                                    icon: Icon(
-                                      data.isPlaying
-                                          ? Icons.pause_circle_filled_rounded
-                                          : Icons.play_circle_rounded,
-                                      size: 70,
+                                    child: Container(
+                                      width: 70,
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        color: context
+                                            .themeData.colorScheme.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: const EdgeInsets.all(6),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          if (data.isPlaying) {
+                                            widget.playerController.methods
+                                                .pause();
+                                          } else {
+                                            widget.playerController.methods
+                                                .resume();
+                                          }
+                                        },
+                                        visualDensity: VisualDensity.standard,
+                                        iconSize: 35,
+                                        icon: Icon(
+                                          data.isPlaying
+                                              ? LucideIcons.pause
+                                              : LucideIcons.play,
+                                          color: context
+                                              .themeData.colorScheme.onPrimary,
+                                        ),
+                                      ),
                                     ),
                                   );
                                 }),
@@ -500,8 +509,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                                 .nextInQueue();
                                           },
                                     icon: const Icon(
-                                      Icons.skip_next_rounded,
-                                      size: 50,
+                                      LucideIcons.skipForward,
+                                      size: 30,
                                     ),
                                   );
                                 }),
@@ -516,14 +525,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                         () {
                                           switch (data.repeatMode) {
                                             case MusilyRepeatMode.noRepeat:
-                                              return Icons.repeat_rounded;
+                                              return LucideIcons.repeat;
                                             case MusilyRepeatMode.repeat:
-                                              return Icons.repeat_rounded;
+                                              return LucideIcons.repeat;
                                             case MusilyRepeatMode.repeatOne:
-                                              return Icons.repeat_one_rounded;
+                                              return LucideIcons.repeat1;
                                           }
                                         }(),
-                                        size: 30,
+                                        size: 20,
                                         color: data.repeatMode !=
                                                 MusilyRepeatMode.noRepeat
                                             ? context.themeData.buttonTheme
@@ -534,12 +543,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                           MusilyRepeatMode.repeat)
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                            left: 11,
-                                            top: 11,
+                                            left: 7,
+                                            top: 7,
                                           ),
                                           child: Icon(
                                             Icons.fiber_manual_record,
-                                            size: 8,
+                                            size: 6,
                                             color: context.themeData.buttonTheme
                                                 .colorScheme?.primary,
                                           ),
@@ -560,40 +569,41 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                   );
                                 },
                                 icon: const Icon(
-                                  Icons.share_rounded,
+                                  LucideIcons.share2,
                                   size: 20,
                                 ),
                               ),
                               IconButton(
-                                onPressed: () => widget.playerController.methods
-                                    .toggleLyrics(
-                                  currentPlayingItem.id,
-                                ),
+                                onPressed: () {
+                                  final newMode =
+                                      data.playerMode == PlayerMode.lyrics
+                                          ? PlayerMode.artwork
+                                          : PlayerMode.lyrics;
+                                  widget.playerController.methods
+                                      .setPlayerMode(newMode);
+                                },
                                 iconSize: 20,
                                 icon: Icon(
-                                  !data.showLyrics
-                                      ? Icons.lyrics_rounded
-                                      : Icons.album_rounded,
+                                  data.playerMode != PlayerMode.lyrics
+                                      ? LucideIcons.music2
+                                      : LucideIcons.disc2,
                                 ),
                               ),
                               IconButton(
                                 onPressed: () {
-                                  LyNavigator.showBottomSheet(
-                                    padding: EdgeInsets.zero,
-                                    width: context.display.width,
-                                    margin: const EdgeInsets.all(8),
-                                    context: context,
-                                    content: Expanded(
-                                      child: QueueWidget(
-                                        playerController:
-                                            widget.playerController,
-                                      ),
-                                    ),
-                                  );
+                                  if (data.playerMode == PlayerMode.queue) {
+                                    widget.playerController.methods
+                                        .setPlayerMode(PlayerMode.artwork);
+                                  } else {
+                                    widget.playerController.methods
+                                        .setPlayerMode(PlayerMode.queue);
+                                  }
                                 },
-                                icon: const Icon(
-                                  Icons.queue_music_rounded,
-                                  size: 25,
+                                icon: Icon(
+                                  data.playerMode == PlayerMode.queue
+                                      ? LucideIcons.disc2
+                                      : LucideIcons.listMusic,
+                                  size: 20,
                                 ),
                               ),
                             ],

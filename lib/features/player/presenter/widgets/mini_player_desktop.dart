@@ -85,7 +85,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                   child: SizedBox(
                     height: availableHeight - 80,
                     child: InContextDialog(
-                      show: data.showQueue,
+                      show: false,
                       width: 350,
                       child: Card(
                         color: context.themeData.scaffoldBackgroundColor,
@@ -115,7 +115,7 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                   child: SizedBox(
                     height: availableHeight - 80,
                     child: InContextDialog(
-                      show: data.showLyrics,
+                      show: false,
                       width: 350,
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -689,31 +689,28 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        widget.playerController.methods
-                                            .toggleShowQueue();
+                                        // widget.playerController.methods
+                                        //     .toggleShowQueue();
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.queue_music_rounded,
                                         size: 20,
-                                        color: data.showQueue
-                                            ? context
-                                                .themeData.colorScheme.primary
-                                            : null,
+                                        color: null,
                                       ),
                                     ),
-                                    if (data.showQueue)
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 28,
-                                          left: 17,
-                                        ),
-                                        child: Icon(
-                                          Icons.fiber_manual_record,
-                                          size: 6,
-                                          color: context
-                                              .themeData.colorScheme.primary,
-                                        ),
-                                      ),
+                                    // if (false)
+                                    //   Padding(
+                                    //     padding: const EdgeInsets.only(
+                                    //       top: 28,
+                                    //       left: 17,
+                                    //     ),
+                                    //     child: Icon(
+                                    //       Icons.fiber_manual_record,
+                                    //       size: 6,
+                                    //       color: context
+                                    //           .themeData.colorScheme.primary,
+                                    //     ),
+                                    //   ),
                                   ],
                                 ),
                                 Stack(
@@ -721,33 +718,29 @@ class _MiniPlayerDesktopState extends State<MiniPlayerDesktop> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        widget.playerController.methods
-                                            .toggleLyrics(
-                                          data.currentPlayingItem!.id,
-                                        );
+                                        // widget.playerController.methods
+                                        //     .toggleLyrics(
+                                        //   data.currentPlayingItem!.id,
+                                        // );
                                       },
                                       iconSize: 20,
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.lyrics_rounded,
-                                        color: data.showLyrics
-                                            ? context
-                                                .themeData.colorScheme.primary
-                                            : null,
                                       ),
                                     ),
-                                    if (data.showLyrics)
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 28,
-                                          left: 16,
-                                        ),
-                                        child: Icon(
-                                          Icons.fiber_manual_record,
-                                          size: 6,
-                                          color: context
-                                              .themeData.colorScheme.primary,
-                                        ),
-                                      )
+                                    // if (false)
+                                    //   Padding(
+                                    //     padding: const EdgeInsets.only(
+                                    //       top: 28,
+                                    //       left: 16,
+                                    //     ),
+                                    //     child: Icon(
+                                    //       Icons.fiber_manual_record,
+                                    //       size: 6,
+                                    //       color: context
+                                    //           .themeData.colorScheme.primary,
+                                    //     ),
+                                    //   )
                                   ],
                                 ),
                                 TrackOptions(

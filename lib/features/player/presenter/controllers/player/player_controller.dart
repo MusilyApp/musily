@@ -8,6 +8,7 @@ import 'package:musily/features/player/data/services/musily_player.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
+import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/domain/usecases/get_smart_queue_usecase.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_data.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_methods.dart';
@@ -128,7 +129,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           data: data.currentPlayingItem,
         ),
       );
-      if (data.showLyrics) {
+      if (data.playerMode == PlayerMode.lyrics) {
         methods.getLyrics(data.currentPlayingItem?.id ?? '');
       }
       final downloadedQueue = DownloaderController().data.queue;
@@ -160,7 +161,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       shuffleEnabled: false,
       repeatMode: MusilyRepeatMode.noRepeat,
       isBuffering: false,
-      showLyrics: false,
+      playerMode: PlayerMode.artwork,
       loadingLyrics: false,
       syncedLyrics: true,
       lyrics: Lyrics(
@@ -172,7 +173,6 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       autoSmartQueue: false,
       loadingSmartQueue: false,
       addingToFavorites: false,
-      showQueue: false,
       showDownloadManager: false,
       isPositionTriggered: false,
     );
@@ -185,17 +185,6 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         updateData(
           data.copyWith(
             showDownloadManager: !data.showDownloadManager,
-            showQueue: false,
-            showLyrics: false,
-          ),
-        );
-      },
-      toggleShowQueue: () {
-        updateData(
-          data.copyWith(
-            showQueue: !data.showQueue,
-            showLyrics: false,
-            showDownloadManager: false,
           ),
         );
       },
@@ -345,15 +334,16 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         );
         return data.lyrics.lyrics;
       },
-      toggleLyrics: (id) {
+      setPlayerMode: (mode) {
         updateData(
           data.copyWith(
-            showLyrics: !data.showLyrics,
+            playerMode: mode,
             showDownloadManager: false,
-            showQueue: false,
           ),
         );
-        methods.getLyrics(id);
+        if (mode == PlayerMode.lyrics) {
+          methods.getLyrics(data.currentPlayingItem?.id ?? '');
+        }
       },
       play: () async {
         await _musilyPlayer.playPlaylist();
