@@ -25,7 +25,8 @@ dependencies:
   # YouTube APIs
   youtube_explode_dart:
     git: https://github.com/Coronon/youtube_explode_dart
-  dart_ytmusic_api: ^1.3.2
+  dart_ytmusic_api:
+    git: https://github.com/MusilyApp/dart_ytmusic_api
 
   # UI and Animations
   loading_animation_widget: ^1.2.1
