@@ -11,14 +11,14 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 Future<String?> _getYoutubeAudioUrl(String ytId) async {
   try {
     final yt = YoutubeExplode();
-    final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId));
-    final audioStreamInfoSorted = List<AudioOnlyStreamInfo>.from(
-      manifest.audioOnly,
-    )..sort(
-      (a, b) => a.bitrate.bitsPerSecond.compareTo(b.bitrate.bitsPerSecond),
-    );
+    final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId),
+        requireWatchPage: true, ytClients: [YoutubeApiClient.androidVr]);
+    final audioStreamInfoSorted = manifest.audioOnly.sortByBitrate();
 
-    final audioStreamInfo = audioStreamInfoSorted.last;
+    final audioStreamInfo = audioStreamInfoSorted.firstOrNull;
+    if (audioStreamInfo == null) {
+      return null;
+    }
     final url = audioStreamInfo.url.toString();
     yt.close();
     return url;
