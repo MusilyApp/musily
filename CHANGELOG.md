@@ -1,3 +1,10 @@
+## 4.0.4
+
+**Fixes**
+
+- Fixed an issue where users were unable to load music streams.
+- Resolved an issue preventing Musily from opening on Linux.
+
 ## 4.0.3
 
 **Fixes**
