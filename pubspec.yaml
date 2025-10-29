@@ -91,6 +91,7 @@ dependencies:
   package_info_plus: ^8.3.0
   flutter_curl: ^0.7.0
   markdown_widget: ^2.3.2+8
+  gtk_window: ^0.1.1
 
 # Development Dependencies
 dev_dependencies:
