@@ -62,7 +62,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: "3.27.4"
+          flutter-version: "3.29.3"
 
       - name: Set up Java
         if: matrix.os == 'ubuntu-22.04'
@@ -85,10 +85,6 @@ jobs:
             libstdc++-12-dev libmpv-dev \
             libjsoncpp-dev libsecret-1-dev \
             libayatana-appindicator3-dev xxd
-
-      - name: Clean Android build cache
-        if: matrix.os == 'ubuntu-22.04'
-        run: flutter clean
 
       - name: Build APK (Android)
         if: matrix.os == 'ubuntu-22.04'
@@ -344,7 +340,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: "3.27.4"
+          flutter-version: "3.29.3"
 
       - name: Install Dependencies
         run: flutter pub get
@@ -354,3 +350,4 @@ jobs:
           dart run send_telegram_message.dart \
             --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
             --chat "${{ secrets.TELEGRAM_CHAT_ID }}"
+
