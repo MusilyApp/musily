@@ -86,11 +86,16 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                 );
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
                 child: Container(
                   decoration: BoxDecoration(
                     color: context.themeData.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: context.themeData.colorScheme.outline
+                          .withValues(alpha: 0.1),
+                      width: 1,
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -239,23 +244,40 @@ class _PlayPauseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return SizedBox(
+      return Container(
         width: 40,
         height: 40,
+        decoration: BoxDecoration(
+          color: context.themeData.colorScheme.primary.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
         child: Center(
           child: MusilyLoading(
-            color: context.themeData.iconTheme.color ?? Colors.white,
-            size: 18,
+            color: context.themeData.colorScheme.primary,
+            size: 16,
           ),
         ),
       );
     }
 
-    return IconButton(
-      onPressed: onPlayPause,
-      icon: Icon(
-        isPlaying ? LucideIcons.pause : LucideIcons.play,
-        size: 20,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPlayPause,
+        customBorder: const CircleBorder(),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: context.themeData.colorScheme.primary,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            isPlaying ? LucideIcons.pause : LucideIcons.play,
+            size: 18,
+            color: context.themeData.colorScheme.onPrimary,
+          ),
+        ),
       ),
     );
   }

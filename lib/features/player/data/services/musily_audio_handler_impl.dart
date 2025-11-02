@@ -230,7 +230,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
               }
               await skipToNext();
             } else if (_activeTrack != null) {
-              await skipToTrack(0);
+              final trackId = _queue.first.id;
+              await skipToTrack(trackId);
               if (_audioPlayer.playing) {
                 await pause();
               }
@@ -241,7 +242,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
             break;
           case MusilyRepeatMode.repeatOne:
             if (_activeTrack != null) {
-              await playTrack(_activeTrack!);
+              await playTrack(_activeTrack!, isFromRepeatOne: true);
             }
             if (!_audioPlayer.playing) {
               await play();
@@ -392,6 +393,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
               _onAction?.call(MusilyPlayerAction.pause);
               break;
             case AudioInterruptionType.unknown:
+              await _audioPlayer.pause();
+              _onAction?.call(MusilyPlayerAction.pause);
               break;
           }
         } else {
@@ -476,6 +479,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Future<void> playTrack(
     TrackEntity track, {
     bool isPlaceholder = false,
+    bool isFromRepeatOne = false,
   }) async {
     try {
       late String url;
@@ -493,17 +497,35 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       } else {
         queue = _queue;
       }
-      _activeTrack = track;
-      _activeTrack!.position = Duration.zero;
-      _activeTrack!.duration = Duration.zero;
+      final originalTrack = track;
       if (!isPlaceholder) {
-        _loadingTrackUrl = true;
-        await playTrack(
-          track.copyWith(
+        final existingUrl = _activeTrack?.url;
+        if (existingUrl != null && existingUrl.isNotEmpty && isFromRepeatOne) {
+          track.url = existingUrl;
+          url = existingUrl;
+        }
+
+        _activeTrack = track;
+        _activeTrack!.position = Duration.zero;
+        _activeTrack!.duration = Duration.zero;
+        if (isFromRepeatOne && url.isEmpty) {
+          _loadingTrackUrl = true;
+          final placeholderTrack = track.copyWith(
             url: placeholderAudioPath,
-          ),
-          isPlaceholder: true,
-        );
+          );
+          await _playPlaceholderForRepeatOne(placeholderTrack);
+          _activeTrack = originalTrack;
+        }
+      } else {
+        if (url.isNotEmpty) {
+          final audioSource = await buildAudioSource(track, url);
+          final audioPlayerQueue = ConcatenatingAudioSource(
+            children: [audioSource],
+          );
+          await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
+          await _audioPlayer.play();
+        }
+        return;
       }
       _onActiveTrackChanged?.call(track);
       if (queue.where((element) => element.id == track.id).isEmpty) {
@@ -529,7 +551,10 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
           }
           url = uri.toString();
           track.url = uri.toString();
-          if (track.id == _activeTrack!.id) {
+          if (_activeTrack != null && track.id == _activeTrack!.id) {
+            _activeTrack!.url = url;
+            _onActiveTrackChanged?.call(_activeTrack);
+          } else {
             _onActiveTrackChanged?.call(track);
           }
           if (url.isEmpty) {
@@ -542,6 +567,9 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         _loadingTrackUrl = false;
       }
       if (track.id != _activeTrack!.id) {
+        if (isFromRepeatOne) {
+          await _audioPlayer.play();
+        }
         return;
       }
       final audioSource = await buildAudioSource(track, url);
@@ -549,16 +577,41 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         children: [audioSource],
       );
       if (track.id != _activeTrack!.id) {
+        if (isFromRepeatOne) {
+          await _audioPlayer.play();
+        }
         return;
       }
       await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
       if (track.id != _activeTrack!.id) {
+        if (isFromRepeatOne) {
+          await _audioPlayer.play();
+        }
         return;
       }
       await _audioPlayer.play();
     } catch (e, stackTrace) {
       log(
         '[Error playing song]',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  Future<void> _playPlaceholderForRepeatOne(
+      TrackEntity placeholderTrack) async {
+    try {
+      final url = placeholderTrack.url!;
+      final audioSource = await buildAudioSource(placeholderTrack, url);
+      final audioPlayerQueue = ConcatenatingAudioSource(
+        children: [audioSource],
+      );
+      await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
+      await _audioPlayer.play();
+    } catch (e, stackTrace) {
+      log(
+        '[Error playing placeholder for repeat one]',
         error: e,
         stackTrace: stackTrace,
       );
@@ -725,10 +778,12 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       queue = _queue;
     }
     if (queue[activeTrackIndex()] == queue.last) {
-      await skipToTrack(0);
+      final trackId = _queue.first.id;
+      await skipToTrack(trackId);
       return;
     }
-    await skipToTrack(activeTrackIndex() + 1);
+    final trackId = _queue[activeTrackIndex() + 1].id;
+    await skipToTrack(trackId);
   }
 
   @override
@@ -738,22 +793,24 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       return;
     }
     if (_queue[activeTrackIndex()] == _queue.first) {
-      await skipToTrack(_queue.length - 1);
+      final trackId = _queue.last.id;
+      await skipToTrack(trackId);
       return;
     }
-    await skipToTrack(activeTrackIndex() - 1);
+    final trackId = _queue[activeTrackIndex() - 1].id;
+    await skipToTrack(trackId);
   }
 
   @override
-  Future<void> skipToTrack(int newIndex) async {
+  Future<void> skipToTrack(String trackId) async {
     late final List<TrackEntity> queue;
     if (_shuffleEnabled) {
       queue = _shuffledQueue;
     } else {
       queue = _queue;
     }
-    if (newIndex >= 0 && newIndex < queue.length) {
-      final newTrack = queue[newIndex];
+    if (queue.any((element) => element.id == trackId)) {
+      final newTrack = queue.firstWhere((element) => element.id == trackId);
       await playTrack(newTrack);
     }
   }

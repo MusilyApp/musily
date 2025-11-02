@@ -55,7 +55,7 @@ abstract class MusilyAudioHandler {
   Future<void> rewind();
   Future<void> playTrack(TrackEntity track);
 
-  Future<void> skipToTrack(int newIndex);
+  Future<void> skipToTrack(String trackId);
   Future<void> skipToNext();
   Future<void> skipToPrevious();
 

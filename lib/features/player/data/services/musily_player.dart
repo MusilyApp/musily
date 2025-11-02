@@ -132,9 +132,9 @@ class MusilyPlayer implements MusilyAudioHandler {
   }
 
   @override
-  Future<void> skipToTrack(int newIndex) async {
+  Future<void> skipToTrack(String trackId) async {
     if (_audioHandler != null) {
-      await _audioHandler!.skipToTrack(newIndex);
+      await _audioHandler!.skipToTrack(trackId);
     }
   }
 

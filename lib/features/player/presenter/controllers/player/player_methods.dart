@@ -17,7 +17,7 @@ class PlayerMethods {
   Future<void> Function() nextInQueue;
   Future<void> Function() previousInQueue;
   Future<void> Function(List<TrackEntity> items) addToQueue;
-  Future<void> Function(int index) queueJumpTo;
+  Future<void> Function(String trackId) queueJumpTo;
   Future<void> Function(int newIndex, int oldIndex) reorderQueue;
   void Function(PlayerMode mode) setPlayerMode;
   Future<String?> Function(String trackId) getLyrics;
@@ -30,8 +30,14 @@ class PlayerMethods {
   Future<void> Function(
     List<TrackEntity> items,
     String playingId, {
-    int startFrom,
+    String startFromTrackId,
   }) playPlaylist;
+
+  void Function(double volume) setVolume;
+  Stream<double> Function() getVolumeStream;
+
+  void Function(Duration duration) setSleepTimer;
+  void Function() cancelSleepTimer;
 
   PlayerMethods({
     required this.play,
@@ -54,5 +60,9 @@ class PlayerMethods {
     required this.getSmartQueue,
     required this.toggleSmartQueue,
     required this.toggleShowDownloadManager,
+    required this.setVolume,
+    required this.getVolumeStream,
+    required this.setSleepTimer,
+    required this.cancelSleepTimer,
   });
 }

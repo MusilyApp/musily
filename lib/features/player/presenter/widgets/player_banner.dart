@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
+import 'package:musily/core/presenter/widgets/empty_state.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
@@ -118,7 +120,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
     if (data.loadingLyrics) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: LoadingAnimationWidget.waveDots(
             color: IconTheme.of(context).color ?? Colors.white,
             size: 45,
@@ -128,18 +130,17 @@ class _PlayerBannerState extends State<PlayerBanner> {
     }
     if (data.lyrics.lyrics == null) {
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.music_off_rounded, size: 45),
-            const SizedBox(height: 12),
-            Text(
-              context.localization.lyricsNotFound,
-              style: context.themeData.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w400,
-              ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: EmptyState(
+            icon: Icon(
+              LucideIcons.music2,
+              size: 50,
+              color: context.themeData.iconTheme.color?.withValues(alpha: .5),
             ),
-          ],
+            title: context.localization.lyricsNotFound,
+            message: context.localization.lyricsNotAvailable,
+          ),
         ),
       );
     }
@@ -149,22 +150,47 @@ class _PlayerBannerState extends State<PlayerBanner> {
       synced: data.syncedLyrics,
       timedLyrics: data.lyrics.timedLyrics,
       lyrics: data.lyrics.lyrics!,
-      onTimeSelected:
-          (duration) => widget.playerController.methods.seek(duration),
+      onTimeSelected: (duration) =>
+          widget.playerController.methods.seek(duration),
     );
   }
 
   Widget _buildQueueContent(BuildContext context, dynamic data) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 1),
-      child: QueueWidget(playerController: widget.playerController),
+      child: Builder(
+        builder: (context) {
+          if (widget.playerController.data.queue.length <= 1) {
+            return Center(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: EmptyState(
+                  icon: Icon(
+                    LucideIcons.music,
+                    size: 50,
+                    color: context.themeData.iconTheme.color
+                        ?.withValues(alpha: .5),
+                  ),
+                  title: context.localization.queueEmptyTitle,
+                  message: context.localization.queueEmptyMessage,
+                ),
+              ),
+            );
+          }
+          return QueueWidget(
+            playerController: widget.playerController,
+            hideNowPlaying: true,
+          );
+        },
+      ),
     );
   }
 
   Widget _buildArtworkContent(BuildContext context, dynamic data) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
@@ -202,10 +228,10 @@ class _PlayerBannerState extends State<PlayerBanner> {
                               alpha: .2,
                             ),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(24),
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(24),
                           child: AppImage(
                             height: 350,
                             width: 350,
@@ -217,7 +243,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                     }
                     return Card(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(24),
                         side: BorderSide(
                           width: 1,
                           color: context.themeData.colorScheme.outline
@@ -247,7 +273,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                     height: 350,
                     width: 350,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,

@@ -44,6 +44,12 @@ class PlayerData implements BaseControllerData {
   bool showDownloadManager;
 
   ThemeMode? themeMode;
+  double volume;
+
+  // Sleep timer
+  bool sleepTimerActive;
+  Duration? sleepTimerDuration;
+  DateTime? sleepTimerEndTime;
 
   PlayerData({
     required this.queue,
@@ -68,6 +74,10 @@ class PlayerData implements BaseControllerData {
     required this.autoSmartQueue,
     required this.isPositionTriggered,
     this.themeMode,
+    required this.volume,
+    required this.sleepTimerActive,
+    this.sleepTimerDuration,
+    this.sleepTimerEndTime,
   });
 
   @override
@@ -94,6 +104,11 @@ class PlayerData implements BaseControllerData {
     bool? addingToFavorites,
     bool? showDownloadManager,
     ThemeMode? themeMode,
+    double? volume,
+    bool? sleepTimerActive,
+    Duration? sleepTimerDuration,
+    DateTime? sleepTimerEndTime,
+    bool clearSleepTimer = false,
   }) {
     return PlayerData(
       queue: queue ?? this.queue,
@@ -118,6 +133,14 @@ class PlayerData implements BaseControllerData {
       themeMode: themeMode ?? this.themeMode,
       autoSmartQueue: autoSmartQueue ?? this.autoSmartQueue,
       isPositionTriggered: isPositionTriggered ?? this.isPositionTriggered,
+      volume: volume ?? this.volume,
+      sleepTimerActive: sleepTimerActive ?? this.sleepTimerActive,
+      sleepTimerDuration: clearSleepTimer
+          ? null
+          : (sleepTimerDuration ?? this.sleepTimerDuration),
+      sleepTimerEndTime: clearSleepTimer
+          ? null
+          : (sleepTimerEndTime ?? this.sleepTimerEndTime),
     );
   }
 }

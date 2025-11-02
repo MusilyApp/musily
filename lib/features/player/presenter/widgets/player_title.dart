@@ -5,6 +5,7 @@ import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/presenter/widgets/track_tile_artwork.dart';
 
 class PlayerTitle extends StatelessWidget {
   final PlayerController playerController;
@@ -56,7 +57,7 @@ class PlayerTitle extends StatelessWidget {
         break;
       case PlayerMode.queue:
         content = _buildQueueTitle(context);
-        key = 'queue_title';
+        key = 'queue_title_${currentTrack.id}';
         break;
       case PlayerMode.artwork:
         content = _buildArtworkSwitch(context);
@@ -106,25 +107,35 @@ class PlayerTitle extends StatelessWidget {
   }
 
   Widget _buildQueueTitle(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InfinityMarquee(
-          child: Text(
-            currentTrack.title,
-            style: context.themeData.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        Opacity(
-          opacity: 0.7,
-          child: InfinityMarquee(
-            child: Text(
-              currentTrack.artist.name,
-              style: context.themeData.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w400,
+        TrackTileArtwork(track: currentTrack),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InfinityMarquee(
+                child: Text(
+                  currentTrack.title,
+                  style: context.themeData.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
-            ),
+              Opacity(
+                opacity: 0.7,
+                child: InfinityMarquee(
+                  child: Text(
+                    currentTrack.artist.name,
+                    style: context.themeData.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
