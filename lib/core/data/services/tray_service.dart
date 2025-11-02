@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:musily/l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:tray_manager/tray_manager.dart';
 
