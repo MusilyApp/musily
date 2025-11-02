@@ -136,6 +136,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get emptyLibrary => 'Ваша библиотека пуста';
 
   @override
+  String get emptyLibraryDescription =>
+      'Добавьте элементы в библиотеку, чтобы увидеть их здесь';
+
+  @override
   String get albumNotFound => 'Альбом не найден';
 
   @override
@@ -386,4 +390,240 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get moreRecommendations => 'Больше рекомендаций';
+
+  @override
+  String get cancelOperation => 'Отменить операцию?';
+
+  @override
+  String get cancelBackupConfirmation =>
+      'Вы уверены, что хотите отменить резервное копирование? Прогресс будет потерян.';
+
+  @override
+  String get cancelRestoreConfirmation =>
+      'Вы уверены, что хотите отменить восстановление? Прогресс будет потерян.';
+
+  @override
+  String get yes => 'Да';
+
+  @override
+  String get no => 'Нет';
+
+  @override
+  String get initializingBackup => 'Инициализация резервного копирования...';
+
+  @override
+  String get creatingBackupArchive => 'Создание архива резервной копии...';
+
+  @override
+  String get backingUpDownloadsMetadata =>
+      'Резервное копирование метаданных загрузок...';
+
+  @override
+  String get backingUpAudioFiles => 'Резервное копирование аудиофайлов...';
+
+  @override
+  String get backingUpLibraryData =>
+      'Резервное копирование данных библиотеки...';
+
+  @override
+  String get writingBackupFile => 'Запись файла резервной копии...';
+
+  @override
+  String get savingToStorage => 'Сохранение в хранилище...';
+
+  @override
+  String get backupCancelled => 'Резервное копирование отменено';
+
+  @override
+  String get startingBackup => 'Запуск резервного копирования...';
+
+  @override
+  String get startingRestore => 'Запуск восстановления...';
+
+  @override
+  String get initializingRestore => 'Инициализация восстановления...';
+
+  @override
+  String get readingBackupFile => 'Чтение файла резервной копии...';
+
+  @override
+  String get extractingLibraryData => 'Извлечение данных библиотеки...';
+
+  @override
+  String get extractingDownloadsData => 'Извлечение данных загрузок...';
+
+  @override
+  String get extractingAudioFiles => 'Извлечение аудиофайлов...';
+
+  @override
+  String get finalizingRestore => 'Завершение восстановления...';
+
+  @override
+  String get restoreCompletedSuccessfully =>
+      'Восстановление успешно завершено!';
+
+  @override
+  String get restoreFailed => 'Восстановление не удалось';
+
+  @override
+  String get backupFileNotFound => 'Файл резервной копии не найден';
+
+  @override
+  String savedTo(String filename) {
+    return 'Сохранено в: $filename';
+  }
+
+  @override
+  String get playlistEditSubtitle =>
+      'Придайте плейлисту новую индивидуальность.';
+
+  @override
+  String get playlistDetailsTitle => 'Детали';
+
+  @override
+  String get playlistEmptyStateDescription =>
+      'Создайте плейлист, чтобы начать сохранять любимые треки.';
+
+  @override
+  String get playlistSelectTitle => 'Выберите плейлист';
+
+  @override
+  String get playlistSelectDescription =>
+      'Выберите, куда добавить выбранные треки.';
+
+  @override
+  String get playlistCreatorSubtitle =>
+      'Добавьте название или вставьте ссылку на плейлист';
+
+  @override
+  String get playlistCreatorPasteInfo =>
+      'Вы можете вставить ссылку на плейлист YouTube, чтобы импортировать его автоматически.';
+
+  @override
+  String get artistNotFoundDescription => 'Искомый артист не найден.';
+
+  @override
+  String get artistNoSinglesDescription =>
+      'У этого артиста нет доступных синглов.';
+
+  @override
+  String get artistNoAlbumsDescription =>
+      'У этого артиста нет доступных альбомов.';
+
+  @override
+  String get artistNoSongsDescription => 'У этого артиста нет доступных песен.';
+
+  @override
+  String get lyricsNotAvailable => 'Для этого трека нет текста.';
+
+  @override
+  String get queueEmptyTitle => 'Ваша очередь пуста';
+
+  @override
+  String get queueEmptyMessage =>
+      'Добавьте песни в очередь, чтобы наслаждаться музыкой.';
+
+  @override
+  String get noItemsFound => 'Ничего не найдено';
+
+  @override
+  String get downloadsEmptyMessage => 'Загруженные треки появятся здесь.';
+
+  @override
+  String get downloadingSectionTitle => 'Загрузка';
+
+  @override
+  String get queuedSectionTitle => 'В очереди';
+
+  @override
+  String get completedSectionTitle => 'Завершено';
+
+  @override
+  String get failedSectionTitle => 'Ошибка';
+
+  @override
+  String get searchSuggestions => 'Предложения';
+
+  @override
+  String get searchStartTyping => 'Начните вводить, чтобы искать';
+
+  @override
+  String get smartSuggestionsTitle => 'Умные рекомендации';
+
+  @override
+  String get smartSuggestionsDescription =>
+      'Автоматически добавлять похожие треки';
+
+  @override
+  String get libraryManagementSectionTitle => 'Управление библиотекой';
+
+  @override
+  String get backupLibraryDescription =>
+      'Создайте резервную копию своей библиотеки';
+
+  @override
+  String get restoreLibraryDescription =>
+      'Восстановите библиотеку из резервной копии';
+
+  @override
+  String get includeLibraryDescription =>
+      'Создайте резервную копию сохраненных альбомов, исполнителей и плейлистов';
+
+  @override
+  String get includeDownloadsDescription =>
+      'Создайте резервную копию загруженных треков';
+
+  @override
+  String get fullScreenPlayerTooltip => 'Полноэкранный проигрыватель';
+
+  @override
+  String get sleepTimer => 'Таймер сна';
+
+  @override
+  String get sleepTimerDescription =>
+      'Музыка приостановится через выбранное время';
+
+  @override
+  String sleepTimerActive(String time) {
+    return 'Таймер сна: $time';
+  }
+
+  @override
+  String minutes(int count) {
+    return '$count мин';
+  }
+
+  @override
+  String hours(int count) {
+    return '$count ч';
+  }
+
+  @override
+  String get hour => '1 ч';
+
+  @override
+  String get customTime => 'Выбрать';
+
+  @override
+  String get enterTime => 'Введите время';
+
+  @override
+  String get minutesLabel => 'Минуты';
+
+  @override
+  String get hoursLabel => 'Часы';
+
+  @override
+  String get cancelTimer => 'Отменить таймер';
+
+  @override
+  String get cancelTimerQuestion => 'Вы хотите отменить таймер сна?';
+
+  @override
+  String timerInfo(String time) {
+    return 'Таймер активен на $time';
+  }
+
+  @override
+  String get addTime => 'Добавить время';
 }

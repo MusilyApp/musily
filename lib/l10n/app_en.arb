@@ -41,6 +41,7 @@
   "theActionCannotBeUndone": "This action cannot be undone.",
   "playingNow": "Now Playing",
   "emptyLibrary": "Your library is empty",
+  "emptyLibraryDescription": "Add items to your library to see them here",
   "albumNotFound": "Album not found",
   "artistNotFound": "Artist not found",
   "cancelDownload": "Cancel Download",
@@ -122,5 +123,113 @@
   "accentColor": "Accent Color",
   "recommendedAlbums": "Recommended Albums",
   "recommendedMusic": "Recommended Music",
-  "moreRecommendations": "More Recommendations"
+  "moreRecommendations": "More Recommendations",
+  "cancelOperation": "Cancel Operation?",
+  "cancelBackupConfirmation": "Are you sure you want to cancel the backup? Progress will be lost.",
+  "cancelRestoreConfirmation": "Are you sure you want to cancel the restore? Progress will be lost.",
+  "yes": "Yes",
+  "no": "No",
+  "initializingBackup": "Initializing backup...",
+  "creatingBackupArchive": "Creating backup archive...",
+  "backingUpDownloadsMetadata": "Backing up downloads metadata...",
+  "backingUpAudioFiles": "Backing up audio files...",
+  "backingUpLibraryData": "Backing up library data...",
+  "writingBackupFile": "Writing backup file...",
+  "savingToStorage": "Saving to storage...",
+  "backupCancelled": "Backup cancelled",
+  "startingBackup": "Starting backup...",
+  "startingRestore": "Starting restore...",
+  "initializingRestore": "Initializing restore...",
+  "readingBackupFile": "Reading backup file...",
+  "extractingLibraryData": "Extracting library data...",
+  "extractingDownloadsData": "Extracting downloads data...",
+  "extractingAudioFiles": "Extracting audio files...",
+  "finalizingRestore": "Finalizing restore...",
+  "restoreCompletedSuccessfully": "Restore completed successfully!",
+  "restoreFailed": "Restore failed",
+  "backupFileNotFound": "Backup file not found",
+  "savedTo": "Saved to: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "Give your playlist a fresh identity.",
+  "playlistDetailsTitle": "Details",
+  "playlistEmptyStateDescription": "Create a playlist to start saving your favourite tracks.",
+  "playlistSelectTitle": "Select a playlist",
+  "playlistSelectDescription": "Choose where the selected tracks should be added.",
+  "playlistCreatorSubtitle": "Add a name or paste a playlist link",
+  "playlistCreatorPasteInfo": "You can paste a YouTube playlist URL to import it automatically.",
+  "artistNotFoundDescription": "The artist you are looking for was not found.",
+  "artistNoSinglesDescription": "No singles available for this artist.",
+  "artistNoAlbumsDescription": "No albums available for this artist.",
+  "artistNoSongsDescription": "No songs available for this artist.",
+  "lyricsNotAvailable": "No lyrics available for this track.",
+  "queueEmptyTitle": "Your queue is empty",
+  "queueEmptyMessage": "Add songs to the queue to enjoy your music experience.",
+  "noItemsFound": "No items found",
+  "downloadsEmptyMessage": "Your downloaded tracks will appear here.",
+  "downloadingSectionTitle": "Downloading",
+  "queuedSectionTitle": "Queued",
+  "completedSectionTitle": "Completed",
+  "failedSectionTitle": "Failed",
+  "searchSuggestions": "Suggestions",
+  "searchStartTyping": "Start typing to search",
+  "smartSuggestionsTitle": "Smart Suggestions",
+  "smartSuggestionsDescription": "Auto-add similar tracks",
+  "libraryManagementSectionTitle": "Library Management",
+  "backupLibraryDescription": "Create a backup of your library",
+  "restoreLibraryDescription": "Restore your library from a backup",
+  "includeLibraryDescription": "Backup your saved albums, artists, and playlists",
+  "includeDownloadsDescription": "Backup your downloaded tracks",
+  "fullScreenPlayerTooltip": "Full screen player",
+  "sleepTimer": "Sleep Timer",
+  "sleepTimerDescription": "Music will pause after selected time",
+  "sleepTimerActive": "Sleep timer: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} hours",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 hour",
+  "customTime": "Custom",
+  "enterTime": "Enter time",
+  "minutesLabel": "Minutes",
+  "hoursLabel": "Hours",
+  "cancelTimer": "Cancel Timer",
+  "cancelTimerQuestion": "Do you want to cancel the sleep timer?",
+  "timerInfo": "Timer active for {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Add time",
+  "clearQueueTitle": "Clear Queue",
+  "clearQueueMessage": "Clear all queued/pending downloads?",
+  "clearQueueDescription": "This will cancel all pending downloads. Completed downloads will not be affected.",
+  "clear": "Clear"
 }

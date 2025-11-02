@@ -41,6 +41,7 @@
   "theActionCannotBeUndone": "Esta acción no se puede deshacer.",
   "playingNow": "Reproduciendo Ahora",
   "emptyLibrary": "Tu biblioteca está vacía",
+  "emptyLibraryDescription": "Agrega elementos a tu biblioteca para verlos aquí",
   "albumNotFound": "Álbum no encontrado",
   "artistNotFound": "Artista no encontrado",
   "cancelDownload": "Cancelar Descarga",
@@ -122,5 +123,106 @@
   "accentColor": "Color de acento",
   "recommendedAlbums": "Álbumes Recomendados",
   "recommendedMusic": "Música Recomendada",
-  "moreRecommendations": "Más Recomendaciones"
+  "moreRecommendations": "Más Recomendaciones",
+  "cancelOperation": "¿Cancelar Operación?",
+  "cancelBackupConfirmation": "¿Está seguro de que desea cancelar el respaldo? Se perderá el progreso.",
+  "cancelRestoreConfirmation": "¿Está seguro de que desea cancelar la restauración? Se perderá el progreso.",
+  "yes": "Sí",
+  "no": "No",
+  "initializingBackup": "Inicializando respaldo...",
+  "creatingBackupArchive": "Creando archivo de respaldo...",
+  "backingUpDownloadsMetadata": "Respaldando metadatos de descargas...",
+  "backingUpAudioFiles": "Respaldando archivos de audio...",
+  "backingUpLibraryData": "Respaldando datos de biblioteca...",
+  "writingBackupFile": "Escribiendo archivo de respaldo...",
+  "savingToStorage": "Guardando en almacenamiento...",
+  "backupCancelled": "Respaldo cancelado",
+  "startingBackup": "Iniciando respaldo...",
+  "startingRestore": "Iniciando restauración...",
+  "initializingRestore": "Inicializando restauración...",
+  "readingBackupFile": "Leyendo archivo de respaldo...",
+  "extractingLibraryData": "Extrayendo datos de biblioteca...",
+  "extractingDownloadsData": "Extrayendo datos de descargas...",
+  "extractingAudioFiles": "Extrayendo archivos de audio...",
+  "finalizingRestore": "Finalizando restauración...",
+  "restoreCompletedSuccessfully": "¡Restauración completada con éxito!",
+  "restoreFailed": "Falló la restauración",
+  "backupFileNotFound": "Archivo de respaldo no encontrado",
+  "savedTo": "Guardado en: {filename}",
+  "playlistEditSubtitle": "Dale una nueva identidad a tu playlist.",
+  "playlistDetailsTitle": "Detalles",
+  "playlistEmptyStateDescription": "Crea una playlist para empezar a guardar tus pistas favoritas.",
+  "playlistSelectTitle": "Selecciona una playlist",
+  "playlistSelectDescription": "Elige dónde se deben agregar las pistas seleccionadas.",
+  "playlistCreatorSubtitle": "Agrega un nombre o pega un enlace de playlist",
+  "playlistCreatorPasteInfo": "Puedes pegar la URL de una playlist de YouTube para importarla automáticamente.",
+  "artistNotFoundDescription": "No se encontró el artista que buscas.",
+  "artistNoSinglesDescription": "No hay sencillos disponibles para este artista.",
+  "artistNoAlbumsDescription": "No hay álbumes disponibles para este artista.",
+  "artistNoSongsDescription": "No hay canciones disponibles para este artista.",
+  "lyricsNotAvailable": "No hay letras disponibles para esta canción.",
+  "queueEmptyTitle": "Tu cola está vacía",
+  "queueEmptyMessage": "Agrega canciones a la cola para disfrutar tu experiencia musical.",
+  "noItemsFound": "No se encontraron elementos",
+  "downloadsEmptyMessage": "Tus pistas descargadas aparecerán aquí.",
+  "downloadingSectionTitle": "Descargando",
+  "queuedSectionTitle": "En cola",
+  "completedSectionTitle": "Completado",
+  "failedSectionTitle": "Fallido",
+  "searchSuggestions": "Sugerencias",
+  "searchStartTyping": "Comienza a escribir para buscar",
+  "smartSuggestionsTitle": "Sugerencias inteligentes",
+  "smartSuggestionsDescription": "Agregar automáticamente pistas similares",
+  "libraryManagementSectionTitle": "Administración de la biblioteca",
+  "backupLibraryDescription": "Crea una copia de seguridad de tu biblioteca",
+  "restoreLibraryDescription": "Restaura tu biblioteca desde una copia de seguridad",
+  "includeLibraryDescription": "Respalda tus álbumes, artistas y listas de reproducción guardados",
+  "includeDownloadsDescription": "Respalda tus pistas descargadas",
+  "fullScreenPlayerTooltip": "Reproductor a pantalla completa",
+  "sleepTimer": "Temporizador",
+  "sleepTimerDescription": "La música se pausará después del tiempo seleccionado",
+  "sleepTimerActive": "Temporizador: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} horas",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 hora",
+  "customTime": "Personalizado",
+  "enterTime": "Ingrese el tiempo",
+  "minutesLabel": "Minutos",
+  "hoursLabel": "Horas",
+  "cancelTimer": "Cancelar Temporizador",
+  "cancelTimerQuestion": "¿Desea cancelar el temporizador?",
+  "timerInfo": "Temporizador activo por {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Agregar tiempo",
+  "clearQueueTitle": "Limpiar Cola",
+  "clearQueueMessage": "¿Limpiar todas las descargas en cola/pendientes?",
+  "clearQueueDescription": "Esto cancelará todas las descargas pendientes. Las descargas completadas no se verán afectadas.",
+  "clear": "Limpiar"
 }

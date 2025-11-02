@@ -136,6 +136,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyLibrary => 'Your library is empty';
 
   @override
+  String get emptyLibraryDescription =>
+      'Add items to your library to see them here';
+
+  @override
   String get albumNotFound => 'Album not found';
 
   @override
@@ -382,4 +386,232 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreRecommendations => 'More Recommendations';
+
+  @override
+  String get cancelOperation => 'Cancel Operation?';
+
+  @override
+  String get cancelBackupConfirmation =>
+      'Are you sure you want to cancel the backup? Progress will be lost.';
+
+  @override
+  String get cancelRestoreConfirmation =>
+      'Are you sure you want to cancel the restore? Progress will be lost.';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get initializingBackup => 'Initializing backup...';
+
+  @override
+  String get creatingBackupArchive => 'Creating backup archive...';
+
+  @override
+  String get backingUpDownloadsMetadata => 'Backing up downloads metadata...';
+
+  @override
+  String get backingUpAudioFiles => 'Backing up audio files...';
+
+  @override
+  String get backingUpLibraryData => 'Backing up library data...';
+
+  @override
+  String get writingBackupFile => 'Writing backup file...';
+
+  @override
+  String get savingToStorage => 'Saving to storage...';
+
+  @override
+  String get backupCancelled => 'Backup cancelled';
+
+  @override
+  String get startingBackup => 'Starting backup...';
+
+  @override
+  String get startingRestore => 'Starting restore...';
+
+  @override
+  String get initializingRestore => 'Initializing restore...';
+
+  @override
+  String get readingBackupFile => 'Reading backup file...';
+
+  @override
+  String get extractingLibraryData => 'Extracting library data...';
+
+  @override
+  String get extractingDownloadsData => 'Extracting downloads data...';
+
+  @override
+  String get extractingAudioFiles => 'Extracting audio files...';
+
+  @override
+  String get finalizingRestore => 'Finalizing restore...';
+
+  @override
+  String get restoreCompletedSuccessfully => 'Restore completed successfully!';
+
+  @override
+  String get restoreFailed => 'Restore failed';
+
+  @override
+  String get backupFileNotFound => 'Backup file not found';
+
+  @override
+  String savedTo(String filename) {
+    return 'Saved to: $filename';
+  }
+
+  @override
+  String get playlistEditSubtitle => 'Give your playlist a fresh identity.';
+
+  @override
+  String get playlistDetailsTitle => 'Details';
+
+  @override
+  String get playlistEmptyStateDescription =>
+      'Create a playlist to start saving your favourite tracks.';
+
+  @override
+  String get playlistSelectTitle => 'Select a playlist';
+
+  @override
+  String get playlistSelectDescription =>
+      'Choose where the selected tracks should be added.';
+
+  @override
+  String get playlistCreatorSubtitle => 'Add a name or paste a playlist link';
+
+  @override
+  String get playlistCreatorPasteInfo =>
+      'You can paste a YouTube playlist URL to import it automatically.';
+
+  @override
+  String get artistNotFoundDescription =>
+      'The artist you are looking for was not found.';
+
+  @override
+  String get artistNoSinglesDescription =>
+      'No singles available for this artist.';
+
+  @override
+  String get artistNoAlbumsDescription =>
+      'No albums available for this artist.';
+
+  @override
+  String get artistNoSongsDescription => 'No songs available for this artist.';
+
+  @override
+  String get lyricsNotAvailable => 'No lyrics available for this track.';
+
+  @override
+  String get queueEmptyTitle => 'Your queue is empty';
+
+  @override
+  String get queueEmptyMessage =>
+      'Add songs to the queue to enjoy your music experience.';
+
+  @override
+  String get noItemsFound => 'No items found';
+
+  @override
+  String get downloadsEmptyMessage =>
+      'Your downloaded tracks will appear here.';
+
+  @override
+  String get downloadingSectionTitle => 'Downloading';
+
+  @override
+  String get queuedSectionTitle => 'Queued';
+
+  @override
+  String get completedSectionTitle => 'Completed';
+
+  @override
+  String get failedSectionTitle => 'Failed';
+
+  @override
+  String get searchSuggestions => 'Suggestions';
+
+  @override
+  String get searchStartTyping => 'Start typing to search';
+
+  @override
+  String get smartSuggestionsTitle => 'Smart Suggestions';
+
+  @override
+  String get smartSuggestionsDescription => 'Auto-add similar tracks';
+
+  @override
+  String get libraryManagementSectionTitle => 'Library Management';
+
+  @override
+  String get backupLibraryDescription => 'Create a backup of your library';
+
+  @override
+  String get restoreLibraryDescription => 'Restore your library from a backup';
+
+  @override
+  String get includeLibraryDescription =>
+      'Backup your saved albums, artists, and playlists';
+
+  @override
+  String get includeDownloadsDescription => 'Backup your downloaded tracks';
+
+  @override
+  String get fullScreenPlayerTooltip => 'Full screen player';
+
+  @override
+  String get sleepTimer => 'Sleep Timer';
+
+  @override
+  String get sleepTimerDescription => 'Music will pause after selected time';
+
+  @override
+  String sleepTimerActive(String time) {
+    return 'Sleep timer: $time';
+  }
+
+  @override
+  String minutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String hours(int count) {
+    return '$count hours';
+  }
+
+  @override
+  String get hour => '1 hour';
+
+  @override
+  String get customTime => 'Custom';
+
+  @override
+  String get enterTime => 'Enter time';
+
+  @override
+  String get minutesLabel => 'Minutes';
+
+  @override
+  String get hoursLabel => 'Hours';
+
+  @override
+  String get cancelTimer => 'Cancel Timer';
+
+  @override
+  String get cancelTimerQuestion => 'Do you want to cancel the sleep timer?';
+
+  @override
+  String timerInfo(String time) {
+    return 'Timer active for $time';
+  }
+
+  @override
+  String get addTime => 'Add time';
 }

@@ -136,6 +136,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emptyLibrary => 'Tu biblioteca está vacía';
 
   @override
+  String get emptyLibraryDescription =>
+      'Agrega elementos a tu biblioteca para verlos aquí';
+
+  @override
   String get albumNotFound => 'Álbum no encontrado';
 
   @override
@@ -387,4 +391,240 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get moreRecommendations => 'Más Recomendaciones';
+
+  @override
+  String get cancelOperation => '¿Cancelar Operación?';
+
+  @override
+  String get cancelBackupConfirmation =>
+      '¿Está seguro de que desea cancelar el respaldo? Se perderá el progreso.';
+
+  @override
+  String get cancelRestoreConfirmation =>
+      '¿Está seguro de que desea cancelar la restauración? Se perderá el progreso.';
+
+  @override
+  String get yes => 'Sí';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get initializingBackup => 'Inicializando respaldo...';
+
+  @override
+  String get creatingBackupArchive => 'Creando archivo de respaldo...';
+
+  @override
+  String get backingUpDownloadsMetadata =>
+      'Respaldando metadatos de descargas...';
+
+  @override
+  String get backingUpAudioFiles => 'Respaldando archivos de audio...';
+
+  @override
+  String get backingUpLibraryData => 'Respaldando datos de biblioteca...';
+
+  @override
+  String get writingBackupFile => 'Escribiendo archivo de respaldo...';
+
+  @override
+  String get savingToStorage => 'Guardando en almacenamiento...';
+
+  @override
+  String get backupCancelled => 'Respaldo cancelado';
+
+  @override
+  String get startingBackup => 'Iniciando respaldo...';
+
+  @override
+  String get startingRestore => 'Iniciando restauración...';
+
+  @override
+  String get initializingRestore => 'Inicializando restauración...';
+
+  @override
+  String get readingBackupFile => 'Leyendo archivo de respaldo...';
+
+  @override
+  String get extractingLibraryData => 'Extrayendo datos de biblioteca...';
+
+  @override
+  String get extractingDownloadsData => 'Extrayendo datos de descargas...';
+
+  @override
+  String get extractingAudioFiles => 'Extrayendo archivos de audio...';
+
+  @override
+  String get finalizingRestore => 'Finalizando restauración...';
+
+  @override
+  String get restoreCompletedSuccessfully =>
+      '¡Restauración completada con éxito!';
+
+  @override
+  String get restoreFailed => 'Falló la restauración';
+
+  @override
+  String get backupFileNotFound => 'Archivo de respaldo no encontrado';
+
+  @override
+  String savedTo(String filename) {
+    return 'Guardado en: $filename';
+  }
+
+  @override
+  String get playlistEditSubtitle => 'Dale una nueva identidad a tu playlist.';
+
+  @override
+  String get playlistDetailsTitle => 'Detalles';
+
+  @override
+  String get playlistEmptyStateDescription =>
+      'Crea una playlist para empezar a guardar tus pistas favoritas.';
+
+  @override
+  String get playlistSelectTitle => 'Selecciona una playlist';
+
+  @override
+  String get playlistSelectDescription =>
+      'Elige dónde se deben agregar las pistas seleccionadas.';
+
+  @override
+  String get playlistCreatorSubtitle =>
+      'Agrega un nombre o pega un enlace de playlist';
+
+  @override
+  String get playlistCreatorPasteInfo =>
+      'Puedes pegar la URL de una playlist de YouTube para importarla automáticamente.';
+
+  @override
+  String get artistNotFoundDescription =>
+      'No se encontró el artista que buscas.';
+
+  @override
+  String get artistNoSinglesDescription =>
+      'No hay sencillos disponibles para este artista.';
+
+  @override
+  String get artistNoAlbumsDescription =>
+      'No hay álbumes disponibles para este artista.';
+
+  @override
+  String get artistNoSongsDescription =>
+      'No hay canciones disponibles para este artista.';
+
+  @override
+  String get lyricsNotAvailable =>
+      'No hay letras disponibles para esta canción.';
+
+  @override
+  String get queueEmptyTitle => 'Tu cola está vacía';
+
+  @override
+  String get queueEmptyMessage =>
+      'Agrega canciones a la cola para disfrutar tu experiencia musical.';
+
+  @override
+  String get noItemsFound => 'No se encontraron elementos';
+
+  @override
+  String get downloadsEmptyMessage => 'Tus pistas descargadas aparecerán aquí.';
+
+  @override
+  String get downloadingSectionTitle => 'Descargando';
+
+  @override
+  String get queuedSectionTitle => 'En cola';
+
+  @override
+  String get completedSectionTitle => 'Completado';
+
+  @override
+  String get failedSectionTitle => 'Fallido';
+
+  @override
+  String get searchSuggestions => 'Sugerencias';
+
+  @override
+  String get searchStartTyping => 'Comienza a escribir para buscar';
+
+  @override
+  String get smartSuggestionsTitle => 'Sugerencias inteligentes';
+
+  @override
+  String get smartSuggestionsDescription =>
+      'Agregar automáticamente pistas similares';
+
+  @override
+  String get libraryManagementSectionTitle => 'Administración de la biblioteca';
+
+  @override
+  String get backupLibraryDescription =>
+      'Crea una copia de seguridad de tu biblioteca';
+
+  @override
+  String get restoreLibraryDescription =>
+      'Restaura tu biblioteca desde una copia de seguridad';
+
+  @override
+  String get includeLibraryDescription =>
+      'Respalda tus álbumes, artistas y listas de reproducción guardados';
+
+  @override
+  String get includeDownloadsDescription => 'Respalda tus pistas descargadas';
+
+  @override
+  String get fullScreenPlayerTooltip => 'Reproductor a pantalla completa';
+
+  @override
+  String get sleepTimer => 'Temporizador';
+
+  @override
+  String get sleepTimerDescription =>
+      'La música se pausará después del tiempo seleccionado';
+
+  @override
+  String sleepTimerActive(String time) {
+    return 'Temporizador: $time';
+  }
+
+  @override
+  String minutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String hours(int count) {
+    return '$count horas';
+  }
+
+  @override
+  String get hour => '1 hora';
+
+  @override
+  String get customTime => 'Personalizado';
+
+  @override
+  String get enterTime => 'Ingrese el tiempo';
+
+  @override
+  String get minutesLabel => 'Minutos';
+
+  @override
+  String get hoursLabel => 'Horas';
+
+  @override
+  String get cancelTimer => 'Cancelar Temporizador';
+
+  @override
+  String get cancelTimerQuestion => '¿Desea cancelar el temporizador?';
+
+  @override
+  String timerInfo(String time) {
+    return 'Temporizador activo por $time';
+  }
+
+  @override
+  String get addTime => 'Agregar tiempo';
 }

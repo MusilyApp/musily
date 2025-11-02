@@ -41,6 +41,7 @@
   "theActionCannotBeUndone": "Цю дію неможливо скасувати.",
   "playingNow": "Зараз грає",
   "emptyLibrary": "Ваша бібліотека порожня",
+  "emptyLibraryDescription": "Додайте елементи до бібліотеки, щоб побачити їх тут",
   "albumNotFound": "Альбом не знайдено",
   "artistNotFound": "Виконавець не знайдено",
   "cancelDownload": "Скасувати завантаження",
@@ -122,5 +123,106 @@
   "accentColor": "Акцентний колір",
   "recommendedAlbums": "Рекомендовані Альбоми",
   "recommendedMusic": "Рекомендована Музика",
-  "moreRecommendations": "Більше рекомендацій"
+  "moreRecommendations": "Більше рекомендацій",
+  "cancelOperation": "Скасувати операцію?",
+  "cancelBackupConfirmation": "Ви впевнені, що хочете скасувати резервне копіювання? Прогрес буде втрачено.",
+  "cancelRestoreConfirmation": "Ви впевнені, що хочете скасувати відновлення? Прогрес буде втрачено.",
+  "yes": "Так",
+  "no": "Ні",
+  "initializingBackup": "Ініціалізація резервного копіювання...",
+  "creatingBackupArchive": "Створення архіву резервної копії...",
+  "backingUpDownloadsMetadata": "Резервне копіювання метаданих завантажень...",
+  "backingUpAudioFiles": "Резервне копіювання аудіофайлів...",
+  "backingUpLibraryData": "Резервне копіювання даних бібліотеки...",
+  "writingBackupFile": "Запис файлу резервної копії...",
+  "savingToStorage": "Збереження в сховище...",
+  "backupCancelled": "Резервне копіювання скасовано",
+  "startingBackup": "Запуск резервного копіювання...",
+  "startingRestore": "Запуск відновлення...",
+  "initializingRestore": "Ініціалізація відновлення...",
+  "readingBackupFile": "Читання файлу резервної копії...",
+  "extractingLibraryData": "Вилучення даних бібліотеки...",
+  "extractingDownloadsData": "Вилучення даних завантажень...",
+  "extractingAudioFiles": "Вилучення аудіофайлів...",
+  "finalizingRestore": "Завершення відновлення...",
+  "restoreCompletedSuccessfully": "Відновлення успішно завершено!",
+  "restoreFailed": "Відновлення не вдалося",
+  "backupFileNotFound": "Файл резервної копії не знайдено",
+  "savedTo": "Збережено в: {filename}",
+  "playlistEditSubtitle": "Надайте плейлисту нову індивідуальність.",
+  "playlistDetailsTitle": "Деталі",
+  "playlistEmptyStateDescription": "Створіть плейлист, щоб почати зберігати улюблені треки.",
+  "playlistSelectTitle": "Виберіть плейлист",
+  "playlistSelectDescription": "Виберіть, куди додати вибрані треки.",
+  "playlistCreatorSubtitle": "Додайте назву або вставте посилання на плейлист",
+  "playlistCreatorPasteInfo": "Можете вставити URL плейлиста YouTube, щоб імпортувати його автоматично.",
+  "artistNotFoundDescription": "Потрібного артиста не знайдено.",
+  "artistNoSinglesDescription": "Для цього артиста немає синглів.",
+  "artistNoAlbumsDescription": "Для цього артиста немає альбомів.",
+  "artistNoSongsDescription": "Для цього артиста немає пісень.",
+  "lyricsNotAvailable": "Для цього треку немає тексту.",
+  "queueEmptyTitle": "Ваша черга порожня",
+  "queueEmptyMessage": "Додайте пісні до черги, щоб насолоджуватися музикою.",
+  "noItemsFound": "Жодного елемента не знайдено",
+  "downloadsEmptyMessage": "Ваші завантажені треки з’являться тут.",
+  "downloadingSectionTitle": "Завантаження",
+  "queuedSectionTitle": "У черзі",
+  "completedSectionTitle": "Завершено",
+  "failedSectionTitle": "Помилка",
+  "searchSuggestions": "Пропозиції",
+  "searchStartTyping": "Почніть вводити для пошуку",
+  "smartSuggestionsTitle": "Розумні пропозиції",
+  "smartSuggestionsDescription": "Автоматично додавати схожі треки",
+  "libraryManagementSectionTitle": "Керування бібліотекою",
+  "backupLibraryDescription": "Створіть резервну копію своєї бібліотеки",
+  "restoreLibraryDescription": "Відновіть бібліотеку з резервної копії",
+  "includeLibraryDescription": "Створіть резервну копію збережених альбомів, виконавців та плейлистів",
+  "includeDownloadsDescription": "Створіть резервну копію завантажених треків",
+  "fullScreenPlayerTooltip": "Повноекранний плеєр",
+  "sleepTimer": "Таймер сну",
+  "sleepTimerDescription": "Музика призупиниться через обраний час",
+  "sleepTimerActive": "Таймер сну: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} хв",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} год",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 год",
+  "customTime": "Вибрати",
+  "enterTime": "Введіть час",
+  "minutesLabel": "Хвилини",
+  "hoursLabel": "Години",
+  "cancelTimer": "Скасувати таймер",
+  "cancelTimerQuestion": "Ви хочете скасувати таймер сну?",
+  "timerInfo": "Таймер активний на {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Додати час",
+  "clearQueueTitle": "Очистити чергу",
+  "clearQueueMessage": "Очистити всі завантаження в черзі/очікуванні?",
+  "clearQueueDescription": "Це скасує всі очікуючі завантаження. Завершені завантаження не будуть порушені.",
+  "clear": "Очистити"
 }

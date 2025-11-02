@@ -41,6 +41,7 @@
   "theActionCannotBeUndone": "Это действие нельзя отменить.",
   "playingNow": "Сейчас играет",
   "emptyLibrary": "Ваша библиотека пуста",
+  "emptyLibraryDescription": "Добавьте элементы в библиотеку, чтобы увидеть их здесь",
   "albumNotFound": "Альбом не найден",
   "artistNotFound": "Исполнитель не найден",
   "cancelDownload": "Отменить загрузку",
@@ -122,5 +123,106 @@
   "accentColor": "Акцентный цвет",
   "recommendedAlbums": "Рекомендуемые Альбомы",
   "recommendedMusic": "Рекомендуемая Музыка",
-  "moreRecommendations": "Больше рекомендаций"
+  "moreRecommendations": "Больше рекомендаций",
+  "cancelOperation": "Отменить операцию?",
+  "cancelBackupConfirmation": "Вы уверены, что хотите отменить резервное копирование? Прогресс будет потерян.",
+  "cancelRestoreConfirmation": "Вы уверены, что хотите отменить восстановление? Прогресс будет потерян.",
+  "yes": "Да",
+  "no": "Нет",
+  "initializingBackup": "Инициализация резервного копирования...",
+  "creatingBackupArchive": "Создание архива резервной копии...",
+  "backingUpDownloadsMetadata": "Резервное копирование метаданных загрузок...",
+  "backingUpAudioFiles": "Резервное копирование аудиофайлов...",
+  "backingUpLibraryData": "Резервное копирование данных библиотеки...",
+  "writingBackupFile": "Запись файла резервной копии...",
+  "savingToStorage": "Сохранение в хранилище...",
+  "backupCancelled": "Резервное копирование отменено",
+  "startingBackup": "Запуск резервного копирования...",
+  "startingRestore": "Запуск восстановления...",
+  "initializingRestore": "Инициализация восстановления...",
+  "readingBackupFile": "Чтение файла резервной копии...",
+  "extractingLibraryData": "Извлечение данных библиотеки...",
+  "extractingDownloadsData": "Извлечение данных загрузок...",
+  "extractingAudioFiles": "Извлечение аудиофайлов...",
+  "finalizingRestore": "Завершение восстановления...",
+  "restoreCompletedSuccessfully": "Восстановление успешно завершено!",
+  "restoreFailed": "Восстановление не удалось",
+  "backupFileNotFound": "Файл резервной копии не найден",
+  "savedTo": "Сохранено в: {filename}",
+  "playlistEditSubtitle": "Придайте плейлисту новую индивидуальность.",
+  "playlistDetailsTitle": "Детали",
+  "playlistEmptyStateDescription": "Создайте плейлист, чтобы начать сохранять любимые треки.",
+  "playlistSelectTitle": "Выберите плейлист",
+  "playlistSelectDescription": "Выберите, куда добавить выбранные треки.",
+  "playlistCreatorSubtitle": "Добавьте название или вставьте ссылку на плейлист",
+  "playlistCreatorPasteInfo": "Вы можете вставить ссылку на плейлист YouTube, чтобы импортировать его автоматически.",
+  "artistNotFoundDescription": "Искомый артист не найден.",
+  "artistNoSinglesDescription": "У этого артиста нет доступных синглов.",
+  "artistNoAlbumsDescription": "У этого артиста нет доступных альбомов.",
+  "artistNoSongsDescription": "У этого артиста нет доступных песен.",
+  "lyricsNotAvailable": "Для этого трека нет текста.",
+  "queueEmptyTitle": "Ваша очередь пуста",
+  "queueEmptyMessage": "Добавьте песни в очередь, чтобы наслаждаться музыкой.",
+  "noItemsFound": "Ничего не найдено",
+  "downloadsEmptyMessage": "Загруженные треки появятся здесь.",
+  "downloadingSectionTitle": "Загрузка",
+  "queuedSectionTitle": "В очереди",
+  "completedSectionTitle": "Завершено",
+  "failedSectionTitle": "Ошибка",
+  "searchSuggestions": "Предложения",
+  "searchStartTyping": "Начните вводить, чтобы искать",
+  "smartSuggestionsTitle": "Умные рекомендации",
+  "smartSuggestionsDescription": "Автоматически добавлять похожие треки",
+  "libraryManagementSectionTitle": "Управление библиотекой",
+  "backupLibraryDescription": "Создайте резервную копию своей библиотеки",
+  "restoreLibraryDescription": "Восстановите библиотеку из резервной копии",
+  "includeLibraryDescription": "Создайте резервную копию сохраненных альбомов, исполнителей и плейлистов",
+  "includeDownloadsDescription": "Создайте резервную копию загруженных треков",
+  "fullScreenPlayerTooltip": "Полноэкранный проигрыватель",
+  "sleepTimer": "Таймер сна",
+  "sleepTimerDescription": "Музыка приостановится через выбранное время",
+  "sleepTimerActive": "Таймер сна: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} мин",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} ч",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 ч",
+  "customTime": "Выбрать",
+  "enterTime": "Введите время",
+  "minutesLabel": "Минуты",
+  "hoursLabel": "Часы",
+  "cancelTimer": "Отменить таймер",
+  "cancelTimerQuestion": "Вы хотите отменить таймер сна?",
+  "timerInfo": "Таймер активен на {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Добавить время",
+  "clearQueueTitle": "Очистить очередь",
+  "clearQueueMessage": "Очистить все загрузки в очереди/ожидании?",
+  "clearQueueDescription": "Это отменит все ожидающие загрузки. Завершенные загрузки не будут затронуты.",
+  "clear": "Очистить"
 }

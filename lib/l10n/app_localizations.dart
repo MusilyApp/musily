@@ -66,7 +66,7 @@ import 'app_localizations_uk.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -89,11 +89,11 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
@@ -101,7 +101,7 @@ abstract class AppLocalizations {
     Locale('es'),
     Locale('pt'),
     Locale('ru'),
-    Locale('uk'),
+    Locale('uk')
   ];
 
   /// No description provided for @home.
@@ -355,6 +355,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your library is empty'**
   String get emptyLibrary;
+
+  /// No description provided for @emptyLibraryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add items to your library to see them here'**
+  String get emptyLibraryDescription;
 
   /// No description provided for @albumNotFound.
   ///
@@ -847,6 +853,420 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More Recommendations'**
   String get moreRecommendations;
+
+  /// No description provided for @cancelOperation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Operation?'**
+  String get cancelOperation;
+
+  /// No description provided for @cancelBackupConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel the backup? Progress will be lost.'**
+  String get cancelBackupConfirmation;
+
+  /// No description provided for @cancelRestoreConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel the restore? Progress will be lost.'**
+  String get cancelRestoreConfirmation;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @initializingBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing backup...'**
+  String get initializingBackup;
+
+  /// No description provided for @creatingBackupArchive.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating backup archive...'**
+  String get creatingBackupArchive;
+
+  /// No description provided for @backingUpDownloadsMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Backing up downloads metadata...'**
+  String get backingUpDownloadsMetadata;
+
+  /// No description provided for @backingUpAudioFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Backing up audio files...'**
+  String get backingUpAudioFiles;
+
+  /// No description provided for @backingUpLibraryData.
+  ///
+  /// In en, this message translates to:
+  /// **'Backing up library data...'**
+  String get backingUpLibraryData;
+
+  /// No description provided for @writingBackupFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Writing backup file...'**
+  String get writingBackupFile;
+
+  /// No description provided for @savingToStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving to storage...'**
+  String get savingToStorage;
+
+  /// No description provided for @backupCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup cancelled'**
+  String get backupCancelled;
+
+  /// No description provided for @startingBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting backup...'**
+  String get startingBackup;
+
+  /// No description provided for @startingRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting restore...'**
+  String get startingRestore;
+
+  /// No description provided for @initializingRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing restore...'**
+  String get initializingRestore;
+
+  /// No description provided for @readingBackupFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading backup file...'**
+  String get readingBackupFile;
+
+  /// No description provided for @extractingLibraryData.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting library data...'**
+  String get extractingLibraryData;
+
+  /// No description provided for @extractingDownloadsData.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting downloads data...'**
+  String get extractingDownloadsData;
+
+  /// No description provided for @extractingAudioFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting audio files...'**
+  String get extractingAudioFiles;
+
+  /// No description provided for @finalizingRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Finalizing restore...'**
+  String get finalizingRestore;
+
+  /// No description provided for @restoreCompletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore completed successfully!'**
+  String get restoreCompletedSuccessfully;
+
+  /// No description provided for @restoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore failed'**
+  String get restoreFailed;
+
+  /// No description provided for @backupFileNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup file not found'**
+  String get backupFileNotFound;
+
+  /// No description provided for @savedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to: {filename}'**
+  String savedTo(String filename);
+
+  /// No description provided for @playlistEditSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give your playlist a fresh identity.'**
+  String get playlistEditSubtitle;
+
+  /// No description provided for @playlistDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get playlistDetailsTitle;
+
+  /// No description provided for @playlistEmptyStateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a playlist to start saving your favourite tracks.'**
+  String get playlistEmptyStateDescription;
+
+  /// No description provided for @playlistSelectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a playlist'**
+  String get playlistSelectTitle;
+
+  /// No description provided for @playlistSelectDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose where the selected tracks should be added.'**
+  String get playlistSelectDescription;
+
+  /// No description provided for @playlistCreatorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a name or paste a playlist link'**
+  String get playlistCreatorSubtitle;
+
+  /// No description provided for @playlistCreatorPasteInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'You can paste a YouTube playlist URL to import it automatically.'**
+  String get playlistCreatorPasteInfo;
+
+  /// No description provided for @artistNotFoundDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The artist you are looking for was not found.'**
+  String get artistNotFoundDescription;
+
+  /// No description provided for @artistNoSinglesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No singles available for this artist.'**
+  String get artistNoSinglesDescription;
+
+  /// No description provided for @artistNoAlbumsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No albums available for this artist.'**
+  String get artistNoAlbumsDescription;
+
+  /// No description provided for @artistNoSongsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No songs available for this artist.'**
+  String get artistNoSongsDescription;
+
+  /// No description provided for @lyricsNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No lyrics available for this track.'**
+  String get lyricsNotAvailable;
+
+  /// No description provided for @queueEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your queue is empty'**
+  String get queueEmptyTitle;
+
+  /// No description provided for @queueEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add songs to the queue to enjoy your music experience.'**
+  String get queueEmptyMessage;
+
+  /// No description provided for @noItemsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No items found'**
+  String get noItemsFound;
+
+  /// No description provided for @downloadsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your downloaded tracks will appear here.'**
+  String get downloadsEmptyMessage;
+
+  /// No description provided for @downloadingSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading'**
+  String get downloadingSectionTitle;
+
+  /// No description provided for @queuedSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued'**
+  String get queuedSectionTitle;
+
+  /// No description provided for @completedSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedSectionTitle;
+
+  /// No description provided for @failedSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failedSectionTitle;
+
+  /// No description provided for @searchSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions'**
+  String get searchSuggestions;
+
+  /// No description provided for @searchStartTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing to search'**
+  String get searchStartTyping;
+
+  /// No description provided for @smartSuggestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Suggestions'**
+  String get smartSuggestionsTitle;
+
+  /// No description provided for @smartSuggestionsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-add similar tracks'**
+  String get smartSuggestionsDescription;
+
+  /// No description provided for @libraryManagementSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Library Management'**
+  String get libraryManagementSectionTitle;
+
+  /// No description provided for @backupLibraryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a backup of your library'**
+  String get backupLibraryDescription;
+
+  /// No description provided for @restoreLibraryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore your library from a backup'**
+  String get restoreLibraryDescription;
+
+  /// No description provided for @includeLibraryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup your saved albums, artists, and playlists'**
+  String get includeLibraryDescription;
+
+  /// No description provided for @includeDownloadsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup your downloaded tracks'**
+  String get includeDownloadsDescription;
+
+  /// No description provided for @fullScreenPlayerTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Full screen player'**
+  String get fullScreenPlayerTooltip;
+
+  /// No description provided for @sleepTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep Timer'**
+  String get sleepTimer;
+
+  /// No description provided for @sleepTimerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Music will pause after selected time'**
+  String get sleepTimerDescription;
+
+  /// No description provided for @sleepTimerActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep timer: {time}'**
+  String sleepTimerActive(String time);
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String minutes(int count);
+
+  /// No description provided for @hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hours'**
+  String hours(int count);
+
+  /// No description provided for @hour.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour'**
+  String get hour;
+
+  /// No description provided for @customTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get customTime;
+
+  /// No description provided for @enterTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter time'**
+  String get enterTime;
+
+  /// No description provided for @minutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get minutesLabel;
+
+  /// No description provided for @hoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get hoursLabel;
+
+  /// No description provided for @cancelTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Timer'**
+  String get cancelTimer;
+
+  /// No description provided for @cancelTimerQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to cancel the sleep timer?'**
+  String get cancelTimerQuestion;
+
+  /// No description provided for @timerInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer active for {time}'**
+  String timerInfo(String time);
+
+  /// No description provided for @addTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time'**
+  String get addTime;
 }
 
 class _AppLocalizationsDelegate
@@ -882,9 +1302,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
-  );
+      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }
