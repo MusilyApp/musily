@@ -62,7 +62,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: "3.35.6"
+          flutter-version: "3.29.3"
 
       - name: Set up Java
         if: matrix.os == 'ubuntu-22.04'
@@ -340,7 +340,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          flutter-version: "3.35.6"
+          flutter-version: "3.29.3"
 
       - name: Install Dependencies
         run: flutter pub get
@@ -350,3 +350,4 @@ jobs:
           dart run send_telegram_message.dart \
             --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
             --chat "${{ secrets.TELEGRAM_CHAT_ID }}"
+
