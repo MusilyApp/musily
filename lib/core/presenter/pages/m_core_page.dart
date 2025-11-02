@@ -5,6 +5,7 @@ import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/core_page/core_bottom_navbar.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/_library_module/presenter/widgets/backup_progress_card.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecase.dart';
@@ -62,26 +63,37 @@ class _MCorePageState extends State<MCorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: CoreBottomNavbar(
-        getTrackUsecase: widget.getTrackUsecase,
-        playerController: widget.playerController,
-        downloaderController: widget.downloaderController,
-        libraryController: widget.libraryController,
-        getAlbumUsecase: widget.getAlbumUsecase,
-        getPlayableItemUsecase: widget.getPlayableItemUsecase,
-        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-        getArtistTracksUsecase: widget.getArtistTracksUsecase,
-        coreController: widget.coreController,
-        getArtistUsecase: widget.getArtistUsecase,
-        getPlaylistUsecase: widget.getPlaylistUsecase,
-        selectedIndex: _selected,
-        onItemSelected: (index) {
-          setState(() {
-            _selected = index;
-          });
-          LyNavigator.navigateTo(routes[index]);
-        },
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Backup Progress
+          BackupProgressCard(
+            libraryController: widget.libraryController,
+            isDesktop: false,
+          ),
+          // Bottom Navigation Bar
+          CoreBottomNavbar(
+            getTrackUsecase: widget.getTrackUsecase,
+            playerController: widget.playerController,
+            downloaderController: widget.downloaderController,
+            libraryController: widget.libraryController,
+            getAlbumUsecase: widget.getAlbumUsecase,
+            getPlayableItemUsecase: widget.getPlayableItemUsecase,
+            getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+            getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+            getArtistTracksUsecase: widget.getArtistTracksUsecase,
+            coreController: widget.coreController,
+            getArtistUsecase: widget.getArtistUsecase,
+            getPlaylistUsecase: widget.getPlaylistUsecase,
+            selectedIndex: _selected,
+            onItemSelected: (index) {
+              setState(() {
+                _selected = index;
+              });
+              LyNavigator.navigateTo(routes[index]);
+            },
+          ),
+        ],
       ),
       body: const RouterOutlet(),
     );

@@ -6,12 +6,25 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Widget? title;
   final List<Widget>? actions;
-  const MusilyAppBar({super.key, this.leading, this.title, this.actions});
+  final Color? backgroundColor;
+  final Color? surfaceTintColor;
+  final bool autoImplyLeading;
+  const MusilyAppBar({
+    super.key,
+    this.leading,
+    this.title,
+    this.actions,
+    this.backgroundColor,
+    this.surfaceTintColor,
+    this.autoImplyLeading = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Navigator.canPop(context)
+      backgroundColor: backgroundColor,
+      surfaceTintColor: surfaceTintColor,
+      leading: autoImplyLeading && Navigator.canPop(context)
           ? Tooltip(
               message: context.localization.back,
               child: IconButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class ScreenHandler extends StatelessWidget {
   final Widget mobile;
@@ -17,6 +18,11 @@ class ScreenHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Implement the screen handler
-    return mobile;
+    return Builder(builder: (context) {
+      if (context.display.moreThanSm) {
+        return desktop ?? mobile;
+      }
+      return mobile;
+    });
   }
 }

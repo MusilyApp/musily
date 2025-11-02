@@ -73,40 +73,42 @@ class CoreBottomNavbar extends StatelessWidget {
           ),
           Container(
             height: 70,
-            margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(60),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: context.themeData.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(60),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _NavItem(
-                      icon: LucideIcons.house,
-                      isSelected: selectedIndex == 0,
-                      onTap: () => onItemSelected(0),
-                    ),
-                    _NavItem(
-                      icon: LucideIcons.search,
-                      isSelected: selectedIndex == 1,
-                      onTap: () => onItemSelected(1),
-                    ),
-                    _NavItem(
-                      icon: LucideIcons.library,
-                      isSelected: selectedIndex == 2,
-                      onTap: () => onItemSelected(2),
-                    ),
-                    _NavItem(
-                      icon: LucideIcons.download,
-                      isSelected: selectedIndex == 3,
-                      onTap: () => onItemSelected(3),
-                    ),
-                  ],
-                ),
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            decoration: BoxDecoration(
+              color: context.themeData.colorScheme.surface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: context.themeData.colorScheme.outline
+                    .withValues(alpha: 0.1),
+                width: 1,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _NavItem(
+                    icon: LucideIcons.house,
+                    isSelected: selectedIndex == 0,
+                    onTap: () => onItemSelected(0),
+                  ),
+                  _NavItem(
+                    icon: LucideIcons.search,
+                    isSelected: selectedIndex == 1,
+                    onTap: () => onItemSelected(1),
+                  ),
+                  _NavItem(
+                    icon: LucideIcons.library,
+                    isSelected: selectedIndex == 2,
+                    onTap: () => onItemSelected(2),
+                  ),
+                  _NavItem(
+                    icon: LucideIcons.download,
+                    isSelected: selectedIndex == 3,
+                    onTap: () => onItemSelected(3),
+                  ),
+                ],
               ),
             ),
           ),
@@ -129,25 +131,30 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        curve: Curves.easeInOut,
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isSelected
-              ? context.themeData.colorScheme.primary.withValues(alpha: 0.2)
-              : Colors.transparent,
-        ),
-        child: Icon(
-          icon,
-          color: isSelected
-              ? context.themeData.colorScheme.primary
-              : context.themeData.colorScheme.onSurface.withValues(alpha: 0.6),
-          size: 24,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          width: 54,
+          height: 54,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: isSelected
+                ? context.themeData.colorScheme.primary.withValues(alpha: 0.15)
+                : Colors.transparent,
+          ),
+          child: Icon(
+            icon,
+            color: isSelected
+                ? context.themeData.colorScheme.primary
+                : context.themeData.colorScheme.onSurface
+                    .withValues(alpha: 0.7),
+            size: 24,
+          ),
         ),
       ),
     );

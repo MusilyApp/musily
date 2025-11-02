@@ -4,9 +4,11 @@ import 'package:musily/features/player/presenter/controllers/player/player_contr
 
 class PlayerSizedBox extends StatelessWidget {
   final PlayerController playerController;
+  final double height;
   const PlayerSizedBox({
     super.key,
     required this.playerController,
+    this.height = 70,
   });
 
   @override
@@ -14,9 +16,7 @@ class PlayerSizedBox extends StatelessWidget {
     return playerController.builder(
       builder: (context, data) {
         if (data.currentPlayingItem != null && !context.display.isDesktop) {
-          return const SizedBox(
-            height: 70,
-          );
+          return SizedBox(height: height);
         }
         return Container();
       },

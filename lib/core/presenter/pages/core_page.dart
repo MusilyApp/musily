@@ -6,6 +6,7 @@ import 'package:musily/core/data/services/tray_service.dart';
 import 'package:musily/core/data/services/updater_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/pages/d_core_page.dart';
 import 'package:musily/core/presenter/pages/m_core_page.dart';
 import 'package:musily/core/presenter/ui/utils/ly_disposable.dart';
 import 'package:musily/core/presenter/widgets/screen_handler.dart';
@@ -118,6 +119,20 @@ class _CorePageState extends State<CorePage> {
               getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
               getArtistTracksUsecase: widget.getArtistTracksUsecase,
               coreController: widget.coreController,
+              getArtistUsecase: widget.getArtistUsecase,
+              getPlaylistUsecase: widget.getPlaylistUsecase,
+              getTrackUsecase: widget.getTrackUsecase,
+            ),
+            desktop: DCorePage(
+              coreController: widget.coreController,
+              playerController: widget.playerController,
+              downloaderController: widget.downloaderController,
+              libraryController: widget.libraryController,
+              getAlbumUsecase: widget.getAlbumUsecase,
+              getPlayableItemUsecase: widget.getPlayableItemUsecase,
+              getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+              getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+              getArtistTracksUsecase: widget.getArtistTracksUsecase,
               getArtistUsecase: widget.getArtistUsecase,
               getPlaylistUsecase: widget.getPlaylistUsecase,
               getTrackUsecase: widget.getTrackUsecase,
