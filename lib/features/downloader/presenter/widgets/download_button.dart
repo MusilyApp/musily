@@ -8,10 +8,11 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class DownloadButton extends StatelessWidget {
+class DownloadButton extends StatefulWidget {
   final DownloaderController controller;
   final TrackEntity track;
   final Color? color;
+
   const DownloadButton({
     super.key,
     required this.controller,
@@ -20,67 +21,116 @@ class DownloadButton extends StatelessWidget {
   });
 
   @override
+  State<DownloadButton> createState() => _DownloadButtonState();
+}
+
+class _DownloadButtonState extends State<DownloadButton> {
+  DownloadingItem? _cachedItem;
+  DownloadStatus? _cachedStatus;
+  double _cachedProgress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateCache();
+  }
+
+  void _updateCache() {
+    final item = widget.controller.methods.getItem(widget.track);
+    _cachedItem = item;
+    _cachedStatus = item?.status;
+    _cachedProgress = item?.progress ?? 0.0;
+  }
+
+  bool _shouldRebuild(DownloadingItem? newItem) {
+    if (newItem == null && _cachedItem == null) return false;
+    if (newItem == null || _cachedItem == null) return true;
+
+    final statusChanged = newItem.status != _cachedStatus;
+    final progressChanged = (newItem.progress - _cachedProgress).abs() > 0.01;
+
+    return statusChanged || progressChanged;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return controller.builder(
+    return widget.controller.builder(
       builder: (context, data) {
-        final item = controller.methods.getItem(track);
-        final iconSize = context.display.isDesktop ? 20.0 : null;
-        if (item != null) {
-          if (item.status == DownloadStatus.queued) {
-            return IconButton(
-              onPressed: () {},
-              iconSize: iconSize,
-              icon: Icon(
-                LucideIcons.hourglass,
-                size: iconSize ?? 20,
-                color: color ?? context.themeData.colorScheme.primary,
+        final item = widget.controller.methods.getItem(widget.track);
+
+        if (!_shouldRebuild(item)) {
+          return _buildButton(context, _cachedItem);
+        }
+
+        _updateCache();
+        return _buildButton(context, item);
+      },
+    );
+  }
+
+  Widget _buildButton(BuildContext context, DownloadingItem? item) {
+    final iconSize = context.display.isDesktop ? 20.0 : null;
+
+    if (item != null) {
+      switch (item.status) {
+        case DownloadStatus.queued:
+          return IconButton(
+            onPressed: () {},
+            iconSize: iconSize,
+            icon: Icon(
+              LucideIcons.hourglass,
+              size: iconSize ?? 20,
+              color: widget.color ?? context.themeData.colorScheme.primary,
+            ),
+          );
+
+        case DownloadStatus.downloading:
+          return IconButton(
+            onPressed: () {},
+            icon: SizedBox(
+              height: iconSize,
+              width: iconSize,
+              child: CircularPercentIndicator(
+                lineWidth: 4,
+                startAngle: 180,
+                progressColor:
+                    widget.color ?? context.themeData.colorScheme.primary,
+                backgroundColor: context.themeData.colorScheme.inversePrimary,
+                percent: item.progress,
+                radius: 10,
               ),
-            );
-          }
-          if (item.status == DownloadStatus.downloading) {
-            return IconButton(
-              onPressed: () {},
-              icon: SizedBox(
-                height: iconSize,
-                width: iconSize,
-                child: CircularPercentIndicator(
-                  lineWidth: 4,
-                  startAngle: 180,
-                  progressColor: color ?? context.themeData.colorScheme.primary,
-                  backgroundColor: context.themeData.colorScheme.inversePrimary,
-                  percent: item.progress,
-                  radius: 10,
-                ),
-              ),
-            );
-          }
-          if (item.status == DownloadStatus.completed &&
-              (item.track.url ?? '').isDirectory) {
+            ),
+          );
+
+        case DownloadStatus.completed:
+          if ((item.track.url ?? '').isDirectory) {
             return IconButton(
               onPressed: () {},
               iconSize: iconSize,
               icon: Icon(
                 LucideIcons.circleCheckBig,
                 size: iconSize ?? 20,
-                color: color ?? context.themeData.colorScheme.primary,
+                color: widget.color ?? context.themeData.colorScheme.primary,
               ),
             );
           }
-        }
-        return IconButton(
-          onPressed: () {
-            controller.methods.addDownload(
-              track,
-            );
-          },
-          iconSize: iconSize,
-          icon: Icon(
-            LucideIcons.download,
-            size: iconSize ?? 20,
-            color: color ?? context.themeData.colorScheme.primary,
-          ),
-        );
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    return IconButton(
+      onPressed: () {
+        widget.controller.methods.addDownload(widget.track);
       },
+      iconSize: iconSize,
+      icon: Icon(
+        LucideIcons.download,
+        size: iconSize ?? 20,
+        color: widget.color ?? context.themeData.colorScheme.primary,
+      ),
     );
   }
 }
