@@ -210,25 +210,32 @@ class _TrackLyricsState extends State<TrackLyrics> {
         final isActive = _activeLineIndex == i;
 
         widgets.add(
-          Container(
-            key: _lineKeys[i],
-            child: InkWell(
-              onTap: () => _handleLineTap(lineData),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  style: context.themeData.textTheme.bodyLarge!.copyWith(
-                    fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
-                    color: isActive
-                        ? context.themeData.iconTheme.color
-                        : context.themeData.iconTheme.color
-                            ?.withValues(alpha: 0.5),
-                    fontSize: 18,
+          Material(
+            color: Colors.transparent,
+            child: Container(
+              key: _lineKeys[i],
+              child: InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                onTap: () => _handleLineTap(lineData),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    style: context.themeData.textTheme.bodyLarge!.copyWith(
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
+                      color: isActive
+                          ? context.themeData.iconTheme.color
+                          : context.themeData.iconTheme.color
+                              ?.withValues(alpha: 0.5),
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                    child: Text(lineData.lyricLine!),
                   ),
-                  textAlign: TextAlign.center,
-                  child: Text(lineData.lyricLine!),
                 ),
               ),
             ),
