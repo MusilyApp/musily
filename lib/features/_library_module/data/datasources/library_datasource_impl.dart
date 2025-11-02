@@ -41,17 +41,13 @@ class LibraryDatasourceImpl extends BaseDatasource
       if (UserService.loggedIn) {
         final response = await _httpAdapter.post(
           '/library/add_album_to_library',
-          data: AlbumModel.toMap(
-            album,
-          ),
+          data: AlbumModel.toMap(album),
         );
         await _modelAdapter.put(response.data);
         final libraryItem = LibraryItemModel.fromMap(response.data);
         return libraryItem;
       }
-      final anonymousItem = LibraryItemModel.newInstance(
-        album: album,
-      );
+      final anonymousItem = LibraryItemModel.newInstance(album: album);
       await _modelAdapter.put(LibraryItemModel.toMap(anonymousItem));
       return anonymousItem;
     });
@@ -68,9 +64,7 @@ class LibraryDatasourceImpl extends BaseDatasource
         await _modelAdapter.put(response.data);
         return LibraryItemModel.fromMap(response.data);
       }
-      final anonymousItem = LibraryItemModel.newInstance(
-        artist: artist,
-      );
+      final anonymousItem = LibraryItemModel.newInstance(artist: artist);
       await _modelAdapter.put(LibraryItemModel.toMap(anonymousItem));
       return anonymousItem;
     });
@@ -87,11 +81,7 @@ class LibraryDatasourceImpl extends BaseDatasource
           '/library/add_tracks_to_playlist',
           data: {
             'playlistId': playlistId,
-            'tracks': [
-              ...tracks.map(
-                (e) => TrackModel.toMap(e),
-              ),
-            ],
+            'tracks': [...tracks.map((e) => TrackModel.toMap(e))],
           },
         );
       }
@@ -132,9 +122,7 @@ class LibraryDatasourceImpl extends BaseDatasource
         final playlist = PlaylistModel.fromMap(response.data);
         await _modelAdapter.put(
           LibraryItemModel.toMap(
-            LibraryItemModel.newInstance(
-              playlist: playlist,
-            ),
+            LibraryItemModel.newInstance(playlist: playlist),
           ),
         );
         return playlist;
@@ -214,31 +202,54 @@ class LibraryDatasourceImpl extends BaseDatasource
 
   @override
   Future<List<LibraryItemEntity>> getLibraryItems() {
+    String? contentKeyForItem(LibraryItemEntity item) {
+      if (item.album != null) {
+        return 'album_${item.album!.id}';
+      }
+      if (item.artist != null) {
+        return 'artist_${item.artist!.id}';
+      }
+      if (item.playlist != null) {
+        return 'playlist_${item.playlist!.id}';
+      }
+      return null;
+    }
+
+    List<LibraryItemEntity> dedupeLibraryItems(List<LibraryItemEntity> items) {
+      final deduped = <String, LibraryItemEntity>{};
+      for (final item in items) {
+        final key = contentKeyForItem(item) ?? 'id_${item.id}';
+        if (!deduped.containsKey(key)) {
+          deduped[key] = item;
+        }
+      }
+      return deduped.values.toList();
+    }
+
     return exec<List<LibraryItemEntity>>(
       () async {
         if (UserService.loggedIn) {
           final response = await _httpAdapter.get('/library/get_library_items');
           final libraryItems = <LibraryItemEntity>[
-            ...response.data.map(
-              (item) => LibraryItemModel.fromMap(item),
-            ),
+            ...response.data.map((item) => LibraryItemModel.fromMap(item)),
           ];
-          return libraryItems;
+          final deduped = dedupeLibraryItems(libraryItems);
+          return deduped;
         }
         final anonymousLibrary = await _modelAdapter.getAll();
-        return [
-          ...anonymousLibrary.map(
-            (e) => LibraryItemModel.fromMap(e),
-          )
+        final libraryItems = [
+          ...anonymousLibrary.map((e) => LibraryItemModel.fromMap(e)),
         ];
+        final deduped = dedupeLibraryItems(libraryItems);
+        return deduped;
       },
       onCatch: () async {
         final library = await _modelAdapter.getAll();
-        return [
-          ...library.map(
-            (e) => LibraryItemModel.fromMap(e),
-          ),
+        final libraryItems = [
+          ...library.map((e) => LibraryItemModel.fromMap(e)),
         ];
+        final deduped = dedupeLibraryItems(libraryItems);
+        return deduped;
       },
     );
   }
@@ -247,8 +258,9 @@ class LibraryDatasourceImpl extends BaseDatasource
   Future<void> removeAlbumFromLibrary(String albumId) {
     return exec(() async {
       if (UserService.loggedIn) {
-        await _httpAdapter
-            .delete('/library/remove_album_from_library/$albumId');
+        await _httpAdapter.delete(
+          '/library/remove_album_from_library/$albumId',
+        );
       }
       await _modelAdapter.findByIdAndDelete(albumId);
     });
@@ -275,9 +287,7 @@ class LibraryDatasourceImpl extends BaseDatasource
       if (UserService.loggedIn) {
         await _httpAdapter.delete(
           '/library/remove_tracks_from_playlist/$playlistId',
-          data: {
-            'tracks': trackIds,
-          },
+          data: {'tracks': trackIds},
         );
       }
       final currentPlaylist = await _modelAdapter.findById(playlistId);
@@ -291,28 +301,57 @@ class LibraryDatasourceImpl extends BaseDatasource
   }
 
   @override
-  Future<PlaylistEntity?> updatePlaylist(
-    UpdatePlaylistDto data,
+  Future<void> updateTrackInPlaylist(
+    String playlistId,
+    String trackId,
+    TrackEntity updatedTrack,
   ) {
-    return exec<PlaylistEntity?>(() async {
-      Map<String, dynamic>? responseData;
+    return exec<void>(() async {
       if (UserService.loggedIn) {
-        final response = await _httpAdapter.put(
-          '/library/playlists/${data.id}',
-          data: data.toMap(),
+        // TODO: Implement this route in the backend
+        await _httpAdapter.put(
+          '/library/update_track_in_playlist/$playlistId/$trackId',
+          data: TrackModel.toMap(updatedTrack),
         );
-        responseData = response.data;
       }
-      final currentPlaylist = await _modelAdapter.findById(data.id);
-      currentPlaylist?['title'] = data.title;
+      final currentPlaylist = await _modelAdapter.findById(playlistId);
       if (currentPlaylist != null) {
+        await userTracksDB.updateTrackInPlaylist(
+          playlistId,
+          trackId,
+          updatedTrack,
+        );
+        final trackCount = await userTracksDB.getTrackCount(playlistId);
+        currentPlaylist['playlist']?['trackCount'] = trackCount;
         await _modelAdapter.put(currentPlaylist);
-        return PlaylistModel.fromMap(responseData ?? currentPlaylist);
       }
-      return null;
-    }, onCatch: () async {
-      return null;
     });
+  }
+
+  @override
+  Future<PlaylistEntity?> updatePlaylist(UpdatePlaylistDto data) {
+    return exec<PlaylistEntity?>(
+      () async {
+        Map<String, dynamic>? responseData;
+        if (UserService.loggedIn) {
+          final response = await _httpAdapter.put(
+            '/library/playlists/${data.id}',
+            data: data.toMap(),
+          );
+          responseData = response.data;
+        }
+        final currentPlaylist = await _modelAdapter.findById(data.id);
+        currentPlaylist?['title'] = data.title;
+        if (currentPlaylist != null) {
+          await _modelAdapter.put(currentPlaylist);
+          return PlaylistModel.fromMap(responseData ?? currentPlaylist);
+        }
+        return null;
+      },
+      onCatch: () async {
+        return null;
+      },
+    );
   }
 
   @override
@@ -334,29 +373,89 @@ class LibraryDatasourceImpl extends BaseDatasource
   @override
   Future<void> mergeLibrary(List<LibraryItemEntity> items) {
     return exec(() async {
-      final itemsMapList = [
-        ...items.map((e) => LibraryItemModel.toMap(e)),
-      ];
-      if (UserService.loggedIn) {
-        await _httpAdapter.patch(
-          '/library/merge_library',
-          data: itemsMapList,
-        );
+      final existingItems = await _modelAdapter.getAll();
+
+      final existingByContentId = <String, Map<String, dynamic>>{};
+      final duplicates = <String>[];
+
+      for (final existing in existingItems) {
+        String? contentId;
+        if (existing['album'] != null && existing['album']['id'] != null) {
+          contentId = 'album_${existing['album']['id']}';
+        } else if (existing['artist'] != null &&
+            existing['artist']['id'] != null) {
+          contentId = 'artist_${existing['artist']['id']}';
+        } else if (existing['playlist'] != null &&
+            existing['playlist']['id'] != null) {
+          contentId = 'playlist_${existing['playlist']['id']}';
+        }
+
+        if (contentId != null) {
+          if (!existingByContentId.containsKey(contentId)) {
+            existingByContentId[contentId] = existing;
+          } else {
+            final duplicateId = existing['id'];
+            if (duplicateId != null) {
+              duplicates.add('$duplicateId');
+            }
+          }
+        }
       }
-      for (final item in items) {
+
+      if (duplicates.isNotEmpty) {
+        for (final duplicateId in duplicates) {
+          await _modelAdapter.findByIdAndDelete(duplicateId);
+        }
+      }
+
+      final itemsToMerge = <Map<String, dynamic>>[];
+      final itemsMapList = [...items.map((e) => LibraryItemModel.toMap(e))];
+
+      for (final itemMap in itemsMapList) {
+        String? contentId;
+        if (itemMap['album'] != null && itemMap['album']['id'] != null) {
+          contentId = 'album_${itemMap['album']['id']}';
+        } else if (itemMap['artist'] != null &&
+            itemMap['artist']['id'] != null) {
+          contentId = 'artist_${itemMap['artist']['id']}';
+        } else if (itemMap['playlist'] != null &&
+            itemMap['playlist']['id'] != null) {
+          contentId = 'playlist_${itemMap['playlist']['id']}';
+        }
+
+        if (contentId != null && existingByContentId.containsKey(contentId)) {
+          final existingItem = existingByContentId[contentId]!;
+          itemMap['id'] = existingItem['id'];
+
+          if (itemMap['playlist'] != null && existingItem['playlist'] != null) {
+            itemMap['playlist']['id'] = existingItem['playlist']['id'];
+          }
+        } else {}
+
+        itemsToMerge.add(itemMap);
+      }
+
+      if (UserService.loggedIn) {
+        await _httpAdapter.patch('/library/merge_library', data: itemsToMerge);
+      }
+
+      for (int i = 0; i < items.length; i++) {
+        final item = items[i];
         if (item.playlist == null) {
           continue;
         }
+        final playlistId = itemsToMerge[i]['id'];
         await userTracksDB.addTracksToPlaylist(
-          item.id,
+          playlistId,
           item.playlist!.tracks,
         );
       }
+
       await _modelAdapter.putMany([
-        ...itemsMapList.map((e) {
+        ...itemsToMerge.map((e) {
           e['playlist']?['tracks'] = [];
           return e;
-        })
+        }),
       ]);
     });
   }

@@ -1,6 +1,8 @@
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 
+enum BackupActivityType { backup, restore }
+
 class LibraryData extends BaseControllerData {
   final bool loading;
   final List<String> itemsAddingToFavorites;
@@ -8,6 +10,13 @@ class LibraryData extends BaseControllerData {
   final List<String> itemsAddingToLibrary;
   final List<String> loadedFavoritesHash;
   final List<String> alreadyLoadedFirstFavoriteState;
+  final bool backupInProgress;
+  final double backupProgress;
+  final String backupMessage;
+  final String? backupMessageKey;
+  final Map<String, String>? backupMessageParams;
+  final BackupActivityType? backupActivityType;
+
   LibraryData({
     required this.loading,
     required this.items,
@@ -15,6 +24,12 @@ class LibraryData extends BaseControllerData {
     required this.loadedFavoritesHash,
     required this.alreadyLoadedFirstFavoriteState,
     required this.itemsAddingToFavorites,
+    this.backupInProgress = false,
+    this.backupProgress = 0.0,
+    this.backupMessage = '',
+    this.backupMessageKey,
+    this.backupMessageParams,
+    this.backupActivityType,
   });
 
   @override
@@ -25,6 +40,13 @@ class LibraryData extends BaseControllerData {
     List<String>? loadedFavoritesHash,
     List<String>? alreadyLoadedFirstFavoriteState,
     List<String>? itemsAddingToFavorites,
+    bool? backupInProgress,
+    double? backupProgress,
+    String? backupMessage,
+    String? backupMessageKey,
+    Map<String, String>? backupMessageParams,
+    BackupActivityType? backupActivityType,
+    bool clearBackupActivityType = false,
   }) {
     return LibraryData(
       loading: loading ?? this.loading,
@@ -35,6 +57,14 @@ class LibraryData extends BaseControllerData {
           itemsAddingToFavorites ?? this.itemsAddingToFavorites,
       alreadyLoadedFirstFavoriteState: alreadyLoadedFirstFavoriteState ??
           this.alreadyLoadedFirstFavoriteState,
+      backupInProgress: backupInProgress ?? this.backupInProgress,
+      backupProgress: backupProgress ?? this.backupProgress,
+      backupMessage: backupMessage ?? this.backupMessage,
+      backupMessageKey: backupMessageKey ?? this.backupMessageKey,
+      backupMessageParams: backupMessageParams ?? this.backupMessageParams,
+      backupActivityType: clearBackupActivityType
+          ? null
+          : (backupActivityType ?? this.backupActivityType),
     );
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:musily/core/data/services/library_backup_service.dart';
 import 'package:musily/features/_library_module/data/dtos/create_playlist_dto.dart';
 import 'package:musily/features/_library_module/data/dtos/update_playlist_dto.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
@@ -11,26 +14,30 @@ class LibraryMethods {
   final Future<LibraryItemEntity?> Function(String itemId) getLibraryItem;
   final Future<void> Function(List<LibraryItemEntity> items) mergeLibrary;
 
+  // Backup
+  final Future<void> Function(List<BackupOptions> options) backupLibrary;
+  final Future<void> Function(File backupFile) restoreLibrary;
+  final Future<File?> Function() pickBackupFile;
+  final Future<void> Function() cancelBackup;
+
   // Playlist
   final Future<void> Function(CreatePlaylistDTO data) createPlaylist;
 
-  final Future<void> Function(
-    String playlistId,
-    List<TrackEntity> tracks,
-  ) addTracksToPlaylist;
+  final Future<void> Function(String playlistId, List<TrackEntity> tracks)
+      addTracksToPlaylist;
+
+  final Future<void> Function(String playlistId, List<String> tracksIds)
+      removeTracksFromPlaylist;
 
   final Future<void> Function(
     String playlistId,
-    List<String> tracksIds,
-  ) removeTracksFromPlaylist;
+    String trackId,
+    TrackEntity updatedTrack,
+  ) updateTrackInPlaylist;
 
-  final Future<void> Function(
-    UpdatePlaylistDto data,
-  ) updatePlaylist;
+  final Future<void> Function(UpdatePlaylistDto data) updatePlaylist;
 
-  final Future<void> Function(
-    String playlistId,
-  ) removePlaylistFromLibrary;
+  final Future<void> Function(String playlistId) removePlaylistFromLibrary;
 
   // Artist
   final Future<void> Function(ArtistEntity artist) addArtistToLibrary;
@@ -47,15 +54,11 @@ class LibraryMethods {
 
   final Future<void> Function(String id) updateLastTimePlayed;
 
-  Future<void> Function(
-    List<TrackEntity> tracks,
-    String downloadingId,
-  ) downloadCollection;
+  Future<void> Function(List<TrackEntity> tracks, String downloadingId)
+      downloadCollection;
 
-  Future<void> Function(
-    List<TrackEntity> tracks,
-    String downloadingId,
-  ) cancelCollectionDownload;
+  Future<void> Function(List<TrackEntity> tracks, String downloadingId)
+      cancelCollectionDownload;
 
   LibraryMethods({
     required this.getLibraryItems,
@@ -63,6 +66,7 @@ class LibraryMethods {
     required this.createPlaylist,
     required this.addTracksToPlaylist,
     required this.removeTracksFromPlaylist,
+    required this.updateTrackInPlaylist,
     required this.updatePlaylist,
     required this.removePlaylistFromLibrary,
     required this.addArtistToLibrary,
@@ -75,5 +79,9 @@ class LibraryMethods {
     required this.downloadCollection,
     required this.cancelCollectionDownload,
     required this.mergeLibrary,
+    required this.backupLibrary,
+    required this.restoreLibrary,
+    required this.pickBackupFile,
+    required this.cancelBackup,
   });
 }
