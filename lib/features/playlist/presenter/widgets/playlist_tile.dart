@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_tile_thumb.dart';
@@ -38,6 +41,8 @@ class PlaylistTile extends StatelessWidget {
   final ContentOrigin contentOrigin;
   final GetTrackUsecase getTrackUsecase;
   final void Function()? customClickAction;
+  final double? leadingSize;
+  final LyDensity density;
 
   const PlaylistTile({
     required this.playlist,
@@ -56,6 +61,8 @@ class PlaylistTile extends StatelessWidget {
     required this.getArtistSinglesUsecase,
     required this.contentOrigin,
     required this.getTrackUsecase,
+    this.leadingSize,
+    this.density = LyDensity.normal,
   });
 
   @override
@@ -64,6 +71,7 @@ class PlaylistTile extends StatelessWidget {
       builder: (context, data) {
         final asyncOperation = data.itemsAddingToLibrary.contains(playlist.id);
         return LyListTile(
+          density: density,
           onTap: () {
             if (customClickAction != null) {
               customClickAction!.call();
@@ -107,24 +115,73 @@ class PlaylistTile extends StatelessWidget {
           },
           leading: PlaylistTileThumb(
             playlist: playlist,
+            size: leadingSize ?? 48,
             playerController: playerController,
           ),
-          title: Text(
-            playlist.id == UserService.favoritesId
-                ? context.localization.favorites
-                : playlist.title,
+          title: InfinityMarquee(
+            child: Text(
+              playlist.id == UserService.favoritesId
+                  ? context.localization.favorites
+                  : playlist.id == 'offline'
+                      ? context.localization.offline
+                      : playlist.title,
+              style: TextStyle(
+                fontSize: density == LyDensity.normal ? 16 : 14,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.2,
+              ),
+            ),
           ),
           subtitle: Builder(
             builder: (context) {
               if (asyncOperation) {
                 return Skeletonizer(
-                  child: Text(
-                    '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
+                  child: Row(
+                    children: [
+                      Icon(
+                        LucideIcons.listMusic,
+                        size: 14,
+                        color: context.themeData.colorScheme.onSurfaceVariant
+                            .withValues(alpha: 0.7),
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          '${playlist.trackCount} ${context.localization.songs}',
+                          style: TextStyle(
+                            fontSize: density == LyDensity.normal ? 14 : 12,
+                            fontWeight: FontWeight.w400,
+                            color: context
+                                .themeData.colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }
-              return Text(
-                '${context.localization.playlist} · ${playlist.trackCount} ${context.localization.songs}',
+              return Row(
+                children: [
+                  Icon(
+                    LucideIcons.listMusic,
+                    size: 14,
+                    color: context.themeData.colorScheme.onSurfaceVariant
+                        .withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      '${playlist.trackCount} ${context.localization.songs}',
+                      style: TextStyle(
+                        fontSize: density == LyDensity.normal ? 14 : 12,
+                        fontWeight: FontWeight.w400,
+                        color: context.themeData.colorScheme.onSurfaceVariant
+                            .withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           ),
@@ -132,6 +189,7 @@ class PlaylistTile extends StatelessWidget {
               ? null
               : PlaylistOptions(
                   playlist: playlist,
+                  iconSize: density == LyDensity.dense ? 18 : 20,
                   coreController: coreController,
                   playerController: playerController,
                   getAlbumUsecase: getAlbumUsecase,
