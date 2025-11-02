@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:isar/isar.dart';
 import 'package:musily/core/data/database/collections/database_library.dart';
+import 'package:musily/core/data/database/collections/download_queue.dart';
 import 'package:musily/core/data/database/collections/library.dart';
 import 'package:musily/core/data/database/collections/user_tracks.dart';
 import 'package:musily/core/data/services/user_service.dart';
@@ -23,7 +24,12 @@ class Database {
   Future<void> init() async {
     final databaseDirectory = await getApplicationSupportDirectory();
     isar = await Isar.open(
-      [LibrarySchema, DatabaseLibrarySchema, UserTracksSchema],
+      [
+        LibrarySchema,
+        DatabaseLibrarySchema,
+        UserTracksSchema,
+        DownloadQueueItemSchema,
+      ],
       directory: databaseDirectory.path,
     );
   }

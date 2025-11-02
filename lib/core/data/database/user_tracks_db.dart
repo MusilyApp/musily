@@ -14,66 +14,62 @@ class UserTracksDB {
     List<TrackEntity> tracks,
   ) async {
     final userId = UserService().currentUser?.id ?? 'anonymous';
-    await _database.isar.writeTxn(
-      () async {
-        final existingTrackHashes = await _database.isar.userTracks
-            .filter()
-            .libraryItemIdEqualTo(playlistId)
-            .anyOf(tracks.map((track) => track.hash).toList(),
-                (q, hash) => q.hashEqualTo(hash))
-            .findAll()
-            .then((tracks) => tracks.map((track) => track.hash).toSet());
+    await _database.isar.writeTxn(() async {
+      final existingTrackHashes = await _database.isar.userTracks
+          .filter()
+          .libraryItemIdEqualTo(playlistId)
+          .anyOf(
+            tracks.map((track) => track.hash).toList(),
+            (q, hash) => q.hashEqualTo(hash),
+          )
+          .findAll()
+          .then((tracks) => tracks.map((track) => track.hash).toSet());
 
-        final newTracks = tracks
-            .where((track) => !existingTrackHashes.contains(track.hash))
-            .toList();
+      final newTracks = tracks
+          .where((track) => !existingTrackHashes.contains(track.hash))
+          .toList();
 
-        final trackCount = await _database.isar.userTracks
-            .filter()
-            .libraryItemIdEqualTo(playlistId)
-            .count();
+      final trackCount = await _database.isar.userTracks
+          .filter()
+          .libraryItemIdEqualTo(playlistId)
+          .count();
 
-        await _database.isar.userTracks.putAll([
-          ...newTracks.map(
-            (e) {
-              final newTrackIndex = newTracks.indexOf(e);
-              return UserTracks()
-                ..musilyId = e.id
-                ..libraryItemId = playlistId
-                ..hash = e.hash
-                ..orderIndex = trackCount + (newTrackIndex + 1)
-                ..userId = userId
-                ..highResImg = e.highResImg ?? ''
-                ..lowResImg = e.lowResImg ?? ''
-                ..title = e.title
-                ..albumId = e.album.id
-                ..albumTitle = e.album.title
-                ..artistId = e.artist.id
-                ..artistName = e.artist.name
-                ..duration = e.duration.inSeconds
-                ..createdAt = DateTime.now();
-            },
-          ),
-        ]);
-      },
-    );
+      await _database.isar.userTracks.putAll([
+        ...newTracks.map((e) {
+          final newTrackIndex = newTracks.indexOf(e);
+          return UserTracks()
+            ..musilyId = e.id
+            ..libraryItemId = playlistId
+            ..hash = e.hash
+            ..orderIndex = trackCount + (newTrackIndex + 1)
+            ..userId = userId
+            ..highResImg = e.highResImg ?? ''
+            ..lowResImg = e.lowResImg ?? ''
+            ..title = e.title
+            ..albumId = e.album.id
+            ..albumTitle = e.album.title
+            ..artistId = e.artist.id
+            ..artistName = e.artist.name
+            ..duration = e.duration.inSeconds
+            ..createdAt = DateTime.now();
+        }),
+      ]);
+    });
   }
 
   Future<void> removeTracksFromPlaylist(
     String playlistId,
     List<String> trackIds,
   ) async {
-    await _database.isar.writeTxn(
-      () async {
-        final pattern = trackIds.map((id) => '*$id*').join(',');
+    await _database.isar.writeTxn(() async {
+      final pattern = trackIds.map((id) => '*$id*').join(',');
 
-        await _database.isar.userTracks
-            .filter()
-            .libraryItemIdEqualTo(playlistId)
-            .musilyIdMatches(pattern)
-            .deleteAll();
-      },
-    );
+      await _database.isar.userTracks
+          .filter()
+          .libraryItemIdEqualTo(playlistId)
+          .musilyIdMatches(pattern)
+          .deleteAll();
+    });
   }
 
   Future<List<TrackEntity>> getPlaylistTracks(String playlistId) async {
@@ -92,20 +88,12 @@ class UserTracksDB {
           title: e.title,
           orderIndex: e.orderIndex,
           hash: e.hash,
-          artist: SimplifiedArtist(
-            id: e.artistId,
-            name: e.artistName,
-          ),
-          album: SimplifiedAlbum(
-            id: e.albumId,
-            title: e.albumTitle,
-          ),
+          artist: SimplifiedArtist(id: e.artistId, name: e.artistName),
+          album: SimplifiedAlbum(id: e.albumId, title: e.albumTitle),
           highResImg: e.highResImg,
           lowResImg: e.lowResImg,
           fromSmartQueue: false,
-          duration: Duration(
-            seconds: e.duration,
-          ),
+          duration: Duration(seconds: e.duration),
         ),
       ),
     ];
@@ -130,15 +118,47 @@ class UserTracksDB {
     });
   }
 
+  Future<void> updateTrackInPlaylist(
+    String playlistId,
+    String trackId,
+    TrackEntity updatedTrack,
+  ) async {
+    final userId = UserService().currentUser?.id ?? 'anonymous';
+    await _database.isar.writeTxn(() async {
+      final existingTrack = await _database.isar.userTracks
+          .filter()
+          .libraryItemIdEqualTo(playlistId)
+          .and()
+          .userIdEqualTo(userId)
+          .and()
+          .musilyIdEqualTo(trackId)
+          .findFirst();
+
+      if (existingTrack != null) {
+        existingTrack
+          ..musilyId = updatedTrack.id
+          ..hash = updatedTrack.hash
+          ..highResImg = updatedTrack.highResImg ?? ''
+          ..lowResImg = updatedTrack.lowResImg ?? ''
+          ..title = updatedTrack.title
+          ..albumId = updatedTrack.album.id
+          ..albumTitle = updatedTrack.album.title
+          ..artistId = updatedTrack.artist.id
+          ..artistName = updatedTrack.artist.name
+          ..duration = updatedTrack.duration.inSeconds;
+
+        await _database.isar.userTracks.put(existingTrack);
+      }
+    });
+  }
+
   Future<void> cleanCloudUserTracks() async {
     final userId = UserService().currentUser?.id ?? 'anonymous';
-    _database.isar.writeTxn(
-      () async {
-        await _database.isar.userTracks
-            .filter()
-            .userIdEqualTo(userId)
-            .deleteAll();
-      },
-    );
+    _database.isar.writeTxn(() async {
+      await _database.isar.userTracks
+          .filter()
+          .userIdEqualTo(userId)
+          .deleteAll();
+    });
   }
 }
