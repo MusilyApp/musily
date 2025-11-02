@@ -92,7 +92,16 @@ class LibraryTile extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: context.themeData.colorScheme.surfaceContainerHighest,
+                  gradient: LinearGradient(
+                    colors: [
+                      context.themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.8),
+                      context.themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.4),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -122,7 +131,11 @@ class LibraryTile extends StatelessWidget {
     required VoidCallback onTap,
     Widget? customLeading,
   }) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      highlightColor:
+          context.themeData.colorScheme.primary.withValues(alpha: 0.1),
+      splashColor: context.themeData.colorScheme.primary.withValues(alpha: 0.3),
       onTap: onTap,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
@@ -131,10 +144,18 @@ class LibraryTile extends StatelessWidget {
             color: context.themeData.colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: context.themeData.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.5),
+              color:
+                  context.themeData.colorScheme.outline.withValues(alpha: 0.15),
               width: 1,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: context.themeData.colorScheme.primary
+                    .withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -148,8 +169,18 @@ class LibraryTile extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: context
-                              .themeData.colorScheme.surfaceContainerHighest,
+                          gradient: LinearGradient(
+                            colors: [
+                              context
+                                  .themeData.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.8),
+                              context
+                                  .themeData.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.4),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: imageUrl != null && imageUrl.isNotEmpty
@@ -173,9 +204,10 @@ class LibraryTile extends StatelessWidget {
                   child: InfinityMarquee(
                     child: Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
+                        letterSpacing: -0.2,
                       ),
                     ),
                   ),

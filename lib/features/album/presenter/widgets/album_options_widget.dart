@@ -41,7 +41,7 @@ class AlbumOptions extends StatelessWidget {
   final GetTrackUsecase getTrackUsecase;
   final LibraryController libraryController;
   final bool tonal;
-
+  final double? iconSize;
   const AlbumOptions({
     super.key,
     required this.album,
@@ -59,6 +59,7 @@ class AlbumOptions extends StatelessWidget {
     this.onFocus,
     this.tonal = false,
     required this.getPlaylistUsecase,
+    this.iconSize,
   });
 
   @override
@@ -147,7 +148,7 @@ class AlbumOptions extends StatelessWidget {
                         ...album.tracks,
                       ],
                       album.id,
-                      startFrom: 0,
+                      startFromTrackId: album.tracks[0].id,
                     );
                     libraryController.methods.updateLastTimePlayed(
                       album.id,
@@ -176,7 +177,7 @@ class AlbumOptions extends StatelessWidget {
                   playerController.methods.playPlaylist(
                     album.tracks,
                     album.id,
-                    startFrom: randomIndex,
+                    startFromTrackId: album.tracks[randomIndex].id,
                   );
                   if (!playerData.shuffleEnabled) {
                     playerController.methods.toggleShuffle();
@@ -288,15 +289,23 @@ class AlbumOptions extends StatelessWidget {
                   onPressed: invoke,
                   fixedSize: const Size(55, 55),
                   onFocus: onFocus,
-                  icon: const Icon(
-                    Icons.more_vert,
+                  iconSize: iconSize ?? 20,
+                  icon: Icon(
+                    LucideIcons.ellipsis,
+                    size: iconSize ?? 20,
+                    color: context.themeData.colorScheme.onSurface
+                        .withValues(alpha: 0.6),
                   ),
                 );
               }
               return IconButton(
                 onPressed: invoke,
-                icon: const Icon(
-                  Icons.more_vert,
+                iconSize: iconSize ?? 20,
+                icon: Icon(
+                  LucideIcons.ellipsisVertical,
+                  size: iconSize ?? 20,
+                  color: context.themeData.colorScheme.onSurface
+                      .withValues(alpha: 0.6),
                 ),
               );
             },

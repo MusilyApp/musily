@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -8,6 +9,8 @@ import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -87,8 +90,12 @@ class _AlbumPageState extends State<AlbumPage> {
           contextKey: 'AlbumPage_${widget.album.id}',
           ignoreFromStack: widget.isAsync,
           child: Scaffold(
-            appBar: AppBar(
-              title: Text(widget.album.artist.name),
+            extendBodyBehindAppBar: true,
+            appBar: MusilyAppBar(
+              backgroundColor:
+                  context.themeData.scaffoldBackgroundColor.withValues(
+                alpha: .002,
+              ),
               actions: [
                 widget.playerController.builder(
                   builder: (context, data) {
@@ -125,7 +132,9 @@ class _AlbumPageState extends State<AlbumPage> {
                           widget.playerController.methods.playPlaylist(
                             queueToPlay,
                             widget.album.id,
-                            startFrom: startIndex == -1 ? 0 : startIndex,
+                            startFromTrackId: startIndex == -1
+                                ? queueToPlay[0].id
+                                : queueToPlay[startIndex].id,
                           );
                           widget.libraryController.methods.updateLastTimePlayed(
                             widget.album.id,
@@ -138,330 +147,584 @@ class _AlbumPageState extends State<AlbumPage> {
                 ),
               ],
             ),
-            body: widget.playerController.builder(
-              builder: (context, data) {
-                final isAlbumPlaying = data.playingId == widget.album.id;
-                return ListView(
-                  controller: scrollController,
-                  children: [
-                    if (widget.album.highResImg != null &&
-                        widget.album.highResImg!.isNotEmpty) ...[
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      SizedBox(
-                        height: 250,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+            body: Builder(
+              builder: (context) {
+                return widget.playerController.builder(
+                  builder: (context, data) {
+                    final isAlbumPlaying = data.playingId == widget.album.id;
+                    return ListView(
+                      controller: scrollController,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(bottom: 150),
+                      children: [
+                        // Album Banner Section
+                        Stack(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: AppImage(
-                                widget.album.highResImg!,
-                                width: 250,
+                            if (widget.album.highResImg != null &&
+                                widget.album.highResImg!.isNotEmpty) ...[
+                              SizedBox(
+                                height: 380,
+                                width: context.display.width,
+                                child: AppImage(
+                                  widget.album.highResImg!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              // Multi-layer Gradient Overlay
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: context.themeData.brightness ==
+                                              Brightness.dark
+                                          ? [
+                                              context.themeData
+                                                  .scaffoldBackgroundColor,
+                                              context.themeData
+                                                  .scaffoldBackgroundColor
+                                                  .withValues(alpha: .9),
+                                              context.themeData
+                                                  .scaffoldBackgroundColor
+                                                  .withValues(alpha: .5),
+                                              context.themeData
+                                                  .scaffoldBackgroundColor
+                                                  .withValues(alpha: .1),
+                                            ]
+                                          : [
+                                              context.themeData
+                                                  .scaffoldBackgroundColor,
+                                              context.themeData
+                                                  .scaffoldBackgroundColor
+                                                  .withValues(alpha: .9),
+                                              context.themeData
+                                                  .scaffoldBackgroundColor
+                                                  .withValues(alpha: .5),
+                                              context.themeData
+                                                  .scaffoldBackgroundColor
+                                                  .withValues(alpha: .1),
+                                            ],
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ] else ...[
+                              SizedBox(
+                                height: 380,
+                                width: context.display.width,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        context.themeData.colorScheme.primary
+                                            .withValues(alpha: 0.3),
+                                        context.themeData.colorScheme.secondary
+                                            .withValues(alpha: 0.2),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                            // Album Title and Info
+                            Positioned(
+                              bottom: 80,
+                              left: 0,
+                              right: 0,
+                              child: Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        widget.album.title,
+                                        textAlign: TextAlign.center,
+                                        style: context
+                                            .themeData.textTheme.displayLarge
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 48,
+                                          letterSpacing: -2,
+                                          height: 1.1,
+                                          shadows: [
+                                            Shadow(
+                                              color: context.themeData
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.black
+                                                      .withValues(alpha: 0.6)
+                                                  : Colors.white
+                                                      .withValues(alpha: 0.9),
+                                              offset: const Offset(0, 2),
+                                              blurRadius: 8,
+                                            ),
+                                            Shadow(
+                                              color: context.themeData
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.black
+                                                      .withValues(alpha: 0.4)
+                                                  : Colors.white
+                                                      .withValues(alpha: 0.7),
+                                              offset: const Offset(0, 4),
+                                              blurRadius: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        '${widget.album.year} • ${widget.album.artist.name}',
+                                        textAlign: TextAlign.center,
+                                        style: context
+                                            .themeData.textTheme.bodyLarge
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          shadows: [
+                                            Shadow(
+                                              color: context.themeData
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.black
+                                                      .withValues(alpha: 0.4)
+                                                  : Colors.white
+                                                      .withValues(alpha: 0.7),
+                                              offset: const Offset(0, 2),
+                                              blurRadius: 8,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      )
-                    ],
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 26,
-                          ),
-                          child: SizedBox(
-                            width: 200,
-                            child: Text(
-                              widget.album.title,
-                              textAlign: TextAlign.center,
-                              style: context.themeData.textTheme.headlineSmall
-                                  ?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 16,
-                          ),
-                          child: Text(
-                            widget.album.year.toString(),
-                            style: context.themeData.textTheme.bodyMedium
-                                ?.copyWith(
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        widget.downloaderController.builder(
-                          builder: (context, data) {
-                            final isAlbumDownloading = data.queue
-                                    .where(
-                                      (e) => e.status == e.downloadDownloading,
-                                    )
-                                    .isNotEmpty &&
-                                data.downloadingKey == widget.album.id;
-                            final isDone = data.queue
-                                    .where(
-                                      (e) => widget.album.tracks
-                                          .where((item) =>
-                                              item.hash == e.track.hash)
-                                          .isNotEmpty,
-                                    )
-                                    .where(
-                                        (e) => e.status == e.downloadCompleted)
-                                    .length ==
-                                widget.album.tracks.length;
-                            return LyTonalIconButton(
-                              onFocus: () {
-                                scrollToTop();
-                              },
-                              onPressed: () {
-                                if (isDone) {
-                                  return;
-                                }
-                                if (isAlbumDownloading) {
-                                  widget.libraryController.methods
-                                      .cancelCollectionDownload(
-                                    widget.album.tracks,
-                                    widget.album.id,
+                          padding: const EdgeInsets.only(top: 20, bottom: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              widget.downloaderController.builder(
+                                builder: (context, data) {
+                                  final isAlbumDownloading = data.queue
+                                          .where(
+                                            (e) =>
+                                                e.status ==
+                                                e.downloadDownloading,
+                                          )
+                                          .isNotEmpty &&
+                                      data.downloadingKey == widget.album.id;
+                                  final isDone = data.queue
+                                          .where(
+                                            (e) => widget.album.tracks
+                                                .where((item) =>
+                                                    item.hash == e.track.hash)
+                                                .isNotEmpty,
+                                          )
+                                          .where((e) =>
+                                              e.status == e.downloadCompleted)
+                                          .length ==
+                                      widget.album.tracks.length;
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: context.themeData.brightness ==
+                                                  Brightness.dark
+                                              ? context
+                                                  .themeData.colorScheme.primary
+                                                  .withValues(alpha: 0.2)
+                                              : context
+                                                  .themeData.colorScheme.primary
+                                                  .withValues(alpha: 0.15),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: LyTonalIconButton(
+                                      onFocus: () {
+                                        scrollToTop();
+                                      },
+                                      onPressed: () {
+                                        if (isDone) {
+                                          return;
+                                        }
+                                        if (isAlbumDownloading) {
+                                          widget.libraryController.methods
+                                              .cancelCollectionDownload(
+                                            widget.album.tracks,
+                                            widget.album.id,
+                                          );
+                                        } else {
+                                          widget.libraryController.methods
+                                              .downloadCollection(
+                                            widget.album.tracks,
+                                            widget.album.id,
+                                          );
+                                        }
+                                      },
+                                      fixedSize: const Size(58, 58),
+                                      icon: Icon(
+                                        isAlbumDownloading
+                                            ? LucideIcons.x
+                                            : isDone
+                                                ? LucideIcons.circleCheckBig
+                                                : LucideIcons.download,
+                                        size: 22,
+                                      ),
+                                    ),
                                   );
-                                } else {
-                                  widget.libraryController.methods
-                                      .downloadCollection(
-                                    widget.album.tracks,
-                                    widget.album.id,
-                                  );
-                                }
-                              },
-                              fixedSize: const Size(55, 55),
-                              icon: Icon(
-                                isAlbumDownloading
-                                    ? Icons.close
-                                    : isDone
-                                        ? Icons.download_done_rounded
-                                        : Icons.download_rounded,
+                                },
                               ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        widget.libraryController.builder(
-                          builder: (context, data) => LibraryToggler(
-                            item: data.items
-                                    .where(
-                                        (e) => e.album?.id == widget.album.id)
-                                    .firstOrNull ??
-                                LibraryItemEntity(
-                                  id: '',
-                                  synced: false,
-                                  lastTimePlayed: DateTime.now(),
-                                  createdAt: DateTime.now(),
-                                  album: widget.album,
+                              const SizedBox(width: 12),
+                              widget.libraryController.builder(
+                                builder: (context, data) => LibraryToggler(
+                                  item: data.items
+                                          .where((e) =>
+                                              e.album?.id == widget.album.id)
+                                          .firstOrNull ??
+                                      LibraryItemEntity(
+                                        id: '',
+                                        synced: false,
+                                        lastTimePlayed: DateTime.now(),
+                                        createdAt: DateTime.now(),
+                                        album: widget.album,
+                                      ),
+                                  libraryController: widget.libraryController,
+                                  notInLibraryWidget: (context, addToLibrary) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: context
+                                                        .themeData.brightness ==
+                                                    Brightness.dark
+                                                ? context.themeData.colorScheme
+                                                    .primary
+                                                    .withValues(alpha: 0.2)
+                                                : context.themeData.colorScheme
+                                                    .primary
+                                                    .withValues(alpha: 0.15),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: LyTonalIconButton(
+                                        onPressed: addToLibrary,
+                                        onFocus: () {
+                                          scrollToTop();
+                                        },
+                                        fixedSize: const Size(58, 58),
+                                        icon: Icon(
+                                          LucideIcons.circlePlus,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  inLibraryWidget:
+                                      (context, removeFromLibrary) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: context
+                                                        .themeData.brightness ==
+                                                    Brightness.dark
+                                                ? context.themeData.colorScheme
+                                                    .primary
+                                                    .withValues(alpha: 0.2)
+                                                : context.themeData.colorScheme
+                                                    .primary
+                                                    .withValues(alpha: 0.15),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: LyTonalIconButton(
+                                        onPressed: removeFromLibrary,
+                                        onFocus: () {
+                                          scrollToTop();
+                                        },
+                                        fixedSize: const Size(58, 58),
+                                        icon: Icon(
+                                          LucideIcons.check,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
+                              ),
+                              const SizedBox(width: 12),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(35),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: context.themeData.brightness ==
+                                              Brightness.dark
+                                          ? context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.4)
+                                          : context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.3),
+                                      blurRadius: 20,
+                                      offset: const Offset(0, 6),
+                                      spreadRadius: 0,
+                                    ),
+                                    BoxShadow(
+                                      color: context.themeData.brightness ==
+                                              Brightness.dark
+                                          ? context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.2)
+                                          : context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.15),
+                                      blurRadius: 40,
+                                      offset: const Offset(0, 12),
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: LyFilledIconButton(
+                                  onPressed: () async {
+                                    if (isAlbumPlaying) {
+                                      if (data.isPlaying) {
+                                        await widget.playerController.methods
+                                            .pause();
+                                      } else {
+                                        await widget.playerController.methods
+                                            .resume();
+                                      }
+                                    } else {
+                                      await widget.playerController.methods
+                                          .playPlaylist(
+                                        widget.album.tracks,
+                                        widget.album.id,
+                                        startFromTrackId:
+                                            widget.album.tracks[0].id,
+                                      );
+                                      widget.libraryController.methods
+                                          .updateLastTimePlayed(
+                                        widget.album.id,
+                                      );
+                                    }
+                                  },
+                                  onFocus: () {
+                                    scrollToTop();
+                                  },
+                                  iconSize: 32,
+                                  fixedSize: const Size(70, 70),
+                                  icon: Icon(
+                                    isAlbumPlaying && data.isPlaying
+                                        ? LucideIcons.pause
+                                        : LucideIcons.play,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: context.themeData.brightness ==
+                                              Brightness.dark
+                                          ? context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.2)
+                                          : context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.15),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: LyTonalIconButton(
+                                  onFocus: () {
+                                    scrollToTop();
+                                  },
+                                  onPressed: () async {
+                                    final random = Random();
+                                    final randomIndex = random.nextInt(
+                                      widget.album.tracks.length,
+                                    );
+                                    widget.playerController.methods
+                                        .playPlaylist(
+                                      widget.album.tracks,
+                                      widget.album.id,
+                                      startFromTrackId:
+                                          widget.album.tracks[randomIndex].id,
+                                    );
+                                    if (!data.shuffleEnabled) {
+                                      widget.playerController.methods
+                                          .toggleShuffle();
+                                    } else {
+                                      await widget.playerController.methods
+                                          .toggleShuffle();
+                                      widget.playerController.methods
+                                          .toggleShuffle();
+                                    }
+                                    widget.libraryController.methods
+                                        .updateLastTimePlayed(
+                                      widget.album.id,
+                                    );
+                                  },
+                                  fixedSize: const Size(58, 58),
+                                  icon: const Icon(
+                                    LucideIcons.shuffle,
+                                    size: 22,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              AlbumOptions(
+                                album: widget.album,
+                                coreController: widget.coreController,
+                                playerController: widget.playerController,
+                                getAlbumUsecase: widget.getAlbumUsecase,
+                                downloaderController:
+                                    widget.downloaderController,
+                                getPlaylistUsecase: widget.getPlaylistUsecase,
+                                getPlayableItemUsecase:
+                                    widget.getPlayableItemUsecase,
+                                libraryController: widget.libraryController,
+                                getArtistAlbumsUsecase:
+                                    widget.getArtistAlbumsUsecase,
+                                getArtistSinglesUsecase:
+                                    widget.getArtistSinglesUsecase,
+                                getArtistTracksUsecase:
+                                    widget.getArtistTracksUsecase,
+                                getArtistUsecase: widget.getArtistUsecase,
+                                getTrackUsecase: widget.getTrackUsecase,
+                                onFocus: scrollToTop,
+                                tonal: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Tracks Section Header
+                        const SizedBox(height: 32),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 4,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: context.themeData.colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                context.localization.songs,
+                                style: context.themeData.textTheme.headlineSmall
+                                    ?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ...widget.album.tracks.map(
+                          (track) => TrackTile(
+                            getTrackUsecase: widget.getTrackUsecase,
+                            getPlaylistUsecase: widget.getPlaylistUsecase,
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            leading: isAlbumPlaying &&
+                                    data.currentPlayingItem?.hash ==
+                                        track.hash &&
+                                    data.isPlaying
+                                ? MusilyWaveLoading(
+                                    color:
+                                        context.themeData.colorScheme.primary,
+                                    size: 20,
+                                  )
+                                : SizedBox(
+                                    width: 20,
+                                    child: Center(
+                                      child: Text(
+                                        '${widget.album.tracks.indexOf(track) + 1}',
+                                        style: context
+                                            .themeData.textTheme.bodyLarge
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            hideOptions: const [
+                              TrackTileOptions.seeAlbum,
+                            ],
+                            downloaderController: widget.downloaderController,
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            getArtistUsecase: widget.getArtistUsecase,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
                             libraryController: widget.libraryController,
-                            notInLibraryWidget: (context, addToLibrary) {
-                              return LyTonalIconButton(
-                                onPressed: addToLibrary,
-                                onFocus: () {
-                                  scrollToTop();
-                                },
-                                fixedSize: const Size(55, 55),
-                                icon: const Icon(
-                                  Icons.library_add,
-                                ),
-                              );
-                            },
-                            inLibraryWidget: (context, removeFromLibrary) {
-                              return LyTonalIconButton(
-                                onPressed: removeFromLibrary,
-                                onFocus: () {
-                                  scrollToTop();
-                                },
-                                fixedSize: const Size(55, 55),
-                                icon: const Icon(
-                                  Icons.library_add_check_rounded,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        LyFilledIconButton(
-                          onPressed: () async {
-                            if (isAlbumPlaying) {
-                              if (data.isPlaying) {
-                                await widget.playerController.methods.pause();
+                            customAction: () {
+                              late final List<TrackEntity> queueToPlay;
+                              if (data.playingId == widget.album.id) {
+                                queueToPlay = data.queue;
                               } else {
-                                await widget.playerController.methods.resume();
+                                queueToPlay = widget.album.tracks;
                               }
-                            } else {
-                              await widget.playerController.methods
-                                  .playPlaylist(
-                                widget.album.tracks,
+
+                              final startIndex = queueToPlay.indexWhere(
+                                (element) => element.hash == track.hash,
+                              );
+
+                              widget.playerController.methods.playPlaylist(
+                                queueToPlay,
                                 widget.album.id,
-                                startFrom: 0,
+                                startFromTrackId: startIndex == -1
+                                    ? queueToPlay[0].id
+                                    : queueToPlay[startIndex].id,
                               );
                               widget.libraryController.methods
                                   .updateLastTimePlayed(
                                 widget.album.id,
                               );
-                            }
-                          },
-                          onFocus: () {
-                            scrollToTop();
-                          },
-                          iconSize: 40,
-                          fixedSize: const Size(60, 60),
-                          icon: Icon(
-                            isAlbumPlaying && data.isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
+                            },
+                            track: track,
+                            coreController: widget.coreController,
+                            playerController: widget.playerController,
                           ),
                         ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        LyTonalIconButton(
-                          onFocus: () {
-                            scrollToTop();
-                          },
-                          onPressed: () async {
-                            final random = Random();
-                            final randomIndex = random.nextInt(
-                              widget.album.tracks.length,
-                            );
-                            widget.playerController.methods.playPlaylist(
-                              widget.album.tracks,
-                              widget.album.id,
-                              startFrom: randomIndex,
-                            );
-                            if (!data.shuffleEnabled) {
-                              widget.playerController.methods.toggleShuffle();
-                            } else {
-                              await widget.playerController.methods
-                                  .toggleShuffle();
-                              widget.playerController.methods.toggleShuffle();
-                            }
-                            widget.libraryController.methods
-                                .updateLastTimePlayed(
-                              widget.album.id,
-                            );
-                          },
-                          fixedSize: const Size(55, 55),
-                          icon: const Icon(
-                            Icons.shuffle_rounded,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        AlbumOptions(
-                          album: widget.album,
-                          coreController: widget.coreController,
+                        PlayerSizedBox(
                           playerController: widget.playerController,
-                          getAlbumUsecase: widget.getAlbumUsecase,
-                          downloaderController: widget.downloaderController,
-                          getPlaylistUsecase: widget.getPlaylistUsecase,
-                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                          libraryController: widget.libraryController,
-                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase:
-                              widget.getArtistSinglesUsecase,
-                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                          getArtistUsecase: widget.getArtistUsecase,
-                          getTrackUsecase: widget.getTrackUsecase,
-                          onFocus: scrollToTop,
-                          tonal: true,
                         ),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    ...widget.album.tracks.map(
-                      (track) => TrackTile(
-                        getTrackUsecase: widget.getTrackUsecase,
-                        getPlaylistUsecase: widget.getPlaylistUsecase,
-                        getAlbumUsecase: widget.getAlbumUsecase,
-                        leading: isAlbumPlaying &&
-                                data.currentPlayingItem?.hash == track.hash &&
-                                data.isPlaying
-                            ? LoadingAnimationWidget.staggeredDotsWave(
-                                color: context.themeData.colorScheme.primary,
-                                size: 20,
-                              )
-                            : SizedBox(
-                                width: 20,
-                                child: Center(
-                                  child: Text(
-                                    '${widget.album.tracks.indexOf(track) + 1}',
-                                    style: context.themeData.textTheme.bodyLarge
-                                        ?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                        hideOptions: const [
-                          TrackTileOptions.seeAlbum,
-                        ],
-                        downloaderController: widget.downloaderController,
-                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                        getArtistUsecase: widget.getArtistUsecase,
-                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                        libraryController: widget.libraryController,
-                        customAction: () {
-                          late final List<TrackEntity> queueToPlay;
-                          if (data.playingId == widget.album.id) {
-                            queueToPlay = data.queue;
-                          } else {
-                            queueToPlay = widget.album.tracks;
-                          }
-
-                          final startIndex = queueToPlay.indexWhere(
-                            (element) => element.hash == track.hash,
-                          );
-
-                          widget.playerController.methods.playPlaylist(
-                            queueToPlay,
-                            widget.album.id,
-                            startFrom: startIndex == -1 ? 0 : startIndex,
-                          );
-                          widget.libraryController.methods.updateLastTimePlayed(
-                            widget.album.id,
-                          );
-                        },
-                        track: track,
-                        coreController: widget.coreController,
-                        playerController: widget.playerController,
-                      ),
-                    ),
-                    PlayerSizedBox(
-                      playerController: widget.playerController,
-                    ),
-                  ],
+                    );
+                  },
                 );
               },
             ),
@@ -561,11 +824,12 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      Icons.error_rounded,
+                      LucideIcons.info,
                       size: 50,
                       color: context.themeData.iconTheme.color
                           ?.withValues(alpha: .7),
                     ),
+                    const SizedBox(height: 16),
                     Text(
                       context.localization.albumNotFound,
                     )
