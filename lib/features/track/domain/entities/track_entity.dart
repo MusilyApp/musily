@@ -1,11 +1,7 @@
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 
-enum TrackFileStatus {
-  offline,
-  downloading,
-  online,
-}
+enum TrackFileStatus { offline, downloading, online }
 
 class TrackEntity {
   final String id;
@@ -38,7 +34,7 @@ class TrackEntity {
     this.url,
   });
 
-  TrackEntity copyWith({String? url}) {
+  TrackEntity copyWith({String? url, Duration? duration}) {
     return TrackEntity(
       id: id,
       title: title,
@@ -50,13 +46,13 @@ class TrackEntity {
       url: url ?? this.url,
       source: source,
       fromSmartQueue: fromSmartQueue,
-      duration: duration,
+      duration: duration ?? this.duration,
       position: position,
     );
   }
 
   @override
   String toString() {
-    return 'TrackEntity(id: $id, title: $title, hash: $hash, artist: $artist, album: $album, highResImg: $highResImg, lowResImg: $lowResImg, url: $url, source: $source, fromSmartQueue: $fromSmartQueue)';
+    return 'TrackEntity(id: $id, orderIndex: $orderIndex, title: $title, hash: $hash, artist: $artist, album: $album, highResImg: $highResImg, lowResImg: $lowResImg, url: $url, source: $source, fromSmartQueue: $fromSmartQueue, duration: $duration, position: $position)';
   }
 }

@@ -118,18 +118,22 @@ class TrackOptions extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * .6,
                       child: Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
                             color: context.themeData.dividerColor
                                 .withValues(alpha: .3),
                             width: 1,
                           ),
                         ),
-                        child: PlaylistAdderWidget(
-                          getPlaylistUsecase: getPlaylistUsecase,
-                          coreController: coreController,
-                          libraryController: libraryController,
-                          tracks: [track],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: PlaylistAdderWidget(
+                            contextDialog: context,
+                            getPlaylistUsecase: getPlaylistUsecase,
+                            coreController: coreController,
+                            libraryController: libraryController,
+                            tracks: [track],
+                          ),
                         ),
                       ),
                     ),
