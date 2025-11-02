@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_dropdown_button.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -35,25 +36,42 @@ class _AppSectionState extends State<AppSection> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Section Header
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-            ),
-            child: Text(
-              context.localization.application,
-              style: context.themeData.textTheme.titleSmall,
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+            child: Row(
+              children: [
+                Container(
+                  width: 4,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: context.themeData.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Icon(
+                  LucideIcons.settings,
+                  size: 18,
+                  color: context.themeData.colorScheme.primary,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  context.localization.application,
+                  style: context.themeData.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+              ],
             ),
           ),
+          // Settings Options
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(
-                  height: 8,
-                ),
                 LyDropdownButton(
                   density: LyDensity.dense,
                   items: const [
@@ -84,9 +102,7 @@ class _AppSectionState extends State<AppSection> {
                   },
                   labelText: context.localization.language,
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 12),
                 LyDropdownButton<ThemeMode>(
                   labelText: context.localization.theme,
                   value: data.themeMode ?? ThemeMode.system,
@@ -114,9 +130,7 @@ class _AppSectionState extends State<AppSection> {
                     widget.controller.methods.changeTheme(value);
                   },
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 12),
                 LyDropdownButton<AccentColorPreference>(
                   labelText: context.localization.accentColor,
                   value: data.accentColorPreference,
@@ -134,10 +148,10 @@ class _AppSectionState extends State<AppSection> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+                if (Platform.isWindows ||
+                    Platform.isLinux ||
+                    Platform.isMacOS) ...[
+                  const SizedBox(height: 12),
                   LyDropdownButton<ClosePreference>(
                     labelText: context.localization.whenClosingTheApplication,
                     density: LyDensity.dense,
@@ -156,9 +170,8 @@ class _AppSectionState extends State<AppSection> {
                       ),
                     ],
                   ),
-                const SizedBox(
-                  height: 8,
-                ),
+                ],
+                const SizedBox(height: 8),
               ],
             ),
           ),

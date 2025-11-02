@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
-import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/settings/presenter/widgets/about.dart';
 
@@ -14,48 +13,176 @@ class OtherSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Section Header
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-          ),
-          child: Text(
-            context.localization.others,
-            style: context.themeData.textTheme.titleSmall,
-          ),
-        ),
-        LyListTile(
-          leading: const Icon(
-            LucideIcons.scale,
-            size: 20,
-          ),
-          onTap: () {
-            showLicensePage(
-              applicationName: 'Musily',
-              useRootNavigator: true,
-              applicationIcon: SvgPicture.asset(
-                'assets/icons/musily.svg',
-                width: 60,
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+          child: Row(
+            children: [
+              Container(
+                width: 4,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: context.themeData.colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-              context: context,
-            );
-          },
-          title: Text(context.localization.licenses),
-        ),
-        LyListTile(
-          onTap: () {
-            LyNavigator.showLyCardDialog(
-              context: context,
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              title: const Text('Musily'),
-              builder: (context) => const About(),
-            );
-          },
-          leading: const Icon(
-            LucideIcons.info,
-            size: 20,
+              const SizedBox(width: 12),
+              Icon(
+                LucideIcons.ellipsis,
+                size: 18,
+                color: context.themeData.colorScheme.secondary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                context.localization.others,
+                style: context.themeData.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ],
           ),
-          title: Text(context.localization.about),
         ),
+        // Licenses Tile
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                showLicensePage(
+                  applicationName: 'Musily',
+                  useRootNavigator: true,
+                  applicationIcon: SvgPicture.asset(
+                    'assets/icons/musily.svg',
+                    width: 60,
+                  ),
+                  context: context,
+                );
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: context.themeData.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: context.themeData.colorScheme.outline
+                        .withValues(alpha: 0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: context.themeData.colorScheme.secondary
+                            .withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        LucideIcons.scale,
+                        size: 22,
+                        color: context.themeData.colorScheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        context.localization.licenses,
+                        style:
+                            context.themeData.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      LucideIcons.chevronRight,
+                      size: 20,
+                      color: context.themeData.colorScheme.onSurface
+                          .withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        // About Tile
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                LyNavigator.showLyCardDialog(
+                  context: context,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  title: const Text('Musily'),
+                  builder: (context) => const About(),
+                );
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: context.themeData.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: context.themeData.colorScheme.outline
+                        .withValues(alpha: 0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: context.themeData.colorScheme.tertiary
+                            .withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        LucideIcons.info,
+                        size: 22,
+                        color: context.themeData.colorScheme.tertiary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        context.localization.about,
+                        style:
+                            context.themeData.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      LucideIcons.chevronRight,
+                      size: 20,
+                      color: context.themeData.colorScheme.onSurface
+                          .withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
       ],
     );
   }

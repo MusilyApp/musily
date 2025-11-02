@@ -29,6 +29,7 @@ class SettingsPage extends StatelessWidget {
           title: Text(context.localization.settings),
         ),
         body: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           children: [
             if (settingsController.showSyncSection)
               SyncSection(
