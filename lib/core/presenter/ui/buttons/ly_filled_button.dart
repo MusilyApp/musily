@@ -82,12 +82,10 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                   ? BorderSide(
                       width: 2,
                       strokeAlign: 1,
-                      color: context.themeData.colorScheme.primary,
+                      color: context.themeData.colorScheme.onPrimary,
                     )
-                  : const BorderSide(
-                      color: Colors.transparent,
-                    ),
-              borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+                  : const BorderSide(color: Colors.transparent),
+              borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
             ),
         disabledColor: context.themeData.disabledColor,
         color: widget.color ??
@@ -97,18 +95,16 @@ class _LyFilledButtonState extends State<LyFilledButton> {
         minWidth: widget.fullWidth ? double.maxFinite : null,
         child: Padding(
           padding: widget.contentPadding ??
-              EdgeInsets.all(
-                () {
-                  switch (widget.density) {
-                    case LyDensity.normal:
-                      return 8.0;
-                    case LyDensity.comfortable:
-                      return 12.0;
-                    case LyDensity.dense:
-                      return 0.0;
-                  }
-                }(),
-              ),
+              EdgeInsets.all(() {
+                switch (widget.density) {
+                  case LyDensity.normal:
+                    return 8.0;
+                  case LyDensity.comfortable:
+                    return 12.0;
+                  case LyDensity.dense:
+                    return 0.0;
+                }
+              }()),
           child: widget.loading
               ? SizedBox(
                   width: 20,

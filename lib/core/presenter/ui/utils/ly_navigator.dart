@@ -247,12 +247,15 @@ class LyNavigator {
           content: content,
           footer: (actions?.call(context).isEmpty ?? true)
               ? null
-              : Wrap(
-                  spacing: 8,
-                  alignment: WrapAlignment.end,
-                  children: [
-                    ...actions?.call(context) ?? [],
-                  ],
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                  child: Wrap(
+                    spacing: 8,
+                    alignment: WrapAlignment.end,
+                    children: [
+                      ...actions?.call(context) ?? [],
+                    ],
+                  ),
                 ),
           elevation: elevation,
           borderRadius: borderRadius,
@@ -340,23 +343,26 @@ class LyNavigator {
                 header: title,
                 height: height,
                 width: width,
-                content: Padding(
-                  padding: padding ?? const EdgeInsets.all(8.0),
-                  child: builder(dialogContext),
-                ),
+                content: builder(dialogContext),
                 footer: ((actions?.call(dialogContext))?.isEmpty ?? true)
                     ? null
-                    : Wrap(
-                        spacing: 8,
-                        alignment: WrapAlignment.end,
-                        children: [
-                          ...actions?.call(dialogContext) ?? [],
-                        ],
+                    : Padding(
+                        padding:
+                            actionsPadding ?? const EdgeInsets.only(top: 12),
+                        child: Wrap(
+                          alignment: WrapAlignment.end,
+                          runSpacing: 8,
+                          spacing: 8,
+                          runAlignment: WrapAlignment.end,
+                          children: [
+                            ...actions?.call(dialogContext) ?? [],
+                          ],
+                        ),
                       ),
                 elevation: elevation,
                 borderRadius: borderRadius,
                 shape: shape,
-                padding: padding ?? EdgeInsets.zero,
+                padding: padding,
                 density: density,
               ),
             );

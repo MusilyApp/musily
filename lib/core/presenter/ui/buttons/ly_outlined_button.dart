@@ -78,30 +78,28 @@ class _LyOutlinedButtonState extends State<LyOutlinedButton> {
         shape: widget.shape ??
             RoundedRectangleBorder(
               side: BorderSide(
-                width: hasFocus ? 2 : 1,
+                width: hasFocus ? 1.5 : 1,
                 color: hasFocus
                     ? context.themeData.colorScheme.primary
-                    : context.themeData.colorScheme.onSurface
-                        .withValues(alpha: 0.5),
+                    : context.themeData.colorScheme.outline
+                        .withValues(alpha: 0.3),
               ),
-              borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+              borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
             ),
         color: Colors.transparent,
         minWidth: widget.fullWidth ? double.maxFinite : null,
         child: Padding(
           padding: widget.contentPadding ??
-              EdgeInsets.all(
-                () {
-                  switch (widget.density) {
-                    case LyDensity.normal:
-                      return 8.0;
-                    case LyDensity.comfortable:
-                      return 12.0;
-                    case LyDensity.dense:
-                      return 0.0;
-                  }
-                }(),
-              ),
+              EdgeInsets.all(() {
+                switch (widget.density) {
+                  case LyDensity.normal:
+                    return 8.0;
+                  case LyDensity.comfortable:
+                    return 12.0;
+                  case LyDensity.dense:
+                    return 0.0;
+                }
+              }()),
           child: Builder(
             builder: (context) {
               if (widget.child is Text &&
