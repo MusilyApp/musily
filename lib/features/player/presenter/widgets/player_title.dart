@@ -14,7 +14,6 @@ class PlayerTitle extends StatelessWidget {
   final bool autoSmartQueue;
   final bool loadingSmartQueue;
   final TrackEntity currentTrack;
-
   const PlayerTitle({
     super.key,
     required this.playerController,
@@ -85,25 +84,8 @@ class PlayerTitle extends StatelessWidget {
   }
 
   Widget _buildArtworkSwitch(BuildContext context) {
-    return Switch(
-      inactiveThumbColor: context.themeData.colorScheme.primary.withValues(
-        alpha: .6,
-      ),
-      inactiveTrackColor: context.themeData.colorScheme.primary.withValues(
-        alpha: 0.1,
-      ),
-      activeColor: context.themeData.colorScheme.primary,
-      value: autoSmartQueue,
-      thumbIcon: WidgetStatePropertyAll(
-        Icon(LucideIcons.wand, color: context.themeData.colorScheme.onPrimary),
-      ),
-      onChanged:
-          loadingSmartQueue
-              ? null
-              : (value) {
-                playerController.methods.toggleSmartQueue();
-              },
-    );
+    // Smart suggestions switch removed - no longer needed on mobile
+    return const SizedBox.shrink();
   }
 
   Widget _buildQueueTitle(BuildContext context) {

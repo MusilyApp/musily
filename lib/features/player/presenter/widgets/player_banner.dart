@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -8,6 +7,7 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/empty_state.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
@@ -121,7 +121,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-          child: LoadingAnimationWidget.waveDots(
+          child: MusilyDotsLoading(
             color: IconTheme.of(context).color ?? Colors.white,
             size: 45,
           ),
