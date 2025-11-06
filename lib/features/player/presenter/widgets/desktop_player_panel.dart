@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/widgets/empty_state.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -15,6 +14,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/player/presenter/widgets/queue_tools.dart';
 import 'package:musily/features/player/presenter/widgets/queue_widget.dart';
 import 'package:musily/features/player/presenter/widgets/track_lyrics.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
@@ -60,6 +60,8 @@ class DesktopPlayerPanel extends StatefulWidget {
 }
 
 class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
+  bool _showQueueTools = false;
+
   @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(
@@ -96,7 +98,8 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
           key: const ValueKey('queue'),
           child: Column(
             children: [
-              if (widget.playerController.data.currentPlayingItem != null) ...[
+              if (widget.playerController.data.currentPlayingItem != null &&
+                  !_showQueueTools) ...[
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
@@ -113,12 +116,11 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                     child: InkWell(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onTap: data.loadingSmartQueue
-                          ? null
-                          : () {
-                              widget.playerController.methods
-                                  .toggleSmartQueue();
-                            },
+                      onTap: () {
+                        setState(() {
+                          _showQueueTools = true;
+                        });
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -126,39 +128,17 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                         ),
                         child: Row(
                           children: [
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
+                            Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: data.autoSmartQueue
-                                    ? context.themeData.colorScheme.primary
-                                        .withValues(alpha: 0.15)
-                                    : context.themeData.colorScheme
-                                        .surfaceContainerHighest
-                                        .withValues(alpha: 0.3),
+                                color: context.themeData.colorScheme.primary
+                                    .withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: TweenAnimationBuilder<Color?>(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                                tween: ColorTween(
-                                  begin: data.autoSmartQueue
-                                      ? context.themeData.colorScheme
-                                          .onSurfaceVariant
-                                      : context.themeData.colorScheme.primary,
-                                  end: data.autoSmartQueue
-                                      ? context.themeData.colorScheme.primary
-                                      : context.themeData.colorScheme
-                                          .onSurfaceVariant,
-                                ),
-                                builder: (context, color, child) {
-                                  return Icon(
-                                    CupertinoIcons.wand_stars,
-                                    size: 20,
-                                    color: color,
-                                  );
-                                },
+                              child: Icon(
+                                LucideIcons.wrench,
+                                size: 20,
+                                color: context.themeData.colorScheme.primary,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -167,7 +147,7 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context.localization.smartSuggestionsTitle,
+                                    context.localization.queueTools,
                                     style: context
                                         .themeData.textTheme.bodyMedium
                                         ?.copyWith(
@@ -176,56 +156,17 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                                     ),
                                   ),
                                   const SizedBox(height: 2),
-                                  TweenAnimationBuilder<double>(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                    tween: Tween<double>(
-                                      begin: data.autoSmartQueue ? 0.5 : 0.7,
-                                      end: data.autoSmartQueue ? 0.7 : 0.5,
+                                  Text(
+                                    context.localization.queueToolsDescription,
+                                    style: context.themeData.textTheme.bodySmall
+                                        ?.copyWith(
+                                      color: context.themeData.colorScheme
+                                          .onSurfaceVariant
+                                          .withValues(alpha: 0.7),
+                                      fontSize: 12,
                                     ),
-                                    builder: (context, opacity, child) {
-                                      return Text(
-                                        context.localization
-                                            .smartSuggestionsDescription,
-                                        style: context
-                                            .themeData.textTheme.bodySmall
-                                            ?.copyWith(
-                                          color: context.themeData.colorScheme
-                                              .onSurfaceVariant
-                                              .withValues(alpha: opacity),
-                                          fontSize: 12,
-                                        ),
-                                      );
-                                    },
                                   ),
                                 ],
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              transitionBuilder: (child, animation) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: ScaleTransition(
-                                    scale: animation,
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              child: AnimatedScale(
-                                key: const ValueKey('switch'),
-                                scale: data.autoSmartQueue ? 1.0 : 0.95,
-                                duration: const Duration(milliseconds: 200),
-                                child: Switch(
-                                  value: data.autoSmartQueue,
-                                  onChanged: data.loadingSmartQueue
-                                      ? null
-                                      : (value) {
-                                          widget.playerController.methods
-                                              .toggleSmartQueue();
-                                        },
-                                ),
                               ),
                             ),
                           ],
@@ -235,7 +176,37 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                   ),
                 ),
               ],
-              Expanded(child: _buildQueueContent(context, data)),
+              Expanded(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: _showQueueTools
+                      ? Container(
+                          key: const ValueKey('queue_tools'),
+                          child: QueueTools(
+                            playerController: widget.playerController,
+                            libraryController: widget.libraryController,
+                            showAsPage: false,
+                            onBack: () {
+                              setState(() {
+                                _showQueueTools = false;
+                              });
+                            },
+                          ),
+                        )
+                      : Container(
+                          key: const ValueKey('queue_content'),
+                          child: _buildQueueContent(context, data),
+                        ),
+                ),
+              ),
             ],
           ),
         );
@@ -255,7 +226,7 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
 
     if (data.loadingLyrics) {
       return Center(
-        child: LoadingAnimationWidget.waveDots(
+        child: MusilyDotsLoading(
             color:
                 context.themeData.colorScheme.onSurface.withValues(alpha: 0.7),
             size: 45),

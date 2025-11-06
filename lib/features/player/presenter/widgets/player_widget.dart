@@ -24,12 +24,11 @@ import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/player/presenter/widgets/player_background.dart';
 import 'package:musily/features/player/presenter/widgets/player_banner.dart';
+import 'package:musily/features/player/presenter/widgets/player_options.dart';
 import 'package:musily/features/player/presenter/widgets/player_title.dart';
 import 'package:musily/features/player/presenter/widgets/sleep_timer_dialog.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
-import 'package:musily/features/track/presenter/widgets/track_options.dart';
-import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 
 class PlayerWidget extends StatefulWidget {
   final PlayerController playerController;
@@ -115,16 +114,17 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                 ),
                               ),
                             ),
-                            TrackOptions(
+                            PlayerOptions(
+                              playerController: widget.playerController,
+                              playerMode: data.playerMode,
+                              track: data.currentPlayingItem!,
+                              libraryController: widget.libraryController,
                               getTrackUsecase: widget.getTrackUsecase,
                               getPlaylistUsecase: widget.getPlaylistUsecase,
-                              track: data.currentPlayingItem!,
-                              playerController: widget.playerController,
                               getAlbumUsecase: widget.getAlbumUsecase,
                               downloaderController: widget.downloaderController,
                               getPlayableItemUsecase:
                                   widget.getPlayableItemUsecase,
-                              libraryController: widget.libraryController,
                               getArtistAlbumsUsecase:
                                   widget.getArtistAlbumsUsecase,
                               getArtistSinglesUsecase:
@@ -133,11 +133,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                   widget.getArtistTracksUsecase,
                               getArtistUsecase: widget.getArtistUsecase,
                               coreController: widget.coreController,
-                              hideOptions: const [
-                                TrackTileOptions.seeAlbum,
-                                TrackTileOptions.seeArtist,
-                                TrackTileOptions.addToQueue,
-                              ],
                             ),
                           ],
                         ),

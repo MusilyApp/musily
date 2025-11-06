@@ -148,181 +148,12 @@ class _QueueWidgetState extends State<QueueWidget> {
                     ).createShader(bounds);
                   },
                   blendMode: BlendMode.dstIn,
-                  child: ReorderableListView.builder(
-                    scrollController: _scrollController,
+                  child: ListView.builder(
+                    controller: _scrollController,
                     itemCount: queue.length,
-                    onReorder: (oldIndex, newIndex) async {
-                      newIndex += prevSongs.length;
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      widget.playerController.methods.reorderQueue(
-                        newIndex,
-                        oldIndex,
-                      );
-                    },
                     itemBuilder: (context, index) {
-                      final track = queue[index];
-                      final isSmartQueue =
-                          data.tracksFromSmartQueue.contains(track.hash);
-
-                      return Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: isSmartQueue ? 12 : 0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isSmartQueue
-                              ? context.themeData.colorScheme.primaryContainer
-                                  .withValues(alpha: 0.4)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: isSmartQueue
-                                ? context.themeData.colorScheme.primary
-                                    .withValues(alpha: 0.3)
-                                : Colors.transparent,
-                            width: isSmartQueue ? 1.5 : 1,
-                          ),
-                        ),
-                        key: Key(index.toString()),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () async {
-                              await widget.playerController.methods.queueJumpTo(
-                                track.id,
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(12),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              child: Row(
-                                children: [
-                                  // Track Artwork
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: track.lowResImg != null &&
-                                              track.lowResImg!.isNotEmpty
-                                          ? AppImage(
-                                              track.lowResImg!,
-                                              width: 48,
-                                              height: 48,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Container(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    context.themeData
-                                                        .colorScheme.primary
-                                                        .withValues(alpha: 0.6),
-                                                    context.themeData
-                                                        .colorScheme.primary
-                                                        .withValues(alpha: 0.3),
-                                                  ],
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                ),
-                                              ),
-                                              child: Icon(
-                                                LucideIcons.music,
-                                                color: context.themeData
-                                                    .colorScheme.onPrimary
-                                                    .withValues(alpha: 0.7),
-                                                size: 22,
-                                              ),
-                                            ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  // Track Info
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        InfinityMarquee(
-                                          child: Text(
-                                            track.title,
-                                            style: context
-                                                .themeData.textTheme.bodyMedium
-                                                ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              letterSpacing: -0.2,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              LucideIcons.micVocal,
-                                              size: 12,
-                                              color: context.themeData
-                                                  .colorScheme.onSurfaceVariant
-                                                  .withValues(alpha: 0.7),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Expanded(
-                                              child: InfinityMarquee(
-                                                child: Text(
-                                                  track.artist.name,
-                                                  style: context.themeData
-                                                      .textTheme.bodySmall
-                                                      ?.copyWith(
-                                                    color: context
-                                                        .themeData
-                                                        .colorScheme
-                                                        .onSurfaceVariant
-                                                        .withValues(alpha: 0.8),
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Smart Queue Indicator
-                                  if (isSmartQueue) ...[
-                                    Container(
-                                      padding: const EdgeInsets.all(6),
-                                      decoration: BoxDecoration(
-                                        color: context
-                                            .themeData.colorScheme.primary
-                                            .withValues(alpha: 0.15),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Icon(
-                                        LucideIcons.sparkles,
-                                        size: 16,
-                                        color: context
-                                            .themeData.colorScheme.primary,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: context.display.isDesktop ? 8 : 4,
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
+                      return _buildQueueItem(
+                          context, queue[index], index, data);
                     },
                   ),
                 ),
@@ -331,6 +162,158 @@ class _QueueWidgetState extends State<QueueWidget> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildQueueItem(
+      BuildContext context, TrackEntity track, int index, dynamic data) {
+    final isSmartQueue = data.tracksFromSmartQueue.contains(track.hash);
+
+    return Container(
+      margin: EdgeInsets.symmetric(
+        vertical: 4,
+        horizontal: isSmartQueue ? 12 : 0,
+      ),
+      decoration: BoxDecoration(
+        color: isSmartQueue
+            ? context.themeData.colorScheme.primaryContainer
+                .withValues(alpha: 0.4)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isSmartQueue
+              ? context.themeData.colorScheme.primary.withValues(alpha: 0.3)
+              : Colors.transparent,
+          width: isSmartQueue ? 1.5 : 1,
+        ),
+      ),
+      key: Key(index.toString()),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () async {
+            await widget.playerController.methods.queueJumpTo(
+              track.id,
+            );
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
+            ),
+            child: Row(
+              children: [
+                // Track Artwork
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child:
+                        track.lowResImg != null && track.lowResImg!.isNotEmpty
+                            ? AppImage(
+                                track.lowResImg!,
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      context.themeData.colorScheme.primary
+                                          .withValues(alpha: 0.6),
+                                      context.themeData.colorScheme.primary
+                                          .withValues(alpha: 0.3),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
+                                child: Icon(
+                                  LucideIcons.music,
+                                  color: context.themeData.colorScheme.onPrimary
+                                      .withValues(alpha: 0.7),
+                                  size: 22,
+                                ),
+                              ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                // Track Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InfinityMarquee(
+                        child: Text(
+                          track.title,
+                          style:
+                              context.themeData.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            LucideIcons.micVocal,
+                            size: 12,
+                            color: context
+                                .themeData.colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.7),
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: InfinityMarquee(
+                              child: Text(
+                                track.artist.name,
+                                style: context.themeData.textTheme.bodySmall
+                                    ?.copyWith(
+                                  color: context
+                                      .themeData.colorScheme.onSurfaceVariant
+                                      .withValues(alpha: 0.8),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                // Smart Queue Indicator
+                if (isSmartQueue) ...[
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: context.themeData.colorScheme.primary
+                          .withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      LucideIcons.sparkles,
+                      size: 16,
+                      color: context.themeData.colorScheme.primary,
+                    ),
+                  ),
+                  SizedBox(
+                    width: context.display.isDesktop ? 8 : 4,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
