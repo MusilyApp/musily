@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
@@ -16,6 +15,7 @@ import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/empty_state.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
 import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -1068,7 +1068,7 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
           builder: (context, data) {
             if (loadingArtist || data.loading) {
               return Center(
-                child: LoadingAnimationWidget.halfTriangleDot(
+                child: MusilyDotsLoading(
                   color: context.themeData.colorScheme.primary,
                   size: 50,
                 ),

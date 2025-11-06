@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_icon_button.dart';
@@ -807,12 +806,12 @@ class _AsyncAlbumPageState extends State<AsyncAlbumPage> {
     return LyPage(
       contextKey: 'AsyncAlbumPage_${widget.albumId}',
       child: Scaffold(
-        appBar: album == null ? AppBar() : null,
+        appBar: album == null ? const MusilyAppBar() : null,
         body: widget.libraryController.builder(
           builder: (context, data) {
             if (loadingAlbum || data.loading) {
               return Center(
-                child: LoadingAnimationWidget.halfTriangleDot(
+                child: MusilyDotsLoading(
                   color: context.themeData.colorScheme.primary,
                   size: 50,
                 ),
