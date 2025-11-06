@@ -21,9 +21,16 @@ Get it on [Telegram](https://t.me/MusilyApp) or [GitHub](https://github.com/Musi
 
 ### Screenshots
 
+#### Mobile
+
 | ![Home Page](assets/screenshots/mobile/home.jpg)          | ![Album Page](assets/screenshots/mobile/album.jpg) | ![Artist Page](assets/screenshots/mobile/artist.jpg) |
 | --------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
 | ![Playlist Page](assets/screenshots/mobile/favorites.jpg) | ![Player](assets/screenshots/mobile/player.jpg)    | ![Lyrics](assets/screenshots/mobile/lyrics.jpg)      |
+
+#### Desktop
+
+| ![Playlist Page](assets/screenshots/linux/playlist.png) | ![Favorites Page](assets/screenshots/linux/favorites.png) | ![Downloads Page](assets/screenshots/linux/downloads.png) |
+| ------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
 
 ---
 
