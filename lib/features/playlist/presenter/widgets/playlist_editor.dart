@@ -56,7 +56,7 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                    padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
                     child: Row(
                       children: [
                         Container(
@@ -101,55 +101,26 @@ class _PlaylistEditorState extends State<PlaylistEditor> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: dialogContext
-                            .themeData.colorScheme.surfaceContainerHighest
-                            .withValues(alpha: 0.4),
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: dialogContext
-                              .themeData.colorScheme.outlineVariant
-                              .withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            dialogContext.localization.playlistDetailsTitle,
-                            style: dialogContext.themeData.textTheme.labelSmall
-                                ?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: dialogContext
-                                  .themeData.colorScheme.onSurface
-                                  .withValues(alpha: 0.7),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          LyTextField(
-                            controller: playlistNameController,
-                            labelText: dialogContext.localization.name,
-                            onSubmitted: (_) {
-                              _submit(dialogContext);
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return dialogContext.localization.requiredField;
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
+                    child: LyTextField(
+                      controller: playlistNameController,
+                      labelText: dialogContext.localization.name,
+                      onSubmitted: (_) {
+                        _submit(dialogContext);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return dialogContext.localization.requiredField;
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   const SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: Row(
                       children: [
                         Expanded(

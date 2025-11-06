@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/core/presenter/widgets/screen_handler.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -161,12 +162,12 @@ class _AsyncPlaylistPageState extends State<AsyncPlaylistPage> {
     return LyPage(
       contextKey: 'AsyncPlaylistPage_${widget.playlistId}',
       child: Scaffold(
-        appBar: playlist == null ? AppBar() : null,
+        appBar: playlist == null ? const MusilyAppBar() : null,
         body: widget.libraryController.builder(
           builder: (context, data) {
             if (loadingPlaylist || data.loading) {
               return Center(
-                child: LoadingAnimationWidget.halfTriangleDot(
+                child: MusilyDotsLoading(
                   color: context.themeData.colorScheme.primary,
                   size: 50,
                 ),
