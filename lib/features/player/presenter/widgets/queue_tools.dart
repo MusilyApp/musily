@@ -324,7 +324,6 @@ class _ReorderableQueueList extends StatelessWidget {
   Widget build(BuildContext context) {
     return playerController.builder(
       builder: (context, data) {
-        // Use the queue directly without any manipulations
         final queue = data.queue;
 
         return Scrollbar(

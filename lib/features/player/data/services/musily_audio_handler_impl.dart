@@ -748,6 +748,12 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   @override
+  Future<void> setShuffledQueue(List<TrackEntity> items) async {
+    _shuffledQueue = items;
+    _onAction?.call(MusilyPlayerAction.queueChanged);
+  }
+
+  @override
   void setUriGetter(Future<Uri> Function(TrackEntity track) callback) {
     _uriGetter = callback;
   }

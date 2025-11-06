@@ -169,6 +169,13 @@ class MusilyPlayer implements MusilyAudioHandler {
   }
 
   @override
+  Future<void> setShuffledQueue(List<TrackEntity> items) async {
+    if (_audioHandler != null) {
+      await _audioHandler!.setShuffledQueue(items);
+    }
+  }
+
+  @override
   MusilyRepeatMode getRepeatMode() {
     if (_audioHandler != null) {
       return _audioHandler!.getRepeatMode();

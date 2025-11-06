@@ -387,7 +387,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         }
         List<TrackEntity> queueCopy = List.from(_musilyPlayer.getQueue());
         queueCopy = queueCopy..insert(newIndex, queueCopy.removeAt(oldIndex));
-        _musilyPlayer.setQueue(queueCopy);
+        _musilyPlayer.setShuffledQueue(queueCopy);
       },
       playPlaylist: (
         List<TrackEntity> items,
