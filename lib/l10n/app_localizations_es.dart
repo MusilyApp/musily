@@ -627,4 +627,39 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addTime => 'Agregar tiempo';
+
+  @override
+  String get clearQueueTitle => 'Limpiar Cola';
+
+  @override
+  String get clearQueueMessage =>
+      '¿Limpiar todas las descargas en cola/pendientes?';
+
+  @override
+  String get clearQueueDescription =>
+      'Esto cancelará todas las descargas pendientes. Las descargas completadas no se verán afectadas.';
+
+  @override
+  String get clear => 'Limpiar';
+
+  @override
+  String get queueTools => 'Herramientas de Cola';
+
+  @override
+  String get queueToolsDescription => 'Reordenar tu cola y crear playlists';
+
+  @override
+  String get playlistCreated => 'Playlist creada exitosamente';
+
+  @override
+  String get queue => 'Cola';
+
+  @override
+  String get tracksSelected => 'canciones seleccionadas';
+
+  @override
+  String get selectAll => 'Seleccionar Todo';
+
+  @override
+  String get deselectAll => 'Deseleccionar Todo';
 }

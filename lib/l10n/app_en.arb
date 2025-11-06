@@ -231,5 +231,12 @@
   "clearQueueTitle": "Clear Queue",
   "clearQueueMessage": "Clear all queued/pending downloads?",
   "clearQueueDescription": "This will cancel all pending downloads. Completed downloads will not be affected.",
-  "clear": "Clear"
+  "clear": "Clear",
+  "queueTools": "Queue Tools",
+  "queueToolsDescription": "Reorder your queue and create playlists",
+  "playlistCreated": "Playlist created successfully",
+  "queue": "Queue",
+  "tracksSelected": "tracks selected",
+  "selectAll": "Select All",
+  "deselectAll": "Deselect All"
 }

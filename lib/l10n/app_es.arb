@@ -224,5 +224,12 @@
   "clearQueueTitle": "Limpiar Cola",
   "clearQueueMessage": "¿Limpiar todas las descargas en cola/pendientes?",
   "clearQueueDescription": "Esto cancelará todas las descargas pendientes. Las descargas completadas no se verán afectadas.",
-  "clear": "Limpiar"
+  "clear": "Limpiar",
+  "queueTools": "Herramientas de Cola",
+  "queueToolsDescription": "Reordenar tu cola y crear playlists",
+  "playlistCreated": "Playlist creada exitosamente",
+  "queue": "Cola",
+  "tracksSelected": "canciones seleccionadas",
+  "selectAll": "Seleccionar Todo",
+  "deselectAll": "Deseleccionar Todo"
 }

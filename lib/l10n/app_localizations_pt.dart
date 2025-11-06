@@ -623,4 +623,39 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get addTime => 'Adicionar tempo';
+
+  @override
+  String get clearQueueTitle => 'Limpar Fila';
+
+  @override
+  String get clearQueueMessage =>
+      'Limpar todos os downloads em fila/pendentes?';
+
+  @override
+  String get clearQueueDescription =>
+      'Isso cancelará todos os downloads pendentes. Downloads concluídos não serão afetados.';
+
+  @override
+  String get clear => 'Limpar';
+
+  @override
+  String get queueTools => 'Ferramentas da Fila';
+
+  @override
+  String get queueToolsDescription => 'Reordenar sua fila e criar playlists';
+
+  @override
+  String get playlistCreated => 'Playlist criada com sucesso';
+
+  @override
+  String get queue => 'Fila';
+
+  @override
+  String get tracksSelected => 'faixas selecionadas';
+
+  @override
+  String get selectAll => 'Selecionar Tudo';
+
+  @override
+  String get deselectAll => 'Desselecionar Tudo';
 }

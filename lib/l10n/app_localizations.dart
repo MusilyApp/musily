@@ -1267,6 +1267,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add time'**
   String get addTime;
+
+  /// No description provided for @clearQueueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Queue'**
+  String get clearQueueTitle;
+
+  /// No description provided for @clearQueueMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all queued/pending downloads?'**
+  String get clearQueueMessage;
+
+  /// No description provided for @clearQueueDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This will cancel all pending downloads. Completed downloads will not be affected.'**
+  String get clearQueueDescription;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @queueTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Queue Tools'**
+  String get queueTools;
+
+  /// No description provided for @queueToolsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder your queue and create playlists'**
+  String get queueToolsDescription;
+
+  /// No description provided for @playlistCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Playlist created successfully'**
+  String get playlistCreated;
+
+  /// No description provided for @queue.
+  ///
+  /// In en, this message translates to:
+  /// **'Queue'**
+  String get queue;
+
+  /// No description provided for @tracksSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'tracks selected'**
+  String get tracksSelected;
+
+  /// No description provided for @selectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
+  String get selectAll;
+
+  /// No description provided for @deselectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect All'**
+  String get deselectAll;
 }
 
 class _AppLocalizationsDelegate

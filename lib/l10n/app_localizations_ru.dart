@@ -626,4 +626,39 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get addTime => 'Добавить время';
+
+  @override
+  String get clearQueueTitle => 'Очистить очередь';
+
+  @override
+  String get clearQueueMessage => 'Очистить все загрузки в очереди/ожидании?';
+
+  @override
+  String get clearQueueDescription =>
+      'Это отменит все ожидающие загрузки. Завершенные загрузки не будут затронуты.';
+
+  @override
+  String get clear => 'Очистить';
+
+  @override
+  String get queueTools => 'Инструменты очереди';
+
+  @override
+  String get queueToolsDescription =>
+      'Изменение порядка очереди и создание плейлистов';
+
+  @override
+  String get playlistCreated => 'Плейлист успешно создан';
+
+  @override
+  String get queue => 'Очередь';
+
+  @override
+  String get tracksSelected => 'треков выбрано';
+
+  @override
+  String get selectAll => 'Выбрать все';
+
+  @override
+  String get deselectAll => 'Снять выбор';
 }

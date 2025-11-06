@@ -614,4 +614,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addTime => 'Add time';
+
+  @override
+  String get clearQueueTitle => 'Clear Queue';
+
+  @override
+  String get clearQueueMessage => 'Clear all queued/pending downloads?';
+
+  @override
+  String get clearQueueDescription =>
+      'This will cancel all pending downloads. Completed downloads will not be affected.';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get queueTools => 'Queue Tools';
+
+  @override
+  String get queueToolsDescription => 'Reorder your queue and create playlists';
+
+  @override
+  String get playlistCreated => 'Playlist created successfully';
+
+  @override
+  String get queue => 'Queue';
+
+  @override
+  String get tracksSelected => 'tracks selected';
+
+  @override
+  String get selectAll => 'Select All';
+
+  @override
+  String get deselectAll => 'Deselect All';
 }

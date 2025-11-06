@@ -224,5 +224,12 @@
   "clearQueueTitle": "Limpar Fila",
   "clearQueueMessage": "Limpar todos os downloads em fila/pendentes?",
   "clearQueueDescription": "Isso cancelará todos os downloads pendentes. Downloads concluídos não serão afetados.",
-  "clear": "Limpar"
+  "clear": "Limpar",
+  "queueTools": "Ferramentas da Fila",
+  "queueToolsDescription": "Reordenar sua fila e criar playlists",
+  "playlistCreated": "Playlist criada com sucesso",
+  "queue": "Fila",
+  "tracksSelected": "faixas selecionadas",
+  "selectAll": "Selecionar Tudo",
+  "deselectAll": "Desselecionar Tudo"
 }
