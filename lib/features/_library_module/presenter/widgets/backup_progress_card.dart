@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/color_scheme.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_outlined_button.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_data.dart';
 
@@ -71,25 +75,138 @@ class BackupProgressCard extends StatelessWidget {
   }
 
   Future<void> _showCancelDialog(BuildContext context) async {
-    final result = await showDialog<bool>(
+    final isBackup =
+        libraryController.data.backupActivityType == BackupActivityType.backup;
+    final message = isBackup
+        ? context.localization.cancelBackupConfirmation
+        : context.localization.cancelRestoreConfirmation;
+
+    final result = await LyNavigator.showLyCardDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(context.localization.cancelOperation),
-        content: Text(
-          libraryController.data.backupActivityType == BackupActivityType.backup
-              ? context.localization.cancelBackupConfirmation
-              : context.localization.cancelRestoreConfirmation,
+      width: 300,
+      padding: EdgeInsets.zero,
+      density: LyDensity.dense,
+      builder: (dialogContext) => Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(dialogContext).size.height * 0.5,
+          minHeight: 280,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(context.localization.no),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(context.localization.yes),
-          ),
-        ],
+        decoration: BoxDecoration(
+          color: dialogContext.themeData.colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar
+            Container(
+              margin: const EdgeInsets.only(top: 12),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: dialogContext.themeData.colorScheme.outline
+                    .withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            // Header
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: dialogContext.themeData.colorScheme.error
+                          .withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      LucideIcons.triangleAlert,
+                      size: 20,
+                      color: dialogContext.themeData.colorScheme.error,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      context.localization.cancelOperation,
+                      style: dialogContext.themeData.textTheme.titleLarge
+                          ?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Content
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: dialogContext
+                            .themeData.colorScheme.surfaceContainerHighest
+                            .withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: dialogContext.themeData.colorScheme.outline
+                              .withValues(alpha: 0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        message,
+                        textAlign: TextAlign.center,
+                        style: dialogContext.themeData.textTheme.bodyLarge
+                            ?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+            // Actions
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: LyOutlinedButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop(false);
+                      },
+                      child: Text(context.localization.no),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: LyFilledButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop(true);
+                      },
+                      color: dialogContext.themeData.colorScheme.error,
+                      child: Text(
+                        context.localization.yes,
+                        style: TextStyle(
+                          color: dialogContext.themeData.colorScheme.onError,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -102,7 +219,6 @@ class BackupProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return libraryController.builder(
       builder: (context, data) {
-        // Show while in progress OR if recently completed (progress = 1.0)
         final showCard = data.backupInProgress ||
             (data.backupProgress >= 1.0 && data.backupActivityType != null);
 
@@ -110,7 +226,6 @@ class BackupProgressCard extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        // Auto-hide after 8 seconds when completed
         if (!data.backupInProgress && data.backupProgress >= 1.0) {
           Future.delayed(const Duration(seconds: 8), () {
             if (context.mounted && !libraryController.data.backupInProgress) {

@@ -30,7 +30,6 @@ class _LibraryBackupState extends State<LibraryBackup> {
   @override
   void initState() {
     super.initState();
-    // Set initial values based on what's available
     includeLibrary = widget.hasLibrary;
     includeDownloads = widget.hasDownloads;
   }
@@ -46,7 +45,6 @@ class _LibraryBackupState extends State<LibraryBackup> {
 
     try {
       await widget.onBackup(selectedOptions);
-      // Success is handled by progress card
     } catch (e) {
       // Error is handled by progress card
     } finally {

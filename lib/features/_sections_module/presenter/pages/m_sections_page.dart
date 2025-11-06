@@ -313,8 +313,10 @@ class MSectionsPage extends StatelessWidget {
                                 height: 140,
                                 child: CarouselView.weighted(
                                   flexWeights: context.responsive(
-                                          ResponsiveValue(
-                                              sm: [8, 1], md: [4, 4])) ??
+                                          const ResponsiveValue(
+                                              sm: [8, 1],
+                                              md: [4, 4],
+                                              xl: [3, 3, 3, 1])) ??
                                       [8, 1],
                                   onTap: null,
                                   enableSplash: false,
