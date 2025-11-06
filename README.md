@@ -26,6 +26,7 @@ Get it on [Telegram](https://t.me/MusilyApp) or [GitHub](https://github.com/Musi
 | ![Home Page](assets/screenshots/mobile/home.jpg)          | ![Album Page](assets/screenshots/mobile/album.jpg) | ![Artist Page](assets/screenshots/mobile/artist.jpg) |
 | --------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
 | ![Playlist Page](assets/screenshots/mobile/favorites.jpg) | ![Player](assets/screenshots/mobile/player.jpg)    | ![Lyrics](assets/screenshots/mobile/lyrics.jpg)      |
+| ![Library Page](assets/screenshots/mobile/library.jpg)    | ![Queue Page](assets/screenshots/mobile/queue.jpg) | ![Backup Page](assets/screenshots/mobile/backup.jpg) |
 
 #### Desktop
 
