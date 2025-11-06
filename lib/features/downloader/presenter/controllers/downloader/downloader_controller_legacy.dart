@@ -505,17 +505,14 @@ class DownloaderController
         return null;
       },
       clearAllDownloads: () async {
-        // Legacy controller - not implemented
         data.queue.clear();
         updateData(data);
       },
       clearQueuedDownloads: () async {
-        // Legacy controller - not implemented
         data.queue.removeWhere((e) => e.status != DownloadStatus.completed);
         updateData(data);
       },
       clearCompletedDownloads: () async {
-        // Legacy controller - not implemented
         data.queue.removeWhere((e) => e.status == DownloadStatus.completed);
         updateData(data);
       },

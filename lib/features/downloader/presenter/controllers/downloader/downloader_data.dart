@@ -36,20 +36,16 @@ class DownloaderData implements BaseControllerData {
     Map<String, DownloadingItem>? queueMap,
   }) : _queueMap = queueMap ?? {};
 
-  // O(1) lookup by track hash
   DownloadingItem? getItemByHash(String hash) => _queueMap[hash];
 
-  // Add item to map
   void addToMap(DownloadingItem item) {
     _queueMap[item.track.hash] = item;
   }
 
-  // Remove item from map by hash
   void removeFromMap(String hash) {
     _queueMap.remove(hash);
   }
 
-  // Clear entire map
   void clearMap() {
     _queueMap.clear();
   }
@@ -67,7 +63,6 @@ class DownloaderData implements BaseControllerData {
     );
   }
 
-  // Helper to rebuild map from queue
   void rebuildMap() {
     _queueMap.clear();
     for (final item in queue) {
