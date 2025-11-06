@@ -88,17 +88,7 @@ class _TrackTileState extends State<TrackTile> {
         return Container(
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           decoration: BoxDecoration(
-            color: isPlaying
-                ? context.themeData.colorScheme.primaryContainer
-                    .withValues(alpha: 0.4)
-                : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: isPlaying
-                  ? context.themeData.colorScheme.primary.withValues(alpha: 0.3)
-                  : Colors.transparent,
-              width: isPlaying ? 1.5 : 1,
-            ),
           ),
           child: Material(
             color: Colors.transparent,

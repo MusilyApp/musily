@@ -8,7 +8,9 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 class TrackTileStatic extends StatefulWidget {
   final TrackEntity track;
   final Widget? trailing;
-  const TrackTileStatic({required this.track, this.trailing, super.key});
+  final Widget? leading;
+  const TrackTileStatic(
+      {required this.track, this.trailing, this.leading, super.key});
 
   @override
   State<TrackTileStatic> createState() => _TrackTileStaticState();
@@ -33,45 +35,50 @@ class _TrackTileStaticState extends State<TrackTileStatic> {
           child: Row(
             children: [
               // Track Artwork
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: widget.track.lowResImg != null &&
-                          widget.track.lowResImg!.isNotEmpty
-                      ? AppImage(
-                          widget.track.lowResImg!,
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                context.themeData.colorScheme.primary
-                                    .withValues(alpha: 0.6),
-                                context.themeData.colorScheme.primary
-                                    .withValues(alpha: 0.3),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+              if (widget.leading != null) ...[
+                widget.leading!,
+                const SizedBox(width: 12),
+              ] else ...[
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: widget.track.lowResImg != null &&
+                            widget.track.lowResImg!.isNotEmpty
+                        ? AppImage(
+                            widget.track.lowResImg!,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  context.themeData.colorScheme.primary
+                                      .withValues(alpha: 0.6),
+                                  context.themeData.colorScheme.primary
+                                      .withValues(alpha: 0.3),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Icon(
+                              LucideIcons.music,
+                              color: context.themeData.colorScheme.onPrimary
+                                  .withValues(alpha: 0.7),
+                              size: 22,
                             ),
                           ),
-                          child: Icon(
-                            LucideIcons.music,
-                            color: context.themeData.colorScheme.onPrimary
-                                .withValues(alpha: 0.7),
-                            size: 22,
-                          ),
-                        ),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
+                const SizedBox(width: 12),
+              ],
               // Track Info
               Expanded(
                 child: Column(
