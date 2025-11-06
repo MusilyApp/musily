@@ -4,6 +4,7 @@ import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/utils/validate_email.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 
@@ -54,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
           preventPop: data.loading,
           child: Scaffold(
             key: widget.authController.signupPageKey,
-            appBar: AppBar(
+            appBar: MusilyAppBar(
               title: Text(context.localization.createAccount),
             ),
             body: Center(
