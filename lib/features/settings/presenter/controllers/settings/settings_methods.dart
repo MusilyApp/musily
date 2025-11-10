@@ -16,6 +16,7 @@ class SettingsMethods {
     AccentColorPreference preference,
   ) setAccentColorPreference;
   final void Function() loadAccentColorPreference;
+  final Future<void> Function({bool forceRefresh}) loadSupporters;
 
   SettingsMethods({
     required this.changeLanguage,
@@ -27,5 +28,6 @@ class SettingsMethods {
     required this.setClosePreference,
     required this.setAccentColorPreference,
     required this.loadAccentColorPreference,
+    required this.loadSupporters,
   });
 }

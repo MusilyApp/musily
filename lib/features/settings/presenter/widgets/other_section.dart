@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
-import 'package:musily/features/settings/presenter/widgets/about.dart';
+import 'package:musily/features/settings/presenter/pages/about_page.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 
 class OtherSection extends StatelessWidget {
-  const OtherSection({super.key});
+  final CoreController coreController;
+  final SettingsController settingsController;
+
+  const OtherSection({
+    super.key,
+    required this.coreController,
+    required this.settingsController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +66,9 @@ class OtherSection extends StatelessWidget {
                     'assets/icons/musily.svg',
                     width: 60,
                   ),
-                  context: context,
+                  context: context.display.isDesktop
+                      ? coreController.coreContext!
+                      : context,
                 );
               },
               borderRadius: BorderRadius.circular(16),
@@ -121,11 +132,11 @@ class OtherSection extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                LyNavigator.showLyCardDialog(
-                  context: context,
-                  margin: const EdgeInsets.symmetric(horizontal: 12),
-                  title: const Text('Musily'),
-                  builder: (context) => const About(),
+                LyNavigator.push(
+                  context,
+                  AboutPage(
+                    controller: settingsController,
+                  ),
                 );
               },
               borderRadius: BorderRadius.circular(16),
@@ -154,7 +165,7 @@ class OtherSection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        LucideIcons.info,
+                        LucideIcons.heart,
                         size: 22,
                         color: context.themeData.colorScheme.tertiary,
                       ),
@@ -162,7 +173,7 @@ class OtherSection extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: Text(
-                        context.localization.about,
+                        context.localization.aboutSupporters,
                         style:
                             context.themeData.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,

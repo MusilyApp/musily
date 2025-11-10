@@ -39,7 +39,10 @@ class SettingsPage extends StatelessWidget {
             AppSection(
               controller: settingsController,
             ),
-            const OtherSection(),
+            OtherSection(
+              coreController: coreController,
+              settingsController: settingsController,
+            ),
           ],
         ),
       ),

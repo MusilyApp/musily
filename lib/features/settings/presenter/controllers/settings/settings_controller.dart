@@ -8,19 +8,28 @@ import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/settings/domain/enums/accent_color_preference.dart';
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
+import 'package:musily/features/settings/domain/entities/supporter_entity.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_methods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class SettingsController extends BaseController<SettingsData, SettingsMethods> {
+  static const _remoteSupportersUrl =
+      'https://raw.githubusercontent.com/MusilyApp/musily/refs/heads/main/assets/supporters.json';
+  static const _localSupportersAssetPath = 'assets/supporters.json';
+
+  late final HttpAdapter _httpAdapter;
+
   SettingsController({
     required HttpAdapter httpAdapter,
   }) {
+    _httpAdapter = httpAdapter;
     methods.loadLanguage();
     methods.loadThemeMode();
     methods.loadClosePreference();
     methods.loadAccentColorPreference();
+    methods.loadSupporters();
     showSyncSection = httpAdapter.baseUrl.isNotEmpty;
   }
 
@@ -157,6 +166,65 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         );
         updateData(data);
       },
+      loadSupporters: ({bool forceRefresh = false}) async {
+        if (data.loadingSupporters) {
+          return;
+        }
+        if (!forceRefresh && data.supporters.isNotEmpty) {
+          return;
+        }
+        updateData(
+          data.copyWith(
+            loadingSupporters: true,
+          ),
+        );
+        List<SupporterEntity> supporters = const [];
+        try {
+          supporters = await _fetchRemoteSupporters();
+        } catch (_) {
+          // Ignore errors, fallback handled below.
+        }
+        if (supporters.isEmpty) {
+          supporters = await _loadLocalSupporters();
+        }
+        updateData(
+          data.copyWith(
+            supporters: supporters,
+            loadingSupporters: false,
+          ),
+        );
+      },
     );
+  }
+
+  Future<List<SupporterEntity>> _fetchRemoteSupporters() async {
+    try {
+      final response = await _httpAdapter.get(_remoteSupportersUrl);
+      if (response.statusCode == 200) {
+        return _sortSupporters(
+          SupporterEntity.listFromDynamic(response.data),
+        );
+      }
+    } catch (_) {
+      rethrow;
+    }
+    return const [];
+  }
+
+  Future<List<SupporterEntity>> _loadLocalSupporters() async {
+    try {
+      final content = await rootBundle.loadString(_localSupportersAssetPath);
+      return _sortSupporters(
+        SupporterEntity.listFromDynamic(content),
+      );
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  List<SupporterEntity> _sortSupporters(List<SupporterEntity> supporters) {
+    final sorted = List<SupporterEntity>.from(supporters);
+    sorted.sort((a, b) => b.amount.compareTo(a.amount));
+    return sorted;
   }
 }
