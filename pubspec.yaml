@@ -96,6 +96,7 @@ dependencies:
   markdown_widget: ^2.3.2+8
   gtk_window: ^0.1.1
   lucide_icons_flutter: ^3.1.5
+  toastification: ^3.0.3
 
 # Development Dependencies
 dev_dependencies:
@@ -114,11 +115,60 @@ flutter:
   generate: true
 
   # Asset Configuration
+  fonts:
+    - family: ElmsSans
+      fonts:
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-ThinItalic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Elms_Sans/static/ElmsSans-BlackItalic.ttf
+          weight: 900
+          style: italic
   assets:
     - assets/icons/
     - assets/icons/tray/
     - assets/uninstaller/
     - assets/audio/
+    - assets/supporters.json
 
 # Splash Screen Configuration
 flutter_native_splash:
