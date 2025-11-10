@@ -3,6 +3,7 @@ import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/presenter/widgets/musily_logo.dart';
 import 'package:musily/core/presenter/widgets/screen_handler.dart';
 import 'package:musily/core/presenter/widgets/user_avatar.dart';
@@ -62,7 +63,9 @@ class SectionsPage extends StatelessWidget {
     return LyPage(
       contextKey: 'SectionsPage',
       child: Scaffold(
-        appBar: AppBar(
+        appBar: MusilyAppBar(
+          centerTitle: false,
+          autoImplyLeading: false,
           backgroundColor: context.themeData.scaffoldBackgroundColor,
           title: const Row(
             children: [

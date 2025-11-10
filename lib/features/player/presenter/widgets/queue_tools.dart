@@ -10,6 +10,7 @@ import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
+import 'package:musily/core/presenter/ui/window/draggable_box.dart';
 import 'package:musily/core/presenter/widgets/empty_state.dart';
 import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/presenter/widgets/musily_loading.dart';
@@ -263,46 +264,49 @@ class _QueueToolsState extends State<QueueTools> {
             icon: const Icon(LucideIcons.arrowLeft),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text(context.localization.queue),
+          title: Text(context.localization.queueTools),
           actions: [
             IconButton(
-              icon: const Icon(LucideIcons.plus),
+              icon: const Icon(LucideIcons.listPlus),
               onPressed: _createPlaylistFromQueue,
               tooltip: context.localization.createPlaylist,
             ),
           ],
         ),
-        body: content,
+        body: SafeArea(child: content),
       );
     }
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            children: [
-              if (widget.onBack != null)
-                IconButton(
-                  icon: const Icon(LucideIcons.chevronLeft, size: 20),
-                  onPressed: widget.onBack,
-                  tooltip: context.localization.back,
-                ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  context.localization.queueTools,
-                  style: context.themeData.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
+        DraggableBox(
+          child: Container(
+            color: context.themeData.scaffoldBackgroundColor,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                if (widget.onBack != null)
+                  IconButton(
+                    icon: const Icon(LucideIcons.chevronLeft, size: 20),
+                    onPressed: widget.onBack,
+                    tooltip: context.localization.back,
+                  ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    context.localization.queueTools,
+                    style: context.themeData.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(LucideIcons.plus, size: 20),
-                onPressed: _createPlaylistFromQueue,
-                tooltip: context.localization.createPlaylist,
-              ),
-            ],
+                IconButton(
+                  icon: const Icon(LucideIcons.plus, size: 20),
+                  onPressed: _createPlaylistFromQueue,
+                  tooltip: context.localization.createPlaylist,
+                ),
+              ],
+            ),
           ),
         ),
         Expanded(child: content),

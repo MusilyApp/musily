@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/ui/window/draggable_box.dart';
 
 class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
@@ -9,6 +10,7 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final Color? surfaceTintColor;
   final bool autoImplyLeading;
+  final bool centerTitle;
   const MusilyAppBar({
     super.key,
     this.leading,
@@ -17,25 +19,28 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.surfaceTintColor,
     this.autoImplyLeading = true,
+    this.centerTitle = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: backgroundColor,
-      surfaceTintColor: surfaceTintColor,
-      leading: autoImplyLeading && Navigator.canPop(context)
-          ? Tooltip(
-              message: context.localization.back,
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(LucideIcons.chevronLeft),
-              ),
-            )
-          : leading,
-      title: title,
-      centerTitle: true,
-      actions: actions,
+    return DraggableBox(
+      child: AppBar(
+        backgroundColor: backgroundColor,
+        surfaceTintColor: surfaceTintColor,
+        leading: autoImplyLeading && Navigator.canPop(context)
+            ? Tooltip(
+                message: context.localization.back,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(LucideIcons.chevronLeft),
+                ),
+              )
+            : leading,
+        title: title,
+        centerTitle: centerTitle,
+        actions: actions,
+      ),
     );
   }
 

@@ -8,7 +8,8 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/color_scheme.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
-import 'package:musily/core/presenter/ui/window/ly_header_bar.dart';
+import 'package:musily/core/presenter/ui/window/draggable_box.dart';
+import 'package:musily/core/presenter/ui/window/window_controls.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_library_module/presenter/pages/backup_page.dart';
@@ -76,12 +77,10 @@ class _DCorePageState extends State<DCorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: LyHeaderBar(middle: Text(widget.coreController.data.windowTitle)),
       body: Row(
         children: [
           Container(
             width: 280,
-            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: context.themeData.scaffoldBackgroundColor,
               border: Border(
@@ -95,54 +94,73 @@ class _DCorePageState extends State<DCorePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _NavMenuItem(
-                  icon: LucideIcons.house,
-                  label: context.localization.home,
-                  isSelected: _selected == 0,
-                  onTap: () {
-                    setState(() {
-                      _selected = 0;
-                    });
-                    LyNavigator.navigateTo(routes[0]);
-                  },
+                DraggableBox(
+                  child: Container(
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    color: context.themeData.scaffoldBackgroundColor,
+                    child: const Center(
+                      child: Row(
+                        children: [
+                          WindowControls(),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 8),
-                _NavMenuItem(
-                  icon: LucideIcons.search,
-                  label: context.localization.search,
-                  isSelected: _selected == 1,
-                  onTap: () {
-                    setState(() {
-                      _selected = 1;
-                    });
-                    LyNavigator.navigateTo(routes[1]);
-                  },
-                ),
-                const SizedBox(height: 8),
-                _NavMenuItem(
-                  icon: LucideIcons.download,
-                  label: context.localization.downloads,
-                  isSelected: _selected == 2,
-                  onTap: () {
-                    setState(() {
-                      _selected = 2;
-                    });
-                    LyNavigator.navigateTo(routes[2]);
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      _NavMenuItem(
+                        icon: LucideIcons.house,
+                        label: context.localization.home,
+                        isSelected: _selected == 0,
+                        onTap: () {
+                          setState(() {
+                            _selected = 0;
+                          });
+                          LyNavigator.navigateTo(routes[0]);
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _NavMenuItem(
+                        icon: LucideIcons.search,
+                        label: context.localization.search,
+                        isSelected: _selected == 1,
+                        onTap: () {
+                          setState(() {
+                            _selected = 1;
+                          });
+                          LyNavigator.navigateTo(routes[1]);
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      _NavMenuItem(
+                        icon: LucideIcons.download,
+                        label: context.localization.downloads,
+                        isSelected: _selected == 2,
+                        onTap: () {
+                          setState(() {
+                            _selected = 2;
+                          });
+                          LyNavigator.navigateTo(routes[2]);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 24),
-                // Your Library Section
                 Expanded(
                   child: Column(
                     children: [
-                      // Backup Progress
                       BackupProgressCard(
                         libraryController: widget.libraryController,
                         isDesktop: true,
                       ),
-                      // Library Container
                       Expanded(
                         child: Container(
+                          margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           decoration: BoxDecoration(
                             color: context.themeData.colorScheme.onScaffold,
                             borderRadius: BorderRadius.circular(16),

@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/ui/window/draggable_box.dart';
 import 'package:musily/core/presenter/widgets/empty_state.dart';
 import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -63,6 +64,14 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
   bool _showQueueTools = false;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.mode == PlayerMode.artwork) {
+      widget.playerController.methods.setPlayerMode(PlayerMode.queue);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(
       builder: (context, data) {
@@ -89,9 +98,12 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
   Widget _buildModeContent(BuildContext context, dynamic data) {
     switch (widget.mode) {
       case PlayerMode.lyrics:
-        return Container(
-          key: ValueKey('lyrics_${data.currentPlayingItem?.id ?? 'no_track'}'),
-          child: _buildLyricsContent(context, data),
+        return DraggableBox(
+          child: Container(
+            key:
+                ValueKey('lyrics_${data.currentPlayingItem?.id ?? 'no_track'}'),
+            child: _buildLyricsContent(context, data),
+          ),
         );
       default:
         return Container(
@@ -100,76 +112,77 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
             children: [
               if (widget.playerController.data.currentPlayingItem != null &&
                   !_showQueueTools) ...[
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: context.themeData.colorScheme.outline
-                            .withValues(alpha: .1),
-                      ),
-                    ),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        setState(() {
-                          _showQueueTools = true;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: context.themeData.colorScheme.primary
-                                    .withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(8),
+                DraggableBox(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () {
+                          setState(() {
+                            _showQueueTools = true;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: context.themeData.colorScheme.primary
+                                      .withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(
+                                  LucideIcons.wrench,
+                                  size: 20,
+                                  color: context.themeData.colorScheme.primary,
+                                ),
                               ),
-                              child: Icon(
-                                LucideIcons.wrench,
-                                size: 20,
-                                color: context.themeData.colorScheme.primary,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    context.localization.queueTools,
-                                    style: context
-                                        .themeData.textTheme.bodyMedium
-                                        ?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: -0.2,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      context.localization.queueTools,
+                                      style: context
+                                          .themeData.textTheme.bodyMedium
+                                          ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: -0.2,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    context.localization.queueToolsDescription,
-                                    style: context.themeData.textTheme.bodySmall
-                                        ?.copyWith(
-                                      color: context.themeData.colorScheme
-                                          .onSurfaceVariant
-                                          .withValues(alpha: 0.7),
-                                      fontSize: 12,
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      context
+                                          .localization.queueToolsDescription,
+                                      style: context
+                                          .themeData.textTheme.bodySmall
+                                          ?.copyWith(
+                                        color: context.themeData.colorScheme
+                                            .onSurfaceVariant
+                                            .withValues(alpha: 0.7),
+                                        fontSize: 12,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -182,9 +195,20 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                   switchInCurve: Curves.easeInOut,
                   switchOutCurve: Curves.easeInOut,
                   transitionBuilder: (child, animation) {
+                    final offsetAnimation = Tween<Offset>(
+                      begin: const Offset(0.1, 0),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ));
+
                     return FadeTransition(
                       opacity: animation,
-                      child: child,
+                      child: SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      ),
                     );
                   },
                   child: _showQueueTools
@@ -201,9 +225,12 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
                             },
                           ),
                         )
-                      : Container(
-                          key: const ValueKey('queue_content'),
-                          child: _buildQueueContent(context, data),
+                      : DraggableBox(
+                          child: Container(
+                            color: context.themeData.scaffoldBackgroundColor,
+                            key: const ValueKey('queue_content'),
+                            child: _buildQueueContent(context, data),
+                          ),
                         ),
                 ),
               ),
@@ -270,7 +297,8 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
   Widget _buildQueueContent(BuildContext context, dynamic data) {
     if (widget.playerController.data.queue.length <= 1) {
       return Center(
-        child: Padding(
+        child: Container(
+          color: context.themeData.scaffoldBackgroundColor,
           padding: const EdgeInsets.all(16),
           child: EmptyState(
             title: context.localization.queueEmptyTitle,
@@ -281,17 +309,10 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: QueueWidget(
-            playerController: widget.playerController,
-            hideNowPlaying: true,
-            showSmartQueue: true,
-          ),
-        ),
-      ],
+    return QueueWidget(
+      playerController: widget.playerController,
+      hideNowPlaying: true,
+      showSmartQueue: true,
     );
   }
 }

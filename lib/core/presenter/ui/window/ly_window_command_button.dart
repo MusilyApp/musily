@@ -3,11 +3,20 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class LyWindowCommandButton extends StatelessWidget {
   final bool isFocused;
+  final Color? backgroundColor;
+  final double iconSize;
+  final double size;
+  final Color? iconColor;
+
   const LyWindowCommandButton({
     super.key,
     required this.onPressed,
     required this.icon,
     required this.isFocused,
+    this.backgroundColor,
+    this.iconSize = 14,
+    this.size = 24,
+    this.iconColor,
   });
 
   final Function onPressed;
@@ -16,14 +25,15 @@ class LyWindowCommandButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox.fromSize(
-      size: const Size.square(24),
+      size: Size.square(size),
       child: Material(
-        color: context.themeData.focusColor.withValues(alpha: .1),
+        color: backgroundColor ??
+            context.themeData.focusColor.withValues(alpha: .1),
         shape: const CircleBorder(),
         child: IconButton(
           // color: ,
-          icon: Icon(icon),
-          iconSize: 14,
+          icon: Icon(icon, color: iconColor),
+          iconSize: iconSize,
           padding: EdgeInsets.zero,
           onPressed: () => onPressed(),
           splashColor: Colors.transparent,
