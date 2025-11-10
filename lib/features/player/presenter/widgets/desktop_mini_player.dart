@@ -26,6 +26,7 @@ import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
 import 'package:musily/features/artist/presenter/pages/artist_page.dart';
 import 'package:musily/features/player/presenter/widgets/sleep_timer_dialog.dart';
+import 'package:window_manager/window_manager.dart';
 
 class DesktopMiniPlayer extends StatefulWidget {
   final PlayerController playerController;
@@ -252,8 +253,8 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                             ),
                             if (data.shuffleEnabled) ...[
                               Positioned(
-                                left: 21,
-                                top: 30,
+                                left: 16,
+                                top: 25,
                                 child: Icon(
                                   LucideIcons.circle,
                                   size: 4,
@@ -261,11 +262,11 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                                 ),
                               ),
                               Positioned(
-                                left: 11,
-                                top: 20,
+                                left: 9,
+                                top: 17,
                                 child: Icon(
                                   Icons.fiber_manual_record,
-                                  size: 8,
+                                  size: 6,
                                   color: context.themeData.colorScheme.primary,
                                 ),
                               ),
@@ -350,7 +351,7 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                                   top: 7,
                                   child: Icon(
                                     Icons.fiber_manual_record,
-                                    size: 6,
+                                    size: 4,
                                     color:
                                         context.themeData.colorScheme.primary,
                                   ),
@@ -601,28 +602,31 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => DesktopFullPlayer(
-                              playerController: widget.playerController,
-                              libraryController: widget.libraryController,
-                              downloaderController: widget.downloaderController,
-                              coreController: widget.coreController,
-                              getPlayableItemUsecase:
-                                  widget.getPlayableItemUsecase,
-                              getAlbumUsecase: widget.getAlbumUsecase,
-                              getArtistUsecase: widget.getArtistUsecase,
-                              getArtistTracksUsecase:
-                                  widget.getArtistTracksUsecase,
-                              getArtistAlbumsUsecase:
-                                  widget.getArtistAlbumsUsecase,
-                              getArtistSinglesUsecase:
-                                  widget.getArtistSinglesUsecase,
-                              getTrackUsecase: widget.getTrackUsecase,
-                              getPlaylistUsecase: widget.getPlaylistUsecase,
-                            ),
-                            fullscreenDialog: true,
+                      onPressed: () async {
+                        await windowManager.hide();
+                        await Future.delayed(const Duration(milliseconds: 100));
+                        await windowManager.setFullScreen(true);
+                        await windowManager.show();
+                        await windowManager.focus();
+                        LyNavigator.push(
+                          context,
+                          DesktopFullPlayer(
+                            playerController: widget.playerController,
+                            libraryController: widget.libraryController,
+                            downloaderController: widget.downloaderController,
+                            coreController: widget.coreController,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            getArtistUsecase: widget.getArtistUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                            getTrackUsecase: widget.getTrackUsecase,
+                            getPlaylistUsecase: widget.getPlaylistUsecase,
                           ),
                         );
                       },

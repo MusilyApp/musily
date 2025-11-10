@@ -109,12 +109,14 @@ class _AppMaterialState extends State<AppMaterial>
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'ElmsSans',
         colorScheme:
             lightColorScheme ?? ColorScheme.fromSeed(seedColor: accentColor),
         useMaterial3: true,
         cardTheme: const CardThemeData(shadowColor: Colors.transparent),
       ),
       darkTheme: ThemeData(
+        fontFamily: 'ElmsSans',
         colorScheme: dakColorScheme ??
             ColorScheme.fromSeed(
               seedColor: accentColor,
