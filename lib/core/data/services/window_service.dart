@@ -64,14 +64,14 @@ class WindowService {
   static Future<void> init() async {
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(1280, 720),
-      center: true,
-      backgroundColor: Colors.transparent,
-      skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.hidden,
-      minimumSize: Size(800, 720),
-      title: 'Musily',
-    );
+        size: Size(1280, 720),
+        center: true,
+        backgroundColor: Colors.transparent,
+        skipTaskbar: false,
+        titleBarStyle: TitleBarStyle.hidden,
+        minimumSize: Size(800, 720),
+        title: 'Musily',
+        windowButtonVisibility: false);
     await _instance.loadLastWindowState();
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();

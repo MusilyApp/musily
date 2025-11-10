@@ -62,8 +62,6 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
         track.lowResImg = updatedTrack?.lowResImg;
       }
 
-      print('Track: ${track.toString()}');
-
       return TrackEntity(
         id: track.id,
         hash: track.hash,

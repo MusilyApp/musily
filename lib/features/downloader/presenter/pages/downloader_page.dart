@@ -22,13 +22,11 @@ class DownloaderPage extends StatelessWidget {
     return LyPage(
       contextKey: 'DownloaderPage',
       child: Scaffold(
-        appBar: context.display.isDesktop
-            ? null
-            : MusilyAppBar(
-                title: Text(
-                  context.localization.downloadManager,
-                ),
-              ),
+        appBar: MusilyAppBar(
+          title: Text(
+            context.localization.downloadManager,
+          ),
+        ),
         body: downloaderController.builder(
           builder: (context, data) {
             return Column(

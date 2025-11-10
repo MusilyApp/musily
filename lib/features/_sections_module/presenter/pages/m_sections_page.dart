@@ -76,7 +76,8 @@ class MSectionsPage extends StatelessWidget {
                 // Background with artwork
                 if (playerData.currentPlayingItem != null &&
                     playerData.currentPlayingItem!.highResImg != null &&
-                    playerData.currentPlayingItem!.highResImg!.isNotEmpty)
+                    playerData.currentPlayingItem!.highResImg!.isNotEmpty &&
+                    !context.display.isDesktop)
                   Positioned.fill(
                     child: Stack(
                       fit: StackFit.expand,

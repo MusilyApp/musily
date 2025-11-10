@@ -294,21 +294,24 @@ class DownloadManagerWidget extends StatelessWidget {
             ),
           ),
           if (isDownloading || isPaused)
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
-              child: LinearProgressIndicator(
-                value: item.progress,
-                backgroundColor: context.themeData.colorScheme.surface
-                    .withValues(alpha: 0.3),
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  isPaused
-                      ? context.themeData.colorScheme.secondary
-                      : context.themeData.colorScheme.primary,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
                 ),
-                minHeight: 3,
+                child: LinearProgressIndicator(
+                  value: item.progress,
+                  backgroundColor: context.themeData.colorScheme.surface
+                      .withValues(alpha: 0.3),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    isPaused
+                        ? context.themeData.colorScheme.secondary
+                        : context.themeData.colorScheme.primary,
+                  ),
+                  minHeight: 3,
+                ),
               ),
             ),
         ],
@@ -328,7 +331,7 @@ class _ClearQueueDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.5,
+        maxHeight: MediaQuery.of(context).size.height * 0.7,
         minHeight: 280,
       ),
       decoration: BoxDecoration(

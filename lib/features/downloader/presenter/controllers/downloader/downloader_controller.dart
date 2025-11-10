@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -35,16 +36,13 @@ class DownloaderController
 
   PlayerController? playerController;
 
-  // Isolate management
   final Map<String, Isolate> _activeIsolates = {};
   final Map<String, ReceivePort> _activePorts = {};
   final Map<String, CancelToken> _cancelTokens = {};
 
-  // Batch update management
   Timer? _batchUpdateTimer;
   bool _hasPendingUpdates = false;
 
-  // Concurrent download limit
   static const int _maxConcurrentDownloads = 3;
   static const int _maxConcurrentUrlFetching = 5;
   int _activeDownloads = 0;
@@ -67,15 +65,12 @@ class DownloaderController
         return;
       }
 
-      // Check if already migrated
       final existingCount = await _isar.downloadQueueItems.count();
       if (existingCount > 0) {
-        // Already migrated, clear SharedPreferences
         await prefs.remove('downloadQueue');
         return;
       }
 
-      // Parse and migrate
       final queueList = jsonDecode(queueJson) as List;
       final dbItems = <DownloadQueueItem>[];
 
@@ -99,16 +94,13 @@ class DownloaderController
         dbItems.add(dbItem);
       }
 
-      // Batch save to Isar
       await _isar.writeTxn(() async {
         await _isar.downloadQueueItems.putAll(dbItems);
       });
 
-      // Clear SharedPreferences
       await prefs.remove('downloadQueue');
     } catch (e) {
-      // Migration failed, but don't crash the app
-      print('Migration from SharedPreferences failed: $e');
+      log('Migration from SharedPreferences failed: $e');
     }
   }
 
@@ -136,7 +128,6 @@ class DownloaderController
   @override
   void dispose() {
     _batchUpdateTimer?.cancel();
-    // Cancel all active downloads
     for (final isolate in _activeIsolates.values) {
       isolate.kill(priority: Isolate.immediate);
     }
@@ -167,7 +158,6 @@ class DownloaderController
             continue;
           }
 
-          // Cancel isolate if active
           final isolate = _activeIsolates[track.hash];
           if (isolate != null) {
             isolate.kill(priority: Isolate.immediate);
@@ -178,11 +168,9 @@ class DownloaderController
             _activeDownloads--;
           }
 
-          // Remove from queue and map
           data.queue.removeWhere((e) => e.track.hash == track.hash);
           data.removeFromMap(track.hash);
 
-          // Delete from database
           await _isar.writeTxn(() async {
             await _isar.downloadQueueItems
                 .filter()
@@ -204,11 +192,9 @@ class DownloaderController
         updateData(data.copyWith(downloadingKey: key));
       },
       getItem: (track) {
-        // O(1) lookup using hash map
         return data.getItemByHash(track.hash);
       },
       isOffline: (track) {
-        // O(1) lookup using hash map
         return data.getItemByHash(track.hash) != null;
       },
       loadStoredQueue: () async {
@@ -241,7 +227,6 @@ class DownloaderController
             orElse: () => DownloadStatus.queued,
           );
 
-          // Reset incomplete downloads
           if (status != DownloadStatus.completed) {
             status = DownloadStatus.queued;
             final appDir = await getApplicationSupportDirectory();
@@ -259,18 +244,13 @@ class DownloaderController
           ));
         }
 
-        // Rebuild map after loading queue
         final newData = data.copyWith(queue: queue);
         newData.rebuildMap();
         updateData(newData);
 
-        // Start processing queue
         _processDownloadQueue();
       },
-      updateStoredQueue: () async {
-        // This is now handled automatically with Isar
-        // Individual items are updated as they change
-      },
+      updateStoredQueue: () async {},
       deleteDownloadedFile: ({track, path}) async {
         if (path != null) {
           final file = File(path);
@@ -290,7 +270,6 @@ class DownloaderController
             data.queue.remove(item);
             data.removeFromMap(track.hash);
 
-            // Delete from database
             await _isar.writeTxn(() async {
               await _isar.downloadQueueItems
                   .filter()
@@ -367,20 +346,16 @@ class DownloaderController
         }
         return path.join(trackDir, track.hash);
       },
-      registerListeners: (task, item, downloadDir) async {
-        // Not used in optimized version
-      },
+      registerListeners: (task, item, downloadDir) async {},
       downloadFile: (saveDir, url) async {
-        // Check if file already exists and is valid
         if (await File(saveDir).exists()) {
           final isValidFile = await methods.checkFileIntegrity(saveDir);
           if (isValidFile) {
-            return null; // Already downloaded
+            return null;
           }
           await methods.deleteDownloadedFile(path: saveDir);
         }
 
-        // This will be handled by the isolate
         return null;
       },
       addDownload: (track, {position = 0}) async {
@@ -402,7 +377,6 @@ class DownloaderController
   }
 
   Future<void> _clearAllDownloads() async {
-    // Cancel all active isolates
     for (final isolate in _activeIsolates.values) {
       isolate.kill(priority: Isolate.immediate);
     }
@@ -415,11 +389,9 @@ class DownloaderController
     _activeDownloads = 0;
     _activeFetching = 0;
 
-    // Clear in-memory queue and map
     data.queue.clear();
     data.clearMap();
 
-    // Clear database
     await _isar.writeTxn(() async {
       await _isar.downloadQueueItems.clear();
     });
@@ -437,7 +409,6 @@ class DownloaderController
         .toList();
 
     for (final item in queuedItems) {
-      // Cancel isolate if active
       final isolate = _activeIsolates[item.track.hash];
       if (isolate != null) {
         isolate.kill(priority: Isolate.immediate);
@@ -448,11 +419,9 @@ class DownloaderController
         _activeDownloads--;
       }
 
-      // Remove from in-memory queue and map
       data.queue.remove(item);
       data.removeFromMap(item.track.hash);
 
-      // Delete incomplete file if exists
       if (item.track.url != null) {
         final appDir = await getApplicationSupportDirectory();
         final filePath = path.join(
@@ -463,7 +432,6 @@ class DownloaderController
       }
     }
 
-    // Batch delete from database
     await _isar.writeTxn(() async {
       final hashes = queuedItems.map((e) => e.track.hash).toList();
       for (final hash in hashes) {
@@ -479,11 +447,9 @@ class DownloaderController
         data.queue.where((e) => e.status == DownloadStatus.completed).toList();
 
     for (final item in completedItems) {
-      // Remove from in-memory queue and map
       data.queue.remove(item);
       data.removeFromMap(item.track.hash);
 
-      // Delete downloaded file
       if (item.track.url != null) {
         final file = File(item.track.url!);
         final md5File = File('${item.track.url!}.md5');
@@ -496,7 +462,6 @@ class DownloaderController
       }
     }
 
-    // Batch delete from database
     await _isar.writeTxn(() async {
       final hashes = completedItems.map((e) => e.track.hash).toList();
       for (final hash in hashes) {
@@ -510,7 +475,6 @@ class DownloaderController
   Future<void> _addDownloadBatch(List<TrackEntity> tracks) async {
     if (tracks.isEmpty) return;
 
-    // Process in chunks to prevent UI freeze
     const chunkSize = 100;
     final totalChunks = (tracks.length / chunkSize).ceil();
 
@@ -523,12 +487,10 @@ class DownloaderController
       final dbItems = <DownloadQueueItem>[];
 
       for (final track in chunk) {
-        // O(1) check if already in queue using map
         if (data.getItemByHash(track.hash) != null) {
           continue;
         }
 
-        // Create download item
         final downloadItem = DownloadingItem(
           track: track,
           progress: 0,
@@ -538,7 +500,6 @@ class DownloaderController
 
         newItems.add(downloadItem);
 
-        // Create database item
         final dbItem = DownloadQueueItem()
           ..hash = track.hash
           ..trackId = track.id
@@ -562,36 +523,29 @@ class DownloaderController
         continue;
       }
 
-      // Add to in-memory queue and map simultaneously
       data.queue.addAll(newItems);
       for (final item in newItems) {
         data.addToMap(item);
       }
 
-      // Batch save to database
       await _isar.writeTxn(() async {
         await _isar.downloadQueueItems.putAll(dbItems);
       });
 
-      // Schedule deferred update instead of immediate
       _scheduleUpdate();
 
-      // Yield to allow UI to remain responsive
       await Future.delayed(Duration.zero);
     }
 
-    // Start processing if not at max capacity
     _processDownloadQueue();
   }
 
   Future<void> _addDownloadOptimized(TrackEntity track,
       {int position = 0}) async {
-    // O(1) check if already in queue
     if (data.getItemByHash(track.hash) != null) {
       return;
     }
 
-    // Create download item
     final downloadItem = DownloadingItem(
       track: track,
       progress: 0,
@@ -599,7 +553,6 @@ class DownloaderController
       boosted: false,
     );
 
-    // Add to in-memory queue and map
     if (position == 0) {
       data.queue.add(downloadItem);
     } else {
@@ -607,7 +560,6 @@ class DownloaderController
     }
     data.addToMap(downloadItem);
 
-    // Save to database
     await _isar.writeTxn(() async {
       final dbItem = DownloadQueueItem()
         ..hash = track.hash
@@ -628,15 +580,12 @@ class DownloaderController
       await _isar.downloadQueueItems.put(dbItem);
     });
 
-    // Use deferred update for consistency
     _scheduleUpdate();
 
-    // Start processing if not at max capacity
     _processDownloadQueue();
   }
 
   Future<void> _processDownloadQueue() async {
-    // Process queued items
     final queuedItems =
         data.queue.where((e) => e.status == DownloadStatus.queued).toList();
 
@@ -645,7 +594,6 @@ class DownloaderController
         break;
       }
 
-      // Fetch URL if needed
       if (item.track.url == null) {
         if (_activeFetching >= _maxConcurrentUrlFetching) {
           continue;
@@ -672,7 +620,6 @@ class DownloaderController
         }
       }
 
-      // Start download in isolate
       await _startDownloadInIsolate(item);
     }
   }
@@ -697,7 +644,6 @@ class DownloaderController
       trackHash: item.track.hash,
     );
 
-    // Listen for progress updates
     receivePort.listen((message) async {
       if (message is DownloadProgressMessage) {
         if (message.trackHash == item.track.hash) {
@@ -715,7 +661,6 @@ class DownloaderController
             _activeIsolates[item.track.hash]?.kill(priority: Isolate.immediate);
             _activeIsolates.remove(item.track.hash);
 
-            // Process next item in queue
             _processDownloadQueue();
           } else if (item.status == DownloadStatus.failed) {
             _activeDownloads--;
@@ -724,7 +669,6 @@ class DownloaderController
             _activeIsolates[item.track.hash]?.kill(priority: Isolate.immediate);
             _activeIsolates.remove(item.track.hash);
 
-            // Process next item in queue
             _processDownloadQueue();
           }
 
@@ -734,7 +678,6 @@ class DownloaderController
       }
     });
 
-    // Spawn isolate
     final isolate = await Isolate.spawn(
       DownloadIsolate.downloadFileIsolate,
       params,
