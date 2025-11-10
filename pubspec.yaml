@@ -36,7 +36,7 @@ dependencies:
   percent_indicator: ^4.2.3
   responsive_breakpoint:
     git:
-      url: git@github.com:strawti-apps/responsive_breakpoint.git
+      url: https://github.com/strawti-apps/responsive_breakpoint.git
 
   # Data Storage and Caching
   isar: ^3.1.0+1
@@ -88,7 +88,7 @@ dependencies:
     git:
       url: https://github.com/MusilyApp/flutter-packages.git
       path: packages/dynamic_color
-  smtc_windows: ^1.0.0
+  smtc_windows: ^1.1.0
   process_run: ^0.14.2
   dart_ipc: ^1.0.0
   package_info_plus: ^8.3.0
