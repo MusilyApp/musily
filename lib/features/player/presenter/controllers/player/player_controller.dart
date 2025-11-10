@@ -382,12 +382,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         }
       },
       reorderQueue: (int newIndex, int oldIndex) async {
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
-        List<TrackEntity> queueCopy = List.from(_musilyPlayer.getQueue());
-        queueCopy = queueCopy..insert(newIndex, queueCopy.removeAt(oldIndex));
-        _musilyPlayer.setShuffledQueue(queueCopy);
+        _musilyPlayer.reorderQueue(newIndex, oldIndex);
       },
       playPlaylist: (
         List<TrackEntity> items,

@@ -242,7 +242,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
             break;
           case MusilyRepeatMode.repeatOne:
             if (_activeTrack != null) {
-              await playTrack(_activeTrack!, isFromRepeatOne: true);
+              await playTrack(_activeTrack!);
             }
             if (!_audioPlayer.playing) {
               await play();
@@ -479,7 +479,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Future<void> playTrack(
     TrackEntity track, {
     bool isPlaceholder = false,
-    bool isFromRepeatOne = false,
   }) async {
     try {
       late String url;
@@ -491,24 +490,20 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         url = '';
       }
 
-      late List<TrackEntity> queue;
-      if (_shuffleEnabled) {
-        queue = _shuffledQueue;
-      } else {
-        queue = _queue;
-      }
+      List<TrackEntity> queue = getQueue();
+
       final originalTrack = track;
       if (!isPlaceholder) {
+        _activeTrack = track;
+        _activeTrack!.position = Duration.zero;
+        _activeTrack!.duration = Duration.zero;
         final existingUrl = _activeTrack?.url;
-        if (existingUrl != null && existingUrl.isNotEmpty && isFromRepeatOne) {
+        if (existingUrl != null && existingUrl.isNotEmpty) {
           track.url = existingUrl;
           url = existingUrl;
         }
 
-        _activeTrack = track;
-        _activeTrack!.position = Duration.zero;
-        _activeTrack!.duration = Duration.zero;
-        if (isFromRepeatOne && url.isEmpty) {
+        if (url.isEmpty) {
           _loadingTrackUrl = true;
           final placeholderTrack = track.copyWith(
             url: placeholderAudioPath,
@@ -567,9 +562,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         _loadingTrackUrl = false;
       }
       if (track.id != _activeTrack!.id) {
-        if (isFromRepeatOne) {
-          await _audioPlayer.play();
-        }
         return;
       }
       final audioSource = await buildAudioSource(track, url);
@@ -577,16 +569,10 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         children: [audioSource],
       );
       if (track.id != _activeTrack!.id) {
-        if (isFromRepeatOne) {
-          await _audioPlayer.play();
-        }
         return;
       }
       await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
       if (track.id != _activeTrack!.id) {
-        if (isFromRepeatOne) {
-          await _audioPlayer.play();
-        }
         return;
       }
       await _audioPlayer.play();
@@ -777,44 +763,50 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> skipToNext() async {
-    late final List<TrackEntity> queue;
-    if (_shuffleEnabled) {
-      queue = _shuffledQueue;
-    } else {
-      queue = _queue;
-    }
+    late final List<TrackEntity> queue = getQueue();
     if (queue[activeTrackIndex()] == queue.last) {
-      final trackId = _queue.first.id;
+      final trackId = queue.first.id;
       await skipToTrack(trackId);
       return;
     }
-    final trackId = _queue[activeTrackIndex() + 1].id;
+    final trackId = queue[activeTrackIndex() + 1].id;
     await skipToTrack(trackId);
   }
 
   @override
+  Future<void> reorderQueue(int newIndex, int oldIndex) async {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final queueCopy = List.from(getQueue());
+    final newQueue = queueCopy..insert(newIndex, queueCopy.removeAt(oldIndex));
+    if (_shuffleEnabled) {
+      _shuffledQueue = List.from(newQueue);
+    } else {
+      _queue = List.from(newQueue);
+    }
+    _onAction?.call(MusilyPlayerAction.queueChanged);
+  }
+
+  @override
   Future<void> skipToPrevious() async {
+    final queue = getQueue();
     if (_audioPlayer.position.inSeconds > 5) {
       await seek(Duration.zero);
       return;
     }
-    if (_queue[activeTrackIndex()] == _queue.first) {
-      final trackId = _queue.last.id;
+    if (queue[activeTrackIndex()] == queue.first) {
+      final trackId = queue.last.id;
       await skipToTrack(trackId);
       return;
     }
-    final trackId = _queue[activeTrackIndex() - 1].id;
+    final trackId = queue[activeTrackIndex() - 1].id;
     await skipToTrack(trackId);
   }
 
   @override
   Future<void> skipToTrack(String trackId) async {
-    late final List<TrackEntity> queue;
-    if (_shuffleEnabled) {
-      queue = _shuffledQueue;
-    } else {
-      queue = _queue;
-    }
+    late final List<TrackEntity> queue = getQueue();
     if (queue.any((element) => element.id == trackId)) {
       final newTrack = queue.firstWhere((element) => element.id == trackId);
       await playTrack(newTrack);

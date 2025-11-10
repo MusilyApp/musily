@@ -63,6 +63,7 @@ abstract class MusilyAudioHandler {
   Future<void> removeFromQueue(TrackEntity track);
   Future<void> setQueue(List<TrackEntity> items);
   Future<void> setShuffledQueue(List<TrackEntity> items);
+  Future<void> reorderQueue(int newIndex, int oldIndex);
 
   Future<void> toggleShuffleMode(bool enabled);
   Future<void> toggleRepeatMode(MusilyRepeatMode repeatMode);

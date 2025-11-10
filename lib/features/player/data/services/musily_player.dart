@@ -245,4 +245,11 @@ class MusilyPlayer implements MusilyAudioHandler {
       (_audioHandler as MusilyAudioHandlerImpl).setVolume(volume);
     }
   }
+
+  @override
+  Future<void> reorderQueue(int newIndex, int oldIndex) async {
+    if (_audioHandler != null) {
+      await _audioHandler!.reorderQueue(newIndex, oldIndex);
+    }
+  }
 }
