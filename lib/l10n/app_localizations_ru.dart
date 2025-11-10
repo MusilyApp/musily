@@ -194,6 +194,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get lyricsNotFound => 'Тексты не найдены';
 
   @override
+  String get lyrics => 'Тексты';
+
+  @override
   String get settings => 'Настройки';
 
   @override
@@ -221,10 +224,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get about => 'О приложении';
 
   @override
+  String get aboutSupporters => 'О приложении и спонсорах';
+
+  @override
   String get application => 'Приложение';
 
   @override
   String get others => 'Прочие';
+
+  @override
+  String get supportersTitle => 'Спонсоры';
+
+  @override
+  String get supportersEmpty => 'Пока нет спонсоров.';
 
   @override
   String get close => 'Закрыть';

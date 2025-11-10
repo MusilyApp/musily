@@ -194,6 +194,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lyricsNotFound => 'Lyrics not found';
 
   @override
+  String get lyrics => 'Lyrics';
+
+  @override
   String get settings => 'Settings';
 
   @override
@@ -221,10 +224,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get aboutSupporters => 'About & Supporters';
+
+  @override
   String get application => 'Application';
 
   @override
   String get others => 'Others';
+
+  @override
+  String get supportersTitle => 'Supporters';
+
+  @override
+  String get supportersEmpty => 'No supporters listed yet.';
 
   @override
   String get close => 'Close';

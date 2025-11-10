@@ -470,6 +470,12 @@ abstract class AppLocalizations {
   /// **'Lyrics not found'**
   String get lyricsNotFound;
 
+  /// No description provided for @lyrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Lyrics'**
+  String get lyrics;
+
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:
@@ -524,6 +530,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @aboutSupporters.
+  ///
+  /// In en, this message translates to:
+  /// **'About & Supporters'**
+  String get aboutSupporters;
+
   /// No description provided for @application.
   ///
   /// In en, this message translates to:
@@ -535,6 +547,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Others'**
   String get others;
+
+  /// No description provided for @supportersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporters'**
+  String get supportersTitle;
+
+  /// No description provided for @supportersEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No supporters listed yet.'**
+  String get supportersEmpty;
 
   /// No description provided for @close.
   ///

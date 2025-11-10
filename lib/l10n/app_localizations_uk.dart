@@ -195,6 +195,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get lyricsNotFound => 'Текст пісні не знайдено';
 
   @override
+  String get lyrics => 'Тексти';
+
+  @override
   String get settings => 'Налаштування';
 
   @override
@@ -222,10 +225,19 @@ class AppLocalizationsUk extends AppLocalizations {
   String get about => 'Про';
 
   @override
+  String get aboutSupporters => 'Про застосунок і підтримувачів';
+
+  @override
   String get application => 'Програма';
 
   @override
   String get others => 'Інші';
+
+  @override
+  String get supportersTitle => 'Підтримувачі';
+
+  @override
+  String get supportersEmpty => 'Поки що немає підтримувачів.';
 
   @override
   String get close => 'Закрити';
