@@ -34,25 +34,40 @@ class TrackEntity {
     this.url,
   });
 
-  TrackEntity copyWith({String? url, Duration? duration}) {
-    return TrackEntity(
-      id: id,
-      title: title,
-      hash: hash,
-      artist: artist,
-      album: album,
-      highResImg: highResImg,
-      lowResImg: lowResImg,
-      url: url ?? this.url,
-      source: source,
-      fromSmartQueue: fromSmartQueue,
-      duration: duration ?? this.duration,
-      position: position,
-    );
-  }
-
   @override
   String toString() {
     return 'TrackEntity(id: $id, orderIndex: $orderIndex, title: $title, hash: $hash, artist: $artist, album: $album, highResImg: $highResImg, lowResImg: $lowResImg, url: $url, source: $source, fromSmartQueue: $fromSmartQueue, duration: $duration, position: $position)';
+  }
+
+  TrackEntity copyWith({
+    String? id,
+    int? orderIndex,
+    String? title,
+    String? hash,
+    SimplifiedArtist? artist,
+    SimplifiedAlbum? album,
+    String? highResImg,
+    String? lowResImg,
+    String? url,
+    String? source,
+    bool? fromSmartQueue,
+    Duration? duration,
+    Duration? position,
+  }) {
+    return TrackEntity(
+      id: id ?? this.id,
+      orderIndex: orderIndex ?? this.orderIndex,
+      title: title ?? this.title,
+      hash: hash ?? this.hash,
+      artist: artist ?? this.artist,
+      album: album ?? this.album,
+      highResImg: highResImg ?? this.highResImg,
+      lowResImg: lowResImg ?? this.lowResImg,
+      url: url ?? this.url,
+      source: source ?? this.source,
+      fromSmartQueue: fromSmartQueue ?? this.fromSmartQueue,
+      duration: duration ?? this.duration,
+      position: position ?? this.position,
+    );
   }
 }
