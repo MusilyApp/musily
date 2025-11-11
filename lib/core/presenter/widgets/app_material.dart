@@ -139,14 +139,24 @@ class _AppMaterialState extends State<AppMaterial>
     return settingsController.builder(
       builder: (context, data) {
         if (Platform.isAndroid) {
+          late final Color accentColor;
+          if (data.accentColorPreference ==
+              AccentColorPreference.defaultColor) {
+            accentColor = Colors.deepPurple;
+          } else if (data.accentColorPreference ==
+              AccentColorPreference.system) {
+            accentColor = Theme.of(context).colorScheme.primary;
+          } else if (data.accentColorPreference ==
+              AccentColorPreference.playingNow) {
+            accentColor = data.playerAccentColor ?? Colors.deepPurple;
+          } else {
+            accentColor = Colors.deepPurple;
+          }
           return DynamicColorBuilder(
+            key: ValueKey(data.playerAccentColor.toString()),
             builder: (lightDynamic, darkDynamic) {
               return getMaterialApp(
-                data.accentColorPreference == AccentColorPreference.defaultColor
-                    ? Colors.deepPurple
-                    : data.accentColorPreference == AccentColorPreference.system
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.deepPurple,
+                accentColor,
                 data,
                 dakColorScheme: data.accentColorPreference ==
                         AccentColorPreference.defaultColor
@@ -154,14 +164,28 @@ class _AppMaterialState extends State<AppMaterial>
                         seedColor: Colors.deepPurple,
                         brightness: Brightness.dark,
                       )
-                    : darkDynamic,
+                    : data.accentColorPreference ==
+                            AccentColorPreference.playingNow
+                        ? ColorScheme.fromSeed(
+                            seedColor:
+                                data.playerAccentColor ?? Colors.deepPurple,
+                            brightness: Brightness.dark,
+                          )
+                        : darkDynamic,
                 lightColorScheme: data.accentColorPreference ==
                         AccentColorPreference.defaultColor
                     ? ColorScheme.fromSeed(
                         seedColor: Colors.deepPurple,
                         brightness: Brightness.light,
                       )
-                    : lightDynamic,
+                    : data.accentColorPreference ==
+                            AccentColorPreference.playingNow
+                        ? ColorScheme.fromSeed(
+                            seedColor:
+                                data.playerAccentColor ?? Colors.deepPurple,
+                            brightness: Brightness.light,
+                          )
+                        : lightDynamic,
               );
             },
           );
