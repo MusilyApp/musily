@@ -100,6 +100,7 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
       case PlayerMode.lyrics:
         return DraggableBox(
           child: Container(
+            color: context.themeData.scaffoldBackgroundColor,
             key:
                 ValueKey('lyrics_${data.currentPlayingItem?.id ?? 'no_track'}'),
             child: _buildLyricsContent(context, data),
@@ -262,20 +263,17 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
 
     if (data.lyrics.lyrics == null) {
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.music_off_rounded,
-              size: 45,
-              color: context.themeData.iconTheme.color?.withValues(alpha: 0.7),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: EmptyState(
+            icon: Icon(
+              LucideIcons.music2,
+              size: 50,
+              color: context.themeData.iconTheme.color?.withValues(alpha: .5),
             ),
-            const SizedBox(height: 12),
-            Text(
-              context.localization.lyricsNotFound,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ],
+            title: context.localization.lyricsNotFound,
+            message: context.localization.lyricsNotAvailable,
+          ),
         ),
       );
     }
