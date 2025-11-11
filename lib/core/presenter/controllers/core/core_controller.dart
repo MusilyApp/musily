@@ -122,13 +122,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
 
           await backupService.saveTrackToDownloads(track);
 
-          ScaffoldMessenger.of(coreContext!).showSnackBar(
-            SnackBar(
-              content: Text(
-                coreContext!.localization.musicSavedToDownloads,
-              ),
-            ),
-          );
+          LySnackbar.showSuccess(
+              coreContext!.localization.musicSavedToDownloads);
         } catch (e) {
           LySnackbar.showError(':P');
         }
@@ -155,12 +150,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
                 updateData(data.copyWith(
                   backupInProgress: false,
                 ));
-                ScaffoldMessenger.of(coreContext!).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      coreContext!.localization.backupRestoredSuccessfully,
-                    ),
-                  ),
+                LySnackbar.showSuccess(
+                  coreContext!.localization.backupRestoredSuccessfully,
                 );
               },
               child: Text(context.localization.restore),

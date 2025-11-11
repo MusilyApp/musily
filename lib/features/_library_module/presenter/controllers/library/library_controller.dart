@@ -13,7 +13,10 @@ import 'package:musily/main.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:musily/core/domain/presenter/app_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
+import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/utils/id_generator.dart';
 import 'package:musily/features/_library_module/data/models/library_item_model.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
@@ -813,6 +816,17 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
                     backupMessageParams: message.messageParams,
                     clearBackupActivityType: true,
                   ));
+
+                  final contextStack = ContextManager().contextStack;
+                  if (contextStack.isNotEmpty) {
+                    final context = contextStack.last.context;
+                    LySnackbar.showSuccess(
+                      context.localization.backupCompletedSuccessfully,
+                    );
+                  }
+                  if (data.items.isEmpty) {
+                    await methods.getLibraryItems();
+                  }
                 }
               }
             }
@@ -937,15 +951,20 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
 
                 _downloaderController.updateData(_downloaderController.data);
               }
-
-              await methods.getLibraryItems(showLoading: false);
-
               _cleanupBackupIsolate();
               updateData(data.copyWith(
                 backupInProgress: false,
                 backupProgress: 1.0,
                 clearBackupActivityType: true,
               ));
+              await methods.getLibraryItems(showLoading: false);
+              final contextStack = ContextManager().contextStack;
+              if (contextStack.isNotEmpty) {
+                final context = contextStack.last.context;
+                LySnackbar.showSuccess(
+                  context.localization.backupRestoredSuccessfully,
+                );
+              }
             }
           });
 

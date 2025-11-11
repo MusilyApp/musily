@@ -100,10 +100,12 @@ class _Snackbar {
                 Icon(props.icon!, color: props.color),
                 const SizedBox(width: 8),
               ],
-              Text(
-                props.message,
-                style: TextStyle(
-                  color: props.color,
+              Expanded(
+                child: Text(
+                  props.message,
+                  style: TextStyle(
+                    color: props.color,
+                  ),
                 ),
               ),
             ],
