@@ -73,7 +73,6 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
               ),
             ),
           );
-          // Generate recommendations after loading library
           await methods.generateRecommendations();
         } catch (e) {
           catchError(e);
