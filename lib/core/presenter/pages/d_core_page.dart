@@ -154,9 +154,12 @@ class _DCorePageState extends State<DCorePage> {
                 Expanded(
                   child: Column(
                     children: [
-                      BackupProgressCard(
-                        libraryController: widget.libraryController,
-                        isDesktop: true,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: BackupProgressCard(
+                          libraryController: widget.libraryController,
+                          isDesktop: true,
+                        ),
                       ),
                       Expanded(
                         child: Container(
