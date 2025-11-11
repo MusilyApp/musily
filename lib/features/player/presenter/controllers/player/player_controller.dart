@@ -229,7 +229,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           final List<TrackEntity> queueClone = List.from(data.queue);
           final random = Random();
           for (final item in smartItems) {
-            late final indexToInsert;
+            late final int indexToInsert;
 
             if (queueClone.length - 1 > 0) {
               indexToInsert = random.nextInt(queueClone.length - 1);
