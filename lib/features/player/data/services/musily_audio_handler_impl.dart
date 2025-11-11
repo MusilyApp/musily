@@ -405,6 +405,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
             case AudioInterruptionType.pause:
               break;
             case AudioInterruptionType.unknown:
+              await playTrack(_activeTrack!);
+              _onAction?.call(MusilyPlayerAction.play);
               break;
           }
         }
@@ -470,7 +472,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> playPlaylist() async {
-    if (_queue.isEmpty) {
+    if (_queue.isNotEmpty) {
       await playTrack(_queue.first);
     }
   }
