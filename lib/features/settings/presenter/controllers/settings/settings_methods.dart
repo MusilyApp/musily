@@ -17,6 +17,7 @@ class SettingsMethods {
   ) setAccentColorPreference;
   final void Function() loadAccentColorPreference;
   final Future<void> Function({bool forceRefresh}) loadSupporters;
+  final void Function(String imageUrl) updatePlayerAccentColor;
 
   SettingsMethods({
     required this.changeLanguage,
@@ -29,5 +30,6 @@ class SettingsMethods {
     required this.setAccentColorPreference,
     required this.loadAccentColorPreference,
     required this.loadSupporters,
+    required this.updatePlayerAccentColor,
   });
 }

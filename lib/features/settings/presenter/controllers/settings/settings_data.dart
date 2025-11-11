@@ -13,6 +13,7 @@ class SettingsData implements BaseControllerData {
   AccentColorPreference accentColorPreference;
   List<SupporterEntity> supporters;
   bool loadingSupporters;
+  Color? playerAccentColor;
 
   SettingsData({
     this.locale,
@@ -22,6 +23,7 @@ class SettingsData implements BaseControllerData {
     this.accentColorPreference = AccentColorPreference.system,
     this.supporters = const [],
     this.loadingSupporters = false,
+    this.playerAccentColor,
   });
 
   @override
@@ -33,6 +35,7 @@ class SettingsData implements BaseControllerData {
     AccentColorPreference? accentColorPreference,
     List<SupporterEntity>? supporters,
     bool? loadingSupporters,
+    Color? playerAccentColor,
   }) {
     return SettingsData(
       locale: locale ?? this.locale,
@@ -43,6 +46,7 @@ class SettingsData implements BaseControllerData {
           accentColorPreference ?? this.accentColorPreference,
       supporters: supporters ?? this.supporters,
       loadingSupporters: loadingSupporters ?? this.loadingSupporters,
+      playerAccentColor: playerAccentColor ?? this.playerAccentColor,
     );
   }
 }

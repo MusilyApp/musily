@@ -113,6 +113,7 @@ class SharedModule extends Module {
         getSmartQueueUsecase: i.get<GetSmartQueueUsecaseImpl>(),
         getTimedLyricsUsecase: i.get<GetTimedLyricsUsecaseImpl>(),
         updateTrackInPlaylistUsecase: i.get<UpdateTrackInPlaylistUsecaseImpl>(),
+        settingsController: i.get<SettingsController>(),
       ),
     );
 

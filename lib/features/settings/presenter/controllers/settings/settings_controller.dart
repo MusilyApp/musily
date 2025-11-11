@@ -166,6 +166,13 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         );
         updateData(data);
       },
+      updatePlayerAccentColor: (imageUrl) async {
+        final colorScheme = await ColorScheme.fromImageProvider(
+          provider: NetworkImage(imageUrl),
+        );
+        final primaryColor = colorScheme.primary;
+        updateData(data.copyWith(playerAccentColor: primaryColor));
+      },
       loadSupporters: ({bool forceRefresh = false}) async {
         if (data.loadingSupporters) {
           return;

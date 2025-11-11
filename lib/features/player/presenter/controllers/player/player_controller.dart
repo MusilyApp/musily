@@ -14,6 +14,7 @@ import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/domain/usecases/get_smart_queue_usecase.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_data.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_methods.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/domain/usecases/get_timed_lyrics_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.dart';
@@ -27,6 +28,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   final GetTimedLyricsUsecase getTimedLyricsUsecase;
   final GetSmartQueueUsecase getSmartQueueUsecase;
   final UpdateTrackInPlaylistUsecase updateTrackInPlaylistUsecase;
+  final SettingsController settingsController;
 
   PlayerController({
     required this.getPlayableItemUsecase,
@@ -34,6 +36,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
     required this.getTrackLyricsUsecase,
     required this.getTimedLyricsUsecase,
     required this.updateTrackInPlaylistUsecase,
+    required this.settingsController,
   }) {
     updateData(
       data.copyWith(
@@ -120,6 +123,10 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
     });
 
     _musilyPlayer.setOnActiveTrackChange((track) async {
+      if (track != null) {
+        settingsController.methods
+            .updatePlayerAccentColor(track.highResImg ?? '');
+      }
       updateData(data.copyWith(currentPlayingItem: track));
       dispatchEvent(
         BaseControllerEvent<TrackEntity?>(

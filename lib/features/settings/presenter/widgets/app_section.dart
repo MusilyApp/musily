@@ -146,6 +146,10 @@ class _AppSectionState extends State<AppSection> {
                       value: AccentColorPreference.defaultColor,
                       child: Text(context.localization.defaultColor),
                     ),
+                    DropdownMenuItem(
+                      value: AccentColorPreference.playingNow,
+                      child: Text(context.localization.playingNow),
+                    ),
                   ],
                 ),
                 if (Platform.isWindows ||
