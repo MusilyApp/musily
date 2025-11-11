@@ -180,7 +180,11 @@ class _AppMaterialState extends State<AppMaterial>
           future: DynamicColorPlugin.getAccentColor(),
           builder: (context, snapshot) {
             late final Color accentColor;
-            if (data.accentColorPreference == AccentColorPreference.system) {
+            if (data.accentColorPreference ==
+                AccentColorPreference.playingNow) {
+              accentColor = data.playerAccentColor ?? Colors.deepPurple;
+            } else if (data.accentColorPreference ==
+                AccentColorPreference.system) {
               accentColor = snapshot.data ?? Colors.deepPurple;
             } else {
               accentColor = data.accentColorPreference ==
