@@ -194,6 +194,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get lyricsNotFound => 'Тексты не найдены';
 
   @override
+  String get lyricsNotSynced => 'Текст не синхронизирован';
+
+  @override
+  String get lyricsNotSyncedDescription =>
+      'Строки не будут двигаться вместе с музыкой.';
+
+  @override
+  String get lyricsParsedSync => 'Мы синхронизировали текст автоматически';
+
+  @override
+  String get lyricsParsedSyncDescription =>
+      'Синхронизация создана автоматически и может чуть-чуть отставать.';
+
+  @override
   String get lyrics => 'Тексты';
 
   @override

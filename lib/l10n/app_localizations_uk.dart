@@ -195,6 +195,20 @@ class AppLocalizationsUk extends AppLocalizations {
   String get lyricsNotFound => 'Текст пісні не знайдено';
 
   @override
+  String get lyricsNotSynced => 'Текст не синхронізований';
+
+  @override
+  String get lyricsNotSyncedDescription =>
+      'Рядки не рухатимуться разом із музикою.';
+
+  @override
+  String get lyricsParsedSync => 'Ми синхронізували цей текст для вас';
+
+  @override
+  String get lyricsParsedSyncDescription =>
+      'Синхронізацію згенеровано автоматично, тому можливі невеликі неточності.';
+
+  @override
   String get lyrics => 'Тексти';
 
   @override

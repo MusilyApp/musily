@@ -470,6 +470,18 @@ abstract class AppLocalizations {
   /// **'Lyrics not found'**
   String get lyricsNotFound;
 
+  /// No description provided for @lyricsNotSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Lyrics are not synchronized'**
+  String get lyricsNotSynced;
+
+  /// No description provided for @lyricsNotSyncedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'These lines will not move with the music playback.'**
+  String get lyricsNotSyncedDescription;
+
   /// No description provided for @lyrics.
   ///
   /// In en, this message translates to:
@@ -1357,6 +1369,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deselect All'**
   String get deselectAll;
+
+  /// No description provided for @lyricsParsedSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Timing generated automatically'**
+  String get lyricsParsedSync;
+
+  /// No description provided for @lyricsParsedSyncDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We converted the timings from the text, so it may be imprecise.'**
+  String get lyricsParsedSyncDescription;
 }
 
 class _AppLocalizationsDelegate

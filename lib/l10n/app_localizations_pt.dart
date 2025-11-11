@@ -192,7 +192,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get offline => 'Offline';
 
   @override
-  String get lyricsNotFound => 'Letras não encontradas';
+  String get lyricsNotFound => 'Letra não encontrada';
+
+  @override
+  String get lyricsNotSynced => 'Letra não está sincronizada';
+
+  @override
+  String get lyricsNotSyncedDescription =>
+      'As linhas não acompanham automaticamente a reprodução.';
+
+  @override
+  String get lyricsParsedSync => 'Sincronizamos essa letra para você';
+
+  @override
+  String get lyricsParsedSyncDescription =>
+      'Foi gerada automaticamente e pode estar levemente fora do tempo.';
 
   @override
   String get lyrics => 'Letras';

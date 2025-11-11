@@ -196,6 +196,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get lyricsNotFound => 'Letras no encontradas';
 
   @override
+  String get lyricsNotSynced => 'Las letras no están sincronizadas';
+
+  @override
+  String get lyricsNotSyncedDescription =>
+      'Las líneas no se moverán automáticamente con la música.';
+
+  @override
+  String get lyricsParsedSync => 'Sincronizamos esta letra por ti';
+
+  @override
+  String get lyricsParsedSyncDescription =>
+      'Se generó automáticamente y podría estar un poco fuera de ritmo.';
+
+  @override
   String get lyrics => 'Letras';
 
   @override
