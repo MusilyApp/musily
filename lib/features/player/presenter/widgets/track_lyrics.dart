@@ -2,6 +2,7 @@ import 'package:dart_ytmusic_api/dart_ytmusic_api.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:responsive_breakpoint/core/responsive_value.dart';
 
 class TrackLyrics extends StatefulWidget {
   final Duration totalDuration;
@@ -358,11 +359,21 @@ class _TrackLyricsState extends State<TrackLyrics> {
       children: [
         if (_showParsedTimingWarning)
           Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(
+              bottom: 12,
+            ),
             child: Container(
               padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.only(
+                left:
+                    context.responsive(const ResponsiveValue(xs: 16, md: 0)) ??
+                        0,
+                right:
+                    context.responsive(const ResponsiveValue(xs: 16, md: 0)) ??
+                        0,
+              ),
               decoration: BoxDecoration(
-                color: context.themeData.colorScheme.primary
+                color: context.themeData.colorScheme.secondary
                     .withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
@@ -436,6 +447,14 @@ class _TrackLyricsState extends State<TrackLyrics> {
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Container(
+              margin: EdgeInsets.only(
+                left:
+                    context.responsive(const ResponsiveValue(xs: 16, md: 0)) ??
+                        0,
+                right:
+                    context.responsive(const ResponsiveValue(xs: 16, md: 0)) ??
+                        0,
+              ),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: context.themeData.colorScheme.secondary
@@ -453,7 +472,7 @@ class _TrackLyricsState extends State<TrackLyrics> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: context.themeData.colorScheme.secondary
+                      color: context.themeData.colorScheme.primary
                           .withValues(alpha: 0.16),
                       borderRadius: BorderRadius.circular(12),
                     ),
