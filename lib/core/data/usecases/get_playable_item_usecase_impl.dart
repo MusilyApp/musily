@@ -75,7 +75,7 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
         duration: track.duration,
       );
     } catch (e, stackTrace) {
-      LySnackbar.show(e.toString());
+      LySnackbar.showError(e.toString());
       log('error: $e', stackTrace: stackTrace);
       return track;
     }

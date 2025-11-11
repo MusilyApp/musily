@@ -49,7 +49,7 @@ class _QueueToolsState extends State<QueueTools> {
   Future<void> _createPlaylistFromQueue() async {
     final data = widget.playerController.data;
     if (data.queue.isEmpty) {
-      LySnackbar.show(context.localization.queueEmptyMessage);
+      LySnackbar.showInfo(context.localization.queueEmptyMessage);
       return;
     }
 
@@ -81,7 +81,7 @@ class _QueueToolsState extends State<QueueTools> {
         );
 
         if (mounted) {
-          LySnackbar.show(context.localization.playlistCreated);
+          LySnackbar.showInfo(context.localization.playlistCreated);
           Navigator.of(context).pop();
         }
       }

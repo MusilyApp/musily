@@ -57,7 +57,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
               alreadyClosedDialog = true;
               Navigator.pop(widget.coreController.coreContext!);
             }
-            LySnackbar.show('${context.localization.importingPlaylist}...');
+            LySnackbar.showInfo('${context.localization.importingPlaylist}...');
             final retrievedPlaylist = await widget.getPlaylistUsecase.exec(
               playlistId,
             );
@@ -69,7 +69,7 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
                 tracks: retrievedPlaylist.tracks,
               );
             } else {
-              LySnackbar.show(context.localization.playlistNotFound);
+              LySnackbar.showError(context.localization.playlistNotFound);
               return;
             }
           }

@@ -130,7 +130,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
             ),
           );
         } catch (e) {
-          LySnackbar.show(':P');
+          LySnackbar.showError(':P');
         }
       },
       restoreLibraryBackup: () async {
@@ -328,14 +328,6 @@ https://musily.app/album/${album.id}
                           : ContentOrigin.dataFetch,
                     ),
                   );
-                }
-                break;
-              case 'song':
-                if (id != null) {
-                  final song = await getTrackUsecase.exec(id);
-                  if (song != null) {
-                    playerController.methods.addToQueue([song]);
-                  }
                 }
                 break;
               default:

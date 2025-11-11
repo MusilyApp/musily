@@ -380,7 +380,7 @@ class YoutubeDatasource {
       }
       return relatedTracks;
     } catch (e) {
-      LySnackbar.show('Smart Queue isn\'t available right now :c');
+      LySnackbar.showError('Smart Queue isn\'t available right now :c');
       return tracks;
     }
   }
@@ -609,7 +609,7 @@ class YoutubeDatasource {
           .take(15)
           .toList();
     } catch (e) {
-      LySnackbar.show('Error getting UpNext: ${e.toString()}');
+      LySnackbar.showError('Error getting UpNext: ${e.toString()}');
       return [];
     }
   }
