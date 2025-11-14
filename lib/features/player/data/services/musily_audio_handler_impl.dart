@@ -14,7 +14,6 @@ import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:smtc_windows/smtc_windows.dart';
 
 class MusilyAudioHandlerImpl extends BaseAudioHandler
     implements MusilyAudioHandler {
@@ -30,7 +29,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   final _audioPlayer = AudioPlayer();
-  SMTCWindows? _smtc;
 
   List<TrackEntity> _queue = [];
   List<TrackEntity> _shuffledQueue = [];
@@ -83,61 +81,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Stream<double> get volumeStream => _audioPlayer.volumeStream;
 
   void _setupEventSubscriptions() {
-    if (Platform.isWindows) {
-      _smtc = SMTCWindows(
-        metadata: const MusicMetadata(
-          album: '',
-          albumArtist: '',
-          artist: '',
-          thumbnail: '',
-          title: '',
-        ),
-        repeatMode: _repeatMode.toSMTC(),
-        shuffleEnabled: _shuffleEnabled,
-        status: _playerState.toPlaybackStatus(),
-        timeline: const PlaybackTimeline(
-          startTimeMs: 0,
-          endTimeMs: 0,
-          positionMs: 0,
-        ),
-        config: const SMTCConfig(
-          playEnabled: true,
-          pauseEnabled: true,
-          stopEnabled: false,
-          nextEnabled: true,
-          prevEnabled: true,
-          fastForwardEnabled: false,
-          rewindEnabled: false,
-        ),
-        enabled: false,
-      );
-      _smtc!.buttonPressStream.listen(
-        (event) async {
-          switch (event) {
-            case PressedButton.play:
-              if (_loadingTrackUrl) {
-                return;
-              }
-              await play();
-              break;
-            case PressedButton.next:
-              await skipToNext();
-              break;
-            case PressedButton.previous:
-              await skipToPrevious();
-              break;
-            case PressedButton.pause:
-              if (_loadingTrackUrl) {
-                return;
-              }
-              await pause();
-              break;
-            default:
-              break;
-          }
-        },
-      );
-    }
     _playbackEventSubscription = _audioPlayer.playbackEventStream.listen(
       (playbackEvent) async {
         await _handlePlaybackEvent(playbackEvent);
@@ -260,102 +203,29 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   void _updatePlaybackState() {
-    if (Platform.isWindows && _activeTrack != null) {
-      if (_smtc!.metadata.title != _activeTrack!.title) {
-        _smtc!.setTitle(_activeTrack!.title);
-      }
-
-      if (_loadingTrackUrl) {
-        _smtc!.setIsPauseEnabled(false);
-      }
-      if (_loadingTrackUrl) {
-        _smtc!.setIsPlayEnabled(false);
-      }
-      if (!_loadingTrackUrl) {
-        _smtc!.setIsPauseEnabled(true);
-      }
-      if (!_loadingTrackUrl) {
-        _smtc!.setIsPlayEnabled(true);
-      }
-
-      if (_smtc!.metadata.album != _activeTrack!.album.title) {
-        _smtc!.setAlbum(_activeTrack!.album.title);
-      }
-
-      if (_smtc!.metadata.artist != _activeTrack!.artist.name) {
-        _smtc!.setArtist(_activeTrack!.artist.name);
-      }
-
-      if (_smtc!.metadata.thumbnail != _activeTrack!.highResImg!) {
-        _smtc!.setThumbnail(_activeTrack!.highResImg!);
-      }
-
-      if (_smtc!.metadata.albumArtist != _activeTrack!.artist.name) {
-        _smtc!.setAlbumArtist(_activeTrack!.artist.name);
-      }
-
-      if (_smtc!.timeline.endTimeMs != _activeTrack!.duration.inMilliseconds) {
-        _smtc!.setEndTime(_activeTrack!.duration);
-      }
-
-      if (_smtc!.timeline.startTimeMs != 0) {
-        _smtc!.setStartTime(const Duration(seconds: 0));
-      }
-
-      if (_smtc!.timeline.positionMs != _activeTrack!.position.inMilliseconds) {
-        _smtc!.setPosition(_activeTrack!.position);
-      }
-
-      if (_smtc!.repeatMode != _repeatMode.toSMTC()) {
-        _smtc!.setRepeatMode(_repeatMode.toSMTC());
-      }
-
-      if (_smtc!.isShuffleEnabled != _shuffleEnabled) {
-        _smtc!.setShuffleEnabled(_shuffleEnabled);
-      }
-
-      _smtc!.setIsNextEnabled(
-        hasNext || _shuffleEnabled || _repeatMode == MusilyRepeatMode.repeat,
-      );
-
-      _smtc!.setIsPrevEnabled(
-        hasPrevious ||
-            _shuffleEnabled ||
-            _repeatMode == MusilyRepeatMode.repeat,
-      );
-
-      if (_smtc!.status != _playerState.toPlaybackStatus()) {
-        _smtc!.setPlaybackStatus(_playerState.toPlaybackStatus());
-      }
-
-      _smtc!.enableSmtc();
-    } else if (Platform.isWindows && _activeTrack == null) {
-      _smtc!.disableSmtc();
-    } else {
-      playbackState.add(
-        playbackState.value.copyWith(
-          controls: [
-            MediaControl.skipToPrevious,
-            if (_audioPlayer.playing) MediaControl.pause else MediaControl.play,
-            MediaControl.skipToNext
-          ],
-          systemActions: const {
-            MediaAction.seek,
-          },
-          androidCompactActionIndices: const [0, 1, 2],
-          processingState: _processingStateMap[_audioPlayer.processingState]!,
-          repeatMode: _repeatModeMap[_audioPlayer.loopMode]!,
-          shuffleMode: _shuffleEnabled
-              ? AudioServiceShuffleMode.all
-              : AudioServiceShuffleMode.none,
-          playing: _audioPlayer.playing,
-          updatePosition: _audioPlayer.position,
-          bufferedPosition: _audioPlayer.bufferedPosition,
-          speed: _audioPlayer.speed,
-          queueIndex: _audioPlayer.currentIndex ?? 0,
-        ),
-      );
-    }
+    playbackState.add(
+      playbackState.value.copyWith(
+        controls: [
+          MediaControl.skipToPrevious,
+          if (_audioPlayer.playing) MediaControl.pause else MediaControl.play,
+          MediaControl.skipToNext
+        ],
+        systemActions: const {
+          MediaAction.seek,
+        },
+        androidCompactActionIndices: const [0, 1, 2],
+        processingState: _processingStateMap[_audioPlayer.processingState]!,
+        repeatMode: _repeatModeMap[_audioPlayer.loopMode]!,
+        shuffleMode: _shuffleEnabled
+            ? AudioServiceShuffleMode.all
+            : AudioServiceShuffleMode.none,
+        playing: _audioPlayer.playing,
+        updatePosition: _audioPlayer.position,
+        bufferedPosition: _audioPlayer.bufferedPosition,
+        speed: _audioPlayer.speed,
+        queueIndex: _audioPlayer.currentIndex ?? 0,
+      ),
+    );
   }
 
   void _handleDurationChange(Duration? duration) {
@@ -831,13 +701,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Future<void> toggleRepeatMode(MusilyRepeatMode repeatMode) async {
     _repeatMode = repeatMode;
     _onRepeatModeChanged?.call(repeatMode);
-    if (Platform.isWindows) {
-      _smtc!.setIsNextEnabled(
-          _shuffleEnabled || hasNext || repeatMode == MusilyRepeatMode.repeat);
-      _smtc!.setIsPrevEnabled(_shuffleEnabled ||
-          hasPrevious ||
-          repeatMode == MusilyRepeatMode.repeat);
-    }
   }
 
   @override
@@ -855,13 +718,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     final List<TrackEntity> queue = List.from(_queue);
     _shuffledQueue = queue..shuffle();
     _onShuffleChanged?.call(shuffleEnabled);
-    if (Platform.isWindows) {
-      _smtc!.setIsNextEnabled(
-          shuffleEnabled || hasNext || _repeatMode == MusilyRepeatMode.repeat);
-      _smtc!.setIsPrevEnabled(shuffleEnabled ||
-          hasPrevious ||
-          _repeatMode == MusilyRepeatMode.repeat);
-    }
     _onAction?.call(MusilyPlayerAction.queueChanged);
   }
 
@@ -874,10 +730,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     await _currentIndexSubscription.cancel();
     await _sequenceStateSubscription.cancel();
     await _positionChangeSubscription.cancel();
-    if (Platform.isWindows) {
-      _smtc!.disableSmtc();
-      _smtc!.dispose();
-    }
     await super.onTaskRemoved();
   }
 }
