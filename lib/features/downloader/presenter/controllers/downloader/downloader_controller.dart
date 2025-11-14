@@ -645,44 +645,59 @@ class DownloaderController
     );
 
     receivePort.listen((message) async {
+      try {
       if (message is DownloadProgressMessage) {
-        if (message.trackHash == item.track.hash) {
           item.progress = message.progress;
           item.status = DownloadStatus.values.firstWhere(
             (e) => e.name == message.status,
             orElse: () => DownloadStatus.downloading,
           );
 
-          if (item.status == DownloadStatus.completed) {
-            item.track.url = downloadPath;
-            _activeDownloads--;
-            _activePorts[item.track.hash]?.close();
-            _activePorts.remove(item.track.hash);
-            _activeIsolates[item.track.hash]?.kill(priority: Isolate.immediate);
-            _activeIsolates.remove(item.track.hash);
-
-            _processDownloadQueue();
-          } else if (item.status == DownloadStatus.failed) {
-            _activeDownloads--;
-            _activePorts[item.track.hash]?.close();
-            _activePorts.remove(item.track.hash);
-            _activeIsolates[item.track.hash]?.kill(priority: Isolate.immediate);
-            _activeIsolates.remove(item.track.hash);
-
+          if (item.status == DownloadStatus.completed ||
+              item.status == DownloadStatus.failed) {
+            _cleanupDownload(item.track.hash);
             _processDownloadQueue();
           }
 
-          _scheduleUpdate();
-          await _updateItemInDatabase(item);
+          return;
         }
+
+        log("Isolate unexpected message: $message");
+        item.status = DownloadStatus.failed;
+        _cleanupDownload(item.track.hash);
+        _processDownloadQueue();
+      } catch (e) {
+        log("Error in isolate listener: $e");
+        item.status = DownloadStatus.failed;
+        _cleanupDownload(item.track.hash);
+        _processDownloadQueue();
       }
     });
 
-    final isolate = await Isolate.spawn(
-      DownloadIsolate.downloadFileIsolate,
-      params,
-    );
+    try {
+      final isolate =
+          await Isolate.spawn(DownloadIsolate.downloadFileIsolate, params);
     _activeIsolates[item.track.hash] = isolate;
+    } catch (e) {
+      item.status = DownloadStatus.failed;
+      _cleanupDownload(item.track.hash);
+      _scheduleUpdate();
+      await _updateItemInDatabase(item);
+      _processDownloadQueue();
+      return;
+    }
+  }
+
+  void _cleanupDownload(String hash) {
+    _activeDownloads = (_activeDownloads - 1).clamp(0, _maxConcurrentDownloads);
+
+    _activeIsolates[hash]?.kill(priority: Isolate.immediate);
+    _activeIsolates.remove(hash);
+
+    _activePorts[hash]?.close();
+    _activePorts.remove(hash);
+
+    _cancelTokens.remove(hash);
   }
 
   Future<void> _updateItemInDatabase(DownloadingItem item) async {

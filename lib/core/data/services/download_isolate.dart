@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class DownloadIsolateParams {
   final String url;
@@ -35,73 +36,82 @@ class DownloadProgressMessage {
 class DownloadIsolate {
   static Future<void> downloadFileIsolate(DownloadIsolateParams params) async {
     try {
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(minutes: 5),
-        sendTimeout: const Duration(minutes: 5),
-        headers: {
-          'User-Agent':
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Accept': '*/*',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'keep-alive',
-        },
-      ));
+      final client = http.Client();
 
-      // Send initial downloading status
-      params.sendPort.send(DownloadProgressMessage(
-        trackHash: params.trackHash,
-        progress: 0.0,
-        status: 'downloading',
-      ));
+      final request = http.Request('GET', Uri.parse(params.url));
+      final response = await client.send(request);
 
-      int lastProgressUpdate = DateTime.now().millisecondsSinceEpoch;
+      final total = response.contentLength ?? -1;
 
-      await dio.download(
-        params.url,
-        params.savePath,
-        onReceiveProgress: (received, total) {
-          if (total != -1) {
-            final now = DateTime.now().millisecondsSinceEpoch;
-            // Only send progress updates every 500ms to reduce overhead
-            if (now - lastProgressUpdate > 500 || received == total) {
-              final progress = received / total;
-              params.sendPort.send(DownloadProgressMessage(
-                trackHash: params.trackHash,
-                progress: progress,
-                status: 'downloading',
-              ));
-              lastProgressUpdate = now;
-            }
-          }
-        },
-        deleteOnError: true,
+      params.sendPort.send(
+        DownloadProgressMessage(
+          trackHash: params.trackHash,
+          progress: 0.0,
+          status: 'downloading',
+        ),
       );
 
-      // Save MD5 hash
       final file = File(params.savePath);
-      if (await file.exists()) {
-        final bytes = await file.readAsBytes();
-        final digest = md5.convert(bytes);
-        final md5Hash = digest.toString();
-        final md5File = File('${params.savePath}.md5');
-        await md5File.writeAsString(md5Hash);
+      await file.create(recursive: true);
+      final sink = file.openWrite();
+
+      const chunkSize = 64 * 1024;
+      int downloaded = 0;
+      int lastProgress = DateTime.now().millisecondsSinceEpoch;
+
+      final stream = response.stream;
+
+      while (true) {
+        final chunk = await stream.firstWhere(
+          (data) => data.isNotEmpty,
+          orElse: () => Uint8List(0),
+        );
+
+        if (chunk.isEmpty) break;
+
+        await sink.addStream(Stream.value(chunk));
+
+        downloaded += chunk.length;
+
+        final now = DateTime.now().millisecondsSinceEpoch;
+        if (total > 0 && (now - lastProgress) >= 500) {
+          params.sendPort.send(
+            DownloadProgressMessage(
+              trackHash: params.trackHash,
+              progress: downloaded / total,
+              status: 'downloading',
+            ),
+          );
+          lastProgress = now;
+        }
+
+        if (chunk.length < chunkSize) {
+          break;
+        }
       }
 
-      // Send completion status
-      params.sendPort.send(DownloadProgressMessage(
-        trackHash: params.trackHash,
-        progress: 1.0,
-        status: 'completed',
-      ));
+      await sink.close();
+      client.close();
+
+      final md5Hash = await md5.bind(file.openRead()).single;
+      await File("${params.savePath}.md5").writeAsString(md5Hash.toString());
+
+      params.sendPort.send(
+        DownloadProgressMessage(
+          trackHash: params.trackHash,
+          progress: 1.0,
+          status: 'completed',
+        ),
+      );
     } catch (e) {
-      // Send error status
-      params.sendPort.send(DownloadProgressMessage(
-        trackHash: params.trackHash,
-        progress: 0.0,
-        status: 'failed',
-        error: e.toString(),
-      ));
+      params.sendPort.send(
+        DownloadProgressMessage(
+          trackHash: params.trackHash,
+          progress: 0.0,
+          status: "failed",
+          error: e.toString(),
+        ),
+      );
     }
   }
 }
