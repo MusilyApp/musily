@@ -7,6 +7,7 @@
 #include "generated_plugin_registrant.h"
 
 #include <app_links/app_links_plugin_c_api.h>
+#include <audio_service_win/audio_service_win_plugin_c_api.h>
 #include <dart_ipc/dart_ipc_plugin_c_api.h>
 #include <dynamic_color/dynamic_color_plugin_c_api.h>
 #include <flutter_secure_storage_windows/flutter_secure_storage_windows_plugin.h>
@@ -22,6 +23,8 @@
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   AppLinksPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("AppLinksPluginCApi"));
+  AudioServiceWinPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("AudioServiceWinPluginCApi"));
   DartIpcPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DartIpcPluginCApi"));
   DynamicColorPluginCApiRegisterWithRegistrar(
