@@ -68,8 +68,8 @@ class _MusilyLoadingState extends State<MusilyLoading>
                     height: widget.size * 0.25,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: color.withOpacity(
-                        0.6 + 0.4 * (1 - _controller.value),
+                      color: color.withValues(
+                        alpha: 0.6 + 0.4 * (1 - _controller.value),
                       ),
                     ),
                   ),
@@ -170,16 +170,16 @@ class _MusilyDotsLoadingState extends State<MusilyDotsLoading>
         builder: (_, __) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: List.generate(widget.dots, (i) {
               final offset = (i / widget.dots);
               final value = (_controller.value + offset) % 1.0;
 
-              // efeito de onda
               final curved = Curves.easeInOutCubic.transform(value);
 
-              final scale = 0.55 + curved * 0.45; // 0.55 → 1.00
-              final opacity = 0.35 + curved * 0.65; // 0.35 → 1.00
-              final y = (1 - curved) * 4; // leve bounce
+              final scale = 0.55 + curved * 0.45;
+              final opacity = 0.35 + curved * 0.65;
+              final y = (1 - curved) * 4;
 
               return Transform.translate(
                 offset: Offset(0, y),
@@ -191,7 +191,7 @@ class _MusilyDotsLoadingState extends State<MusilyDotsLoading>
                     margin:
                         EdgeInsets.symmetric(horizontal: widget.spacing / 2),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(opacity),
+                      color: color.withValues(alpha: opacity),
                       shape: BoxShape.circle,
                     ),
                   ),
