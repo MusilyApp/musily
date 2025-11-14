@@ -88,7 +88,6 @@ dependencies:
     git:
       url: https://github.com/MusilyApp/flutter-packages.git
       path: packages/dynamic_color
-  smtc_windows: ^1.1.0
   process_run: ^0.14.2
   dart_ipc: ^1.0.0
   package_info_plus: ^8.3.0
@@ -97,6 +96,7 @@ dependencies:
   gtk_window: ^0.1.1
   lucide_icons_flutter: ^3.1.5
   toastification: ^3.0.3
+  audio_service_win: ^0.0.2
 
 # Development Dependencies
 dev_dependencies:
