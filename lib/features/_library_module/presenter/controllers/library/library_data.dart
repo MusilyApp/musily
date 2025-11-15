@@ -1,5 +1,6 @@
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
+import 'package:musily/features/_library_module/domain/entities/local_library_playlist.dart';
 
 enum BackupActivityType { backup, restore }
 
@@ -16,6 +17,7 @@ class LibraryData extends BaseControllerData {
   final String? backupMessageKey;
   final Map<String, String>? backupMessageParams;
   final BackupActivityType? backupActivityType;
+  final List<LocalLibraryPlaylist> localPlaylists;
 
   LibraryData({
     required this.loading,
@@ -24,6 +26,7 @@ class LibraryData extends BaseControllerData {
     required this.loadedFavoritesHash,
     required this.alreadyLoadedFirstFavoriteState,
     required this.itemsAddingToFavorites,
+    this.localPlaylists = const [],
     this.backupInProgress = false,
     this.backupProgress = 0.0,
     this.backupMessage = '',
@@ -46,6 +49,7 @@ class LibraryData extends BaseControllerData {
     String? backupMessageKey,
     Map<String, String>? backupMessageParams,
     BackupActivityType? backupActivityType,
+    List<LocalLibraryPlaylist>? localPlaylists,
     bool clearBackupActivityType = false,
   }) {
     return LibraryData(
@@ -55,6 +59,7 @@ class LibraryData extends BaseControllerData {
       loadedFavoritesHash: loadedFavoritesHash ?? this.loadedFavoritesHash,
       itemsAddingToFavorites:
           itemsAddingToFavorites ?? this.itemsAddingToFavorites,
+      localPlaylists: localPlaylists ?? this.localPlaylists,
       alreadyLoadedFirstFavoriteState: alreadyLoadedFirstFavoriteState ??
           this.alreadyLoadedFirstFavoriteState,
       backupInProgress: backupInProgress ?? this.backupInProgress,

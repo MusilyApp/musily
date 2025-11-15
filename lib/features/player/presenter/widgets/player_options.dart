@@ -86,7 +86,9 @@ class PlayerOptions extends StatelessWidget {
         break;
       case PlayerMode.lyrics:
       case PlayerMode.artwork:
-        content = _buildTrackOptions(context);
+        content = track.isLocal
+            ? const SizedBox.shrink()
+            : _buildTrackOptions(context);
         key = 'track_options';
         break;
     }

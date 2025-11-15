@@ -17,6 +17,7 @@ import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/data/dtos/create_playlist_dto.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/player/presenter/controllers/player/player_data.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile_static.dart';
 
 class QueueTools extends StatefulWidget {
@@ -88,229 +89,237 @@ class _QueueToolsState extends State<QueueTools> {
     }
   }
 
-  Widget _buildContent(BuildContext context) {
-    return widget.playerController.builder(
-      builder: (context, data) {
-        return Column(
-          children: [
-            if (data.currentPlayingItem != null) ...[
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: context.themeData.colorScheme.outline
-                          .withValues(alpha: .1),
-                    ),
-                  ),
+  Widget _buildContent(
+    BuildContext context,
+    PlayerController controller,
+    PlayerData data,
+    bool hasLocalFirst,
+  ) {
+    return Column(
+      children: [
+        if (data.currentPlayingItem != null && !hasLocalFirst) ...[
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: context.themeData.colorScheme.outline
+                      .withValues(alpha: .1),
                 ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: data.loadingSmartQueue
-                        ? null
-                        : () {
-                            widget.playerController.methods.toggleSmartQueue();
+              ),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: data.loadingSmartQueue
+                    ? null
+                    : () {
+                        controller.methods.toggleSmartQueue();
+                      },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  child: Row(
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: data.autoSmartQueue
+                              ? context.themeData.colorScheme.primary
+                                  .withValues(alpha: 0.15)
+                              : context
+                                  .themeData.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.3),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TweenAnimationBuilder<Color?>(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          tween: ColorTween(
+                            begin: data.autoSmartQueue
+                                ? context.themeData.colorScheme.onSurfaceVariant
+                                : context.themeData.colorScheme.primary,
+                            end: data.autoSmartQueue
+                                ? context.themeData.colorScheme.primary
+                                : context
+                                    .themeData.colorScheme.onSurfaceVariant,
+                          ),
+                          builder: (context, color, child) {
+                            return Icon(
+                              CupertinoIcons.wand_stars,
+                              size: 20,
+                              color: color,
+                            );
                           },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                        ),
                       ),
-                      child: Row(
-                        children: [
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: data.autoSmartQueue
-                                  ? context.themeData.colorScheme.primary
-                                      .withValues(alpha: 0.15)
-                                  : context.themeData.colorScheme
-                                      .surfaceContainerHighest
-                                      .withValues(alpha: 0.3),
-                              borderRadius: BorderRadius.circular(8),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.localization.smartSuggestionsTitle,
+                              style: context.themeData.textTheme.bodyMedium
+                                  ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.2,
+                              ),
                             ),
-                            child: TweenAnimationBuilder<Color?>(
+                            const SizedBox(height: 2),
+                            TweenAnimationBuilder<double>(
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
-                              tween: ColorTween(
-                                begin: data.autoSmartQueue
-                                    ? context
-                                        .themeData.colorScheme.onSurfaceVariant
-                                    : context.themeData.colorScheme.primary,
-                                end: data.autoSmartQueue
-                                    ? context.themeData.colorScheme.primary
-                                    : context
-                                        .themeData.colorScheme.onSurfaceVariant,
+                              tween: Tween<double>(
+                                begin: data.autoSmartQueue ? 0.5 : 0.7,
+                                end: data.autoSmartQueue ? 0.7 : 0.5,
                               ),
-                              builder: (context, color, child) {
-                                return Icon(
-                                  CupertinoIcons.wand_stars,
-                                  size: 20,
-                                  color: color,
+                              builder: (context, opacity, child) {
+                                return Text(
+                                  context
+                                      .localization.smartSuggestionsDescription,
+                                  style: context.themeData.textTheme.bodySmall
+                                      ?.copyWith(
+                                    color: context
+                                        .themeData.colorScheme.onSurfaceVariant
+                                        .withValues(alpha: opacity),
+                                    fontSize: 12,
+                                  ),
                                 );
                               },
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  context.localization.smartSuggestionsTitle,
-                                  style: context.themeData.textTheme.bodyMedium
-                                      ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: -0.2,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                TweenAnimationBuilder<double>(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                  tween: Tween<double>(
-                                    begin: data.autoSmartQueue ? 0.5 : 0.7,
-                                    end: data.autoSmartQueue ? 0.7 : 0.5,
-                                  ),
-                                  builder: (context, opacity, child) {
-                                    return Text(
-                                      context.localization
-                                          .smartSuggestionsDescription,
-                                      style: context
-                                          .themeData.textTheme.bodySmall
-                                          ?.copyWith(
-                                        color: context.themeData.colorScheme
-                                            .onSurfaceVariant
-                                            .withValues(alpha: opacity),
-                                        fontSize: 12,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (child, animation) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: ScaleTransition(
-                                  scale: animation,
-                                  child: child,
-                                ),
-                              );
-                            },
-                            child: AnimatedScale(
-                              key: const ValueKey('switch'),
-                              scale: data.autoSmartQueue ? 1.0 : 0.95,
-                              duration: const Duration(milliseconds: 200),
-                              child: Switch(
-                                value: data.autoSmartQueue,
-                                onChanged: data.loadingSmartQueue
-                                    ? null
-                                    : (value) {
-                                        widget.playerController.methods
-                                            .toggleSmartQueue();
-                                      },
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 12),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                              scale: animation,
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: AnimatedScale(
+                          key: const ValueKey('switch'),
+                          scale: data.autoSmartQueue ? 1.0 : 0.95,
+                          duration: const Duration(milliseconds: 200),
+                          child: Switch(
+                            value: data.autoSmartQueue,
+                            onChanged: data.loadingSmartQueue
+                                ? null
+                                : (value) {
+                                    controller.methods.toggleSmartQueue();
+                                  },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-            Expanded(
-              child: widget.playerController.data.queue.length <= 1
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: EmptyState(
-                          title: context.localization.queueEmptyTitle,
-                          message: context.localization.queueEmptyMessage,
-                          icon: const Icon(LucideIcons.music, size: 50),
-                        ),
-                      ),
-                    )
-                  : _ReorderableQueueList(
-                      playerController: widget.playerController,
-                      scrollController: _scrollController,
-                    ),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+        Expanded(
+          child: controller.data.queue.length <= 1
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: EmptyState(
+                      title: context.localization.queueEmptyTitle,
+                      message: context.localization.queueEmptyMessage,
+                      icon: const Icon(LucideIcons.music, size: 50),
+                    ),
+                  ),
+                )
+              : _ReorderableQueueList(
+                  playerController: controller,
+                  scrollController: _scrollController,
+                ),
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final content = _buildContent(context);
+    return widget.playerController.builder(
+      builder: (context, data) {
+        final hasLocalFirst = data.queue.isNotEmpty && data.queue.first.isLocal;
+        final content = _buildContent(
+            context, widget.playerController, data, hasLocalFirst);
 
-    if (widget.showAsPage) {
-      return Scaffold(
-        appBar: MusilyAppBar(
-          leading: IconButton(
-            icon: const Icon(LucideIcons.arrowLeft),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(context.localization.queueTools),
-          actions: [
-            IconButton(
-              icon: const Icon(LucideIcons.listPlus),
-              onPressed: _createPlaylistFromQueue,
-              tooltip: context.localization.createPlaylist,
-            ),
-          ],
-        ),
-        body: SafeArea(child: content),
-      );
-    }
-
-    return Column(
-      children: [
-        DraggableBox(
-          child: Container(
-            color: context.themeData.scaffoldBackgroundColor,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Row(
-              children: [
-                if (widget.onBack != null)
+        if (widget.showAsPage) {
+          return Scaffold(
+            appBar: MusilyAppBar(
+              leading: IconButton(
+                icon: const Icon(LucideIcons.arrowLeft),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text(context.localization.queueTools),
+              actions: [
+                if (!hasLocalFirst)
                   IconButton(
-                    icon: const Icon(LucideIcons.chevronLeft, size: 20),
-                    onPressed: widget.onBack,
-                    tooltip: context.localization.back,
+                    icon: const Icon(LucideIcons.listPlus),
+                    onPressed: _createPlaylistFromQueue,
+                    tooltip: context.localization.createPlaylist,
                   ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    context.localization.queueTools,
-                    style: context.themeData.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(LucideIcons.plus, size: 20),
-                  onPressed: _createPlaylistFromQueue,
-                  tooltip: context.localization.createPlaylist,
-                ),
               ],
             ),
-          ),
-        ),
-        Expanded(child: content),
-      ],
+            body: SafeArea(child: content),
+          );
+        }
+
+        return Column(
+          children: [
+            DraggableBox(
+              child: Container(
+                color: context.themeData.scaffoldBackgroundColor,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  children: [
+                    if (widget.onBack != null)
+                      IconButton(
+                        icon: const Icon(LucideIcons.chevronLeft, size: 20),
+                        onPressed: widget.onBack,
+                        tooltip: context.localization.back,
+                      ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        context.localization.queueTools,
+                        style:
+                            context.themeData.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    if (!hasLocalFirst)
+                      IconButton(
+                        icon: const Icon(LucideIcons.plus, size: 20),
+                        onPressed: _createPlaylistFromQueue,
+                        tooltip: context.localization.createPlaylist,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(child: content),
+          ],
+        );
+      },
     );
   }
 }

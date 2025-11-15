@@ -69,6 +69,26 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
     if (widget.mode == PlayerMode.artwork) {
       widget.playerController.methods.setPlayerMode(PlayerMode.queue);
     }
+    _enforceNonLyricsModeIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(covariant DesktopPlayerPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _enforceNonLyricsModeIfNeeded();
+  }
+
+  void _enforceNonLyricsModeIfNeeded() {
+    final isLocalTrack = widget.track?.isLocal ??
+        widget.playerController.data.currentPlayingItem?.isLocal ??
+        false;
+    if (!isLocalTrack) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final currentMode = widget.playerController.data.playerMode;
+      if (currentMode == PlayerMode.lyrics) {
+        widget.playerController.methods.setPlayerMode(PlayerMode.queue);
+      }
+    });
   }
 
   @override
@@ -96,7 +116,13 @@ class _DesktopPlayerPanelState extends State<DesktopPlayerPanel> {
   }
 
   Widget _buildModeContent(BuildContext context, dynamic data) {
-    switch (widget.mode) {
+    final isLocalTrack = widget.track?.isLocal ??
+        widget.playerController.data.currentPlayingItem?.isLocal ??
+        false;
+    final effectiveMode = isLocalTrack && widget.mode == PlayerMode.lyrics
+        ? PlayerMode.queue
+        : widget.mode;
+    switch (effectiveMode) {
       case PlayerMode.lyrics:
         return DraggableBox(
           child: Container(

@@ -10,7 +10,9 @@ import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/_library_module/presenter/pages/backup_page.dart';
+import 'package:musily/features/_library_module/presenter/pages/library_settings.dart';
+import 'package:musily/features/_library_module/presenter/widgets/local_playlist_tile.dart';
+import 'package:musily/features/_library_module/presenter/pages/local_library_playlist_page.dart';
 import 'package:musily/features/album/presenter/widgets/album_item.dart';
 import 'package:musily/features/artist/presenter/widgets/artist_item.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -89,6 +91,7 @@ class MLibraryPage extends StatelessWidget {
                 .where((e) => e.playlist != null && e.playlist?.id != 'offline')
                 .toList();
             final artists = listClone.where((e) => e.artist != null).toList();
+            final localFolders = libraryController.data.localPlaylists;
 
             return Scaffold(
               appBar: MusilyAppBar(
@@ -112,14 +115,23 @@ class MLibraryPage extends StatelessWidget {
                     onPressed: () async {
                       LyNavigator.push(
                         context,
-                        BackupPage(
+                        LibrarySettingsPage(
                           downloaderController: downloaderController,
                           libraryController: libraryController,
                           coreController: coreController,
+                          playerController: playerController,
+                          getPlayableItemUsecase: getPlayableItemUsecase,
+                          getAlbumUsecase: getAlbumUsecase,
+                          getArtistUsecase: getArtistUsecase,
+                          getArtistTracksUsecase: getArtistTracksUsecase,
+                          getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                          getArtistSinglesUsecase: getArtistSinglesUsecase,
+                          getPlaylistUsecase: getPlaylistUsecase,
+                          getTrackUsecase: getTrackUsecase,
                         ),
                       );
                     },
-                    icon: const Icon(LucideIcons.databaseBackup, size: 20),
+                    icon: const Icon(LucideIcons.settings2, size: 20),
                   ),
                 ],
               ),
@@ -269,301 +281,377 @@ class MLibraryPage extends StatelessWidget {
                                   ),
                                 ),
                               )
-                            : ListView(
-                                shrinkWrap: true,
-                                children: [
-                                  if (artists.isNotEmpty) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16, 16, 16, 8),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 4,
-                                            height: 24,
-                                            decoration: BoxDecoration(
-                                              color: context.themeData
-                                                  .colorScheme.tertiary,
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
+                            : Builder(builder: (context) {
+                                return ListView(
+                                  shrinkWrap: true,
+                                  children: [
+                                    if (localFolders.isNotEmpty) ...[
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 16, 16, 8),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 4,
+                                              height: 24,
+                                              decoration: BoxDecoration(
+                                                color: context.themeData
+                                                    .colorScheme.primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(2),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Text(
-                                            context.localization.artists,
-                                            style: context.themeData.textTheme
-                                                .headlineSmall
-                                                ?.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: context.themeData
-                                                  .colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 170,
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        itemCount: artists.length,
-                                        separatorBuilder: (_, __) =>
                                             const SizedBox(width: 12),
-                                        itemBuilder: (context, index) {
-                                          final artist = artists[index].artist!;
-                                          return ArtistItem(
-                                            artist: artist,
-                                            onTap: () {
-                                              LyNavigator.push(
-                                                context.showingPageContext,
-                                                artist.topTracks.isEmpty
-                                                    ? AsyncArtistPage(
-                                                        artistId: artist.id,
-                                                        coreController:
-                                                            coreController,
-                                                        playerController:
-                                                            playerController,
-                                                        downloaderController:
-                                                            downloaderController,
-                                                        getPlayableItemUsecase:
-                                                            getPlayableItemUsecase,
-                                                        libraryController:
-                                                            libraryController,
-                                                        getAlbumUsecase:
-                                                            getAlbumUsecase,
-                                                        getArtistUsecase:
-                                                            getArtistUsecase,
-                                                        getPlaylistUsecase:
-                                                            getPlaylistUsecase,
-                                                        getArtistAlbumsUsecase:
-                                                            getArtistAlbumsUsecase,
-                                                        getArtistTracksUsecase:
-                                                            getArtistTracksUsecase,
-                                                        getArtistSinglesUsecase:
-                                                            getArtistSinglesUsecase,
-                                                        getTrackUsecase:
-                                                            getTrackUsecase,
-                                                      )
-                                                    : ArtistPage(
-                                                        getTrackUsecase:
-                                                            getTrackUsecase,
-                                                        getAlbumUsecase:
-                                                            getAlbumUsecase,
-                                                        artist: artist,
-                                                        coreController:
-                                                            coreController,
-                                                        playerController:
-                                                            playerController,
-                                                        getPlaylistUsecase:
-                                                            getPlaylistUsecase,
-                                                        downloaderController:
-                                                            downloaderController,
-                                                        getPlayableItemUsecase:
-                                                            getPlayableItemUsecase,
-                                                        libraryController:
-                                                            libraryController,
-                                                        getArtistUsecase:
-                                                            getArtistUsecase,
-                                                        getArtistAlbumsUsecase:
-                                                            getArtistAlbumsUsecase,
-                                                        getArtistTracksUsecase:
-                                                            getArtistTracksUsecase,
-                                                        getArtistSinglesUsecase:
-                                                            getArtistSinglesUsecase,
-                                                      ),
-                                              );
-                                              libraryController.methods
-                                                  .getLibraryItem(
-                                                artist.id,
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                  if (albums.isNotEmpty) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16, 16, 16, 8),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 4,
-                                            height: 24,
-                                            decoration: BoxDecoration(
-                                              color: context.themeData
-                                                  .colorScheme.secondary,
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
+                                            Text(
+                                              context.localization
+                                                  .localLibraryTitle,
+                                              style: context.themeData.textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: context.themeData
+                                                    .colorScheme.onSurface,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Text(
-                                            context.localization.albums,
-                                            style: context.themeData.textTheme
-                                                .headlineSmall
-                                                ?.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: context.themeData
-                                                  .colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 160,
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
+                                          ],
                                         ),
-                                        shrinkWrap: true,
-                                        itemCount: albums.length,
-                                        separatorBuilder: (_, __) =>
+                                      ),
+                                      ...localFolders.map(
+                                        (folder) => LocalPlaylistTile(
+                                          playlist: folder,
+                                          libraryController: libraryController,
+                                          playerController: playerController,
+                                          coreController: coreController,
+                                          customClickAction: () {
+                                            LyNavigator.push(
+                                              context.showingPageContext,
+                                              LocalLibraryPlaylistPage(
+                                                playlistId: folder.id,
+                                                libraryController:
+                                                    libraryController,
+                                                playerController:
+                                                    playerController,
+                                                coreController: coreController,
+                                                downloaderController:
+                                                    downloaderController,
+                                                getPlayableItemUsecase:
+                                                    getPlayableItemUsecase,
+                                                getAlbumUsecase:
+                                                    getAlbumUsecase,
+                                                getArtistUsecase:
+                                                    getArtistUsecase,
+                                                getArtistTracksUsecase:
+                                                    getArtistTracksUsecase,
+                                                getArtistAlbumsUsecase:
+                                                    getArtistAlbumsUsecase,
+                                                getArtistSinglesUsecase:
+                                                    getArtistSinglesUsecase,
+                                                getPlaylistUsecase:
+                                                    getPlaylistUsecase,
+                                                getTrackUsecase:
+                                                    getTrackUsecase,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                    if (artists.isNotEmpty) ...[
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 16, 16, 8),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 4,
+                                              height: 24,
+                                              decoration: BoxDecoration(
+                                                color: context.themeData
+                                                    .colorScheme.tertiary,
+                                                borderRadius:
+                                                    BorderRadius.circular(2),
+                                              ),
+                                            ),
                                             const SizedBox(width: 12),
-                                        itemBuilder: (context, index) {
-                                          final album = albums[index].album!;
-                                          return AlbumItem(
-                                            album: album,
-                                            onTap: () {
-                                              LyNavigator.push(
-                                                context.showingPageContext,
-                                                album.tracks.isNotEmpty
-                                                    ? AlbumPage(
-                                                        album: album,
-                                                        getTrackUsecase:
-                                                            getTrackUsecase,
-                                                        getPlaylistUsecase:
-                                                            getPlaylistUsecase,
-                                                        coreController:
-                                                            coreController,
-                                                        playerController:
-                                                            playerController,
-                                                        getAlbumUsecase:
-                                                            getAlbumUsecase,
-                                                        downloaderController:
-                                                            downloaderController,
-                                                        getPlayableItemUsecase:
-                                                            getPlayableItemUsecase,
-                                                        libraryController:
-                                                            libraryController,
-                                                        getArtistAlbumsUsecase:
-                                                            getArtistAlbumsUsecase,
-                                                        getArtistSinglesUsecase:
-                                                            getArtistSinglesUsecase,
-                                                        getArtistTracksUsecase:
-                                                            getArtistTracksUsecase,
-                                                        getArtistUsecase:
-                                                            getArtistUsecase,
-                                                      )
-                                                    : AsyncAlbumPage(
-                                                        getTrackUsecase:
-                                                            getTrackUsecase,
-                                                        albumId: album.id,
-                                                        getPlaylistUsecase:
-                                                            getPlaylistUsecase,
-                                                        coreController:
-                                                            coreController,
-                                                        playerController:
-                                                            playerController,
-                                                        getAlbumUsecase:
-                                                            getAlbumUsecase,
-                                                        downloaderController:
-                                                            downloaderController,
-                                                        getPlayableItemUsecase:
-                                                            getPlayableItemUsecase,
-                                                        libraryController:
-                                                            libraryController,
-                                                        getArtistAlbumsUsecase:
-                                                            getArtistAlbumsUsecase,
-                                                        getArtistSinglesUsecase:
-                                                            getArtistSinglesUsecase,
-                                                        getArtistTracksUsecase:
-                                                            getArtistTracksUsecase,
-                                                        getArtistUsecase:
-                                                            getArtistUsecase,
-                                                      ),
-                                              );
-                                              libraryController.methods
-                                                  .getLibraryItem(
-                                                album.id,
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(height: 24),
-                                  ],
-                                  if (playlists.isNotEmpty) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16, 16, 16, 8),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 4,
-                                            height: 24,
-                                            decoration: BoxDecoration(
-                                              color: context.themeData
-                                                  .colorScheme.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
+                                            Text(
+                                              context.localization.artists,
+                                              style: context.themeData.textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: context.themeData
+                                                    .colorScheme.onSurface,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Text(
-                                            context.localization.playlists,
-                                            style: context.themeData.textTheme
-                                                .headlineSmall
-                                                ?.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: context.themeData
-                                                  .colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    ...playlists
-                                        .where((playlist) =>
-                                            playlist.id != 'offline')
-                                        .map(
-                                          (item) => PlaylistTile(
-                                            getTrackUsecase: getTrackUsecase,
-                                            contentOrigin:
-                                                ContentOrigin.library,
-                                            playlist: item.playlist!,
-                                            libraryController:
-                                                libraryController,
-                                            playerController: playerController,
-                                            getAlbumUsecase: getAlbumUsecase,
-                                            coreController: coreController,
-                                            downloaderController:
-                                                downloaderController,
-                                            getPlayableItemUsecase:
-                                                getPlayableItemUsecase,
-                                            getPlaylistUsecase:
-                                                getPlaylistUsecase,
-                                            getArtistAlbumsUsecase:
-                                                getArtistAlbumsUsecase,
-                                            getArtistSinglesUsecase:
-                                                getArtistSinglesUsecase,
-                                            getArtistTracksUsecase:
-                                                getArtistTracksUsecase,
-                                            getArtistUsecase: getArtistUsecase,
-                                          ),
+                                          ],
                                         ),
+                                      ),
+                                      SizedBox(
+                                        height: 170,
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          itemCount: artists.length,
+                                          separatorBuilder: (_, __) =>
+                                              const SizedBox(width: 12),
+                                          itemBuilder: (context, index) {
+                                            final artist =
+                                                artists[index].artist!;
+                                            return ArtistItem(
+                                              artist: artist,
+                                              onTap: () {
+                                                LyNavigator.push(
+                                                  context.showingPageContext,
+                                                  artist.topTracks.isEmpty
+                                                      ? AsyncArtistPage(
+                                                          artistId: artist.id,
+                                                          coreController:
+                                                              coreController,
+                                                          playerController:
+                                                              playerController,
+                                                          downloaderController:
+                                                              downloaderController,
+                                                          getPlayableItemUsecase:
+                                                              getPlayableItemUsecase,
+                                                          libraryController:
+                                                              libraryController,
+                                                          getAlbumUsecase:
+                                                              getAlbumUsecase,
+                                                          getArtistUsecase:
+                                                              getArtistUsecase,
+                                                          getPlaylistUsecase:
+                                                              getPlaylistUsecase,
+                                                          getArtistAlbumsUsecase:
+                                                              getArtistAlbumsUsecase,
+                                                          getArtistTracksUsecase:
+                                                              getArtistTracksUsecase,
+                                                          getArtistSinglesUsecase:
+                                                              getArtistSinglesUsecase,
+                                                          getTrackUsecase:
+                                                              getTrackUsecase,
+                                                        )
+                                                      : ArtistPage(
+                                                          getTrackUsecase:
+                                                              getTrackUsecase,
+                                                          getAlbumUsecase:
+                                                              getAlbumUsecase,
+                                                          artist: artist,
+                                                          coreController:
+                                                              coreController,
+                                                          playerController:
+                                                              playerController,
+                                                          getPlaylistUsecase:
+                                                              getPlaylistUsecase,
+                                                          downloaderController:
+                                                              downloaderController,
+                                                          getPlayableItemUsecase:
+                                                              getPlayableItemUsecase,
+                                                          libraryController:
+                                                              libraryController,
+                                                          getArtistUsecase:
+                                                              getArtistUsecase,
+                                                          getArtistAlbumsUsecase:
+                                                              getArtistAlbumsUsecase,
+                                                          getArtistTracksUsecase:
+                                                              getArtistTracksUsecase,
+                                                          getArtistSinglesUsecase:
+                                                              getArtistSinglesUsecase,
+                                                        ),
+                                                );
+                                                libraryController.methods
+                                                    .getLibraryItem(
+                                                  artist.id,
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                    if (albums.isNotEmpty) ...[
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 16, 16, 8),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 4,
+                                              height: 24,
+                                              decoration: BoxDecoration(
+                                                color: context.themeData
+                                                    .colorScheme.secondary,
+                                                borderRadius:
+                                                    BorderRadius.circular(2),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Text(
+                                              context.localization.albums,
+                                              style: context.themeData.textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: context.themeData
+                                                    .colorScheme.onSurface,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 160,
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          shrinkWrap: true,
+                                          itemCount: albums.length,
+                                          separatorBuilder: (_, __) =>
+                                              const SizedBox(width: 12),
+                                          itemBuilder: (context, index) {
+                                            final album = albums[index].album!;
+                                            return AlbumItem(
+                                              album: album,
+                                              onTap: () {
+                                                LyNavigator.push(
+                                                  context.showingPageContext,
+                                                  album.tracks.isNotEmpty
+                                                      ? AlbumPage(
+                                                          album: album,
+                                                          getTrackUsecase:
+                                                              getTrackUsecase,
+                                                          getPlaylistUsecase:
+                                                              getPlaylistUsecase,
+                                                          coreController:
+                                                              coreController,
+                                                          playerController:
+                                                              playerController,
+                                                          getAlbumUsecase:
+                                                              getAlbumUsecase,
+                                                          downloaderController:
+                                                              downloaderController,
+                                                          getPlayableItemUsecase:
+                                                              getPlayableItemUsecase,
+                                                          libraryController:
+                                                              libraryController,
+                                                          getArtistAlbumsUsecase:
+                                                              getArtistAlbumsUsecase,
+                                                          getArtistSinglesUsecase:
+                                                              getArtistSinglesUsecase,
+                                                          getArtistTracksUsecase:
+                                                              getArtistTracksUsecase,
+                                                          getArtistUsecase:
+                                                              getArtistUsecase,
+                                                        )
+                                                      : AsyncAlbumPage(
+                                                          getTrackUsecase:
+                                                              getTrackUsecase,
+                                                          albumId: album.id,
+                                                          getPlaylistUsecase:
+                                                              getPlaylistUsecase,
+                                                          coreController:
+                                                              coreController,
+                                                          playerController:
+                                                              playerController,
+                                                          getAlbumUsecase:
+                                                              getAlbumUsecase,
+                                                          downloaderController:
+                                                              downloaderController,
+                                                          getPlayableItemUsecase:
+                                                              getPlayableItemUsecase,
+                                                          libraryController:
+                                                              libraryController,
+                                                          getArtistAlbumsUsecase:
+                                                              getArtistAlbumsUsecase,
+                                                          getArtistSinglesUsecase:
+                                                              getArtistSinglesUsecase,
+                                                          getArtistTracksUsecase:
+                                                              getArtistTracksUsecase,
+                                                          getArtistUsecase:
+                                                              getArtistUsecase,
+                                                        ),
+                                                );
+                                                libraryController.methods
+                                                    .getLibraryItem(
+                                                  album.id,
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(height: 24),
+                                    ],
+                                    if (playlists.isNotEmpty) ...[
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 16, 16, 8),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 4,
+                                              height: 24,
+                                              decoration: BoxDecoration(
+                                                color: context.themeData
+                                                    .colorScheme.primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(2),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Text(
+                                              context.localization.playlists,
+                                              style: context.themeData.textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: context.themeData
+                                                    .colorScheme.onSurface,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      ...playlists
+                                          .where((playlist) =>
+                                              playlist.id != 'offline')
+                                          .map(
+                                            (item) => PlaylistTile(
+                                              getTrackUsecase: getTrackUsecase,
+                                              contentOrigin:
+                                                  ContentOrigin.library,
+                                              playlist: item.playlist!,
+                                              libraryController:
+                                                  libraryController,
+                                              playerController:
+                                                  playerController,
+                                              getAlbumUsecase: getAlbumUsecase,
+                                              coreController: coreController,
+                                              downloaderController:
+                                                  downloaderController,
+                                              getPlayableItemUsecase:
+                                                  getPlayableItemUsecase,
+                                              getPlaylistUsecase:
+                                                  getPlaylistUsecase,
+                                              getArtistAlbumsUsecase:
+                                                  getArtistAlbumsUsecase,
+                                              getArtistSinglesUsecase:
+                                                  getArtistSinglesUsecase,
+                                              getArtistTracksUsecase:
+                                                  getArtistTracksUsecase,
+                                              getArtistUsecase:
+                                                  getArtistUsecase,
+                                            ),
+                                          ),
+                                    ],
+                                    PlayerSizedBox(
+                                        playerController: playerController),
                                   ],
-                                  PlayerSizedBox(
-                                      playerController: playerController),
-                                ],
-                              ),
+                                );
+                              }),
                       ),
                     ),
                   ],

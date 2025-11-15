@@ -17,6 +17,7 @@ class TrackEntity {
   bool fromSmartQueue;
   Duration duration;
   Duration position;
+  bool isLocal;
 
   TrackEntity({
     required this.id,
@@ -32,6 +33,7 @@ class TrackEntity {
     this.position = Duration.zero,
     this.source,
     this.url,
+    this.isLocal = false,
   });
 
   @override
@@ -53,6 +55,7 @@ class TrackEntity {
     bool? fromSmartQueue,
     Duration? duration,
     Duration? position,
+    bool? isLocal,
   }) {
     return TrackEntity(
       id: id ?? this.id,
@@ -68,6 +71,7 @@ class TrackEntity {
       fromSmartQueue: fromSmartQueue ?? this.fromSmartQueue,
       duration: duration ?? this.duration,
       position: position ?? this.position,
+      isLocal: isLocal ?? this.isLocal,
     );
   }
 }

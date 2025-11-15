@@ -8,7 +8,7 @@ class PlayerSizedBox extends StatelessWidget {
   const PlayerSizedBox({
     super.key,
     required this.playerController,
-    this.height = 70,
+    this.height = 190,
   });
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
@@ -34,7 +35,7 @@ class TrackTileArtwork extends StatelessWidget {
             width: 40,
             height: 40,
             child: Icon(
-              Icons.music_note,
+              LucideIcons.music2,
               color: context.themeData.iconTheme.color?.withValues(alpha: .7),
             ),
           );

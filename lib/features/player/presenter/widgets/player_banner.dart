@@ -62,6 +62,31 @@ class PlayerBanner extends StatefulWidget {
 
 class _PlayerBannerState extends State<PlayerBanner> {
   @override
+  void initState() {
+    super.initState();
+    _enforceNonLyricsModeIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(covariant PlayerBanner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.track.id != widget.track.id ||
+        oldWidget.track.isLocal != widget.track.isLocal) {
+      _enforceNonLyricsModeIfNeeded();
+    }
+  }
+
+  void _enforceNonLyricsModeIfNeeded() {
+    if (!widget.track.isLocal) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final currentMode = widget.playerController.data.playerMode;
+      if (currentMode == PlayerMode.lyrics) {
+        widget.playerController.methods.setPlayerMode(PlayerMode.artwork);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(
       builder: (context, data) {
@@ -96,8 +121,12 @@ class _PlayerBannerState extends State<PlayerBanner> {
   Widget _buildModeContent(BuildContext context, dynamic data) {
     Widget content;
     String key;
+    final effectiveMode =
+        widget.track.isLocal && data.playerMode == PlayerMode.lyrics
+            ? PlayerMode.artwork
+            : data.playerMode;
 
-    switch (data.playerMode) {
+    switch (effectiveMode) {
       case PlayerMode.lyrics:
         content = _buildLyricsContent(context, data);
         key = 'lyrics_${data.currentPlayingItem?.id ?? 'no_track'}';
@@ -192,29 +221,33 @@ class _PlayerBannerState extends State<PlayerBanner> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: MouseRegion(
-          cursor: SystemMouseCursors.click,
+          cursor: widget.track.isLocal
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
           child: GestureDetector(
-            onTap: () {
-              LyNavigator.close('player');
-              LyNavigator.push(
-                context.showingPageContext,
-                AsyncAlbumPage(
-                  getTrackUsecase: widget.getTrackUsecase,
-                  albumId: data.currentPlayingItem!.album.id,
-                  coreController: widget.coreController,
-                  getPlaylistUsecase: widget.getPlaylistUsecase,
-                  playerController: widget.playerController,
-                  getAlbumUsecase: widget.getAlbumUsecase,
-                  downloaderController: widget.downloaderController,
-                  getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                  libraryController: widget.libraryController,
-                  getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                  getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                  getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                  getArtistUsecase: widget.getArtistUsecase,
-                ),
-              );
-            },
+            onTap: widget.track.isLocal
+                ? null
+                : () {
+                    LyNavigator.close('player');
+                    LyNavigator.push(
+                      context.showingPageContext,
+                      AsyncAlbumPage(
+                        getTrackUsecase: widget.getTrackUsecase,
+                        albumId: data.currentPlayingItem!.album.id,
+                        coreController: widget.coreController,
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
+                        playerController: widget.playerController,
+                        getAlbumUsecase: widget.getAlbumUsecase,
+                        downloaderController: widget.downloaderController,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        libraryController: widget.libraryController,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                      ),
+                    );
+                  },
             child: Stack(
               children: [
                 Builder(
@@ -250,20 +283,15 @@ class _PlayerBannerState extends State<PlayerBanner> {
                               .withValues(alpha: .2),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 350,
-                            width: 350,
-                            child: Icon(
-                              Icons.music_note,
-                              size: 75,
-                              color: context.themeData.iconTheme.color
-                                  ?.withValues(alpha: .8),
-                            ),
-                          ),
-                        ],
+                      child: SizedBox(
+                        height: 350,
+                        width: 350,
+                        child: Icon(
+                          LucideIcons.disc3,
+                          size: 75,
+                          color: context.themeData.iconTheme.color
+                              ?.withValues(alpha: .8),
+                        ),
                       ),
                     );
                   },

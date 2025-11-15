@@ -7,12 +7,15 @@ import 'dart:isolate';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:isar/isar.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/data/database/collections/download_queue.dart';
 import 'package:musily/core/data/database/database.dart';
 import 'package:musily/core/data/services/download_isolate.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_data.dart';
@@ -39,8 +42,101 @@ class DownloaderController
   final Map<String, Isolate> _activeIsolates = {};
   final Map<String, ReceivePort> _activePorts = {};
   final Map<String, CancelToken> _cancelTokens = {};
+  final Map<String, DateTime> _downloadStartTimes = {};
+  final Map<String, int> _lastDownloadedBytes = {};
+  final Map<String, DateTime> _lastSpeedUpdate = {};
+  final Set<String> _fetchingUrlHashes = {};
+  final List<int> _recentProcessingDurations = [];
+  static const int _maxProcessingSamples = 50;
+  bool _isProcessingQueue = false;
+  BuildContext? get _currentBuildContext {
+    final manager = ContextManager();
+    if (manager.dialogStack.isNotEmpty) {
+      return manager.dialogStack.last.context;
+    }
+    if (manager.contextStack.isNotEmpty) {
+      return manager.contextStack.last.context;
+    }
+    return null;
+  }
+
+  String _localizedError(
+    String Function(AppLocalizations loc) selector,
+    String fallback,
+  ) {
+    final context = _currentBuildContext;
+    if (context == null) return fallback;
+    try {
+      return selector(context.localization);
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  void _recordProcessingDuration(DownloadingItem item) {
+    final start = item.processingStartTime ?? item.startTime;
+    final end = item.endTime;
+    if (start == null || end == null) return;
+    final duration = end.difference(start);
+    if (duration.inMilliseconds <= 0) return;
+    _recentProcessingDurations.add(duration.inMilliseconds);
+    if (_recentProcessingDurations.length > _maxProcessingSamples) {
+      _recentProcessingDurations.removeAt(0);
+    }
+  }
+
+  Duration? _averageProcessingDuration() {
+    if (_recentProcessingDurations.isEmpty) return null;
+    final total = _recentProcessingDurations
+        .reduce((value, element) => value + element)
+        .toDouble();
+    final averageMs = total / _recentProcessingDurations.length;
+    return Duration(milliseconds: averageMs.round());
+  }
+
+  Duration? estimateTotalEta(DownloaderData data) {
+    final avg = _averageProcessingDuration();
+    Duration total = Duration.zero;
+    var hasValue = false;
+    final now = DateTime.now();
+
+    if (avg != null && avg > Duration.zero) {
+      for (final item in data.queue) {
+        if (item.status == DownloadStatus.downloading) {
+          final start = item.processingStartTime ?? item.startTime;
+          if (start != null) {
+            final elapsed = now.difference(start);
+            final remaining = avg - elapsed;
+            total += remaining > Duration.zero
+                ? remaining
+                : const Duration(seconds: 1);
+            hasValue = true;
+          }
+        } else if (item.status == DownloadStatus.queued ||
+            item.status == DownloadStatus.paused) {
+          total += avg;
+          hasValue = true;
+        }
+      }
+      if (hasValue) return total;
+    }
+
+    Duration fallback = Duration.zero;
+    var hasFallback = false;
+    for (final item in data.queue) {
+      if (item.status == DownloadStatus.downloading) {
+        final eta = item.estimatedTimeRemaining;
+        if (eta != null && eta > Duration.zero) {
+          fallback += eta;
+          hasFallback = true;
+        }
+      }
+    }
+    return hasFallback ? fallback : null;
+  }
 
   Timer? _batchUpdateTimer;
+  Timer? _speedCalculationTimer;
   bool _hasPendingUpdates = false;
 
   static const int _maxConcurrentDownloads = 3;
@@ -54,6 +150,39 @@ class DownloaderController
     await _migrateFromSharedPreferences();
     await methods.loadStoredQueue();
     _startBatchUpdateTimer();
+    _startSpeedCalculationTimer();
+  }
+
+  void _startSpeedCalculationTimer() {
+    _speedCalculationTimer?.cancel();
+    _speedCalculationTimer = Timer.periodic(
+      const Duration(milliseconds: 500),
+      (timer) => _calculateDownloadSpeeds(),
+    );
+  }
+
+  void _calculateDownloadSpeeds() {
+    final now = DateTime.now();
+    for (final item in data.queue) {
+      if (item.status != DownloadStatus.downloading) continue;
+
+      final hash = item.track.hash;
+      final lastUpdate = _lastSpeedUpdate[hash];
+      final lastBytes = _lastDownloadedBytes[hash] ?? 0;
+
+      if (lastUpdate != null && item.downloadedBytes > 0) {
+        final timeDiff = now.difference(lastUpdate).inMilliseconds / 1000.0;
+        if (timeDiff > 0) {
+          final bytesDiff = item.downloadedBytes - lastBytes;
+          final instantSpeed = bytesDiff / timeDiff;
+
+          item.addSpeedSample(instantSpeed);
+        }
+      }
+
+      _lastDownloadedBytes[hash] = item.downloadedBytes;
+      _lastSpeedUpdate[hash] = now;
+    }
   }
 
   Future<void> _migrateFromSharedPreferences() async {
@@ -128,6 +257,7 @@ class DownloaderController
   @override
   void dispose() {
     _batchUpdateTimer?.cancel();
+    _speedCalculationTimer?.cancel();
     for (final isolate in _activeIsolates.values) {
       isolate.kill(priority: Isolate.immediate);
     }
@@ -137,6 +267,9 @@ class DownloaderController
     _activeIsolates.clear();
     _activePorts.clear();
     _cancelTokens.clear();
+    _downloadStartTimes.clear();
+    _lastDownloadedBytes.clear();
+    _lastSpeedUpdate.clear();
     super.dispose();
   }
 
@@ -227,14 +360,19 @@ class DownloaderController
             orElse: () => DownloadStatus.queued,
           );
 
-          if (status != DownloadStatus.completed) {
+          if (status == DownloadStatus.completed) {
+            final isValid = await _isLocalFileValid(track.url, track.hash,
+                expectedBytes: null);
+            if (!isValid) {
+              status = DownloadStatus.queued;
+              track.url = null;
+              final trackPath = await methods.getTrackPath(track);
+              await methods.deleteDownloadedFile(path: trackPath);
+            }
+          } else {
             status = DownloadStatus.queued;
-            final appDir = await getApplicationSupportDirectory();
-            final invalidFilePath = path.join(
-              appDir.path,
-              'media/audios/${track.hash}',
-            );
-            await methods.deleteDownloadedFile(path: invalidFilePath);
+            final trackPath = await methods.getTrackPath(track);
+            await methods.deleteDownloadedFile(path: trackPath);
           }
 
           queue.add(DownloadingItem(
@@ -250,7 +388,11 @@ class DownloaderController
 
         _processDownloadQueue();
       },
-      updateStoredQueue: () async {},
+      updateStoredQueue: () async {
+        for (final item in data.queue) {
+          await _updateItemInDatabase(item);
+        }
+      },
       deleteDownloadedFile: ({track, path}) async {
         if (path != null) {
           final file = File(path);
@@ -372,6 +514,49 @@ class DownloaderController
       },
       clearCompletedDownloads: () async {
         await _clearCompletedDownloads();
+      },
+      retryDownload: (track) async {
+        final item = methods.getItem(track);
+        if (item == null) return;
+
+        if (item.status == DownloadStatus.failed ||
+            item.status == DownloadStatus.canceled) {
+          final itemIndex = data.queue.indexOf(item);
+          data.queue.removeAt(itemIndex);
+          data.removeFromMap(item.track.hash);
+
+          await _isar.writeTxn(() async {
+            await _isar.downloadQueueItems
+                .filter()
+                .hashEqualTo(track.hash)
+                .deleteAll();
+          });
+
+          await methods.addDownload(track, position: itemIndex);
+        }
+      },
+      retryAllFailed: () async {
+        final failedItems = data.queue
+            .where((e) =>
+                e.status == DownloadStatus.failed ||
+                e.status == DownloadStatus.canceled)
+            .toList();
+
+        for (final item in failedItems) {
+          await methods.retryDownload!(item.track);
+        }
+      },
+      getDownloadStats: () async {
+        return {
+          'totalDownloading': data.totalDownloadingCount,
+          'totalQueued': data.totalQueuedCount,
+          'totalCompleted': data.totalCompletedCount,
+          'totalFailed': data.totalFailedCount,
+          'globalSpeed': data.formattedGlobalSpeed,
+          'totalDownloadedBytes': data.totalDownloadedBytes,
+          'totalBytes': data.totalBytes,
+          'globalProgress': data.globalProgress,
+        };
       },
     );
   }
@@ -586,49 +771,113 @@ class DownloaderController
   }
 
   Future<void> _processDownloadQueue() async {
+    if (_isProcessingQueue) return;
+    _isProcessingQueue = true;
+
     final queuedItems =
         data.queue.where((e) => e.status == DownloadStatus.queued).toList();
 
-    for (final item in queuedItems) {
-      if (_activeDownloads >= _maxConcurrentDownloads) {
-        break;
-      }
-
-      if (item.track.url == null) {
-        if (_activeFetching >= _maxConcurrentUrlFetching) {
-          continue;
+    try {
+      for (final item in queuedItems) {
+        if (_activeDownloads >= _maxConcurrentDownloads) {
+          break;
         }
 
-        _activeFetching++;
-        try {
-          final playableItem =
-              await playerController?.getPlayableItemUsecase.exec(item.track);
-          if (playableItem?.url == null) {
-            item.status = DownloadStatus.failed;
-            _scheduleUpdate();
-            await _updateItemInDatabase(item);
+        if (item.track.url == null) {
+          if (_activeFetching >= _maxConcurrentUrlFetching) {
             continue;
           }
-          item.track.url = playableItem!.url;
-        } catch (e) {
+          if (_fetchingUrlHashes.contains(item.track.hash)) {
+            continue;
+          }
+          _fetchTrackUrlForItem(item);
+          continue;
+        }
+
+        unawaited(_startDownloadSafely(item));
+      }
+    } finally {
+      _isProcessingQueue = false;
+    }
+  }
+
+  Future<void> _startDownloadSafely(DownloadingItem item) async {
+    try {
+      await _startDownloadInIsolate(item);
+    } catch (e, s) {
+      log(
+        'Failed to start download for ${item.track.hash}',
+        error: e,
+        stackTrace: s,
+        name: 'ParallelDownloader',
+      );
+      item.status = DownloadStatus.failed;
+      item.errorMessage = e.toString();
+      item.track.url = null;
+      await _updateItemInDatabase(item);
+      _cleanupDownload(item.track.hash);
+      _scheduleUpdate();
+      _processDownloadQueue();
+    }
+  }
+
+  void _fetchTrackUrlForItem(DownloadingItem item) {
+    _activeFetching++;
+    _fetchingUrlHashes.add(item.track.hash);
+    item.processingStartTime ??= DateTime.now();
+
+    unawaited(() async {
+      try {
+        final playableItem =
+            await playerController?.getPlayableItemUsecase.exec(item.track);
+        if (playableItem?.url == null) {
           item.status = DownloadStatus.failed;
+          item.errorMessage = _localizedError(
+            (loc) => loc.downloadErrorResolveUrl,
+            'Could not resolve download URL',
+          );
           _scheduleUpdate();
           await _updateItemInDatabase(item);
-          continue;
-        } finally {
-          _activeFetching--;
+          return;
         }
+        item.track.url = playableItem!.url;
+        await _updateItemInDatabase(item);
+      } catch (e, s) {
+        log(
+          'Failed to resolve URL for ${item.track.hash}',
+          error: e,
+          stackTrace: s,
+          name: 'ParallelDownloader',
+        );
+        item.status = DownloadStatus.failed;
+        item.errorMessage = e.toString();
+        _scheduleUpdate();
+        await _updateItemInDatabase(item);
+      } finally {
+        _activeFetching =
+            (_activeFetching - 1).clamp(0, _maxConcurrentUrlFetching);
+        _fetchingUrlHashes.remove(item.track.hash);
+        _processDownloadQueue();
       }
-
-      await _startDownloadInIsolate(item);
-    }
+    }());
   }
 
   Future<void> _startDownloadInIsolate(DownloadingItem item) async {
     if (item.track.url == null) return;
 
     _activeDownloads++;
+    item.processingStartTime ??= DateTime.now();
     item.status = DownloadStatus.downloading;
+    item.startTime = DateTime.now();
+    item.downloadSpeed = 0.0;
+    item.downloadedBytes = 0;
+    item.errorMessage = null;
+    item.lastLog = null;
+
+    _downloadStartTimes[item.track.hash] = item.startTime!;
+    _lastDownloadedBytes[item.track.hash] = 0;
+    _lastSpeedUpdate[item.track.hash] = item.startTime!;
+
     _scheduleUpdate();
     await _updateItemInDatabase(item);
 
@@ -642,21 +891,84 @@ class DownloaderController
       savePath: downloadPath,
       sendPort: receivePort.sendPort,
       trackHash: item.track.hash,
+      maxConnections: 16,
+      initialConnections: 8,
+      minConnections: 2,
+      timeoutMs: 15000,
+      maxRetriesPerPart: 3,
+      useIsolates: true,
     );
 
     receivePort.listen((message) async {
       try {
-      if (message is DownloadProgressMessage) {
+        if (message is DownloadProgressMessage) {
+          // Update progress
           item.progress = message.progress;
           item.status = DownloadStatus.values.firstWhere(
             (e) => e.name == message.status,
             orElse: () => DownloadStatus.downloading,
           );
 
-          if (item.status == DownloadStatus.completed ||
-              item.status == DownloadStatus.failed) {
+          // Handle error messages
+          if (message.error != null) {
+            item.errorMessage = message.error;
+          }
+
+          // Extract bytes from message
+          if (message.downloadedBytes != null) {
+            item.downloadedBytes = message.downloadedBytes!;
+          }
+          if (message.totalBytes != null && item.totalBytes == 0) {
+            item.totalBytes = message.totalBytes!;
+          }
+
+          if (item.status == DownloadStatus.completed) {
+            final expectedBytes =
+                item.totalBytes > 0 ? item.totalBytes : message.totalBytes ?? 0;
+            final isValid = await _isLocalFileValid(
+              downloadPath,
+              item.track.hash,
+              expectedBytes: expectedBytes,
+            );
+
+            if (!isValid) {
+              item.status = DownloadStatus.failed;
+              item.track.url = null;
+              item.errorMessage = _localizedError(
+                (loc) => loc.downloadErrorFileValidation,
+                'Downloaded file validation failed',
+              );
+              await methods.deleteDownloadedFile(path: downloadPath);
+              await _updateItemInDatabase(item);
+              _scheduleUpdate();
+              _cleanupDownload(item.track.hash);
+              _processDownloadQueue();
+              return;
+            }
+
+            item.track.url = downloadPath;
+            item.progress = 1.0;
+            item.downloadedBytes =
+                expectedBytes > 0 ? expectedBytes : item.downloadedBytes;
+            item.endTime = DateTime.now();
+            _recordProcessingDuration(item);
+
+            await _updateItemInDatabase(item);
+            _scheduleUpdate();
+
             _cleanupDownload(item.track.hash);
             _processDownloadQueue();
+          } else if (item.status == DownloadStatus.failed) {
+            item.track.url = null;
+            item.endTime = DateTime.now();
+            await _updateItemInDatabase(item);
+            _scheduleUpdate();
+
+            _cleanupDownload(item.track.hash);
+            _processDownloadQueue();
+          } else {
+            _scheduleUpdate();
+            await _updateItemInDatabase(item);
           }
 
           return;
@@ -664,11 +976,24 @@ class DownloaderController
 
         log("Isolate unexpected message: $message");
         item.status = DownloadStatus.failed;
+        item.track.url = null;
+        item.errorMessage = _localizedError(
+          (loc) => loc.downloadErrorUnexpectedMessage,
+          'Unexpected download response',
+        );
+        item.endTime = DateTime.now();
+        await _updateItemInDatabase(item);
+        _scheduleUpdate();
         _cleanupDownload(item.track.hash);
         _processDownloadQueue();
       } catch (e) {
         log("Error in isolate listener: $e");
         item.status = DownloadStatus.failed;
+        item.track.url = null;
+        item.errorMessage = e.toString();
+        item.endTime = DateTime.now();
+        await _updateItemInDatabase(item);
+        _scheduleUpdate();
         _cleanupDownload(item.track.hash);
         _processDownloadQueue();
       }
@@ -677,7 +1002,7 @@ class DownloaderController
     try {
       final isolate =
           await Isolate.spawn(DownloadIsolate.downloadFileIsolate, params);
-    _activeIsolates[item.track.hash] = isolate;
+      _activeIsolates[item.track.hash] = isolate;
     } catch (e) {
       item.status = DownloadStatus.failed;
       _cleanupDownload(item.track.hash);
@@ -698,6 +1023,9 @@ class DownloaderController
     _activePorts.remove(hash);
 
     _cancelTokens.remove(hash);
+    _downloadStartTimes.remove(hash);
+    _lastDownloadedBytes.remove(hash);
+    _lastSpeedUpdate.remove(hash);
   }
 
   Future<void> _updateItemInDatabase(DownloadingItem item) async {
@@ -716,6 +1044,31 @@ class DownloaderController
         await _isar.downloadQueueItems.put(dbItem);
       }
     });
+  }
+
+  Future<bool> _isLocalFileValid(
+    String? filePath,
+    String hash, {
+    int? expectedBytes,
+  }) async {
+    if (filePath == null || filePath.isEmpty) return false;
+    final file = File(filePath);
+    if (!await file.exists()) {
+      return false;
+    }
+    if (expectedBytes != null && expectedBytes > 0) {
+      final fileSize = await file.length();
+      if (fileSize != expectedBytes) {
+        return false;
+      }
+    }
+
+    final md5File = File('$filePath.md5');
+    if (!await md5File.exists()) {
+      return false;
+    }
+
+    return true;
   }
 
   Widget _buildTrailing(BuildContext context, DownloadingItem item) {

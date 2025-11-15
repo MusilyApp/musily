@@ -91,7 +91,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
       // Add a small delay to ensure everything is ready
       Future.delayed(const Duration(milliseconds: 150), () {
         if (mounted) {
-          _enterFullScreen();
+          // _enterFullScreen();
         }
       });
     });
@@ -108,6 +108,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
     super.dispose();
   }
 
+  // ignore: unused_element
   Future<void> _enterFullScreen() async {
     if (!Platform.isLinux && !Platform.isWindows && !Platform.isMacOS) return;
     if (_isFullScreenActive) return;
@@ -160,6 +161,16 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
     }
   }
 
+  void _enforceNonLyricsModeIfNeeded(TrackEntity track) {
+    if (!track.isLocal) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final currentMode = widget.playerController.data.playerMode;
+      if (currentMode == PlayerMode.lyrics) {
+        widget.playerController.methods.setPlayerMode(PlayerMode.queue);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(
@@ -193,6 +204,8 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
           );
         }
 
+        _enforceNonLyricsModeIfNeeded(track);
+        final isLocal = track.isLocal;
         return Container(
           color: context.themeData.scaffoldBackgroundColor,
           child: Stack(
@@ -259,7 +272,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                 child: Column(
                   children: [
                     // Header Bar
-                    _buildHeader(context, track, data),
+                    _buildHeader(context, track, data, isLocal),
                     // Main Content
                     Expanded(
                       child: Row(
@@ -291,7 +304,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: _buildRightPanel(context, data),
+                                child: _buildRightPanel(context, data, isLocal),
                               ),
                             ),
                           ),
@@ -299,7 +312,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                       ),
                     ),
                     // Bottom Controls Bar
-                    _buildBottomControls(context, track, data),
+                    _buildBottomControls(context, track, data, isLocal),
                   ],
                 ),
               ),
@@ -310,7 +323,12 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, TrackEntity track, dynamic data) {
+  Widget _buildHeader(
+    BuildContext context,
+    TrackEntity track,
+    dynamic data,
+    bool isLocal,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
@@ -352,6 +370,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                   label: 'Queue',
                   mode: PlayerMode.queue,
                   currentMode: data.playerMode,
+                  enabled: true,
                 ),
                 _buildModeButton(
                   context,
@@ -359,6 +378,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                   label: 'Lyrics',
                   mode: PlayerMode.lyrics,
                   currentMode: data.playerMode,
+                  enabled: !isLocal,
                 ),
               ],
             ),
@@ -374,14 +394,17 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
     required String label,
     required PlayerMode mode,
     required PlayerMode currentMode,
+    required bool enabled,
   }) {
     final isActive = currentMode == mode;
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          widget.playerController.methods.setPlayerMode(mode);
-        },
+        onTap: enabled
+            ? () {
+                widget.playerController.methods.setPlayerMode(mode);
+              }
+            : null,
         borderRadius: BorderRadius.circular(10),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -398,10 +421,13 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
               Icon(
                 icon,
                 size: 16,
-                color: isActive
-                    ? context.themeData.colorScheme.primary
-                    : context.themeData.colorScheme.onSurface
-                        .withValues(alpha: 0.6),
+                color: !enabled
+                    ? context.themeData.colorScheme.onSurface
+                        .withValues(alpha: 0.3)
+                    : isActive
+                        ? context.themeData.colorScheme.primary
+                        : context.themeData.colorScheme.onSurface
+                            .withValues(alpha: 0.6),
               ),
               const SizedBox(width: 6),
               Text(
@@ -546,8 +572,16 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
     );
   }
 
-  Widget _buildRightPanel(BuildContext context, dynamic data) {
-    switch (data.playerMode) {
+  Widget _buildRightPanel(
+    BuildContext context,
+    dynamic data,
+    bool isLocal,
+  ) {
+    final effectiveMode =
+        isLocal && widget.playerController.data.playerMode == PlayerMode.lyrics
+            ? PlayerMode.queue
+            : data.playerMode;
+    switch (effectiveMode) {
       case PlayerMode.lyrics:
         return _buildLyricsView(context, data);
       default:
@@ -661,7 +695,11 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
   }
 
   Widget _buildBottomControls(
-      BuildContext context, TrackEntity track, dynamic data) {
+    BuildContext context,
+    TrackEntity track,
+    dynamic data,
+    bool isLocal,
+  ) {
     return Container(
       padding: const EdgeInsets.fromLTRB(48, 16, 48, 24),
       decoration: BoxDecoration(
@@ -780,15 +818,17 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                           .withValues(alpha: 0.0),
                     ),
                   ),
-                  FavoriteButton(
-                    libraryController: widget.libraryController,
-                    track: track,
-                  ),
-                  const SizedBox(width: 4),
-                  DownloadButton(
-                    controller: widget.downloaderController,
-                    track: track,
-                  ),
+                  if (!track.isLocal)
+                    FavoriteButton(
+                      libraryController: widget.libraryController,
+                      track: track,
+                    ),
+                  if (!track.isLocal) const SizedBox(width: 4),
+                  if (!track.isLocal)
+                    DownloadButton(
+                      controller: widget.downloaderController,
+                      track: track,
+                    ),
                 ],
               ),
               // Center: Playback Controls
@@ -982,21 +1022,22 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                         ),
                     ],
                   ),
-                  TrackOptions(
-                    coreController: widget.coreController,
-                    track: track,
-                    playerController: widget.playerController,
-                    downloaderController: widget.downloaderController,
-                    getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                    libraryController: widget.libraryController,
-                    getAlbumUsecase: widget.getAlbumUsecase,
-                    getArtistUsecase: widget.getArtistUsecase,
-                    getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                    getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                    getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                    getTrackUsecase: widget.getTrackUsecase,
-                    getPlaylistUsecase: widget.getPlaylistUsecase,
-                  ),
+                  if (!track.isLocal)
+                    TrackOptions(
+                      coreController: widget.coreController,
+                      track: track,
+                      playerController: widget.playerController,
+                      downloaderController: widget.downloaderController,
+                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                      libraryController: widget.libraryController,
+                      getAlbumUsecase: widget.getAlbumUsecase,
+                      getArtistUsecase: widget.getArtistUsecase,
+                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                      getTrackUsecase: widget.getTrackUsecase,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
+                    ),
                 ],
               ),
             ],

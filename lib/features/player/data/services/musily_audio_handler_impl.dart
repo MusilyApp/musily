@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
+import 'package:musily/features/player/data/services/player_persistence_service.dart';
 import 'package:musily/features/player/domain/entities/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
@@ -26,9 +27,11 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     }
 
     loadPlaceholderAudioPath();
+    unawaited(_restorePersistedState());
   }
 
   final _audioPlayer = AudioPlayer();
+  final _persistenceService = PlayerPersistenceService();
 
   List<TrackEntity> _queue = [];
   List<TrackEntity> _shuffledQueue = [];
@@ -128,6 +131,58 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     );
   }
 
+  Future<void> _restorePersistedState() async {
+    final persisted = await _persistenceService.loadState();
+    if (persisted == null) {
+      return;
+    }
+
+    _repeatMode = persisted.repeatMode;
+    _shuffleEnabled = persisted.shuffleEnabled;
+    _queue = List<TrackEntity>.from(persisted.queue);
+    _shuffledQueue = persisted.shuffledQueue.isNotEmpty
+        ? List<TrackEntity>.from(persisted.shuffledQueue)
+        : List<TrackEntity>.from(persisted.queue);
+
+    _activeTrack = _resolveActiveTrack(
+      persisted.currentTrack,
+      persisted.currentTrackId,
+      persisted.currentTrackHash,
+    );
+
+    _onRepeatModeChanged?.call(_repeatMode);
+    _onShuffleChanged?.call(_shuffleEnabled);
+    _onAction?.call(MusilyPlayerAction.queueChanged);
+    if (_activeTrack != null) {
+      _onActiveTrackChanged?.call(_activeTrack);
+    }
+  }
+
+  TrackEntity? _resolveActiveTrack(
+    TrackEntity? fallback,
+    String? id,
+    String? hash,
+  ) {
+    for (final track in _queue) {
+      final matchesId = id != null && id.isNotEmpty && track.id == id;
+      final matchesHash = hash != null && hash.isNotEmpty && track.hash == hash;
+      if (matchesId || matchesHash) {
+        return track;
+      }
+    }
+    return fallback;
+  }
+
+  Future<void> _persistPlayerState() {
+    return _persistenceService.saveState(
+      queue: List<TrackEntity>.from(_queue),
+      shuffledQueue: List<TrackEntity>.from(_shuffledQueue),
+      shuffleEnabled: _shuffleEnabled,
+      repeatMode: _repeatMode,
+      currentTrack: _activeTrack,
+    );
+  }
+
   void _handleCurrentSongIndexChanged(int? index) {
     try {
       if (index != null && queue.value.isNotEmpty) {
@@ -198,6 +253,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       }
       _updatePlaybackState();
     } catch (e, stackTrace) {
+      // TODO look here
       log('[Error handling playback event]', error: e, stackTrace: stackTrace);
     }
   }
@@ -295,6 +351,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     _queue.add(track);
     _shuffledQueue.add(track);
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -448,6 +505,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         return;
       }
       await _audioPlayer.play();
+      unawaited(_persistPlayerState());
     } catch (e, stackTrace) {
       log(
         '[Error playing song]',
@@ -508,6 +566,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       (element) => element.id == track.id || element.hash == track.hash,
     );
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -603,12 +662,14 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       _shuffledQueue = queueClone..shuffle();
     }
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
   Future<void> setShuffledQueue(List<TrackEntity> items) async {
     _shuffledQueue = items;
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -658,6 +719,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       _queue = List.from(newQueue);
     }
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -691,6 +753,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     _onActiveTrackChanged?.call(null);
     await _audioPlayer.stop();
     _onAction?.call(MusilyPlayerAction.stop);
+    unawaited(_persistPlayerState());
   }
 
   bool get hasNext => activeTrackIndex() + 1 < _queue.length;
@@ -701,6 +764,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Future<void> toggleRepeatMode(MusilyRepeatMode repeatMode) async {
     _repeatMode = repeatMode;
     _onRepeatModeChanged?.call(repeatMode);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -708,6 +772,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     await setShuffleMode(
       enabled ? AudioServiceShuffleMode.all : AudioServiceShuffleMode.none,
     );
+    unawaited(_persistPlayerState());
   }
 
   @override

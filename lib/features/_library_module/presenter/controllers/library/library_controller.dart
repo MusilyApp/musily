@@ -1,7 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
 import 'package:media_store_plus/media_store_plus.dart';
@@ -19,7 +25,12 @@ import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/utils/id_generator.dart';
 import 'package:musily/features/_library_module/data/models/library_item_model.dart';
+import 'package:musily/features/_library_module/data/services/local_library_service.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
+import 'package:musily/features/_library_module/domain/entities/local_library_playlist.dart';
+import 'package:musily/features/_library_module/domain/entities/local_track_metadata.dart';
+import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
+import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/_library_module/domain/usecases/add_album_to_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/add_artist_to_library_usecase.dart';
 import 'package:musily/features/_library_module/domain/usecases/add_tracks_to_playlist_usecase.dart';
@@ -97,9 +108,22 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     _mergeLibraryUsecase = mergeLibraryUsecase;
 
     methods.getLibraryItems();
+    _loadLocalPlaylists();
   }
 
   final queue = Queue(delay: const Duration(milliseconds: 100));
+  final LocalLibraryService _localLibraryService = LocalLibraryService();
+  Map<String, LocalTrackMetadata> _localTrackMetadataCache = {};
+  bool _localTrackMetadataLoaded = false;
+  static const Set<String> _supportedAudioExtensions = {
+    '.mp3',
+    '.aac',
+    '.m4a',
+    '.wav',
+    '.flac',
+    '.ogg',
+    '.opus',
+  };
 
   // Backup/Restore isolate management
   Isolate? _backupIsolate;
@@ -115,6 +139,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
       items: [],
       itemsAddingToLibrary: [],
       itemsAddingToFavorites: [],
+      localPlaylists: const [],
     );
   }
 
@@ -651,6 +676,24 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         _downloaderController.methods.setDownloadingKey('');
         await _downloaderController.methods.cancelDownloadCollection(tracks);
       },
+      addLocalPlaylistFolder: (name, directoryPath) async {
+        await _addLocalPlaylistFolder(name, directoryPath);
+      },
+      removeLocalPlaylistFolder: (playlistId) async {
+        await _removeLocalPlaylistFolder(playlistId);
+      },
+      renameLocalPlaylistFolder: (playlistId, newName) async {
+        await _renameLocalPlaylistFolder(playlistId, newName);
+      },
+      updateLocalPlaylistDirectory: (playlistId, newDirectoryPath) async {
+        await _updateLocalPlaylistDirectory(playlistId, newDirectoryPath);
+      },
+      getLocalPlaylistTracks: (playlistId) async {
+        return _getLocalPlaylistTracks(playlistId);
+      },
+      refreshLocalPlaylists: () async {
+        await _refreshAllLocalPlaylists();
+      },
       removePlaylistFromLibrary: (String playlistId) async {
         final currentItem =
             data.items.where((e) => e.id == playlistId).firstOrNull;
@@ -1012,6 +1055,553 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         ));
       },
     );
+  }
+
+  Future<void> _loadLocalPlaylists() async {
+    final playlists = await _localLibraryService.loadPlaylists();
+    updateData(data.copyWith(localPlaylists: playlists));
+    for (final playlist in playlists) {
+      unawaited(_refreshLocalPlaylistMetadata(playlist));
+    }
+  }
+
+  Future<void> _addLocalPlaylistFolder(
+    String name,
+    String directoryPath,
+  ) async {
+    final normalizedPath = _normalizeDirectoryPath(directoryPath);
+    if (normalizedPath == null) {
+      return;
+    }
+
+    final alreadyRegistered = data.localPlaylists.any(
+      (element) =>
+          element.directoryPath.toLowerCase() == normalizedPath.toLowerCase(),
+    );
+    if (alreadyRegistered) {
+      return;
+    }
+
+    final derivedName =
+        name.trim().isEmpty ? path.basename(normalizedPath) : name.trim();
+
+    var playlist = LocalLibraryPlaylist(
+      id: idGenerator(),
+      name: derivedName,
+      directoryPath: normalizedPath,
+      createdAt: DateTime.now(),
+    );
+
+    playlist = await _scanLocalPlaylist(playlist);
+
+    final updated = [...data.localPlaylists, playlist];
+    await _persistLocalPlaylists(updated);
+  }
+
+  Future<void> _removeLocalPlaylistFolder(String playlistId) async {
+    final updated = data.localPlaylists
+        .where((element) => element.id != playlistId)
+        .toList();
+    await _persistLocalPlaylists(updated);
+  }
+
+  Future<void> _renameLocalPlaylistFolder(
+    String playlistId,
+    String newName,
+  ) async {
+    final trimmed = newName.trim();
+    if (trimmed.isEmpty) {
+      return;
+    }
+
+    final updated = data.localPlaylists.map((playlist) {
+      if (playlist.id == playlistId) {
+        return playlist.copyWith(
+          name: trimmed,
+          updatedAt: DateTime.now(),
+        );
+      }
+      return playlist;
+    }).toList();
+
+    await _persistLocalPlaylists(updated);
+  }
+
+  Future<void> _updateLocalPlaylistDirectory(
+    String playlistId,
+    String newDirectoryPath,
+  ) async {
+    final normalizedPath = _normalizeDirectoryPath(newDirectoryPath);
+    if (normalizedPath == null) {
+      return;
+    }
+
+    final playlist =
+        data.localPlaylists.firstWhereOrNull((e) => e.id == playlistId);
+    if (playlist == null) {
+      return;
+    }
+
+    var updatedPlaylist = playlist.copyWith(
+      directoryPath: normalizedPath,
+      updatedAt: DateTime.now(),
+    );
+    updatedPlaylist = await _scanLocalPlaylist(updatedPlaylist);
+    await _replaceLocalPlaylist(updatedPlaylist);
+  }
+
+  Future<List<TrackEntity>> _getLocalPlaylistTracks(String playlistId) async {
+    log('[LocalLibrary] Getting tracks for playlist ID: $playlistId');
+    final playlist =
+        data.localPlaylists.firstWhereOrNull((e) => e.id == playlistId);
+    if (playlist == null) {
+      log('[LocalLibrary] Playlist not found: $playlistId');
+      return [];
+    }
+    log('[LocalLibrary] Found playlist: ${playlist.name}');
+    final tracks = await _buildTracksForPlaylist(playlist);
+    final updatedPlaylist = playlist.copyWith(
+      trackCount: tracks.length,
+      updatedAt: DateTime.now(),
+    );
+    await _replaceLocalPlaylist(updatedPlaylist);
+    log('[LocalLibrary] Returning ${tracks.length} tracks');
+    return tracks;
+  }
+
+  Future<void> _refreshAllLocalPlaylists() async {
+    for (final playlist in data.localPlaylists) {
+      await _refreshLocalPlaylistMetadata(playlist);
+    }
+  }
+
+  Future<void> _refreshLocalPlaylistMetadata(
+    LocalLibraryPlaylist playlist,
+  ) async {
+    final scanned = await _scanLocalPlaylist(playlist);
+    await _replaceLocalPlaylist(scanned);
+  }
+
+  Future<LocalLibraryPlaylist> _scanLocalPlaylist(
+    LocalLibraryPlaylist playlist,
+  ) async {
+    log('[LocalLibrary] Scanning playlist: ${playlist.name} (${playlist.directoryPath})');
+    try {
+      final files = await _listAudioFiles(playlist.directoryPath);
+      log('[LocalLibrary] Scan found ${files.length} files');
+      return playlist.copyWith(
+        trackCount: files.length,
+        updatedAt: DateTime.now(),
+      );
+    } catch (e, stackTrace) {
+      log(
+        '[LocalLibrary] Error scanning playlist',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return playlist.copyWith(
+        trackCount: 0,
+        updatedAt: DateTime.now(),
+      );
+    }
+  }
+
+  Future<List<File>> _listAudioFiles(String directoryPath) async {
+    final directory = Directory(directoryPath);
+    if (!await directory.exists()) {
+      log('[LocalLibrary] Directory does not exist: $directoryPath');
+      return [];
+    }
+    final files = <File>[];
+    try {
+      log('[LocalLibrary] Scanning directory: $directoryPath');
+      log('[LocalLibrary] Platform: ${Platform.operatingSystem}, SDK: ${Platform.operatingSystemVersion}');
+      int entityCount = 0;
+
+      // Try to list directory contents
+      final stream = directory.list(recursive: true, followLinks: false);
+
+      await for (final entity in stream) {
+        entityCount++;
+        log('[LocalLibrary] Entity #$entityCount: ${entity.path} (${entity.runtimeType})');
+        if (entity is File) {
+          final extension = path.extension(entity.path).toLowerCase();
+          log('[LocalLibrary] Found file: ${entity.path}, extension: $extension');
+          if (_supportedAudioExtensions.contains(extension)) {
+            files.add(entity);
+            log('[LocalLibrary] Added audio file: ${entity.path}');
+          }
+        }
+      }
+      log('[LocalLibrary] Total entities scanned: $entityCount, audio files found: ${files.length}');
+    } catch (e, stackTrace) {
+      log(
+        '[LocalLibrary] Error scanning directory',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
+      // On Android, the error might be due to Scoped Storage restrictions
+      if (Platform.isAndroid) {
+        log('[LocalLibrary] Android Scoped Storage may be blocking access. '
+            'User needs to grant MANAGE_EXTERNAL_STORAGE permission.');
+      }
+
+      return files;
+    }
+    return files;
+  }
+
+  Future<List<TrackEntity>> _buildTracksForPlaylist(
+    LocalLibraryPlaylist playlist,
+  ) async {
+    log('[LocalLibrary] Building tracks for playlist: ${playlist.name} (${playlist.directoryPath})');
+    final files = await _listAudioFiles(playlist.directoryPath);
+    log('[LocalLibrary] Found ${files.length} audio files');
+    final tracks = <TrackEntity>[];
+    for (var i = 0; i < files.length; i++) {
+      tracks.add(await _fileToTrack(files[i], i, playlist));
+    }
+    log('[LocalLibrary] Built ${tracks.length} tracks');
+    return tracks;
+  }
+
+  Future<TrackEntity> _fileToTrack(
+    File file,
+    int index,
+    LocalLibraryPlaylist playlist,
+  ) async {
+    log('[LocalLibrary] Processing file: ${file.path}');
+    final metadata = await _getTrackMetadata(file);
+    log('[LocalLibrary] Metadata result: $metadata');
+    final fallbackTitle = path.basenameWithoutExtension(file.path);
+    final title = metadata?.title ??
+        (fallbackTitle.isEmpty ? 'Track ${index + 1}' : fallbackTitle);
+    final artistName = _resolveArtistName(metadata);
+    final album = SimplifiedAlbum(
+      id: playlist.id,
+      title: metadata?.album ?? playlist.name,
+    );
+
+    log('[LocalLibrary] Creating TrackEntity - title: $title, artist: $artistName, artworkPath: ${metadata?.artworkPath}');
+
+    return TrackEntity(
+      id: 'local_track_${playlist.id}_$index',
+      orderIndex: index,
+      title: title.isEmpty ? 'Track ${index + 1}' : title,
+      hash: file.path,
+      artist: SimplifiedArtist(
+        id: 'local_artist_${artistName.hashCode}',
+        name: artistName,
+      ),
+      album: album,
+      highResImg: metadata?.artworkPath,
+      lowResImg: metadata?.artworkPath,
+      source: 'local_directory',
+      fromSmartQueue: false,
+      duration: Duration.zero,
+      position: Duration.zero,
+      url: file.uri.toString(),
+      isLocal: true,
+    );
+  }
+
+  Future<void> _ensureTrackMetadataCacheLoaded() async {
+    if (_localTrackMetadataLoaded) {
+      return;
+    }
+    _localTrackMetadataCache = await _localLibraryService.loadTrackMetadata();
+    _localTrackMetadataLoaded = true;
+  }
+
+  Future<LocalTrackMetadata?> _getTrackMetadata(File file) async {
+    await _ensureTrackMetadataCacheLoaded();
+    log('[LocalLibrary] Cache loaded, checking for: ${file.path}');
+    final cached = _localTrackMetadataCache[file.path];
+    if (cached != null) {
+      log('[LocalLibrary] Found in cache: $cached');
+      final finalized = await _finalizeMetadataArtwork(cached, file);
+      if (!identical(finalized, cached)) {
+        _localTrackMetadataCache[file.path] = finalized;
+        unawaited(
+          _localLibraryService.saveTrackMetadata(_localTrackMetadataCache),
+        );
+      }
+      return finalized;
+    }
+    log('[LocalLibrary] Not in cache, extracting...');
+    final extracted = await _extractTrackMetadata(file);
+    if (extracted != null) {
+      log('[LocalLibrary] Extracted successfully, saving to cache');
+      final finalized = await _finalizeMetadataArtwork(extracted, file);
+      _localTrackMetadataCache[file.path] = finalized;
+      unawaited(
+        _localLibraryService.saveTrackMetadata(_localTrackMetadataCache),
+      );
+      return finalized;
+    } else {
+      log('[LocalLibrary] Extraction returned null');
+    }
+    return extracted;
+  }
+
+  Future<LocalTrackMetadata?> _extractTrackMetadata(File file) async {
+    try {
+      log('[LocalLibrary] Extracting metadata for: ${file.path}');
+
+      // Use audio_metadata_reader to read metadata
+      final metadata = readMetadata(file, getImage: true);
+
+      log('[LocalLibrary] Metadata type: ${metadata.runtimeType}');
+
+      // Extract common fields - properties vary by format
+      String? title;
+      String? artist;
+      String? album;
+      String? artworkPath;
+
+      // Try to access common metadata fields
+      try {
+        final dynamic dynMetadata = metadata;
+
+        title = _safeMetadataString(() => dynMetadata.title) ??
+            _safeMetadataString(() => dynMetadata.songName) ??
+            _safeMetadataString(() => dynMetadata.trackName);
+
+        artist = _safeMetadataString(() => dynMetadata.artist) ??
+            _safeMetadataString(() => dynMetadata.albumArtist) ??
+            _safeMetadataString(() => dynMetadata.trackArtist) ??
+            _safeMetadataString(() => dynMetadata.trackArtistNames);
+
+        album = _safeMetadataString(() => dynMetadata.album) ??
+            _safeMetadataString(() => dynMetadata.albumName);
+
+        log('[LocalLibrary] Extracted - title: $title, artist: $artist, album: $album');
+
+        try {
+          List<Picture>? pictures;
+          try {
+            pictures = dynMetadata.pictures;
+          } catch (_) {}
+
+          if (pictures != null && pictures.isNotEmpty) {
+            final picture = pictures.first;
+            log('[LocalLibrary] Found picture');
+            if (picture.bytes.isNotEmpty) {
+              String mime = 'image/jpeg';
+              try {
+                final dynamic dynPic = picture;
+                mime = dynPic.mimeType ?? dynPic.mime ?? 'image/jpeg';
+              } catch (_) {}
+              artworkPath = await _storeArtworkBytes(file, picture.bytes, mime);
+              log('[LocalLibrary] Stored artwork at: $artworkPath');
+            }
+          }
+        } catch (e) {
+          log('[LocalLibrary] Error extracting artwork: $e');
+        }
+      } catch (e) {
+        log('[LocalLibrary] Error accessing metadata properties: $e');
+      }
+
+      if (title == null &&
+          artist == null &&
+          album == null &&
+          artworkPath == null) {
+        log('[LocalLibrary] No metadata extracted for: ${file.path}');
+        return null;
+      }
+
+      final result = LocalTrackMetadata(
+        title: title?.trim().isEmpty == true ? null : title?.trim(),
+        artist: artist?.trim().isEmpty == true ? null : artist?.trim(),
+        album: album?.trim().isEmpty == true ? null : album?.trim(),
+        artworkPath: artworkPath,
+      );
+
+      log('[LocalLibrary] Metadata created successfully');
+      return result;
+    } catch (e, stackTrace) {
+      log(
+        '[LocalLibrary] Failed to extract metadata for ${file.path}',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return null;
+    }
+  }
+
+  String? _safeMetadataString(dynamic Function() getter) {
+    try {
+      final value = getter();
+      return _stringifyMetadataField(value);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  String? _stringifyMetadataField(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is String) {
+      final trimmed = value.trim();
+      return trimmed.isEmpty ? null : trimmed;
+    }
+    if (value is List && value.isNotEmpty) {
+      final first = value.first;
+      if (first is String) {
+        final trimmed = first.trim();
+        return trimmed.isEmpty ? null : trimmed;
+      }
+    }
+    return null;
+  }
+
+  Future<LocalTrackMetadata> _finalizeMetadataArtwork(
+    LocalTrackMetadata metadata,
+    File sourceFile,
+  ) async {
+    var updated = metadata;
+    final artworkPath = metadata.artworkPath;
+    if (artworkPath == null) {
+      return updated;
+    }
+    if (artworkPath.startsWith('data:')) {
+      final stored = await _storeArtworkFromDataUri(sourceFile, artworkPath);
+      updated = updated.copyWith(artworkPath: stored);
+    } else if (artworkPath.startsWith('file://')) {
+      updated = updated.copyWith(
+        artworkPath: artworkPath.replaceFirst('file://', ''),
+      );
+    }
+
+    final normalizedPath = updated.artworkPath;
+    if (normalizedPath == null) {
+      return updated;
+    }
+
+    final exists = await File(normalizedPath).exists();
+    if (!exists) {
+      return updated.copyWith(artworkPath: null);
+    }
+    return updated;
+  }
+
+  Future<String?> _storeArtworkFromDataUri(
+    File sourceFile,
+    String dataUri,
+  ) async {
+    final commaIndex = dataUri.indexOf(',');
+    if (commaIndex == -1) {
+      return null;
+    }
+    final header = dataUri.substring(0, commaIndex);
+    final base64Part = dataUri.substring(commaIndex + 1);
+    final mimeType = header.replaceFirst('data:', '').split(';').first;
+    try {
+      final bytes = base64Decode(base64Part);
+      return _storeArtworkBytes(sourceFile, bytes, mimeType);
+    } catch (e) {
+      log('[LocalLibrary] Failed to decode legacy artwork data URI', error: e);
+      return null;
+    }
+  }
+
+  Future<String> _storeArtworkBytes(
+    File sourceFile,
+    Uint8List bytes,
+    String? mime,
+  ) async {
+    final supportDir = await getApplicationSupportDirectory();
+    final artworkDir = Directory(path.join(supportDir.path, 'local_artworks'));
+    if (!await artworkDir.exists()) {
+      await artworkDir.create(recursive: true);
+    }
+
+    final lastModified = await sourceFile.lastModified();
+    final fingerprint =
+        '${sourceFile.path}-${lastModified.millisecondsSinceEpoch}-${bytes.length}';
+    final hash = sha1.convert(utf8.encode(fingerprint)).toString();
+    final extension = _extensionFromMime(mime);
+    final artworkFile = File(path.join(artworkDir.path, '$hash$extension'));
+    await artworkFile.writeAsBytes(bytes, flush: true);
+    return artworkFile.path;
+  }
+
+  String _extensionFromMime(String? mime) {
+    switch (mime) {
+      case 'image/png':
+        return '.png';
+      case 'image/webp':
+        return '.webp';
+      case 'image/gif':
+        return '.gif';
+      default:
+        return '.jpg';
+    }
+  }
+
+  String _resolveArtistName(LocalTrackMetadata? metadata) {
+    final value = metadata?.artist;
+    if (value == null || value.trim().isEmpty) {
+      return _localizedLocalFilesLabel();
+    }
+    return value;
+  }
+
+  String _localizedLocalFilesLabel() {
+    try {
+      final contextManager = ContextManager();
+      final dialogContext = contextManager.dialogStack.lastOrNull?.context ??
+          contextManager.dialogStack.firstOrNull?.context;
+      final stackContext = contextManager.contextStack.lastOrNull?.context ??
+          contextManager.contextStack.firstOrNull?.context;
+      final context = dialogContext ?? stackContext;
+      if (context != null) {
+        return context.localization.localFilesLabel;
+      }
+    } catch (_) {
+      // ignore and fall back
+    }
+    return 'Local Files';
+  }
+
+  Future<void> _replaceLocalPlaylist(
+    LocalLibraryPlaylist updatedPlaylist,
+  ) async {
+    final updated = data.localPlaylists.map((playlist) {
+      if (playlist.id == updatedPlaylist.id) {
+        return updatedPlaylist;
+      }
+      return playlist;
+    }).toList();
+    await _persistLocalPlaylists(updated);
+  }
+
+  Future<void> _persistLocalPlaylists(
+    List<LocalLibraryPlaylist> playlists,
+  ) async {
+    playlists.sort(
+      (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+    );
+    await _localLibraryService.savePlaylists(playlists);
+    updateData(data.copyWith(localPlaylists: playlists));
+  }
+
+  String? _normalizeDirectoryPath(String? rawPath) {
+    if (rawPath == null) {
+      return null;
+    }
+    final trimmed = rawPath.trim();
+    if (trimmed.isEmpty) {
+      return null;
+    }
+    final normalized = path.normalize(trimmed);
+    if (Platform.isWindows) {
+      return normalized.replaceAll('/', '\\');
+    }
+    return normalized.replaceAll('\\', '/');
   }
 
   void _cleanupBackupIsolate() {

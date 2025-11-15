@@ -24,12 +24,13 @@ dependencies:
 
   # YouTube APIs
   youtube_explode_dart:
-    git: https://github.com/Coronon/youtube_explode_dart
+    git:
+      url: https://github.com/Hexer10/youtube_explode_dart.git
+      ref: 78d716afa9bccd117020a1983361ebf4fffaaf28
   dart_ytmusic_api:
     git: https://github.com/MusilyApp/dart_ytmusic_api
 
   # UI and Animations
-  loading_animation_widget: ^1.2.1
   skeletonizer: any
   dotted_border: ^2.1.0
   flutter_svg: ^2.0.10+1
@@ -97,6 +98,8 @@ dependencies:
   lucide_icons_flutter: ^3.1.5
   toastification: ^3.0.3
   audio_service_win: ^0.0.2
+  collection: ^1.19.1
+  audio_metadata_reader: ^1.4.1
 
 # Development Dependencies
 dev_dependencies:
@@ -169,6 +172,7 @@ flutter:
     - assets/uninstaller/
     - assets/audio/
     - assets/supporters.json
+    - assets/images/
 
 # Splash Screen Configuration
 flutter_native_splash:

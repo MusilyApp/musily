@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/services/library_backup_service.dart';
@@ -165,6 +166,19 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
         List<Permission> permissions = [
           Permission.storage,
         ];
+
+        // On Android 11+ (API 30+), request MANAGE_EXTERNAL_STORAGE for full directory access
+        if (Platform.isAndroid) {
+          try {
+            final androidInfo = await DeviceInfoPlugin().androidInfo;
+            if (androidInfo.version.sdkInt >= 30) {
+              // Request manage external storage permission for Android 11+
+              permissions.add(Permission.manageExternalStorage);
+            }
+          } catch (e) {
+            // If we can't determine SDK version, just request storage
+          }
+        }
 
         await permissions.request();
         MediaStore.appFolder = 'Musily';

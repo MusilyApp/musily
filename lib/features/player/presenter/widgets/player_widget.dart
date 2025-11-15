@@ -76,6 +76,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       child: widget.playerController.builder(
         builder: (context, data) {
           final currentPlayingItem = data.currentPlayingItem!;
+          final isLocal = currentPlayingItem.isLocal;
           return Scaffold(
             body: Stack(
               fit: StackFit.expand,
@@ -178,7 +179,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                             ),
                                           ),
                                         ),
-                                        subtitle: InkWell(
+                                        subtitle: _ArtistSubtitle(
+                                          isLocal: isLocal,
+                                          artistName:
+                                              currentPlayingItem.artist.name,
                                           onTap: () {
                                             LyNavigator.close('player');
                                             LyNavigator.push(
@@ -217,42 +221,16 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                               ),
                                             );
                                           },
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(
-                                                LucideIcons.micVocal,
-                                                size: 14,
-                                                color: context.themeData
-                                                    .colorScheme.onSurface
-                                                    .withValues(alpha: 0.6),
-                                              ),
-                                              const SizedBox(width: 6),
-                                              Flexible(
-                                                child: InfinityMarquee(
-                                                  child: Text(
-                                                    currentPlayingItem
-                                                        .artist.name,
-                                                    style: context.themeData
-                                                        .textTheme.bodySmall
-                                                        ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                         ),
                                         trailing: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            DownloadButton(
-                                              controller:
-                                                  widget.downloaderController,
-                                              track: data.currentPlayingItem!,
-                                            ),
+                                            if (!isLocal)
+                                              DownloadButton(
+                                                controller:
+                                                    widget.downloaderController,
+                                                track: data.currentPlayingItem!,
+                                              ),
                                             if (data.tracksFromSmartQueue
                                                 .contains(
                                               currentPlayingItem.hash,
@@ -274,11 +252,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                                   size: 20,
                                                 ),
                                               ),
-                                            FavoriteButton(
-                                              libraryController:
-                                                  widget.libraryController,
-                                              track: data.currentPlayingItem!,
-                                            ),
+                                            if (!isLocal)
+                                              FavoriteButton(
+                                                libraryController:
+                                                    widget.libraryController,
+                                                track: data.currentPlayingItem!,
+                                              ),
                                           ],
                                         ),
                                       ),
@@ -475,8 +454,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                 ),
                                 Builder(
                                   builder: (context) {
-                                    if (currentPlayingItem.duration.inSeconds ==
-                                        0) {
+                                    if ((!data.mediaAvailable ||
+                                            data.isBuffering) &&
+                                        data.loadRequested) {
                                       return const SizedBox(
                                         width: 70,
                                         height: 70,
@@ -485,44 +465,55 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                         ),
                                       );
                                     }
-                                    return InkWell(
-                                      onTap: () {
-                                        if (data.isPlaying) {
-                                          widget.playerController.methods
-                                              .pause();
-                                        } else {
-                                          widget.playerController.methods
-                                              .resume();
-                                        }
-                                      },
-                                      child: Container(
-                                        width: 70,
-                                        height: 70,
-                                        decoration: BoxDecoration(
+                                    return Container(
+                                      width: 70,
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        color: context
+                                            .themeData.colorScheme.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: const EdgeInsets.all(6),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          if (data.currentPlayingItem?.duration
+                                                  .inSeconds ==
+                                              0) {
+                                            widget.playerController.methods
+                                                .loadAndPlay(
+                                              data.currentPlayingItem!,
+                                              data.playingId,
+                                            );
+                                            return;
+                                          }
+                                          if (data.isPlaying) {
+                                            widget.playerController.methods
+                                                .pause();
+                                          } else if (data.mediaAvailable) {
+                                            widget.playerController.methods
+                                                .resume();
+                                          } else if (data.currentPlayingItem !=
+                                              null) {
+                                            final playingId = data
+                                                    .playingId.isNotEmpty
+                                                ? data.playingId
+                                                : data.currentPlayingItem!.id;
+                                            await widget
+                                                .playerController.methods
+                                                .loadAndPlay(
+                                              data.currentPlayingItem!,
+                                              playingId,
+                                            );
+                                          }
+                                        },
+                                        visualDensity: VisualDensity.standard,
+                                        iconSize: 35,
+                                        icon: Icon(
+                                          data.isPlaying
+                                              ? LucideIcons.pause
+                                              : LucideIcons.play,
                                           color: context
-                                              .themeData.colorScheme.primary,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        padding: const EdgeInsets.all(6),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            if (data.isPlaying) {
-                                              widget.playerController.methods
-                                                  .pause();
-                                            } else {
-                                              widget.playerController.methods
-                                                  .resume();
-                                            }
-                                          },
-                                          visualDensity: VisualDensity.standard,
-                                          iconSize: 35,
-                                          icon: Icon(
-                                            data.isPlaying
-                                                ? LucideIcons.pause
-                                                : LucideIcons.play,
-                                            color: context.themeData.colorScheme
-                                                .onPrimary,
-                                          ),
+                                              .themeData.colorScheme.onPrimary,
                                         ),
                                       ),
                                     );
@@ -607,36 +598,40 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                IconButton(
-                                  onPressed: () {
-                                    widget.coreController.methods.shareSong(
-                                      currentPlayingItem,
-                                    );
-                                  },
-                                  icon:
-                                      const Icon(LucideIcons.share2, size: 20),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    final newMode =
-                                        data.playerMode == PlayerMode.lyrics
-                                            ? PlayerMode.artwork
-                                            : PlayerMode.lyrics;
-                                    widget.playerController.methods
-                                        .setPlayerMode(
-                                      newMode,
-                                    );
-                                  },
-                                  iconSize: 20,
-                                  icon: Icon(
-                                    data.playerMode != PlayerMode.lyrics
-                                        ? LucideIcons.music2
-                                        : LucideIcons.disc2,
-                                    color: data.playerMode == PlayerMode.lyrics
-                                        ? context.themeData.colorScheme.primary
-                                        : null,
+                                if (!isLocal)
+                                  IconButton(
+                                    onPressed: () {
+                                      widget.coreController.methods.shareSong(
+                                        currentPlayingItem,
+                                      );
+                                    },
+                                    icon: const Icon(LucideIcons.share2,
+                                        size: 20),
                                   ),
-                                ),
+                                if (!isLocal)
+                                  IconButton(
+                                    onPressed: () {
+                                      final newMode =
+                                          data.playerMode == PlayerMode.lyrics
+                                              ? PlayerMode.artwork
+                                              : PlayerMode.lyrics;
+                                      widget.playerController.methods
+                                          .setPlayerMode(
+                                        newMode,
+                                      );
+                                    },
+                                    iconSize: 20,
+                                    icon: Icon(
+                                      data.playerMode != PlayerMode.lyrics
+                                          ? LucideIcons.music2
+                                          : LucideIcons.disc2,
+                                      color:
+                                          data.playerMode == PlayerMode.lyrics
+                                              ? context
+                                                  .themeData.colorScheme.primary
+                                              : null,
+                                    ),
+                                  ),
                                 IconButton(
                                   onPressed: () {
                                     if (data.playerMode == PlayerMode.queue) {
@@ -725,6 +720,52 @@ class _PlayerWidgetState extends State<PlayerWidget> {
           );
         },
       ),
+    );
+  }
+}
+
+class _ArtistSubtitle extends StatelessWidget {
+  final bool isLocal;
+  final String artistName;
+  final VoidCallback onTap;
+
+  const _ArtistSubtitle({
+    required this.isLocal,
+    required this.artistName,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final content = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          LucideIcons.micVocal,
+          size: 14,
+          color: context.themeData.colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
+        const SizedBox(width: 6),
+        Flexible(
+          child: InfinityMarquee(
+            child: Text(
+              artistName,
+              style: context.themeData.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+
+    if (isLocal) {
+      return content;
+    }
+
+    return InkWell(
+      onTap: onTap,
+      child: content,
     );
   }
 }

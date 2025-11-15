@@ -74,62 +74,113 @@ class _DownloadButtonState extends State<DownloadButton> {
     if (item != null) {
       switch (item.status) {
         case DownloadStatus.queued:
-          return IconButton(
-            onPressed: () {},
-            iconSize: iconSize,
-            icon: Icon(
-              LucideIcons.hourglass,
-              size: iconSize ?? 20,
-              color: widget.color ?? context.themeData.colorScheme.primary,
+          return Tooltip(
+            message: 'Queued',
+            child: IconButton(
+              onPressed: () {},
+              iconSize: iconSize,
+              icon: Icon(
+                LucideIcons.hourglass,
+                size: iconSize ?? 20,
+                color: widget.color ?? context.themeData.colorScheme.primary,
+              ),
             ),
           );
 
         case DownloadStatus.downloading:
-          return IconButton(
-            onPressed: () {},
-            icon: SizedBox(
-              height: iconSize,
-              width: iconSize,
-              child: CircularPercentIndicator(
-                lineWidth: 4,
-                startAngle: 180,
-                progressColor:
-                    widget.color ?? context.themeData.colorScheme.primary,
-                backgroundColor: context.themeData.colorScheme.inversePrimary,
-                percent: item.progress,
-                radius: 10,
+          final percent = item.totalBytes > 0
+              ? (item.downloadedBytes / item.totalBytes).clamp(0.0, 1.0)
+              : item.progress;
+          return Tooltip(
+            message:
+                '${(percent * 100).toStringAsFixed(0)}% • ${item.formattedSpeed}',
+            child: IconButton(
+              onPressed: () {},
+              icon: SizedBox(
+                height: iconSize,
+                width: iconSize,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularPercentIndicator(
+                      lineWidth: 4,
+                      startAngle: 180,
+                      progressColor:
+                          widget.color ?? context.themeData.colorScheme.primary,
+                      backgroundColor:
+                          context.themeData.colorScheme.inversePrimary,
+                      percent: percent.clamp(0.0, 1.0),
+                      radius: 10,
+                      animation: false,
+                    ),
+                    if (item.downloadSpeed > 0)
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: widget.color ??
+                              context.themeData.colorScheme.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           );
 
         case DownloadStatus.completed:
           if ((item.track.url ?? '').isDirectory) {
-            return IconButton(
-              onPressed: () {},
-              iconSize: iconSize,
-              icon: Icon(
-                LucideIcons.circleCheckBig,
-                size: iconSize ?? 20,
-                color: widget.color ?? context.themeData.colorScheme.primary,
+            return Tooltip(
+              message: 'Downloaded • ${item.formattedSize}',
+              child: IconButton(
+                onPressed: () {},
+                iconSize: iconSize,
+                icon: Icon(
+                  LucideIcons.circleCheckBig,
+                  size: iconSize ?? 20,
+                  color: widget.color ?? context.themeData.colorScheme.primary,
+                ),
               ),
             );
           }
           break;
+
+        case DownloadStatus.failed:
+          return Tooltip(
+            message: 'Failed: ${item.errorMessage ?? "Unknown error"}',
+            child: IconButton(
+              onPressed: () {
+                if (widget.controller.methods.retryDownload != null) {
+                  widget.controller.methods.retryDownload!(widget.track);
+                }
+              },
+              iconSize: iconSize,
+              icon: Icon(
+                LucideIcons.refreshCcw,
+                size: iconSize ?? 20,
+                color: context.themeData.colorScheme.error,
+              ),
+            ),
+          );
 
         default:
           break;
       }
     }
 
-    return IconButton(
-      onPressed: () {
-        widget.controller.methods.addDownload(widget.track);
-      },
-      iconSize: iconSize,
-      icon: Icon(
-        LucideIcons.download,
-        size: iconSize ?? 20,
-        color: widget.color ?? context.themeData.colorScheme.primary,
+    return Tooltip(
+      message: 'Download',
+      child: IconButton(
+        onPressed: () {
+          widget.controller.methods.addDownload(widget.track);
+        },
+        iconSize: iconSize,
+        icon: Icon(
+          LucideIcons.download,
+          size: iconSize ?? 20,
+          color: widget.color ?? context.themeData.colorScheme.primary,
+        ),
       ),
     );
   }

@@ -153,6 +153,10 @@ class _ArtistTracksPageState extends State<ArtistTracksPage> {
                         if (widget.playerController.data.playingId ==
                             widget.artist.id) {
                           queueToPlay = widget.playerController.data.queue;
+                          if (!queueToPlay
+                              .any((element) => element.id == track.id)) {
+                            queueToPlay.add(track);
+                          }
                         } else {
                           queueToPlay = allTracks;
                         }

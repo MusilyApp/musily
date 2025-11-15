@@ -7,6 +7,7 @@ import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/features/_library_module/domain/usecases/update_track_in_playlist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/data/services/musily_player.dart';
+import 'package:musily/features/player/data/services/player_persistence_service.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
@@ -22,6 +23,8 @@ import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.d
 class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   final _downloaderController = DownloaderController();
   final MusilyPlayer _musilyPlayer = MusilyPlayer();
+  final PlayerPersistenceService _playerPersistenceService =
+      PlayerPersistenceService();
 
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final GetTrackLyricsUsecase getTrackLyricsUsecase;
@@ -54,9 +57,25 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
 
     _musilyPlayer.setUriGetter((track) async {
       final offlineItem = _downloaderController.methods.getItem(track);
+
       if (offlineItem != null) {
-        return Uri.parse(offlineItem.track.url!);
+        final cachedUrl = offlineItem.track.url;
+        if (cachedUrl != null && cachedUrl.isNotEmpty) {
+          return Uri.parse(cachedUrl);
+        }
+
+        final fetchedItem = await getPlayableItemUsecase.exec(track);
+        final fetchedUrl = fetchedItem.url;
+
+        if (fetchedUrl != null && fetchedUrl.isNotEmpty) {
+          offlineItem.track.url = fetchedUrl;
+          await _downloaderController.methods.updateStoredQueue();
+          return Uri.parse(fetchedUrl);
+        }
+
+        return Uri.parse('');
       }
+
       final item = await getPlayableItemUsecase.exec(track);
       return Uri.parse(item.url ?? '');
     });
@@ -65,8 +84,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       updateData(
         data.copyWith(
           isPlaying: state == MusilyPlayerState.playing,
-          mediaAvailable: state == MusilyPlayerState.playing ||
-              state == MusilyPlayerState.paused,
+          mediaAvailable: data.currentPlayingItem?.url != null,
           isBuffering: state == MusilyPlayerState.buffering,
         ),
       );
@@ -152,7 +170,44 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         }
       }
     });
+
+    unawaited(_hydrateFromPersistedState());
   }
+
+  Future<void> _hydrateFromPersistedState() async {
+    final persistedState = await _playerPersistenceService.loadState();
+    if (persistedState == null) {
+      return;
+    }
+
+    final persistedTrack = _resolvePersistedTrack(persistedState);
+
+    updateData(
+      data.copyWith(
+        queue: persistedState.queue.isNotEmpty
+            ? List<TrackEntity>.from(persistedState.queue)
+            : data.queue,
+        currentPlayingItem: persistedTrack ?? data.currentPlayingItem,
+        shuffleEnabled: persistedState.shuffleEnabled,
+        repeatMode: persistedState.repeatMode,
+      ),
+    );
+  }
+
+  TrackEntity? _resolvePersistedTrack(PlayerPersistedState state) {
+    final id = state.currentTrackId;
+    final hash = state.currentTrackHash;
+
+    for (final track in state.queue) {
+      final matchesId = id != null && id.isNotEmpty && track.id == id;
+      final matchesHash = hash != null && hash.isNotEmpty && track.hash == hash;
+      if (matchesId || matchesHash) {
+        return track;
+      }
+    }
+    return state.currentTrack;
+  }
+
   @override
   PlayerData defineData() {
     return PlayerData(
@@ -162,7 +217,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       isPlaying: false,
       loadRequested: false,
       seeking: false,
-      mediaAvailable: true,
+      mediaAvailable: false,
       shuffleEnabled: false,
       repeatMode: MusilyRepeatMode.noRepeat,
       isBuffering: false,
@@ -370,6 +425,17 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         }
       },
       addToQueue: (items) async {
+        if (data.queue.isNotEmpty && data.queue.first.isLocal) {
+          await _musilyPlayer.stop();
+          await _musilyPlayer.setQueue([]);
+          data = data.copyWith(
+            queue: [],
+            currentPlayingItem: null,
+            playingId: '',
+            tracksFromSmartQueue: [],
+          );
+          updateData(data);
+        }
         final currentItemsHashs = data.queue.map((element) => element.hash);
         final filteredItems = items.where(
           (element) => !currentItemsHashs.contains(element.hash),

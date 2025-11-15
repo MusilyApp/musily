@@ -146,7 +146,7 @@ class LyNavigator {
     Modular.to.navigate(NavigatorPages.getRoute(page));
   }
 
-  static push(
+  static Future<T?> push<T>(
     BuildContext context,
     Widget widget, {
     String? contextKey,
@@ -158,15 +158,15 @@ class LyNavigator {
         .where((e) => e.key == contextKey)
         .firstOrNull;
     usingContext = stackContext?.context ?? context;
-    Navigator.of(usingContext).push(
+    return Navigator.of(usingContext).push<T>(
       DownupRouter(
         builder: (context) => widget,
       ),
     );
   }
 
-  static pop(BuildContext context) {
-    Navigator.pop(context);
+  static pop(BuildContext context, [Object? result]) {
+    Navigator.pop(context, result);
   }
 
   static close(String contextKey) {

@@ -285,31 +285,45 @@ class YoutubeDatasource {
   }
 
   Future<PlaylistEntity?> getPlaylist(String playlistId) async {
+    print('Getting playlist $playlistId...');
     final explode = YoutubeExplode();
-    final videos = await explode.playlists.getVideos(playlistId).toList();
-    final playlist = await explode.playlists.get(playlistId);
-    return PlaylistEntity(
-      id: playlistId,
-      title: playlist.title,
-      artist: SimplifiedArtist(id: '', name: playlist.author),
-      tracks: [
-        ...videos.map(
-          (video) => TrackEntity(
-            id: video.id.toString(),
-            title: video.title,
-            hash: generateTrackHash(title: video.title, artist: video.author),
-            artist: SimplifiedArtist(id: '', name: video.author),
-            album: SimplifiedAlbum(id: '', title: ''),
-            highResImg: video.thumbnails.highResUrl,
-            lowResImg: video.thumbnails.lowResUrl,
-            source: 'youtube',
-            fromSmartQueue: false,
-            duration: video.duration ?? Duration.zero,
-          ),
-        ),
-      ],
-      trackCount: videos.length,
-    );
+
+    try {
+      final videos = await explode.playlists.getVideos(playlistId).toList();
+
+      final playlist = await explode.playlists.get(playlistId);
+      print('playlist found: ${playlist.title}');
+
+      final tracks = videos
+          .map(
+            (video) => TrackEntity(
+              id: video.id.toString(),
+              title: video.title,
+              hash: generateTrackHash(title: video.title, artist: video.author),
+              artist: SimplifiedArtist(id: '', name: video.author),
+              album: SimplifiedAlbum(id: '', title: ''),
+              highResImg: video.thumbnails.highResUrl,
+              lowResImg: video.thumbnails.lowResUrl,
+              source: 'youtube',
+              fromSmartQueue: false,
+              duration: video.duration ?? Duration.zero,
+            ),
+          )
+          .toList();
+
+      return PlaylistEntity(
+        id: playlistId,
+        title: playlist.title,
+        artist: SimplifiedArtist(id: '', name: playlist.author),
+        tracks: tracks,
+        trackCount: tracks.length,
+      );
+    } catch (e) {
+      print('error getting playlist: $e');
+      return null;
+    } finally {
+      explode.close();
+    }
   }
 
   Future<List<PlaylistEntity>> getUserPlaylists() async {

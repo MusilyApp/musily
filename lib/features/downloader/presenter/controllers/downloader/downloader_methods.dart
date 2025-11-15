@@ -53,6 +53,13 @@ class DownloaderMethods {
     String downloadDir,
   ) registerListeners;
 
+  // Enhanced ParallelDownloader methods
+  final Future<void> Function(TrackEntity track)? retryDownload;
+  final Future<void> Function(TrackEntity track)? pauseDownload;
+  final Future<void> Function(TrackEntity track)? resumeDownload;
+  final Future<void> Function()? retryAllFailed;
+  final Future<Map<String, dynamic>> Function()? getDownloadStats;
+
   DownloaderMethods({
     required this.addDownload,
     this.addDownloadBatch,
@@ -73,5 +80,10 @@ class DownloaderMethods {
     required this.clearAllDownloads,
     required this.clearQueuedDownloads,
     required this.clearCompletedDownloads,
+    this.retryDownload,
+    this.pauseDownload,
+    this.resumeDownload,
+    this.retryAllFailed,
+    this.getDownloadStats,
   });
 }

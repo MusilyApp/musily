@@ -45,34 +45,45 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
     final String textContent = playlistNameController.text;
     final RegExp playlistIdRegex = RegExp(r'([?&])list=([a-zA-Z0-9_-]+)');
     bool alreadyClosedDialog = false;
-    late final PlaylistEntity playlist;
+    late PlaylistEntity playlist;
 
     if (_formKey.currentState!.validate()) {
       if (textContent.isUrl) {
         final match = playlistIdRegex.firstMatch(textContent);
-        if (match != null) {
-          final playlistId = match.group(2);
-          if (playlistId != null) {
-            if (!alreadyClosedDialog) {
-              alreadyClosedDialog = true;
-              Navigator.pop(widget.coreController.coreContext!);
-            }
-            LySnackbar.showInfo('${context.localization.importingPlaylist}...');
-            final retrievedPlaylist = await widget.getPlaylistUsecase.exec(
-              playlistId,
-            );
-            if (retrievedPlaylist != null) {
-              playlist = PlaylistEntity(
-                id: retrievedPlaylist.id,
-                title: retrievedPlaylist.title,
-                trackCount: retrievedPlaylist.trackCount,
-                tracks: retrievedPlaylist.tracks,
-              );
-            } else {
-              LySnackbar.showError(context.localization.playlistNotFound);
-              return;
-            }
-          }
+        if (match == null) {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
+        }
+        final playlistId = match.group(2);
+        if (playlistId == null || playlistId.isEmpty) {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
+        }
+        if (!alreadyClosedDialog) {
+          alreadyClosedDialog = true;
+          Navigator.pop(widget.coreController.coreContext!);
+        }
+        LySnackbar.showInfo('${context.localization.importingPlaylist}...');
+        PlaylistEntity? retrievedPlaylist;
+        try {
+          retrievedPlaylist = await widget.getPlaylistUsecase.exec(
+            playlistId,
+          );
+          print('retrievedPlaylist: $retrievedPlaylist');
+        } catch (e) {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
+        }
+        if (retrievedPlaylist != null) {
+          playlist = PlaylistEntity(
+            id: retrievedPlaylist.id,
+            title: retrievedPlaylist.title,
+            trackCount: retrievedPlaylist.trackCount,
+            tracks: retrievedPlaylist.tracks,
+          );
+        } else {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
         }
       } else {
         playlist = PlaylistEntity(
@@ -88,15 +99,16 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
         Navigator.pop(widget.coreController.coreContext!);
       }
 
+      final createdPlaylist = playlist;
+
       widget.libraryController.methods.createPlaylist(
         CreatePlaylistDTO(
-          title: playlist.title,
-          id: playlist.id,
-          tracks: playlist.tracks,
+          title: createdPlaylist.title,
+          tracks: createdPlaylist.tracks,
         ),
       );
       playlistNameController.text = '';
-      widget.onCreated?.call(playlist);
+      widget.onCreated?.call(createdPlaylist);
     }
   }
 

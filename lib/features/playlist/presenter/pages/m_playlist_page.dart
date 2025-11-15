@@ -116,6 +116,10 @@ class _MPlaylistPageState extends State<MPlaylistPage> {
                     late final List<TrackEntity> queueToPlay;
                     if (data.playingId == widget.playlist.id) {
                       queueToPlay = data.queue;
+                      if (!queueToPlay
+                          .any((element) => element.id == track.id)) {
+                        queueToPlay.add(track);
+                      }
                     } else {
                       queueToPlay = widget.playlist.tracks;
                     }
@@ -463,6 +467,10 @@ class _MPlaylistPageState extends State<MPlaylistPage> {
                             late final List<TrackEntity> queueToPlay;
                             if (playerData.playingId == widget.playlist.id) {
                               queueToPlay = playerData.queue;
+                              if (!queueToPlay
+                                  .any((element) => element.id == track.id)) {
+                                queueToPlay.add(track);
+                              }
                             } else {
                               queueToPlay = widget.playlist.tracks;
                             }

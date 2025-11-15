@@ -12,8 +12,10 @@ import 'package:musily/core/presenter/ui/window/draggable_box.dart';
 import 'package:musily/core/presenter/ui/window/window_controls.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
-import 'package:musily/features/_library_module/presenter/pages/backup_page.dart';
+import 'package:musily/features/_library_module/presenter/pages/library_settings.dart';
+import 'package:musily/features/_library_module/presenter/pages/local_library_playlist_page.dart';
 import 'package:musily/features/_library_module/presenter/widgets/backup_progress_card.dart';
+import 'package:musily/features/_library_module/presenter/widgets/local_playlist_tile.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/widgets/album_tile.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -219,18 +221,36 @@ class _DCorePageState extends State<DCorePage> {
                                       onPressed: () async {
                                         LyNavigator.push(
                                           context.showingPageContext,
-                                          BackupPage(
+                                          LibrarySettingsPage(
+                                            playerController:
+                                                widget.playerController,
                                             downloaderController:
                                                 widget.downloaderController,
                                             libraryController:
                                                 widget.libraryController,
                                             coreController:
                                                 widget.coreController,
+                                            getPlayableItemUsecase:
+                                                widget.getPlayableItemUsecase,
+                                            getAlbumUsecase:
+                                                widget.getAlbumUsecase,
+                                            getArtistUsecase:
+                                                widget.getArtistUsecase,
+                                            getArtistTracksUsecase:
+                                                widget.getArtistTracksUsecase,
+                                            getArtistAlbumsUsecase:
+                                                widget.getArtistAlbumsUsecase,
+                                            getArtistSinglesUsecase:
+                                                widget.getArtistSinglesUsecase,
+                                            getPlaylistUsecase:
+                                                widget.getPlaylistUsecase,
+                                            getTrackUsecase:
+                                                widget.getTrackUsecase,
                                           ),
                                         );
                                       },
                                       icon: Icon(
-                                        LucideIcons.databaseBackup,
+                                        LucideIcons.settings2,
                                         size: 18,
                                         color: context
                                             .themeData.colorScheme.onSurface
@@ -247,6 +267,8 @@ class _DCorePageState extends State<DCorePage> {
                                       builder: (context, dlData) {
                                         final List<LibraryItemEntity>
                                             listClone = List.from(data.items);
+                                        final localFolders =
+                                            data.localPlaylists;
 
                                         // Add offline playlist
                                         final offlinePlaylist =
@@ -320,6 +342,59 @@ class _DCorePageState extends State<DCorePage> {
                                                 contentOrigin:
                                                     ContentOrigin.library,
                                               ),
+                                              if (localFolders.isNotEmpty) ...[
+                                                ...localFolders.map(
+                                                  (folder) => LocalPlaylistTile(
+                                                    playlist: folder,
+                                                    libraryController: widget
+                                                        .libraryController,
+                                                    playerController:
+                                                        widget.playerController,
+                                                    coreController:
+                                                        widget.coreController,
+                                                    leadingSize: 48,
+                                                    density: LyDensity.dense,
+                                                    customClickAction: () {
+                                                      LyNavigator.push(
+                                                        context
+                                                            .showingPageContext,
+                                                        LocalLibraryPlaylistPage(
+                                                          playlistId: folder.id,
+                                                          libraryController: widget
+                                                              .libraryController,
+                                                          playerController: widget
+                                                              .playerController,
+                                                          coreController: widget
+                                                              .coreController,
+                                                          downloaderController:
+                                                              widget
+                                                                  .downloaderController,
+                                                          getPlayableItemUsecase:
+                                                              widget
+                                                                  .getPlayableItemUsecase,
+                                                          getAlbumUsecase: widget
+                                                              .getAlbumUsecase,
+                                                          getArtistUsecase: widget
+                                                              .getArtistUsecase,
+                                                          getArtistTracksUsecase:
+                                                              widget
+                                                                  .getArtistTracksUsecase,
+                                                          getArtistAlbumsUsecase:
+                                                              widget
+                                                                  .getArtistAlbumsUsecase,
+                                                          getArtistSinglesUsecase:
+                                                              widget
+                                                                  .getArtistSinglesUsecase,
+                                                          getPlaylistUsecase: widget
+                                                              .getPlaylistUsecase,
+                                                          getTrackUsecase: widget
+                                                              .getTrackUsecase,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
                                               ...listClone.map((item) {
                                                 if (item.playlist != null) {
                                                   final playlist =

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
 class SleepTimerIndicator extends StatefulWidget {
@@ -66,7 +67,7 @@ class _SleepTimerIndicatorState extends State<SleepTimerIndicator> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            Icons.access_time,
+            LucideIcons.clock,
             size: 14,
             color: context.themeData.colorScheme.primary,
           ),

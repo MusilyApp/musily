@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/duration.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/downloader/presenter/widgets/download_button.dart';
@@ -112,7 +113,8 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                 flex: 3,
                 child: Row(
                   children: [
-                    InkWell(
+                    _AlbumArtwork(
+                      isLocal: track.isLocal,
                       onTap: () {
                         LyNavigator.push(
                           context.showingPageContext,
@@ -137,12 +139,11 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                           ),
                         );
                       },
-                      borderRadius: BorderRadius.circular(16),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: track.highResImg != null
+                        child: track.lowResImg != null
                             ? AppImage(
-                                track.highResImg!,
+                                track.lowResImg!,
                                 width: 56,
                                 height: 56,
                                 fit: BoxFit.cover,
@@ -151,7 +152,7 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                                 width: 56,
                                 height: 56,
                                 color: context.themeData.colorScheme.onSurface
-                                    .withValues(alpha: 0.7),
+                                    .withValues(alpha: 0.4),
                                 child: Icon(
                                   LucideIcons.music,
                                   color: context.themeData.colorScheme.onSurface
@@ -177,53 +178,68 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
-                          InkWell(
-                            onTap: () {
-                              LyNavigator.push(
-                                context.showingPageContext,
-                                AsyncArtistPage(
-                                  trackId: track.id,
-                                  getTrackUsecase: widget.getTrackUsecase,
-                                  artistId: track.artist.id,
-                                  coreController: widget.coreController,
-                                  getPlaylistUsecase: widget.getPlaylistUsecase,
-                                  playerController: widget.playerController,
-                                  getAlbumUsecase: widget.getAlbumUsecase,
-                                  downloaderController:
-                                      widget.downloaderController,
-                                  getPlayableItemUsecase:
-                                      widget.getPlayableItemUsecase,
-                                  libraryController: widget.libraryController,
-                                  getArtistAlbumsUsecase:
-                                      widget.getArtistAlbumsUsecase,
-                                  getArtistSinglesUsecase:
-                                      widget.getArtistSinglesUsecase,
-                                  getArtistTracksUsecase:
-                                      widget.getArtistTracksUsecase,
-                                  getArtistUsecase: widget.getArtistUsecase,
+                          track.isLocal
+                              ? Text(
+                                  track.artist.name,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    LyNavigator.push(
+                                      context.showingPageContext,
+                                      AsyncArtistPage(
+                                        trackId: track.id,
+                                        getTrackUsecase: widget.getTrackUsecase,
+                                        artistId: track.artist.id,
+                                        coreController: widget.coreController,
+                                        getPlaylistUsecase:
+                                            widget.getPlaylistUsecase,
+                                        playerController:
+                                            widget.playerController,
+                                        getAlbumUsecase: widget.getAlbumUsecase,
+                                        downloaderController:
+                                            widget.downloaderController,
+                                        getPlayableItemUsecase:
+                                            widget.getPlayableItemUsecase,
+                                        libraryController:
+                                            widget.libraryController,
+                                        getArtistAlbumsUsecase:
+                                            widget.getArtistAlbumsUsecase,
+                                        getArtistSinglesUsecase:
+                                            widget.getArtistSinglesUsecase,
+                                        getArtistTracksUsecase:
+                                            widget.getArtistTracksUsecase,
+                                        getArtistUsecase:
+                                            widget.getArtistUsecase,
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    track.artist.name,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Text(
-                              track.artist.name,
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                    FavoriteButton(
-                      libraryController: widget.libraryController,
-                      track: track,
-                    ),
-                    DownloadButton(
-                      controller: widget.downloaderController,
-                      track: track,
-                    ),
+                    if (!track.isLocal)
+                      FavoriteButton(
+                        libraryController: widget.libraryController,
+                        track: track,
+                      ),
+                    if (!track.isLocal)
+                      DownloadButton(
+                        controller: widget.downloaderController,
+                        track: track,
+                      ),
                   ],
                 ),
               ),
@@ -284,32 +300,62 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                                 .withValues(alpha: 0.7),
                           ),
                         ),
-                        Container(
-                          width: 38,
-                          height: 38,
-                          decoration: BoxDecoration(
-                            color: context.themeData.colorScheme.primary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              if (data.isPlaying) {
-                                widget.playerController.methods.pause();
-                              } else {
-                                widget.playerController.methods.resume();
-                              }
-                            },
-                            icon: Icon(
-                              data.isPlaying
-                                  ? LucideIcons.pause
-                                  : LucideIcons.play,
-                              size: 20,
-                              color: context.themeData.colorScheme.onPrimary
-                                  .withValues(alpha: 0.7),
+                        Builder(builder: (context) {
+                          if ((!data.mediaAvailable || data.isBuffering) &&
+                              data.loadRequested) {
+                            return const SizedBox(
+                              width: 38,
+                              height: 38,
+                              child: Center(
+                                child: MusilyLoading(size: 20),
+                              ),
+                            );
+                          }
+                          return Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: context.themeData.colorScheme.primary,
+                              shape: BoxShape.circle,
                             ),
-                          ),
-                        ),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () async {
+                                if (data.currentPlayingItem?.duration
+                                        .inSeconds ==
+                                    0) {
+                                  widget.playerController.methods.loadAndPlay(
+                                    data.currentPlayingItem!,
+                                    data.playingId,
+                                  );
+                                  return;
+                                }
+                                if (data.isPlaying) {
+                                  widget.playerController.methods.pause();
+                                } else if (data.mediaAvailable) {
+                                  widget.playerController.methods.resume();
+                                } else if (data.currentPlayingItem != null) {
+                                  final playingId = data.playingId.isNotEmpty
+                                      ? data.playingId
+                                      : data.currentPlayingItem!.id;
+                                  await widget.playerController.methods
+                                      .loadAndPlay(
+                                    data.currentPlayingItem!,
+                                    playingId,
+                                  );
+                                }
+                              },
+                              icon: Icon(
+                                data.isPlaying
+                                    ? LucideIcons.pause
+                                    : LucideIcons.play,
+                                size: 20,
+                                color: context.themeData.colorScheme.onPrimary
+                                    .withValues(alpha: 0.7),
+                              ),
+                            ),
+                          );
+                        }),
                         IconButton(
                           onPressed: () {
                             widget.playerController.methods.nextInQueue();
@@ -451,35 +497,37 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: ScaleTransition(
-                            scale: Tween<double>(begin: 0.8, end: 1.0).animate(
-                              CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
+                    if (!track.isLocal)
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                              scale:
+                                  Tween<double>(begin: 0.8, end: 1.0).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                ),
                               ),
+                              child: child,
                             ),
-                            child: child,
+                          );
+                        },
+                        child: IconButton(
+                          key: ValueKey(data.playerMode),
+                          onPressed: widget.onModeTap,
+                          icon: Icon(
+                            data.playerMode == PlayerMode.lyrics
+                                ? LucideIcons.listMusic
+                                : LucideIcons.micVocal,
+                            size: 18,
+                            color: context.themeData.colorScheme.onSurface
+                                .withValues(alpha: 0.7),
                           ),
-                        );
-                      },
-                      child: IconButton(
-                        key: ValueKey(data.playerMode),
-                        onPressed: widget.onModeTap,
-                        icon: Icon(
-                          data.playerMode == PlayerMode.lyrics
-                              ? LucideIcons.listMusic
-                              : LucideIcons.micVocal,
-                          size: 18,
-                          color: context.themeData.colorScheme.onSurface
-                              .withValues(alpha: 0.7),
                         ),
                       ),
-                    ),
                     const SizedBox(width: 8),
                     IconButton(
                       onPressed: () {
@@ -639,21 +687,22 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                       tooltip: context.localization.fullScreenPlayerTooltip,
                     ),
                     const SizedBox(width: 8),
-                    TrackOptions(
-                      coreController: widget.coreController,
-                      track: track,
-                      playerController: widget.playerController,
-                      downloaderController: widget.downloaderController,
-                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                      libraryController: widget.libraryController,
-                      getAlbumUsecase: widget.getAlbumUsecase,
-                      getArtistUsecase: widget.getArtistUsecase,
-                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                      getTrackUsecase: widget.getTrackUsecase,
-                      getPlaylistUsecase: widget.getPlaylistUsecase,
-                    ),
+                    if (!track.isLocal)
+                      TrackOptions(
+                        coreController: widget.coreController,
+                        track: track,
+                        playerController: widget.playerController,
+                        downloaderController: widget.downloaderController,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        libraryController: widget.libraryController,
+                        getAlbumUsecase: widget.getAlbumUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                        getTrackUsecase: widget.getTrackUsecase,
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
+                      ),
                   ],
                 ),
               ),
@@ -661,6 +710,30 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
           ),
         );
       },
+    );
+  }
+}
+
+class _AlbumArtwork extends StatelessWidget {
+  final bool isLocal;
+  final VoidCallback onTap;
+  final Widget child;
+
+  const _AlbumArtwork({
+    required this.isLocal,
+    required this.onTap,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLocal) {
+      return child;
+    }
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: child,
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/errors/musily_error.dart';
 
@@ -7,8 +7,8 @@ class HttpAdapterImpl extends HttpAdapter {
   final Dio _dio = Dio();
 
   HttpAdapterImpl()
-      // TODO Set Api Url
-      : super('') {
+    // TODO Set Api Url
+    : super('') {
     _dio.options.baseUrl = baseUrl;
     _dio.interceptors.add(
       InterceptorsWrapper(
@@ -32,9 +32,7 @@ class HttpAdapterImpl extends HttpAdapter {
                   await _setAccessToken(refreshedToken);
 
                   final newOptions = Options(
-                    headers: {
-                      'Authorization': 'Bearer $refreshedToken',
-                    },
+                    headers: {'Authorization': 'Bearer $refreshedToken'},
                   );
                   final newRequest = await _dio.request(
                     error.requestOptions.path,
@@ -44,14 +42,16 @@ class HttpAdapterImpl extends HttpAdapter {
                 }
               } catch (refreshError) {
                 await _logout();
-                return handler.reject(DioException(
-                  requestOptions: error.requestOptions,
-                  response: Response(
-                    statusCode: 401,
+                return handler.reject(
+                  DioException(
                     requestOptions: error.requestOptions,
+                    response: Response(
+                      statusCode: 401,
+                      requestOptions: error.requestOptions,
+                    ),
+                    error: 'Token inválido. Faça login novamente.',
                   ),
-                  error: 'Token inválido. Faça login novamente.',
-                ));
+                );
               }
             }
           }
@@ -61,15 +61,9 @@ class HttpAdapterImpl extends HttpAdapter {
     );
   }
   @override
-  Future<HttpResponse> get(
-    String url, {
-    Map<String, dynamic>? params,
-  }) async {
+  Future<HttpResponse> get(String url, {Map<String, dynamic>? params}) async {
     try {
-      final response = await _dio.get(
-        url,
-        queryParameters: params,
-      );
+      final response = await _dio.get(url, queryParameters: params);
       return HttpResponse(
         response.statusCode ?? 500,
         response.data,
@@ -131,11 +125,7 @@ class HttpAdapterImpl extends HttpAdapter {
     Map<String, dynamic>? params,
   }) async {
     try {
-      final response = await _dio.put(
-        url,
-        data: data,
-        queryParameters: params,
-      );
+      final response = await _dio.put(url, data: data, queryParameters: params);
       return HttpResponse(
         response.statusCode ?? 500,
         response.data,
@@ -177,29 +167,25 @@ class HttpAdapterImpl extends HttpAdapter {
         error.response?.headers.map ?? {},
       );
     }
-    return HttpResponse(
-      500,
-      {
-        'error': 'app.internal_error',
-        'message': 'internal_error',
-      },
-      {},
-    );
+    return HttpResponse(500, {
+      'error': 'app.internal_error',
+      'message': 'internal_error',
+    }, {});
   }
 
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  // final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<String?> _getAccessToken() async {
-    final token = await _secureStorage.read(key: 'token');
-    return token;
+    // final token = await _secureStorage.read(key: 'token');
+    // return token;
   }
 
   Future<String?> _getRefreshToken() async {
-    return await _secureStorage.read(key: 'refreshToken');
+    // return await _secureStorage.read(key: 'refreshToken');
   }
 
   Future<void> _setAccessToken(String accessToken) async {
-    await _secureStorage.write(key: 'accessToken', value: accessToken);
+    // await _secureStorage.write(key: 'accessToken', value: accessToken);
   }
 
   Future<String?> _refreshToken(String refreshToken) async {
@@ -219,7 +205,7 @@ class HttpAdapterImpl extends HttpAdapter {
   }
 
   Future<void> _logout() async {
-    await _secureStorage.delete(key: 'accessToken');
-    await _secureStorage.delete(key: 'refreshToken');
+    // await _secureStorage.delete(key: 'accessToken');
+    // await _secureStorage.delete(key: 'refreshToken');
   }
 }

@@ -120,6 +120,10 @@ class _AlbumPageState extends State<AlbumPage> {
                           late final List<TrackEntity> queueToPlay;
                           if (data.playingId == widget.album.id) {
                             queueToPlay = data.queue;
+                            if (!queueToPlay
+                                .any((element) => element.id == track.id)) {
+                              queueToPlay.add(track);
+                            }
                           } else {
                             queueToPlay = widget.album.tracks;
                           }
@@ -693,6 +697,10 @@ class _AlbumPageState extends State<AlbumPage> {
                               late final List<TrackEntity> queueToPlay;
                               if (data.playingId == widget.album.id) {
                                 queueToPlay = data.queue;
+                                if (!queueToPlay
+                                    .any((element) => element.id == track.id)) {
+                                  queueToPlay.add(track);
+                                }
                               } else {
                                 queueToPlay = widget.album.tracks;
                               }

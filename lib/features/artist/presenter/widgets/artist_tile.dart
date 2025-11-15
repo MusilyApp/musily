@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -115,7 +116,7 @@ class _ArtistTileState extends State<ArtistTile> {
         subtitle: Row(
           children: [
             Icon(
-              Icons.music_note,
+              LucideIcons.music2,
               size: 14,
               color: context.themeData.colorScheme.onSurfaceVariant
                   .withValues(alpha: 0.7),
@@ -170,7 +171,7 @@ class _ArtistTileState extends State<ArtistTile> {
                   ),
                 ),
                 child: Icon(
-                  Icons.person_rounded,
+                  LucideIcons.userRound,
                   color: context.themeData.colorScheme.onSurfaceVariant
                       .withValues(alpha: 0.5),
                   size: 24,

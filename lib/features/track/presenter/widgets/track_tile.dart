@@ -215,34 +215,38 @@ class _TrackTileState extends State<TrackTile> {
                       ),
                     ),
                     // Action Buttons
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        DownloadButton(
-                          controller: widget.downloaderController,
-                          track: widget.track,
-                        ),
-                        const SizedBox(width: 8),
-                        TrackOptions(
-                          getTrackUsecase: widget.getTrackUsecase,
-                          getPlaylistUsecase: widget.getPlaylistUsecase,
-                          hideOptions: widget.hideOptions,
-                          coreController: widget.coreController,
-                          track: widget.track,
-                          playerController: widget.playerController,
-                          downloaderController: widget.downloaderController,
-                          getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                          libraryController: widget.libraryController,
-                          customActions: widget.customOptions,
-                          getAlbumUsecase: widget.getAlbumUsecase,
-                          getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                          getArtistSinglesUsecase:
-                              widget.getArtistSinglesUsecase,
-                          getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                          getArtistUsecase: widget.getArtistUsecase,
-                        ),
-                      ],
-                    ),
+                    if (!widget.track.isLocal)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          DownloadButton(
+                            controller: widget.downloaderController,
+                            track: widget.track,
+                          ),
+                          const SizedBox(width: 8),
+                          TrackOptions(
+                            getTrackUsecase: widget.getTrackUsecase,
+                            getPlaylistUsecase: widget.getPlaylistUsecase,
+                            hideOptions: widget.hideOptions,
+                            coreController: widget.coreController,
+                            track: widget.track,
+                            playerController: widget.playerController,
+                            downloaderController: widget.downloaderController,
+                            getPlayableItemUsecase:
+                                widget.getPlayableItemUsecase,
+                            libraryController: widget.libraryController,
+                            customActions: widget.customOptions,
+                            getAlbumUsecase: widget.getAlbumUsecase,
+                            getArtistAlbumsUsecase:
+                                widget.getArtistAlbumsUsecase,
+                            getArtistSinglesUsecase:
+                                widget.getArtistSinglesUsecase,
+                            getArtistTracksUsecase:
+                                widget.getArtistTracksUsecase,
+                            getArtistUsecase: widget.getArtistUsecase,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

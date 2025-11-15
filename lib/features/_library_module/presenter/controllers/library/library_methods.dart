@@ -60,6 +60,18 @@ class LibraryMethods {
   Future<void> Function(List<TrackEntity> tracks, String downloadingId)
       cancelCollectionDownload;
 
+  // Local library folders
+  final Future<void> Function(String name, String directoryPath)
+      addLocalPlaylistFolder;
+  final Future<void> Function(String playlistId) removeLocalPlaylistFolder;
+  final Future<void> Function(String playlistId, String newName)
+      renameLocalPlaylistFolder;
+  final Future<void> Function(String playlistId, String newDirectoryPath)
+      updateLocalPlaylistDirectory;
+  final Future<List<TrackEntity>> Function(String playlistId)
+      getLocalPlaylistTracks;
+  final Future<void> Function() refreshLocalPlaylists;
+
   LibraryMethods({
     required this.getLibraryItems,
     required this.getLibraryItem,
@@ -78,6 +90,12 @@ class LibraryMethods {
     required this.updateLastTimePlayed,
     required this.downloadCollection,
     required this.cancelCollectionDownload,
+    required this.addLocalPlaylistFolder,
+    required this.removeLocalPlaylistFolder,
+    required this.renameLocalPlaylistFolder,
+    required this.updateLocalPlaylistDirectory,
+    required this.getLocalPlaylistTracks,
+    required this.refreshLocalPlaylists,
     required this.mergeLibrary,
     required this.backupLibrary,
     required this.restoreLibrary,

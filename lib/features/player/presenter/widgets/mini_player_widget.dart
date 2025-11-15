@@ -61,9 +61,11 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
   Widget build(BuildContext context) {
     return widget.playerController.builder(
       builder: (context, data) {
-        if (data.currentPlayingItem != null) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
+        final currentTrack = data.currentPlayingItem;
+        if (currentTrack != null) {
+          final isLocal = currentTrack.isLocal;
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(20),
             child: GestureDetector(
               onTap: () async {
                 Navigator.of(context).push(
@@ -85,66 +87,75 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget> {
                   ),
                 );
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: context.themeData.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: context.themeData.colorScheme.outline
-                          .withValues(alpha: 0.1),
-                      width: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.themeData.colorScheme.surface,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Progress bar
+                    _ProgressBar(
+                      position: data.currentPlayingItem!.position,
+                      duration: data.currentPlayingItem!.duration,
                     ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 8),
-                        child: Row(
-                          children: [
-                            // Album artwork
-                            _AlbumArtwork(
-                              imageUrl: data.currentPlayingItem!.lowResImg,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 8),
+                      child: Row(
+                        children: [
+                          // Album artwork
+                          _AlbumArtwork(
+                            imageUrl: data.currentPlayingItem!.lowResImg,
+                          ),
+                          const SizedBox(width: 10),
+                          // Track info
+                          Expanded(
+                            child: _TrackInfo(
+                              title: currentTrack.title,
+                              artist: currentTrack.artist.name,
                             ),
-                            const SizedBox(width: 10),
-                            // Track info
-                            Expanded(
-                              child: _TrackInfo(
-                                title: data.currentPlayingItem!.title,
-                                artist: data.currentPlayingItem!.artist.name,
-                              ),
-                            ),
-                            // Controls
+                          ),
+                          // Controls
+                          if (!isLocal)
                             FavoriteButton(
                               libraryController: widget.libraryController,
-                              track: data.currentPlayingItem!,
+                              track: currentTrack,
                             ),
-                            _PlayPauseButton(
-                              isPlaying: data.isPlaying,
-                              isLoading:
-                                  data.currentPlayingItem?.duration.inSeconds ==
-                                      0,
-                              onPlayPause: () {
-                                if (data.isPlaying) {
-                                  widget.playerController.methods.pause();
-                                } else {
-                                  widget.playerController.methods.resume();
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                          _PlayPauseButton(
+                            isPlaying: data.isPlaying,
+                            isLoading:
+                                (!data.mediaAvailable || data.isBuffering) &&
+                                    data.loadRequested,
+                            onPlayPause: () async {
+                              if (data.currentPlayingItem?.duration.inSeconds ==
+                                  0) {
+                                widget.playerController.methods.loadAndPlay(
+                                  currentTrack,
+                                  data.playingId,
+                                );
+                                return;
+                              }
+                              if (data.isPlaying) {
+                                widget.playerController.methods.pause();
+                              } else if (data.mediaAvailable) {
+                                widget.playerController.methods.resume();
+                              } else if (data.currentPlayingItem != null) {
+                                final playingId = data.playingId.isNotEmpty
+                                    ? data.playingId
+                                    : currentTrack.id;
+                                await widget.playerController.methods
+                                    .loadAndPlay(
+                                  currentTrack,
+                                  playingId,
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                      // Progress bar
-                      _ProgressBar(
-                        position: data.currentPlayingItem!.position,
-                        duration: data.currentPlayingItem!.duration,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
