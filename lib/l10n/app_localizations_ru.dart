@@ -584,6 +584,78 @@ class AppLocalizationsRu extends AppLocalizations {
   String get libraryManagementSectionTitle => 'Управление библиотекой';
 
   @override
+  String get localLibraryTitle => 'Локальная библиотека';
+
+  @override
+  String get localLibraryDescription =>
+      'Управляйте папками на устройстве, чтобы воспроизводить локальные аудиофайлы.';
+
+  @override
+  String get localFilesLabel => 'Локальные файлы';
+
+  @override
+  String get manageLocalFolders => 'Управление локальными папками';
+
+  @override
+  String get manageLocalFoldersDescription =>
+      'Добавляйте, переименовывайте или удаляйте каталоги, синхронизированные с библиотекой.';
+
+  @override
+  String get addLocalFolder => 'Добавить локальную папку';
+
+  @override
+  String get emptyLocalLibrary => 'Локальные папки отсутствуют';
+
+  @override
+  String get emptyLocalLibraryDescription =>
+      'Добавьте папку с устройства, чтобы иметь доступ к локальным трекам в Musily.';
+
+  @override
+  String get chooseDirectory => 'Выбрать директорию';
+
+  @override
+  String get invalidDirectory => 'Каталог не найден';
+
+  @override
+  String get invalidDirectoryDescription =>
+      'Не удалось получить доступ к этой папке. Обновите путь или удалите запись.';
+
+  @override
+  String removeLocalFolderConfirmation(String name) {
+    return 'Удалить «$name» из локальной библиотеки?';
+  }
+
+  @override
+  String get emptyLocalPlaylist => 'Треки не найдены';
+
+  @override
+  String get emptyLocalPlaylistDescription =>
+      'Убедитесь, что папка существует и содержит поддерживаемые аудиофайлы.';
+
+  @override
+  String get changeDirectory => 'Сменить директорию';
+
+  @override
+  String get updateDirectory => 'Обновить директорию';
+
+  @override
+  String localFolderPreviewOverflow(int count) {
+    return '+$count других папок';
+  }
+
+  @override
+  String get open => 'Открыть';
+
+  @override
+  String get rename => 'Переименовать';
+
+  @override
+  String get remove => 'Удалить';
+
+  @override
+  String get refresh => 'Обновить';
+
+  @override
   String get backupLibraryDescription =>
       'Создайте резервную копию своей библиотеки';
 
@@ -664,6 +736,61 @@ class AppLocalizationsRu extends AppLocalizations {
       'Это отменит все ожидающие загрузки. Завершенные загрузки не будут затронуты.';
 
   @override
+  String downloadManagerSummary(int active, int queued) {
+    return '$active активных • $queued в очереди';
+  }
+
+  @override
+  String get downloadManagerRetryAll => 'Повторить все';
+
+  @override
+  String get downloadManagerClearFailed => 'Очистить неудачные';
+
+  @override
+  String get downloadManagerClearCompleted => 'Очистить завершенные';
+
+  @override
+  String get clearCompletedDownloadsTitle => 'Очистить завершенные загрузки';
+
+  @override
+  String get clearCompletedDownloadsMessage =>
+      'Удалить все завершенные загрузки?';
+
+  @override
+  String get clearCompletedDownloadsDescription =>
+      'Это удалит загруженные файлы из хранилища. Это действие нельзя отменить.';
+
+  @override
+  String itemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count элементов',
+      one: '1 элемент',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String downloadCompletedFailedSummary(int completed, int failed) {
+    return '$completed завершено • $failed неудачных';
+  }
+
+  @override
+  String get downloadTotalEta => 'Оценочное общее время';
+
+  @override
+  String get downloadErrorResolveUrl => 'Не удалось получить URL загрузки';
+
+  @override
+  String get downloadErrorFileValidation =>
+      'Не удалось проверить загруженный файл';
+
+  @override
+  String get downloadErrorUnexpectedMessage =>
+      'Неожиданный ответ при обработке загрузки';
+
+  @override
   String get clear => 'Очистить';
 
   @override
@@ -687,4 +814,23 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get deselectAll => 'Снять выбор';
+
+  @override
+  String get updateDirectoryDescription =>
+      'Выберите новую директорию для этого плейлиста';
+
+  @override
+  String get select => 'Выбрать';
+
+  @override
+  String get renameLocalFolder => 'Переименовать локальную папку';
+
+  @override
+  String get removeLocalFolder => 'Удалить локальную папку';
+
+  @override
+  String get save => 'Сохранить';
+
+  @override
+  String get localPlaylist => 'Локальный плейлист';
 }

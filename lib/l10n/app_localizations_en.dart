@@ -576,6 +576,78 @@ class AppLocalizationsEn extends AppLocalizations {
   String get libraryManagementSectionTitle => 'Library Management';
 
   @override
+  String get localLibraryTitle => 'Local Library';
+
+  @override
+  String get localLibraryDescription =>
+      'Manage folders from your device to play local audio files.';
+
+  @override
+  String get localFilesLabel => 'Local Files';
+
+  @override
+  String get manageLocalFolders => 'Manage local folders';
+
+  @override
+  String get manageLocalFoldersDescription =>
+      'Add, rename or remove directories synced with your Musily library.';
+
+  @override
+  String get addLocalFolder => 'Add local folder';
+
+  @override
+  String get emptyLocalLibrary => 'No local folders yet';
+
+  @override
+  String get emptyLocalLibraryDescription =>
+      'Add a folder from your device to keep local songs accessible inside Musily.';
+
+  @override
+  String get chooseDirectory => 'Choose directory';
+
+  @override
+  String get invalidDirectory => 'Invalid directory';
+
+  @override
+  String get invalidDirectoryDescription =>
+      'We could not access this folder. Update the path or remove the entry.';
+
+  @override
+  String removeLocalFolderConfirmation(String name) {
+    return 'Remove \"$name\" from your local library?';
+  }
+
+  @override
+  String get emptyLocalPlaylist => 'No songs found';
+
+  @override
+  String get emptyLocalPlaylistDescription =>
+      'Make sure the folder still exists and that it contains supported audio files.';
+
+  @override
+  String get changeDirectory => 'Change directory';
+
+  @override
+  String get updateDirectory => 'Update directory';
+
+  @override
+  String localFolderPreviewOverflow(int count) {
+    return '+$count more folders';
+  }
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get rename => 'Rename';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
   String get backupLibraryDescription => 'Create a backup of your library';
 
   @override
@@ -652,6 +724,59 @@ class AppLocalizationsEn extends AppLocalizations {
       'This will cancel all pending downloads. Completed downloads will not be affected.';
 
   @override
+  String downloadManagerSummary(int active, int queued) {
+    return '$active active • $queued queued';
+  }
+
+  @override
+  String get downloadManagerRetryAll => 'Retry all';
+
+  @override
+  String get downloadManagerClearFailed => 'Clear failed';
+
+  @override
+  String get downloadManagerClearCompleted => 'Clear completed';
+
+  @override
+  String get clearCompletedDownloadsTitle => 'Clear completed downloads';
+
+  @override
+  String get clearCompletedDownloadsMessage =>
+      'Delete all completed downloads?';
+
+  @override
+  String get clearCompletedDownloadsDescription =>
+      'This will remove the downloaded files from storage. This action cannot be undone.';
+
+  @override
+  String itemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String downloadCompletedFailedSummary(int completed, int failed) {
+    return '$completed completed • $failed failed';
+  }
+
+  @override
+  String get downloadTotalEta => 'Estimated total time';
+
+  @override
+  String get downloadErrorResolveUrl => 'Could not resolve download URL';
+
+  @override
+  String get downloadErrorFileValidation => 'Downloaded file validation failed';
+
+  @override
+  String get downloadErrorUnexpectedMessage => 'Unexpected download response';
+
+  @override
   String get clear => 'Clear';
 
   @override
@@ -674,4 +799,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deselectAll => 'Deselect All';
+
+  @override
+  String get updateDirectoryDescription =>
+      'Select a new directory for this playlist';
+
+  @override
+  String get select => 'Select';
+
+  @override
+  String get renameLocalFolder => 'Rename folder';
+
+  @override
+  String get removeLocalFolder => 'Remove folder';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get localPlaylist => 'Local playlist';
 }

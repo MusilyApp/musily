@@ -182,6 +182,50 @@
   "smartSuggestionsTitle": "Sugerencias inteligentes",
   "smartSuggestionsDescription": "Agregar automáticamente pistas similares",
   "libraryManagementSectionTitle": "Administración de la biblioteca",
+  "localLibraryTitle": "Biblioteca local",
+  "localLibraryDescription": "Administra carpetas del dispositivo para reproducir archivos de audio locales.",
+  "localFilesLabel": "Archivos locales",
+  "@localFilesLabel": {
+    "description": "Etiqueta utilizada cuando una pista local no tiene metadatos de artista."
+  },
+  "manageLocalFolders": "Gestionar carpetas locales",
+  "manageLocalFoldersDescription": "Añade, renombra o elimina directorios sincronizados con tu biblioteca.",
+  "addLocalFolder": "Agregar carpeta local",
+  "emptyLocalLibrary": "Aún no hay carpetas locales",
+  "emptyLocalLibraryDescription": "Agrega una carpeta de tu dispositivo para mantener tus canciones locales accesibles en Musily.",
+  "chooseDirectory": "Elegir directorio",
+  "invalidDirectory": "Directorio no encontrado",
+  "invalidDirectoryDescription": "No pudimos acceder a esta carpeta. Actualiza la ruta o elimina la entrada.",
+  "removeLocalFolderConfirmation": "¿Eliminar \"{name}\" de la biblioteca local?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "No se encontraron canciones",
+  "emptyLocalPlaylistDescription": "Asegúrate de que la carpeta aún exista y contenga archivos de audio compatibles.",
+  "changeDirectory": "Cambiar directorio",
+  "updateDirectory": "Actualizar directorio",
+  "updateDirectoryDescription": "Selecciona un nuevo directorio para esta playlist",
+  "localFolderPreviewOverflow": "+{count} carpetas más",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Abrir",
+  "select": "Seleccionar",
+  "rename": "Renombrar",
+  "renameLocalFolder": "Renombrar carpeta local",
+  "remove": "Eliminar",
+  "removeLocalFolder": "Eliminar carpeta local",
+  "refresh": "Actualizar",
+  "save": "Guardar",
+  "localPlaylist": "Playlist local",
   "backupLibraryDescription": "Crea una copia de seguridad de tu biblioteca",
   "restoreLibraryDescription": "Restaura tu biblioteca desde una copia de seguridad",
   "includeLibraryDescription": "Respalda tus álbumes, artistas y listas de reproducción guardados",
@@ -232,6 +276,46 @@
   "clearQueueTitle": "Limpiar Cola",
   "clearQueueMessage": "¿Limpiar todas las descargas en cola/pendientes?",
   "clearQueueDescription": "Esto cancelará todas las descargas pendientes. Las descargas completadas no se verán afectadas.",
+  "downloadManagerSummary": "{active} activos • {queued} en cola",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Reintentar todos",
+  "downloadManagerClearFailed": "Borrar fallidos",
+  "downloadManagerClearCompleted": "Limpiar completados",
+  "clearCompletedDownloadsTitle": "Limpiar descargas completadas",
+  "clearCompletedDownloadsMessage": "¿Eliminar todas las descargas completadas?",
+  "clearCompletedDownloadsDescription": "Esto eliminará los archivos descargados del almacenamiento. Esta acción no se puede deshacer.",
+  "itemCount": "{count, plural, =1{1 elemento} other{{count} elementos}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} completados • {failed} fallidos",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Tiempo total estimado",
+  "downloadErrorResolveUrl": "No se pudo resolver la URL de descarga",
+  "downloadErrorFileValidation": "La validación del archivo descargado falló",
+  "downloadErrorUnexpectedMessage": "Respuesta inesperada al procesar la descarga",
   "clear": "Limpiar",
   "queueTools": "Herramientas de Cola",
   "queueToolsDescription": "Reordenar tu cola y crear playlists",

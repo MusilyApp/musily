@@ -482,6 +482,18 @@ abstract class AppLocalizations {
   /// **'These lines will not move with the music playback.'**
   String get lyricsNotSyncedDescription;
 
+  /// No description provided for @lyricsParsedSync.
+  ///
+  /// In en, this message translates to:
+  /// **'We synced this lyric for you'**
+  String get lyricsParsedSync;
+
+  /// No description provided for @lyricsParsedSyncDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'It was generated automatically and may be slightly off the beat.'**
+  String get lyricsParsedSyncDescription;
+
   /// No description provided for @lyrics.
   ///
   /// In en, this message translates to:
@@ -1190,6 +1202,132 @@ abstract class AppLocalizations {
   /// **'Library Management'**
   String get libraryManagementSectionTitle;
 
+  /// No description provided for @localLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Library'**
+  String get localLibraryTitle;
+
+  /// No description provided for @localLibraryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage folders from your device to play local audio files.'**
+  String get localLibraryDescription;
+
+  /// Fallback label used when a local track has no artist metadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Files'**
+  String get localFilesLabel;
+
+  /// No description provided for @manageLocalFolders.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage local folders'**
+  String get manageLocalFolders;
+
+  /// No description provided for @manageLocalFoldersDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add, rename or remove directories synced with your Musily library.'**
+  String get manageLocalFoldersDescription;
+
+  /// No description provided for @addLocalFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add local folder'**
+  String get addLocalFolder;
+
+  /// No description provided for @emptyLocalLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'No local folders yet'**
+  String get emptyLocalLibrary;
+
+  /// No description provided for @emptyLocalLibraryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a folder from your device to keep local songs accessible inside Musily.'**
+  String get emptyLocalLibraryDescription;
+
+  /// No description provided for @chooseDirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose directory'**
+  String get chooseDirectory;
+
+  /// No description provided for @invalidDirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid directory'**
+  String get invalidDirectory;
+
+  /// No description provided for @invalidDirectoryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not access this folder. Update the path or remove the entry.'**
+  String get invalidDirectoryDescription;
+
+  /// No description provided for @removeLocalFolderConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove \"{name}\" from your local library?'**
+  String removeLocalFolderConfirmation(String name);
+
+  /// No description provided for @emptyLocalPlaylist.
+  ///
+  /// In en, this message translates to:
+  /// **'No songs found'**
+  String get emptyLocalPlaylist;
+
+  /// No description provided for @emptyLocalPlaylistDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure the folder still exists and that it contains supported audio files.'**
+  String get emptyLocalPlaylistDescription;
+
+  /// No description provided for @changeDirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Change directory'**
+  String get changeDirectory;
+
+  /// No description provided for @updateDirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Update directory'**
+  String get updateDirectory;
+
+  /// No description provided for @localFolderPreviewOverflow.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more folders'**
+  String localFolderPreviewOverflow(int count);
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @rename.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get rename;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
   /// No description provided for @backupLibraryDescription.
   ///
   /// In en, this message translates to:
@@ -1322,6 +1460,84 @@ abstract class AppLocalizations {
   /// **'This will cancel all pending downloads. Completed downloads will not be affected.'**
   String get clearQueueDescription;
 
+  /// No description provided for @downloadManagerSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{active} active • {queued} queued'**
+  String downloadManagerSummary(int active, int queued);
+
+  /// No description provided for @downloadManagerRetryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry all'**
+  String get downloadManagerRetryAll;
+
+  /// No description provided for @downloadManagerClearFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear failed'**
+  String get downloadManagerClearFailed;
+
+  /// No description provided for @downloadManagerClearCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear completed'**
+  String get downloadManagerClearCompleted;
+
+  /// No description provided for @clearCompletedDownloadsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear completed downloads'**
+  String get clearCompletedDownloadsTitle;
+
+  /// No description provided for @clearCompletedDownloadsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all completed downloads?'**
+  String get clearCompletedDownloadsMessage;
+
+  /// No description provided for @clearCompletedDownloadsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove the downloaded files from storage. This action cannot be undone.'**
+  String get clearCompletedDownloadsDescription;
+
+  /// No description provided for @itemCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String itemCount(int count);
+
+  /// No description provided for @downloadCompletedFailedSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} completed • {failed} failed'**
+  String downloadCompletedFailedSummary(int completed, int failed);
+
+  /// No description provided for @downloadTotalEta.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated total time'**
+  String get downloadTotalEta;
+
+  /// No description provided for @downloadErrorResolveUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not resolve download URL'**
+  String get downloadErrorResolveUrl;
+
+  /// No description provided for @downloadErrorFileValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded file validation failed'**
+  String get downloadErrorFileValidation;
+
+  /// No description provided for @downloadErrorUnexpectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected download response'**
+  String get downloadErrorUnexpectedMessage;
+
   /// No description provided for @clear.
   ///
   /// In en, this message translates to:
@@ -1370,17 +1586,41 @@ abstract class AppLocalizations {
   /// **'Deselect All'**
   String get deselectAll;
 
-  /// No description provided for @lyricsParsedSync.
+  /// No description provided for @updateDirectoryDescription.
   ///
   /// In en, this message translates to:
-  /// **'Timing generated automatically'**
-  String get lyricsParsedSync;
+  /// **'Select a new directory for this playlist'**
+  String get updateDirectoryDescription;
 
-  /// No description provided for @lyricsParsedSyncDescription.
+  /// No description provided for @select.
   ///
   /// In en, this message translates to:
-  /// **'We converted the timings from the text, so it may be imprecise.'**
-  String get lyricsParsedSyncDescription;
+  /// **'Select'**
+  String get select;
+
+  /// No description provided for @renameLocalFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename folder'**
+  String get renameLocalFolder;
+
+  /// No description provided for @removeLocalFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove folder'**
+  String get removeLocalFolder;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @localPlaylist.
+  ///
+  /// In en, this message translates to:
+  /// **'Local playlist'**
+  String get localPlaylist;
 }
 
 class _AppLocalizationsDelegate

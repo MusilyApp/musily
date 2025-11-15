@@ -189,6 +189,44 @@
   "smartSuggestionsTitle": "Smart Suggestions",
   "smartSuggestionsDescription": "Auto-add similar tracks",
   "libraryManagementSectionTitle": "Library Management",
+  "localLibraryTitle": "Local Library",
+  "localLibraryDescription": "Manage folders from your device to play local audio files.",
+  "localFilesLabel": "Local Files",
+  "@localFilesLabel": {
+    "description": "Fallback label used when a local track has no artist metadata."
+  },
+  "manageLocalFolders": "Manage local folders",
+  "manageLocalFoldersDescription": "Add, rename or remove directories synced with your Musily library.",
+  "addLocalFolder": "Add local folder",
+  "emptyLocalLibrary": "No local folders yet",
+  "emptyLocalLibraryDescription": "Add a folder from your device to keep local songs accessible inside Musily.",
+  "chooseDirectory": "Choose directory",
+  "invalidDirectory": "Directory not found",
+  "invalidDirectoryDescription": "We could not access this folder. Update the path or remove the entry.",
+  "removeLocalFolderConfirmation": "Remove \"{name}\" from your local library?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "No songs found",
+  "emptyLocalPlaylistDescription": "Make sure the folder still exists and that it contains supported audio files.",
+  "changeDirectory": "Change directory",
+  "updateDirectory": "Update directory",
+  "localFolderPreviewOverflow": "+{count} more folders",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Open",
+  "rename": "Rename",
+  "remove": "Remove",
+  "refresh": "Refresh",
   "backupLibraryDescription": "Create a backup of your library",
   "restoreLibraryDescription": "Restore your library from a backup",
   "includeLibraryDescription": "Backup your saved albums, artists, and playlists",
@@ -239,6 +277,46 @@
   "clearQueueTitle": "Clear Queue",
   "clearQueueMessage": "Clear all queued/pending downloads?",
   "clearQueueDescription": "This will cancel all pending downloads. Completed downloads will not be affected.",
+  "downloadManagerSummary": "{active} active • {queued} queued",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Retry all",
+  "downloadManagerClearFailed": "Clear failed",
+  "downloadManagerClearCompleted": "Clear completed",
+  "clearCompletedDownloadsTitle": "Clear completed downloads",
+  "clearCompletedDownloadsMessage": "Delete all completed downloads?",
+  "clearCompletedDownloadsDescription": "This will remove the downloaded files from storage. This action cannot be undone.",
+  "itemCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} completed • {failed} failed",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Estimated total time",
+  "downloadErrorResolveUrl": "Could not resolve download URL",
+  "downloadErrorFileValidation": "Downloaded file validation failed",
+  "downloadErrorUnexpectedMessage": "Unexpected download response",
   "clear": "Clear",
   "queueTools": "Queue Tools",
   "queueToolsDescription": "Reorder your queue and create playlists",
@@ -246,5 +324,12 @@
   "queue": "Queue",
   "tracksSelected": "tracks selected",
   "selectAll": "Select All",
-  "deselectAll": "Deselect All"
+  "deselectAll": "Deselect All",
+  "updateDirectoryDescription": "Select a new directory for this playlist",
+  "select": "Select",
+  "invalidDirectory": "Invalid directory",
+  "renameLocalFolder": "Rename folder",
+  "removeLocalFolder": "Remove folder",
+  "save": "Save",
+  "localPlaylist": "Local playlist"
 }

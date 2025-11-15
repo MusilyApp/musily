@@ -182,6 +182,50 @@
   "smartSuggestionsTitle": "Умные рекомендации",
   "smartSuggestionsDescription": "Автоматически добавлять похожие треки",
   "libraryManagementSectionTitle": "Управление библиотекой",
+  "localLibraryTitle": "Локальная библиотека",
+  "localLibraryDescription": "Управляйте папками на устройстве, чтобы воспроизводить локальные аудиофайлы.",
+  "localFilesLabel": "Локальные файлы",
+  "@localFilesLabel": {
+    "description": "Подпись, используемая когда у локального трека нет данных об исполнителе."
+  },
+  "manageLocalFolders": "Управление локальными папками",
+  "manageLocalFoldersDescription": "Добавляйте, переименовывайте или удаляйте каталоги, синхронизированные с библиотекой.",
+  "addLocalFolder": "Добавить локальную папку",
+  "emptyLocalLibrary": "Локальные папки отсутствуют",
+  "emptyLocalLibraryDescription": "Добавьте папку с устройства, чтобы иметь доступ к локальным трекам в Musily.",
+  "chooseDirectory": "Выбрать директорию",
+  "invalidDirectory": "Каталог не найден",
+  "invalidDirectoryDescription": "Не удалось получить доступ к этой папке. Обновите путь или удалите запись.",
+  "removeLocalFolderConfirmation": "Удалить «{name}» из локальной библиотеки?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Треки не найдены",
+  "emptyLocalPlaylistDescription": "Убедитесь, что папка существует и содержит поддерживаемые аудиофайлы.",
+  "changeDirectory": "Сменить директорию",
+  "updateDirectory": "Обновить директорию",
+  "updateDirectoryDescription": "Выберите новую директорию для этого плейлиста",
+  "localFolderPreviewOverflow": "+{count} других папок",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Открыть",
+  "select": "Выбрать",
+  "rename": "Переименовать",
+  "renameLocalFolder": "Переименовать локальную папку",
+  "remove": "Удалить",
+  "removeLocalFolder": "Удалить локальную папку",
+  "refresh": "Обновить",
+  "save": "Сохранить",
+  "localPlaylist": "Локальный плейлист",
   "backupLibraryDescription": "Создайте резервную копию своей библиотеки",
   "restoreLibraryDescription": "Восстановите библиотеку из резервной копии",
   "includeLibraryDescription": "Создайте резервную копию сохраненных альбомов, исполнителей и плейлистов",
@@ -232,6 +276,46 @@
   "clearQueueTitle": "Очистить очередь",
   "clearQueueMessage": "Очистить все загрузки в очереди/ожидании?",
   "clearQueueDescription": "Это отменит все ожидающие загрузки. Завершенные загрузки не будут затронуты.",
+  "downloadManagerSummary": "{active} активных • {queued} в очереди",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Повторить все",
+  "downloadManagerClearFailed": "Очистить неудачные",
+  "downloadManagerClearCompleted": "Очистить завершенные",
+  "clearCompletedDownloadsTitle": "Очистить завершенные загрузки",
+  "clearCompletedDownloadsMessage": "Удалить все завершенные загрузки?",
+  "clearCompletedDownloadsDescription": "Это удалит загруженные файлы из хранилища. Это действие нельзя отменить.",
+  "itemCount": "{count, plural, =1{1 элемент} other{{count} элементов}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} завершено • {failed} неудачных",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Оценочное общее время",
+  "downloadErrorResolveUrl": "Не удалось получить URL загрузки",
+  "downloadErrorFileValidation": "Не удалось проверить загруженный файл",
+  "downloadErrorUnexpectedMessage": "Неожиданный ответ при обработке загрузки",
   "clear": "Очистить",
   "queueTools": "Инструменты очереди",
   "queueToolsDescription": "Изменение порядка очереди и создание плейлистов",

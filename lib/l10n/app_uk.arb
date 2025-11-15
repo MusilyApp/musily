@@ -182,6 +182,50 @@
   "smartSuggestionsTitle": "Розумні пропозиції",
   "smartSuggestionsDescription": "Автоматично додавати схожі треки",
   "libraryManagementSectionTitle": "Керування бібліотекою",
+  "localLibraryTitle": "Локальна бібліотека",
+  "localLibraryDescription": "Керуйте папками пристрою, щоб відтворювати локальні аудіофайли.",
+  "localFilesLabel": "Локальні файли",
+  "@localFilesLabel": {
+    "description": "Підпис, коли в локального треку немає метаданих виконавця."
+  },
+  "manageLocalFolders": "Керувати локальними папками",
+  "manageLocalFoldersDescription": "Додавайте, перейменовуйте або видаляйте каталоги, синхронізовані з бібліотекою.",
+  "addLocalFolder": "Додати локальну папку",
+  "emptyLocalLibrary": "Немає локальних папок",
+  "emptyLocalLibraryDescription": "Додайте папку з пристрою, щоб мати доступ до локальних треків у Musily.",
+  "chooseDirectory": "Вибрати директорію",
+  "invalidDirectory": "Каталог не знайдено",
+  "invalidDirectoryDescription": "Не вдалося отримати доступ до цієї папки. Оновіть шлях або видаліть запис.",
+  "removeLocalFolderConfirmation": "Видалити «{name}» з локальної бібліотеки?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Треки не знайдені",
+  "emptyLocalPlaylistDescription": "Переконайтеся, що папка існує та містить підтримувані аудіофайли.",
+  "changeDirectory": "Змінити директорію",
+  "updateDirectory": "Оновити директорію",
+  "updateDirectoryDescription": "Оберіть нову директорію для цього плейлиста",
+  "localFolderPreviewOverflow": "+ще {count} папок",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Відкрити",
+  "select": "Вибрати",
+  "rename": "Перейменувати",
+  "renameLocalFolder": "Перейменувати локальну папку",
+  "remove": "Видалити",
+  "removeLocalFolder": "Видалити локальну папку",
+  "refresh": "Оновити",
+  "save": "Зберегти",
+  "localPlaylist": "Локальний плейлист",
   "backupLibraryDescription": "Створіть резервну копію своєї бібліотеки",
   "restoreLibraryDescription": "Відновіть бібліотеку з резервної копії",
   "includeLibraryDescription": "Створіть резервну копію збережених альбомів, виконавців та плейлистів",
@@ -232,6 +276,46 @@
   "clearQueueTitle": "Очистити чергу",
   "clearQueueMessage": "Очистити всі завантаження в черзі/очікуванні?",
   "clearQueueDescription": "Це скасує всі очікуючі завантаження. Завершені завантаження не будуть порушені.",
+  "downloadManagerSummary": "{active} активних • {queued} у черзі",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Повторити всі",
+  "downloadManagerClearFailed": "Очистити невдалі",
+  "downloadManagerClearCompleted": "Очистити завершені",
+  "clearCompletedDownloadsTitle": "Очистити завершені завантаження",
+  "clearCompletedDownloadsMessage": "Видалити всі завершені завантаження?",
+  "clearCompletedDownloadsDescription": "Це видалить завантажені файли з пам'яті. Дію не можна скасувати.",
+  "itemCount": "{count, plural, =1{1 елемент} other{{count} елементів}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} завершено • {failed} невдалих",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Орієнтовний загальний час",
+  "downloadErrorResolveUrl": "Не вдалося отримати URL завантаження",
+  "downloadErrorFileValidation": "Не вдалося перевірити завантажений файл",
+  "downloadErrorUnexpectedMessage": "Неочікувана відповідь під час завантаження",
   "clear": "Очистити",
   "queueTools": "Інструменти черги",
   "queueToolsDescription": "Змінити порядок черги та створювати плейлисти",

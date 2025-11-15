@@ -182,6 +182,44 @@
   "smartSuggestionsTitle": "Sugestões inteligentes",
   "smartSuggestionsDescription": "Adicionar automaticamente faixas semelhantes",
   "libraryManagementSectionTitle": "Gerenciamento da Biblioteca",
+  "localLibraryTitle": "Biblioteca local",
+  "localLibraryDescription": "Gerencie pastas do dispositivo para tocar arquivos de áudio locais.",
+  "localFilesLabel": "Arquivos locais",
+  "@localFilesLabel": {
+    "description": "Rótulo usado quando uma faixa local não possui metadados de artista."
+  },
+  "manageLocalFolders": "Gerenciar pastas locais",
+  "manageLocalFoldersDescription": "Adicione, renomeie ou remova diretórios sincronizados com a sua biblioteca.",
+  "addLocalFolder": "Adicionar pasta local",
+  "emptyLocalLibrary": "Nenhuma pasta local ainda",
+  "emptyLocalLibraryDescription": "Adicione uma pasta do seu dispositivo para manter as músicas locais acessíveis no Musily.",
+  "chooseDirectory": "Escolher diretório",
+  "invalidDirectory": "Diretório não encontrado",
+  "invalidDirectoryDescription": "Não foi possível acessar essa pasta. Atualize o caminho ou remova a entrada.",
+  "removeLocalFolderConfirmation": "Remover \"{name}\" da biblioteca local?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Nenhuma música encontrada",
+  "emptyLocalPlaylistDescription": "Verifique se a pasta ainda existe e contém arquivos de áudio suportados.",
+  "changeDirectory": "Alterar diretório",
+  "updateDirectory": "Atualizar diretório",
+  "localFolderPreviewOverflow": "+{count} pastas adicionais",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Abrir",
+  "rename": "Renomear",
+  "remove": "Remover",
+  "refresh": "Atualizar",
   "backupLibraryDescription": "Crie um backup da sua biblioteca",
   "restoreLibraryDescription": "Restaure sua biblioteca a partir de um backup",
   "includeLibraryDescription": "Fazer backup dos seus álbuns, artistas e playlists salvos",
@@ -232,6 +270,46 @@
   "clearQueueTitle": "Limpar Fila",
   "clearQueueMessage": "Limpar todos os downloads em fila/pendentes?",
   "clearQueueDescription": "Isso cancelará todos os downloads pendentes. Downloads concluídos não serão afetados.",
+  "downloadManagerSummary": "{active} ativos • {queued} na fila",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Tentar novamente todos",
+  "downloadManagerClearFailed": "Limpar falhas",
+  "downloadManagerClearCompleted": "Limpar concluídos",
+  "clearCompletedDownloadsTitle": "Limpar downloads concluídos",
+  "clearCompletedDownloadsMessage": "Excluir todos os downloads concluídos?",
+  "clearCompletedDownloadsDescription": "Isso removerá os arquivos baixados do armazenamento. Esta ação não pode ser desfeita.",
+  "itemCount": "{count, plural, =1{1 item} other{{count} itens}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} concluídos • {failed} falhos",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Tempo total estimado",
+  "downloadErrorResolveUrl": "Não foi possível resolver a URL de download",
+  "downloadErrorFileValidation": "Falha ao validar o arquivo baixado",
+  "downloadErrorUnexpectedMessage": "Resposta inesperada ao processar o download",
   "clear": "Limpar",
   "queueTools": "Ferramentas da Fila",
   "queueToolsDescription": "Reordenar sua fila e criar playlists",
@@ -239,5 +317,12 @@
   "queue": "Fila",
   "tracksSelected": "faixas selecionadas",
   "selectAll": "Selecionar Tudo",
-  "deselectAll": "Desselecionar Tudo"
+  "deselectAll": "Desselecionar Tudo",
+  "updateDirectoryDescription": "Selecione um novo diretório para esta playlist",
+  "select": "Selecionar",
+  "invalidDirectory": "Diretório inválido",
+  "renameLocalFolder": "Renomear pasta",
+  "removeLocalFolder": "Remover pasta",
+  "save": "Salvar",
+  "localPlaylist": "Playlist local"
 }
