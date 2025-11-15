@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:isar/isar.dart';
+import 'package:musily/core/data/database/collections/player_state.dart';
+import 'package:musily/core/data/database/database.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PlayerPersistedState {
   final List<TrackEntity> queue;
@@ -33,7 +35,8 @@ class PlayerPersistenceService {
       PlayerPersistenceService._();
   factory PlayerPersistenceService() => _instance;
 
-  static const _storageKey = 'player_state';
+  static const _stateKey = 'player_state_v1';
+  final _db = Database();
 
   Future<void> saveState({
     required List<TrackEntity> queue,
@@ -43,19 +46,90 @@ class PlayerPersistenceService {
     required TrackEntity? currentTrack,
   }) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final payload = {
-        'repeatMode': repeatMode.name,
-        'shuffleEnabled': shuffleEnabled,
-        'queue': queue.map(_trackToJson).toList(),
-        'shuffledQueue': shuffledQueue.map(_trackToJson).toList(),
-        'currentTrack':
-            currentTrack != null ? _trackToJson(currentTrack) : null,
-        'currentTrackId': currentTrack?.id,
-        'currentTrackHash': currentTrack?.hash,
-      };
+      await _db.isar.writeTxn(() async {
+        final state = PlayerState()
+          ..stateKey = _stateKey
+          ..repeatMode = repeatMode.name
+          ..shuffleEnabled = shuffleEnabled
+          ..currentTrackId = currentTrack?.id
+          ..currentTrackHash = currentTrack?.hash
+          ..currentTrackJson = currentTrack != null
+              ? jsonEncode(_trackToJson(currentTrack))
+              : null
+          ..lastUpdated = DateTime.now().millisecondsSinceEpoch;
 
-      await prefs.setString(_storageKey, jsonEncode(payload));
+        await _db.isar.playerStates.putByStateKey(state);
+
+        final normalTracksToDelete = await _db.isar.queueTracks
+            .filter()
+            .queueTypeEqualTo('normal')
+            .findAll();
+        await _db.isar.queueTracks
+            .deleteAll(normalTracksToDelete.map((e) => e.id).toList());
+
+        final shuffledTracksToDelete = await _db.isar.queueTracks
+            .filter()
+            .queueTypeEqualTo('shuffled')
+            .findAll();
+        await _db.isar.queueTracks
+            .deleteAll(shuffledTracksToDelete.map((e) => e.id).toList());
+
+        final normalQueueTracks = <QueueTrack>[];
+        for (var i = 0; i < queue.length; i++) {
+          final track = queue[i];
+          final queueTrack = QueueTrack()
+            ..queueType = 'normal'
+            ..orderIndex = i
+            ..trackId = track.id
+            ..hash = track.hash
+            ..title = track.title
+            ..artistId = track.artist.id
+            ..artistName = track.artist.name
+            ..albumId = track.album.id
+            ..albumTitle = track.album.title
+            ..highResImg = track.highResImg
+            ..lowResImg = track.lowResImg
+            ..source = track.source
+            ..url = track.isLocal ? track.url : null
+            ..fromSmartQueue = track.fromSmartQueue
+            ..durationMs = track.duration.inMilliseconds
+            ..positionMs = track.position.inMilliseconds
+            ..isLocal = track.isLocal;
+
+          normalQueueTracks.add(queueTrack);
+        }
+        if (normalQueueTracks.isNotEmpty) {
+          await _db.isar.queueTracks.putAll(normalQueueTracks);
+        }
+
+        final shuffledQueueTracks = <QueueTrack>[];
+        for (var i = 0; i < shuffledQueue.length; i++) {
+          final track = shuffledQueue[i];
+          final queueTrack = QueueTrack()
+            ..queueType = 'shuffled'
+            ..orderIndex = i
+            ..trackId = track.id
+            ..hash = track.hash
+            ..title = track.title
+            ..artistId = track.artist.id
+            ..artistName = track.artist.name
+            ..albumId = track.album.id
+            ..albumTitle = track.album.title
+            ..highResImg = track.highResImg
+            ..lowResImg = track.lowResImg
+            ..source = track.source
+            ..url = track.isLocal ? track.url : null
+            ..fromSmartQueue = track.fromSmartQueue
+            ..durationMs = track.duration.inMilliseconds
+            ..positionMs = track.position.inMilliseconds
+            ..isLocal = track.isLocal;
+
+          shuffledQueueTracks.add(queueTrack);
+        }
+        if (shuffledQueueTracks.isNotEmpty) {
+          await _db.isar.queueTracks.putAll(shuffledQueueTracks);
+        }
+      });
     } catch (e, stackTrace) {
       log(
         '[PlayerPersistenceService] Failed to save player state',
@@ -67,40 +141,53 @@ class PlayerPersistenceService {
 
   Future<PlayerPersistedState?> loadState() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final raw = prefs.getString(_storageKey);
-      if (raw == null || raw.isEmpty) {
+      final state = await _db.isar.playerStates.getByStateKey(_stateKey);
+
+      if (state == null) {
         return null;
       }
 
-      final decoded = jsonDecode(raw);
-      if (decoded is! Map<String, dynamic>) {
-        return null;
-      }
-
-      final repeatName = decoded['repeatMode'] as String?;
       final repeatMode = MusilyRepeatMode.values.firstWhere(
-        (mode) => mode.name == repeatName,
+        (mode) => mode.name == state.repeatMode,
         orElse: () => MusilyRepeatMode.noRepeat,
       );
 
-      final queue = _decodeTrackList(decoded['queue']);
-      final shuffledQueue = _decodeTrackList(decoded['shuffledQueue']);
-      final currentTrackMap = decoded['currentTrack'];
+      final allQueueTracks = await _db.isar.queueTracks.where().findAll();
+
+      final normalQueueTracks = allQueueTracks
+          .where((t) => t.queueType == 'normal')
+          .toList()
+        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+
+      final shuffledQueueTracks = allQueueTracks
+          .where((t) => t.queueType == 'shuffled')
+          .toList()
+        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+
+      final queue = normalQueueTracks.map(_queueTrackToEntity).toList();
+      final shuffledQueue =
+          shuffledQueueTracks.map(_queueTrackToEntity).toList();
 
       TrackEntity? currentTrack;
-      if (currentTrackMap is Map<String, dynamic>) {
-        currentTrack = _trackFromJson(currentTrackMap);
+      if (state.currentTrackJson != null) {
+        try {
+          final json =
+              jsonDecode(state.currentTrackJson!) as Map<String, dynamic>;
+          currentTrack = _trackFromJson(json);
+        } catch (e) {
+          log('[PlayerPersistenceService] Failed to parse current track JSON',
+              error: e);
+        }
       }
 
       return PlayerPersistedState(
         queue: queue,
         shuffledQueue: shuffledQueue,
-        shuffleEnabled: decoded['shuffleEnabled'] as bool? ?? false,
+        shuffleEnabled: state.shuffleEnabled,
         repeatMode: repeatMode,
         currentTrack: currentTrack,
-        currentTrackId: decoded['currentTrackId'] as String?,
-        currentTrackHash: decoded['currentTrackHash'] as String?,
+        currentTrackId: state.currentTrackId,
+        currentTrackHash: state.currentTrackHash,
       );
     } catch (e, stackTrace) {
       log(
@@ -114,8 +201,23 @@ class PlayerPersistenceService {
 
   Future<void> clear() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(_storageKey);
+      await _db.isar.writeTxn(() async {
+        await _db.isar.playerStates.deleteByStateKey(_stateKey);
+
+        final normalTracksToDelete = await _db.isar.queueTracks
+            .filter()
+            .queueTypeEqualTo('normal')
+            .findAll();
+        await _db.isar.queueTracks
+            .deleteAll(normalTracksToDelete.map((e) => e.id).toList());
+
+        final shuffledTracksToDelete = await _db.isar.queueTracks
+            .filter()
+            .queueTypeEqualTo('shuffled')
+            .findAll();
+        await _db.isar.queueTracks
+            .deleteAll(shuffledTracksToDelete.map((e) => e.id).toList());
+      });
     } catch (e, stackTrace) {
       log(
         '[PlayerPersistenceService] Failed to clear player state',
@@ -125,11 +227,29 @@ class PlayerPersistenceService {
     }
   }
 
-  static List<TrackEntity> _decodeTrackList(dynamic value) {
-    if (value is! List) {
-      return [];
-    }
-    return value.whereType<Map<String, dynamic>>().map(_trackFromJson).toList();
+  static TrackEntity _queueTrackToEntity(QueueTrack queueTrack) {
+    return TrackEntity(
+      id: queueTrack.trackId,
+      orderIndex: queueTrack.orderIndex,
+      title: queueTrack.title,
+      hash: queueTrack.hash,
+      artist: SimplifiedArtist(
+        id: queueTrack.artistId,
+        name: queueTrack.artistName,
+      ),
+      album: SimplifiedAlbum(
+        id: queueTrack.albumId,
+        title: queueTrack.albumTitle,
+      ),
+      highResImg: queueTrack.highResImg,
+      lowResImg: queueTrack.lowResImg,
+      source: queueTrack.source,
+      fromSmartQueue: queueTrack.fromSmartQueue,
+      duration: Duration(milliseconds: queueTrack.durationMs),
+      position: Duration(milliseconds: queueTrack.positionMs),
+      url: queueTrack.url,
+      isLocal: queueTrack.isLocal,
+    );
   }
 
   static Map<String, dynamic> _trackToJson(TrackEntity track) {

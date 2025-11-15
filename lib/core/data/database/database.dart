@@ -4,6 +4,7 @@ import 'package:isar/isar.dart';
 import 'package:musily/core/data/database/collections/database_library.dart';
 import 'package:musily/core/data/database/collections/download_queue.dart';
 import 'package:musily/core/data/database/collections/library.dart';
+import 'package:musily/core/data/database/collections/player_state.dart';
 import 'package:musily/core/data/database/collections/user_tracks.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,6 +30,8 @@ class Database {
         DatabaseLibrarySchema,
         UserTracksSchema,
         DownloadQueueItemSchema,
+        PlayerStateSchema,
+        QueueTrackSchema,
       ],
       directory: databaseDirectory.path,
     );
