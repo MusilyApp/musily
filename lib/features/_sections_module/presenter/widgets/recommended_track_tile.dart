@@ -298,6 +298,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                                           libraryController:
                                               widget.libraryController,
                                           track: widget.recommendation.track,
+                                          color: textColor,
                                         ),
                                       ),
                                     ),
@@ -332,6 +333,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                                           controller:
                                               widget.downloaderController,
                                           track: widget.recommendation.track,
+                                          coreController: widget.coreController,
                                         ),
                                       ),
                                     ),
