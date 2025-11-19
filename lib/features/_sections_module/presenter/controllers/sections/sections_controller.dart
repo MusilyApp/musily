@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/_library_module/domain/usecases/get_library_items_usecase.dart';
+import 'package:musily/features/_sections_module/data/services/recommendations_color_processor.dart';
 import 'package:musily/features/_sections_module/domain/entities/section_entity.dart';
 import 'package:musily/features/_sections_module/domain/usecases/get_sections_usecase.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_data.dart';
@@ -88,23 +88,19 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
           final libraryItems = await _getLibraryItemsUsecase.exec();
           final shuffledLibraryItems = List.from(libraryItems)..shuffle();
 
-          // Get 3 random music items (tracks, albums, artists, or playlists)
           List<TrackEntity> seedTracks = [];
           final random = Random();
 
-          // Select 3 random albums
           final randomAlbums = shuffledLibraryItems
               .where((item) => item.album != null)
               .toList()
               .take(3)
               .toList();
-          // Select 1 random artists
           final randomArtist = shuffledLibraryItems
               .where((item) => item.artist != null)
               .toList()
               .take(1)
               .toList();
-          // Select 1 random playlists
           final randomPlaylist = shuffledLibraryItems
               .where((item) => item.playlist != null)
               .toList()
@@ -128,13 +124,11 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
             }
           }
 
-          // Select 3 random seed tracks
           if (seedTracks.isNotEmpty) {
             seedTracks.shuffle(random);
             seedTracks = seedTracks.take(3).toList();
           }
 
-          // Get UpNext recommendations from seed tracks
           List<TrackEntity> upNextTracks = [];
 
           for (final seedTrack in seedTracks) {
@@ -146,28 +140,42 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
             }
           }
 
+          final imageUrls = upNextTracks
+              .map((track) => track.lowResImg ?? '')
+              .where((url) => url.isNotEmpty)
+              .toList();
+
+          List<Map<String, int>> colorResults = [];
+          if (imageUrls.isNotEmpty) {
+            try {
+              colorResults = await processMultipleImageColors(imageUrls);
+            } catch (e) {
+              dev.log('Error processing image colors in isolate: $e');
+            }
+          }
+
           List<RecommendedTrackModel> recommendedTracks = [];
+          int colorIndex = 0;
 
           for (final track in upNextTracks) {
-            try {
-              final imageProvider =
-                  CachedNetworkImageProvider(track.lowResImg!);
-              final colorScheme = await ColorScheme.fromImageProvider(
-                provider: imageProvider,
-              );
-
-              final dominantColor = colorScheme.primary;
-              final luminance = dominantColor.computeLuminance();
-
-              final trackBackgroundColor = dominantColor;
-              final trackTextColor =
-                  luminance > 0.5 ? Colors.black : Colors.white;
+            if (track.lowResImg == null || track.lowResImg!.isEmpty) {
               recommendedTracks.add(RecommendedTrackModel(
                 track: track,
-                backgroundColor: trackBackgroundColor,
-                textColor: trackTextColor,
+                backgroundColor: const Color(0xFFD8B4FA),
+                textColor: Colors.black,
               ));
-            } catch (e) {
+              continue;
+            }
+
+            if (colorIndex < colorResults.length) {
+              final colorData = colorResults[colorIndex];
+              recommendedTracks.add(RecommendedTrackModel(
+                track: track,
+                backgroundColor: Color(colorData['backgroundColor']!),
+                textColor: Color(colorData['textColor']!),
+              ));
+              colorIndex++;
+            } else {
               recommendedTracks.add(RecommendedTrackModel(
                 track: track,
                 backgroundColor: const Color(0xFFD8B4FA),
