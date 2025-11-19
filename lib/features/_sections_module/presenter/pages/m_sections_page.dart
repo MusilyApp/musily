@@ -8,7 +8,6 @@ import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_flex.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
-import 'package:musily/core/utils/generate_placeholder_string.dart';
 import 'package:musily/features/_library_module/domain/entities/library_item_entity.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_controller.dart';
@@ -117,7 +116,7 @@ class MSectionsPage extends StatelessWidget {
                     children: [
                       libraryController.builder(
                         builder: (context, data) {
-                          if (data.loading) {
+                          if (data.loading || data.items.isNotEmpty) {
                             final loadingPlaceholderItems = List.filled(
                               context.display.isDesktop ? 6 : 4,
                               LibraryTile(
@@ -148,18 +147,65 @@ class MSectionsPage extends StatelessWidget {
                                     getArtistSinglesUsecase,
                               ),
                             );
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                                bottom: 26,
-                                left: 8,
-                                right: 8,
-                              ),
-                              child: Skeletonizer(
-                                child: AppFlex(
-                                  maxItemsPerRow:
-                                      context.display.isDesktop ? 3 : 2,
-                                  children: loadingPlaceholderItems,
+                            return Skeletonizer(
+                              enabled: data.loading,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 12,
+                                  bottom: 26,
+                                  left: 8,
+                                  right: 8,
+                                ),
+                                child: Container(
+                                  color: context.themeData.colorScheme.primary
+                                      .withValues(alpha: .01),
+                                  child: Builder(
+                                    builder: (context) {
+                                      final limit =
+                                          context.display.isDesktop ? 6 : 4;
+                                      final items = data.items.length < limit
+                                          ? data.items
+                                          : data.items.sublist(0, limit);
+                                      return AppFlex(
+                                        spacing: AppFlexSpacing.all(8),
+                                        maxItemsPerRow:
+                                            context.display.isDesktop ? 3 : 2,
+                                        children: [
+                                          if (data.loading) ...[
+                                            ...loadingPlaceholderItems,
+                                          ] else
+                                            ...items.map(
+                                              (item) => LibraryTile(
+                                                getTrackUsecase:
+                                                    getTrackUsecase,
+                                                coreController: coreController,
+                                                playerController:
+                                                    playerController,
+                                                downloaderController:
+                                                    downloaderController,
+                                                getPlayableItemUsecase:
+                                                    getPlayableItemUsecase,
+                                                libraryController:
+                                                    libraryController,
+                                                item: item,
+                                                getAlbumUsecase:
+                                                    getAlbumUsecase,
+                                                getPlaylistUsecase:
+                                                    getPlaylistUsecase,
+                                                getArtistUsecase:
+                                                    getArtistUsecase,
+                                                getArtistAlbumsUsecase:
+                                                    getArtistAlbumsUsecase,
+                                                getArtistTracksUsecase:
+                                                    getArtistTracksUsecase,
+                                                getArtistSinglesUsecase:
+                                                    getArtistSinglesUsecase,
+                                              ),
+                                            ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             );
@@ -214,60 +260,6 @@ class MSectionsPage extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
-                              ),
-                            );
-                          }
-                          if (data.items.isNotEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                                bottom: 26,
-                                left: 8,
-                                right: 8,
-                              ),
-                              child: Container(
-                                color: context.themeData.colorScheme.primary
-                                    .withValues(alpha: .01),
-                                child: Builder(
-                                  builder: (context) {
-                                    final limit =
-                                        context.display.isDesktop ? 6 : 4;
-                                    final items = data.items.length < limit
-                                        ? data.items
-                                        : data.items.sublist(0, limit);
-                                    return AppFlex(
-                                      spacing: AppFlexSpacing.all(8),
-                                      maxItemsPerRow:
-                                          context.display.isDesktop ? 3 : 2,
-                                      children: [
-                                        ...items.map(
-                                          (item) => LibraryTile(
-                                            getTrackUsecase: getTrackUsecase,
-                                            coreController: coreController,
-                                            playerController: playerController,
-                                            downloaderController:
-                                                downloaderController,
-                                            getPlayableItemUsecase:
-                                                getPlayableItemUsecase,
-                                            libraryController:
-                                                libraryController,
-                                            item: item,
-                                            getAlbumUsecase: getAlbumUsecase,
-                                            getPlaylistUsecase:
-                                                getPlaylistUsecase,
-                                            getArtistUsecase: getArtistUsecase,
-                                            getArtistAlbumsUsecase:
-                                                getArtistAlbumsUsecase,
-                                            getArtistTracksUsecase:
-                                                getArtistTracksUsecase,
-                                            getArtistSinglesUsecase:
-                                                getArtistSinglesUsecase,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
                               ),
                             );
                           }
@@ -454,7 +446,7 @@ class MSectionsPage extends StatelessWidget {
                                           bottom: 16,
                                         ),
                                         child: Text(
-                                          generatePlaceholderString(),
+                                          'Section title',
                                           style: context
                                               .themeData.textTheme.headlineSmall
                                               ?.copyWith(
