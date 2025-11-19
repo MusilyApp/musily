@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, int>> _processImageColors(String imageUrl) async {
+  ui.Image? originalImage;
+  ui.Image? resizedImage;
+  bool isResized = false;
+
   try {
     final response = await http.get(Uri.parse(imageUrl));
     if (response.statusCode != 200) {
@@ -17,17 +21,25 @@ Future<Map<String, int>> _processImageColors(String imageUrl) async {
 
     final codec = await ui.instantiateImageCodec(imageBytes);
     final frame = await codec.getNextFrame();
-    final image = frame.image;
+    originalImage = frame.image;
 
-    final resizedImage = await _resizeImage(image, 100);
+    final originalWidth = originalImage.width;
+    final originalHeight = originalImage.height;
+
+    resizedImage = await _resizeImage(originalImage, 100);
+
+    isResized = resizedImage.width != originalWidth ||
+        resizedImage.height != originalHeight;
 
     final dominantColor = await _extractDominantColor(resizedImage);
 
     final luminance = dominantColor.computeLuminance();
     final textColor = luminance > 0.5 ? Colors.black : Colors.white;
 
-    resizedImage.dispose();
-    image.dispose();
+    if (isResized) {
+      resizedImage.dispose();
+    }
+    originalImage.dispose();
 
     return {
       'backgroundColor': dominantColor.value,
@@ -35,6 +47,10 @@ Future<Map<String, int>> _processImageColors(String imageUrl) async {
     };
   } catch (e) {
     log('Error processing image colors: $e');
+    if (resizedImage != null && resizedImage != originalImage) {
+      resizedImage.dispose();
+    }
+    originalImage?.dispose();
     return {
       'backgroundColor': const Color(0xFFD8B4FA).value,
       'textColor': Colors.black.value,
@@ -46,7 +62,16 @@ Future<ui.Image> _resizeImage(ui.Image image, int maxSize) async {
   final int width = image.width;
   final int height = image.height;
 
+  if (width <= 0 || height <= 0) {
+    return image;
+  }
+
   if (width <= maxSize && height <= maxSize) {
+    return image;
+  }
+
+  // Avoid division by zero
+  if (height == 0) {
     return image;
   }
 
@@ -60,12 +85,42 @@ Future<ui.Image> _resizeImage(ui.Image image, int maxSize) async {
     newWidth = (maxSize * aspectRatio).round();
   }
 
+  if (newWidth <= 0 || newHeight <= 0) {
+    return image;
+  }
+
+  const int maxDimension = 1000;
+  if (newWidth > maxDimension) {
+    newHeight = ((newHeight * maxDimension) / newWidth).round();
+    newWidth = maxDimension;
+  }
+  if (newHeight > maxDimension) {
+    newWidth = ((newWidth * maxDimension) / newHeight).round();
+    newHeight = maxDimension;
+  }
+
+  if (newWidth <= 0 || newHeight <= 0) {
+    return image;
+  }
+
+  final srcRect = Rect.fromLTRB(0, 0, width.toDouble(), height.toDouble());
+  final dstRect =
+      Rect.fromLTRB(0, 0, newWidth.toDouble(), newHeight.toDouble());
+
+  if (srcRect.width <= 0 ||
+      srcRect.height <= 0 ||
+      dstRect.width <= 0 ||
+      dstRect.height <= 0) {
+    return image;
+  }
+
   final recorder = ui.PictureRecorder();
   final canvas = Canvas(recorder);
+
   canvas.drawImageRect(
     image,
-    Rect.fromLTRB(0, 0, width.toDouble(), height.toDouble()),
-    Rect.fromLTRB(0, 0, newWidth.toDouble(), newHeight.toDouble()),
+    srcRect,
+    dstRect,
     Paint(),
   );
 
