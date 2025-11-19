@@ -59,6 +59,8 @@
   "downloads": "Загрузки",
   "downloadManager": "Менеджер Загрузок",
   "offline": "Оффлайн",
+  "offlineMode": "Офлайн режим",
+  "offlineModeDescription": "Вы сейчас в офлайн режиме. Некоторые функции могут быть недоступны.",
   "lyricsNotFound": "Тексты не найдены",
   "lyricsNotSynced": "Текст не синхронизирован",
   "lyricsNotSyncedDescription": "Строки не будут двигаться вместе с музыкой.",
@@ -323,5 +325,15 @@
   "queue": "Очередь",
   "tracksSelected": "треков выбрано",
   "selectAll": "Выбрать все",
-  "deselectAll": "Снять выбор"
+  "deselectAll": "Снять выбор",
+  "versionManager": "Менеджер версий",
+  "retry": "Повторить",
+  "noReleasesFound": "Версии не найдены",
+  "version": "Версия",
+  "alreadyInstalled": "Уже установлено",
+  "update": "Обновить",
+  "changelog": "Изменения",
+  "changelogNotAvailable": "Изменения недоступны",
+  "later": "Позже",
+  "updateAvailableDescription": "Доступна новая версия Musily. Обновите сейчас, чтобы получить последние функции и улучшения."
 }

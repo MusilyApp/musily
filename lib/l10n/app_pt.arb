@@ -59,6 +59,8 @@
   "downloadManager": "Gerenciador de downloads",
   "downloads": "Downloads",
   "offline": "Offline",
+  "offlineMode": "Modo Offline",
+  "offlineModeDescription": "Você está offline no momento. Alguns recursos podem estar indisponíveis.",
   "lyricsNotFound": "Letra não encontrada",
   "lyricsNotSynced": "Letra não está sincronizada",
   "lyricsNotSyncedDescription": "As linhas não acompanham automaticamente a reprodução.",
@@ -324,5 +326,15 @@
   "renameLocalFolder": "Renomear pasta",
   "removeLocalFolder": "Remover pasta",
   "save": "Salvar",
-  "localPlaylist": "Playlist local"
+  "localPlaylist": "Playlist local",
+  "versionManager": "Gerenciador de Versões",
+  "retry": "Tentar Novamente",
+  "noReleasesFound": "Nenhuma versão encontrada",
+  "version": "Versão",
+  "alreadyInstalled": "Já Instalado",
+  "update": "Atualizar",
+  "changelog": "Alterações",
+  "changelogNotAvailable": "Alterações não disponíveis",
+  "later": "Depois",
+  "updateAvailableDescription": "Uma nova versão do Musily está disponível. Atualize agora para obter os recursos e melhorias mais recentes."
 }

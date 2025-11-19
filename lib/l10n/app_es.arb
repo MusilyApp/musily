@@ -59,6 +59,8 @@
   "downloadManager": "Gestor de Descargas",
   "downloads": "Descargas",
   "offline": "Desconectado",
+  "offlineMode": "Modo Sin Conexión",
+  "offlineModeDescription": "Estás desconectado en este momento. Algunas funciones pueden no estar disponibles.",
   "lyricsNotFound": "Letras no encontradas",
   "lyricsNotSynced": "Las letras no están sincronizadas",
   "lyricsNotSyncedDescription": "Las líneas no se moverán automáticamente con la música.",
@@ -323,5 +325,15 @@
   "queue": "Cola",
   "tracksSelected": "canciones seleccionadas",
   "selectAll": "Seleccionar Todo",
-  "deselectAll": "Deseleccionar Todo"
+  "deselectAll": "Deseleccionar Todo",
+  "versionManager": "Gestor de Versiones",
+  "retry": "Reintentar",
+  "noReleasesFound": "No se encontraron versiones",
+  "version": "Versión",
+  "alreadyInstalled": "Ya Instalado",
+  "update": "Actualizar",
+  "changelog": "Cambios",
+  "changelogNotAvailable": "Cambios no disponibles",
+  "later": "Después",
+  "updateAvailableDescription": "Una nueva versión de Musily está disponible. Actualiza ahora para obtener las últimas funciones y mejoras."
 }
