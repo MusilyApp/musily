@@ -1151,21 +1151,17 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   }
 
   Future<List<TrackEntity>> _getLocalPlaylistTracks(String playlistId) async {
-    log('[LocalLibrary] Getting tracks for playlist ID: $playlistId');
     final playlist =
         data.localPlaylists.firstWhereOrNull((e) => e.id == playlistId);
     if (playlist == null) {
-      log('[LocalLibrary] Playlist not found: $playlistId');
       return [];
     }
-    log('[LocalLibrary] Found playlist: ${playlist.name}');
     final tracks = await _buildTracksForPlaylist(playlist);
     final updatedPlaylist = playlist.copyWith(
       trackCount: tracks.length,
       updatedAt: DateTime.now(),
     );
     await _replaceLocalPlaylist(updatedPlaylist);
-    log('[LocalLibrary] Returning ${tracks.length} tracks');
     return tracks;
   }
 
@@ -1185,10 +1181,8 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   Future<LocalLibraryPlaylist> _scanLocalPlaylist(
     LocalLibraryPlaylist playlist,
   ) async {
-    log('[LocalLibrary] Scanning playlist: ${playlist.name} (${playlist.directoryPath})');
     try {
       final files = await _listAudioFiles(playlist.directoryPath);
-      log('[LocalLibrary] Scan found ${files.length} files');
       return playlist.copyWith(
         trackCount: files.length,
         updatedAt: DateTime.now(),
@@ -1209,43 +1203,26 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   Future<List<File>> _listAudioFiles(String directoryPath) async {
     final directory = Directory(directoryPath);
     if (!await directory.exists()) {
-      log('[LocalLibrary] Directory does not exist: $directoryPath');
       return [];
     }
     final files = <File>[];
     try {
-      log('[LocalLibrary] Scanning directory: $directoryPath');
-      log('[LocalLibrary] Platform: ${Platform.operatingSystem}, SDK: ${Platform.operatingSystemVersion}');
-      int entityCount = 0;
-
-      // Try to list directory contents
       final stream = directory.list(recursive: true, followLinks: false);
 
       await for (final entity in stream) {
-        entityCount++;
-        log('[LocalLibrary] Entity #$entityCount: ${entity.path} (${entity.runtimeType})');
         if (entity is File) {
           final extension = path.extension(entity.path).toLowerCase();
-          log('[LocalLibrary] Found file: ${entity.path}, extension: $extension');
           if (_supportedAudioExtensions.contains(extension)) {
             files.add(entity);
-            log('[LocalLibrary] Added audio file: ${entity.path}');
           }
         }
       }
-      log('[LocalLibrary] Total entities scanned: $entityCount, audio files found: ${files.length}');
     } catch (e, stackTrace) {
       log(
         '[LocalLibrary] Error scanning directory',
         error: e,
         stackTrace: stackTrace,
       );
-
-      // On Android, the error might be due to Scoped Storage restrictions
-      if (Platform.isAndroid) {
-        log('[LocalLibrary] Android Scoped Storage may be blocking access. '
-            'User needs to grant MANAGE_EXTERNAL_STORAGE permission.');
-      }
 
       return files;
     }
@@ -1255,14 +1232,11 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
   Future<List<TrackEntity>> _buildTracksForPlaylist(
     LocalLibraryPlaylist playlist,
   ) async {
-    log('[LocalLibrary] Building tracks for playlist: ${playlist.name} (${playlist.directoryPath})');
     final files = await _listAudioFiles(playlist.directoryPath);
-    log('[LocalLibrary] Found ${files.length} audio files');
     final tracks = <TrackEntity>[];
     for (var i = 0; i < files.length; i++) {
       tracks.add(await _fileToTrack(files[i], i, playlist));
     }
-    log('[LocalLibrary] Built ${tracks.length} tracks');
     return tracks;
   }
 
@@ -1271,9 +1245,7 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
     int index,
     LocalLibraryPlaylist playlist,
   ) async {
-    log('[LocalLibrary] Processing file: ${file.path}');
     final metadata = await _getTrackMetadata(file);
-    log('[LocalLibrary] Metadata result: $metadata');
     final fallbackTitle = path.basenameWithoutExtension(file.path);
     final title = metadata?.title ??
         (fallbackTitle.isEmpty ? 'Track ${index + 1}' : fallbackTitle);
@@ -1282,8 +1254,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
       id: playlist.id,
       title: metadata?.album ?? playlist.name,
     );
-
-    log('[LocalLibrary] Creating TrackEntity - title: $title, artist: $artistName, artworkPath: ${metadata?.artworkPath}');
 
     return TrackEntity(
       id: 'local_track_${playlist.id}_$index',
@@ -1316,10 +1286,8 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
 
   Future<LocalTrackMetadata?> _getTrackMetadata(File file) async {
     await _ensureTrackMetadataCacheLoaded();
-    log('[LocalLibrary] Cache loaded, checking for: ${file.path}');
     final cached = _localTrackMetadataCache[file.path];
     if (cached != null) {
-      log('[LocalLibrary] Found in cache: $cached');
       final finalized = await _finalizeMetadataArtwork(cached, file);
       if (!identical(finalized, cached)) {
         _localTrackMetadataCache[file.path] = finalized;
@@ -1329,38 +1297,27 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
       }
       return finalized;
     }
-    log('[LocalLibrary] Not in cache, extracting...');
     final extracted = await _extractTrackMetadata(file);
     if (extracted != null) {
-      log('[LocalLibrary] Extracted successfully, saving to cache');
       final finalized = await _finalizeMetadataArtwork(extracted, file);
       _localTrackMetadataCache[file.path] = finalized;
       unawaited(
         _localLibraryService.saveTrackMetadata(_localTrackMetadataCache),
       );
       return finalized;
-    } else {
-      log('[LocalLibrary] Extraction returned null');
     }
     return extracted;
   }
 
   Future<LocalTrackMetadata?> _extractTrackMetadata(File file) async {
     try {
-      log('[LocalLibrary] Extracting metadata for: ${file.path}');
-
-      // Use audio_metadata_reader to read metadata
       final metadata = readMetadata(file, getImage: true);
 
-      log('[LocalLibrary] Metadata type: ${metadata.runtimeType}');
-
-      // Extract common fields - properties vary by format
       String? title;
       String? artist;
       String? album;
       String? artworkPath;
 
-      // Try to access common metadata fields
       try {
         final dynamic dynMetadata = metadata;
 
@@ -1376,8 +1333,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         album = _safeMetadataString(() => dynMetadata.album) ??
             _safeMetadataString(() => dynMetadata.albumName);
 
-        log('[LocalLibrary] Extracted - title: $title, artist: $artist, album: $album');
-
         try {
           List<Picture>? pictures;
           try {
@@ -1386,7 +1341,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
 
           if (pictures != null && pictures.isNotEmpty) {
             final picture = pictures.first;
-            log('[LocalLibrary] Found picture');
             if (picture.bytes.isNotEmpty) {
               String mime = 'image/jpeg';
               try {
@@ -1394,7 +1348,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
                 mime = dynPic.mimeType ?? dynPic.mime ?? 'image/jpeg';
               } catch (_) {}
               artworkPath = await _storeArtworkBytes(file, picture.bytes, mime);
-              log('[LocalLibrary] Stored artwork at: $artworkPath');
             }
           }
         } catch (e) {
@@ -1408,7 +1361,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
           artist == null &&
           album == null &&
           artworkPath == null) {
-        log('[LocalLibrary] No metadata extracted for: ${file.path}');
         return null;
       }
 
@@ -1419,7 +1371,6 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
         artworkPath: artworkPath,
       );
 
-      log('[LocalLibrary] Metadata created successfully');
       return result;
     } catch (e, stackTrace) {
       log(
