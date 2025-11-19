@@ -55,7 +55,7 @@ class _MusilyLoadingState extends State<MusilyLoading>
                   child: CustomPaint(
                     size: Size.square(widget.size),
                     painter: _ArcLoadingPainter(
-                      color: color.withOpacity(0.3),
+                      color: color.withValues(alpha: 0.3),
                       strokeWidth: 2.5,
                     ),
                   ),
@@ -274,7 +274,7 @@ class _MusilyWaveLoadingState extends State<MusilyWaveLoading>
                   width: barWidth,
                   height: height,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.9),
+                    color: color.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(barWidth / 2),
                   ),
                 );
