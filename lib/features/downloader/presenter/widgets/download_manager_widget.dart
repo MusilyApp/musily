@@ -8,7 +8,6 @@ import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
-import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/core/presenter/widgets/section_header.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_data.dart';
@@ -253,11 +252,6 @@ class _DownloadManagerWidgetState extends State<DownloadManagerWidget> {
                 ),
               ),
             ],
-
-            if (widget.downloaderController.playerController != null)
-              PlayerSizedBox(
-                playerController: widget.downloaderController.playerController!,
-              ),
           ],
         );
       },

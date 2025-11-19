@@ -13,7 +13,6 @@ import 'package:musily/core/presenter/ui/buttons/ly_tonal_icon_button.dart';
 import 'package:musily/core/presenter/widgets/image_collection.dart';
 import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/presenter/widgets/musily_loading.dart';
-import 'package:musily/core/presenter/widgets/player_sized_box.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -542,7 +541,6 @@ class _MPlaylistPageState extends State<MPlaylistPage> {
                   },
                 ),
               ),
-              PlayerSizedBox(playerController: widget.playerController),
             ],
           ),
         );

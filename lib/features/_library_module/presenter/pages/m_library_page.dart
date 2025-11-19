@@ -647,8 +647,6 @@ class MLibraryPage extends StatelessWidget {
                                             ),
                                           ),
                                     ],
-                                    PlayerSizedBox(
-                                        playerController: playerController),
                                   ],
                                 );
                               }),
