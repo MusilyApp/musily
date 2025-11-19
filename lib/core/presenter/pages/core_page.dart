@@ -6,12 +6,14 @@ import 'package:musily/core/data/services/tray_service.dart';
 import 'package:musily/core/data/services/updater_service.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/pages/d_core_page.dart';
 import 'package:musily/core/presenter/pages/m_core_page.dart';
 import 'package:musily/core/presenter/ui/utils/ly_disposable.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/screen_handler.dart';
-import 'package:musily/core/presenter/widgets/updater_dialog.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
+import 'package:musily/features/version_manager/presenter/controllers/version_manager/version_manager_controller.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/_search_module/presenter/controllers/results_page/results_page_controller.dart';
 import 'package:musily/features/_sections_module/presenter/controllers/sections/sections_controller.dart';
@@ -25,6 +27,7 @@ import 'package:musily/features/player/presenter/controllers/player/player_contr
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
+import 'package:musily/features/version_manager/presenter/pages/version_manager_page.dart';
 
 class CorePage extends StatefulWidget {
   final CoreController coreController;
@@ -77,7 +80,15 @@ class _CorePageState extends State<CorePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       TrayService.initContextMenu(context);
       if (UpdaterService.instance.hasUpdate) {
-        UpdaterDialog.show(context);
+        final versionController = VersionManagerController();
+        LyNavigator.push(
+          context.showingPageContext,
+          VersionManagerPage(
+            controller: versionController,
+            newUpdateAvailable: true,
+            coreController: widget.coreController,
+          ),
+        );
       }
     });
   }

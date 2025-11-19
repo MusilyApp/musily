@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -6,6 +8,8 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/settings/presenter/pages/about_page.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
+import 'package:musily/features/version_manager/presenter/controllers/version_manager/version_manager_controller.dart';
+import 'package:musily/features/version_manager/presenter/pages/version_manager_page.dart';
 
 class OtherSection extends StatelessWidget {
   final CoreController coreController;
@@ -125,6 +129,76 @@ class OtherSection extends StatelessWidget {
             ),
           ),
         ),
+        // Version Manager Tile
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                final versionController = VersionManagerController();
+                LyNavigator.push(
+                  context,
+                  VersionManagerPage(
+                    controller: versionController,
+                    coreController: coreController,
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: context.themeData.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: context.themeData.colorScheme.outline
+                        .withValues(alpha: 0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: context.themeData.colorScheme.primary
+                            .withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        LucideIcons.download,
+                        size: 22,
+                        color: context.themeData.colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        context.localization.versionManager,
+                        style:
+                            context.themeData.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      LucideIcons.chevronRight,
+                      size: 20,
+                      color: context.themeData.colorScheme.onSurface
+                          .withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         // About Tile
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -193,6 +267,75 @@ class OtherSection extends StatelessWidget {
             ),
           ),
         ),
+        if (Platform.isLinux) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () async {
+                  try {
+                    await settingsController.methods.uninstallApp();
+                  } catch (e) {
+                    //
+                  }
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.themeData.colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.4),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: context.themeData.colorScheme.outline
+                          .withValues(alpha: 0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: context.themeData.colorScheme.error
+                              .withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          LucideIcons.trash2,
+                          size: 22,
+                          color: context.themeData.colorScheme.error,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          'Uninstall',
+                          style:
+                              context.themeData.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.2,
+                            color: context.themeData.colorScheme.error,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        LucideIcons.chevronRight,
+                        size: 20,
+                        color: context.themeData.colorScheme.onSurface
+                            .withValues(alpha: 0.5),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
         const SizedBox(height: 8),
       ],
     );
