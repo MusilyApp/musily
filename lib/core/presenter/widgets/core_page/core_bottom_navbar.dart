@@ -52,69 +52,74 @@ class CoreBottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: playerController.builder(builder: (context, data) {
-        return Container(
-          height: data.currentPlayingItem != null ? 130 : 72,
-          margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          decoration: BoxDecoration(
-            color: context.themeData.colorScheme.surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color:
-                  context.themeData.colorScheme.outline.withValues(alpha: 0.1),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              MiniPlayerWidget(
-                getTrackUsecase: getTrackUsecase,
-                playerController: playerController,
-                downloaderController: downloaderController,
-                libraryController: libraryController,
-                getAlbumUsecase: getAlbumUsecase,
-                getPlayableItemUsecase: getPlayableItemUsecase,
-                getArtistAlbumsUsecase: getArtistAlbumsUsecase,
-                getArtistSinglesUsecase: getArtistSinglesUsecase,
-                getArtistTracksUsecase: getArtistTracksUsecase,
-                coreController: coreController,
-                getArtistUsecase: getArtistUsecase,
-                getPlaylistUsecase: getPlaylistUsecase,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                    8, data.currentPlayingItem != null ? 0 : 8, 8, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _NavItem(
-                      icon: LucideIcons.house,
-                      isSelected: selectedIndex == 0,
-                      onTap: () => onItemSelected(0),
-                    ),
-                    _NavItem(
-                      icon: LucideIcons.search,
-                      isSelected: selectedIndex == 1,
-                      onTap: () => onItemSelected(1),
-                    ),
-                    _NavItem(
-                      icon: LucideIcons.library,
-                      isSelected: selectedIndex == 2,
-                      onTap: () => onItemSelected(2),
-                    ),
-                    _NavItem(
-                      icon: LucideIcons.download,
-                      isSelected: selectedIndex == 3,
-                      onTap: () => onItemSelected(3),
-                    ),
-                  ],
+      child: coreController.builder(
+        builder: (context, coreData) {
+          return playerController.builder(builder: (context, data) {
+            return Container(
+              height: data.currentPlayingItem != null ? 130 : 72,
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              decoration: BoxDecoration(
+                color: context.themeData.colorScheme.surface,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: context.themeData.colorScheme.outline
+                      .withValues(alpha: 0.1),
+                  width: 1,
                 ),
               ),
-            ],
-          ),
-        );
-      }),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  MiniPlayerWidget(
+                    getTrackUsecase: getTrackUsecase,
+                    playerController: playerController,
+                    downloaderController: downloaderController,
+                    libraryController: libraryController,
+                    getAlbumUsecase: getAlbumUsecase,
+                    getPlayableItemUsecase: getPlayableItemUsecase,
+                    getArtistAlbumsUsecase: getArtistAlbumsUsecase,
+                    getArtistSinglesUsecase: getArtistSinglesUsecase,
+                    getArtistTracksUsecase: getArtistTracksUsecase,
+                    coreController: coreController,
+                    getArtistUsecase: getArtistUsecase,
+                    getPlaylistUsecase: getPlaylistUsecase,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        8, data.currentPlayingItem != null ? 0 : 8, 8, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _NavItem(
+                          icon: LucideIcons.house,
+                          isSelected: selectedIndex == 0,
+                          onTap: () => onItemSelected(0),
+                        ),
+                        if (!coreData.offlineMode)
+                          _NavItem(
+                            icon: LucideIcons.search,
+                            isSelected: selectedIndex == 1,
+                            onTap: () => onItemSelected(1),
+                          ),
+                        _NavItem(
+                          icon: LucideIcons.library,
+                          isSelected: selectedIndex == 2,
+                          onTap: () => onItemSelected(2),
+                        ),
+                        _NavItem(
+                          icon: LucideIcons.download,
+                          isSelected: selectedIndex == 3,
+                          onTap: () => onItemSelected(3),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          });
+        },
+      ),
     );
   }
 }

@@ -828,6 +828,7 @@ class _DesktopFullPlayerState extends State<DesktopFullPlayer> {
                     DownloadButton(
                       controller: widget.downloaderController,
                       track: track,
+                      coreController: widget.coreController,
                     ),
                 ],
               ),

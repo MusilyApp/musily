@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/services/library_backup_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
@@ -48,6 +50,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   final GetPlaylistUsecase getPlaylistUsecase;
 
   late final BackupService backupService;
+  StreamSubscription<InternetStatus>? _connectionSubscription;
+  final InternetConnection _connectionChecker = InternetConnection();
 
   CoreController({
     required this.playerController,
@@ -66,6 +70,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       downloaderController: downloaderController,
       libraryController: libraryController,
     );
+    _initConnectionListener();
     ReceiveSharingIntent.instance.getMediaStream().listen((data) {
       updateData(
         this.data.copyWith(
@@ -95,7 +100,26 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       backupFileDir: '',
       isMaximized: false,
       windowTitle: 'Musily',
+      offlineMode: false,
     );
+  }
+
+  void _initConnectionListener() {
+    _connectionChecker.hasInternetAccess.then((hasConnection) {
+      updateData(data.copyWith(offlineMode: !hasConnection));
+    });
+
+    _connectionSubscription =
+        _connectionChecker.onStatusChange.listen((status) {
+      final isOffline = status == InternetStatus.disconnected;
+      updateData(data.copyWith(offlineMode: isOffline));
+    });
+  }
+
+  @override
+  void dispose() {
+    _connectionSubscription?.cancel();
+    super.dispose();
   }
 
   @override

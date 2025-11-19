@@ -222,6 +222,7 @@ class _TrackTileState extends State<TrackTile> {
                           DownloadButton(
                             controller: widget.downloaderController,
                             track: widget.track,
+                            coreController: widget.coreController,
                           ),
                           const SizedBox(width: 8),
                           TrackOptions(

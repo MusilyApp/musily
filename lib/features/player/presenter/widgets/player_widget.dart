@@ -230,6 +230,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                                                 controller:
                                                     widget.downloaderController,
                                                 track: data.currentPlayingItem!,
+                                                coreController:
+                                                    widget.coreController,
                                               ),
                                             if (data.tracksFromSmartQueue
                                                 .contains(

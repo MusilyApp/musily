@@ -239,6 +239,7 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                       DownloadButton(
                         controller: widget.downloaderController,
                         track: track,
+                        coreController: widget.coreController,
                       ),
                   ],
                 ),

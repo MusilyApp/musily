@@ -79,7 +79,8 @@ class TrackOptions extends StatelessWidget {
       ),
       entries: [
         if (customActions != null) ...customActions!.call(context),
-        if (!hideOptions.contains(TrackTileOptions.download)) ...[
+        if (!hideOptions.contains(TrackTileOptions.download) &&
+            !coreController.data.offlineMode) ...[
           AppMenuEntry(
             leading: downloaderMenuEntry.leading,
             title: downloaderMenuEntry.child,

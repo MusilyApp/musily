@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_download_manager/flutter_download_manager.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
@@ -12,12 +13,14 @@ class DownloadButton extends StatefulWidget {
   final DownloaderController controller;
   final TrackEntity track;
   final Color? color;
+  final CoreController? coreController;
 
   const DownloadButton({
     super.key,
     required this.controller,
     required this.track,
     this.color,
+    this.coreController,
   });
 
   @override
@@ -169,17 +172,25 @@ class _DownloadButtonState extends State<DownloadButton> {
       }
     }
 
+    // Check if offline mode is active
+    final isOffline = widget.coreController?.data.offlineMode ?? false;
+
     return Tooltip(
       message: 'Download',
       child: IconButton(
-        onPressed: () {
-          widget.controller.methods.addDownload(widget.track);
-        },
+        onPressed: isOffline
+            ? null
+            : () {
+                widget.controller.methods.addDownload(widget.track);
+              },
         iconSize: iconSize,
         icon: Icon(
           LucideIcons.download,
           size: iconSize ?? 20,
-          color: widget.color ?? context.themeData.colorScheme.primary,
+          color: isOffline
+              ? (widget.color ?? context.themeData.colorScheme.primary)
+                  .withValues(alpha: 0.5)
+              : widget.color ?? context.themeData.colorScheme.primary,
         ),
       ),
     );
