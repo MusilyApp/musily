@@ -4,6 +4,8 @@ import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/core/presenter/widgets/musily_logo.dart';
 
@@ -36,6 +38,18 @@ class AppImage extends StatelessWidget {
             fit: fit,
             color: color,
             colorBlendMode: colorBlendMode,
+            errorWidget: (context, url, error) {
+              return Container(
+                width: width,
+                height: height,
+                padding: const EdgeInsets.all(16),
+                child: Icon(
+                  LucideIcons.imageOff,
+                  color: context.themeData.colorScheme.primary
+                      .withValues(alpha: 0.7),
+                ),
+              );
+            },
           );
         }
         if (uri.startsWith('data:image')) {
@@ -67,7 +81,7 @@ class AppImage extends StatelessWidget {
         return Container(
           width: width,
           height: height,
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(16),
           child: MusilyLogo(width: width, height: height),
         );
       },
