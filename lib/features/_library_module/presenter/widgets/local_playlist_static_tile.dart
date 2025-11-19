@@ -15,7 +15,7 @@ class LocalPlaylistStaticTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LyListTile(
-      leading: LocalPlaylistIcon(
+      leading: const LocalPlaylistIcon(
         size: 40,
         iconSize: 20,
       ),

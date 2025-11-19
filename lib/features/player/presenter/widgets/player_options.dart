@@ -132,7 +132,7 @@ class PlayerOptions extends StatelessWidget {
       getArtistTracksUsecase: getArtistTracksUsecase,
       getArtistUsecase: getArtistUsecase,
       coreController: coreController,
-      hideOptions: [
+      hideOptions: const [
         TrackTileOptions.seeAlbum,
         TrackTileOptions.seeArtist,
         TrackTileOptions.addToQueue,

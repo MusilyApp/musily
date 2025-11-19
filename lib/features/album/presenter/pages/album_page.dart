@@ -431,7 +431,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                           scrollToTop();
                                         },
                                         fixedSize: const Size(58, 58),
-                                        icon: Icon(
+                                        icon: const Icon(
                                           LucideIcons.circlePlus,
                                           size: 22,
                                         ),
@@ -465,7 +465,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                           scrollToTop();
                                         },
                                         fixedSize: const Size(58, 58),
-                                        icon: Icon(
+                                        icon: const Icon(
                                           LucideIcons.check,
                                           size: 22,
                                         ),

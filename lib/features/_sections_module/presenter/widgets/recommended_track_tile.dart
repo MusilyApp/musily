@@ -79,8 +79,8 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
         duration: const Duration(milliseconds: 200),
         width: 320,
         height: 150,
-        margin: EdgeInsets.symmetric(horizontal: 8),
-        constraints: BoxConstraints(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        constraints: const BoxConstraints(
           maxWidth: 320,
           maxHeight: 150,
         ),
@@ -155,7 +155,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                 ),
               // Content
               Padding(
-                padding: EdgeInsets.all(14),
+                padding: const EdgeInsets.all(14),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -166,7 +166,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                       child: Container(
                         width: 80,
                         height: 80,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 80,
                           maxHeight: 80,
                         ),
@@ -176,7 +176,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 8,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
@@ -210,7 +210,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     // Text Content and Actions
                     Expanded(
                       child: Column(
@@ -238,7 +238,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 6),
+                          const SizedBox(height: 6),
                           // Artist
                           Row(
                             children: [
@@ -247,7 +247,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                                 size: 13,
                                 color: textColor.withValues(alpha: 0.8),
                               ),
-                              SizedBox(width: 4),
+                              const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
                                   widget.recommendation.track.artist.name,
@@ -262,7 +262,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                           // Action Buttons
                           Row(
                             spacing: 8,
@@ -271,7 +271,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                               Container(
                                 width: 40,
                                 height: 40,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxWidth: 40,
                                   maxHeight: 40,
                                 ),
@@ -282,7 +282,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                                     BoxShadow(
                                       color: textColor.withValues(alpha: 0.35),
                                       blurRadius: 8,
-                                      offset: Offset(0, 2),
+                                      offset: const Offset(0, 2),
                                     ),
                                   ],
                                 ),
@@ -325,7 +325,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                               Container(
                                 width: 40,
                                 height: 40,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxWidth: 40,
                                   maxHeight: 40,
                                 ),
@@ -358,7 +358,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                               Container(
                                 width: 40,
                                 height: 40,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxWidth: 40,
                                   maxHeight: 40,
                                 ),
@@ -392,7 +392,7 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
                               Container(
                                 width: 40,
                                 height: 40,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxWidth: 40,
                                   maxHeight: 40,
                                 ),
