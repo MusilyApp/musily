@@ -21,6 +21,7 @@ class IPCServiceWindows implements IPCService {
     }
   }
 
+  @override
   Future<bool> initializeIpcServer() async {
     final socketPath = await getIpcPath();
 
