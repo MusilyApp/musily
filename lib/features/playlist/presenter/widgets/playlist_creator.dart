@@ -69,7 +69,6 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
           retrievedPlaylist = await widget.getPlaylistUsecase.exec(
             playlistId,
           );
-          print('retrievedPlaylist: $retrievedPlaylist');
         } catch (e) {
           LySnackbar.showError(context.localization.playlistNotFound);
           return;

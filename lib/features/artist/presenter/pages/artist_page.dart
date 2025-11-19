@@ -1033,10 +1033,8 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
     });
     try {
       TrackEntity? track;
-      print('LOADING ARTIST -> ${widget.artistId.isEmpty}');
       if (widget.artistId.isEmpty) {
         track = await widget.getTrackUsecase.exec(widget.trackId ?? '');
-        print('TRACK -> ${track?.artist.id}');
       }
       final fetchedArtist = await widget.getArtistUsecase.exec(
         track?.artist.id ?? widget.artistId,
@@ -1044,9 +1042,7 @@ class _AsyncArtistPageState extends State<AsyncArtistPage> {
       setState(() {
         artist = fetchedArtist;
       });
-    } catch (e, stackTrace) {
-      print('ERROR -> $e');
-      print('STACK TRACE -> $stackTrace');
+    } catch (e) {
       setState(() {
         artist = null;
       });
