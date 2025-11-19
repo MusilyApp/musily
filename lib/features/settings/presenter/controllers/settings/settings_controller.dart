@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musily/core/data/services/tray_service.dart';
@@ -11,6 +12,7 @@ import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/domain/entities/supporter_entity.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_methods.dart';
+import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 
@@ -162,7 +164,7 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
         final savedAccentColorPreference =
             prefs.getString('accentColorPreference');
         data.accentColorPreference = AccentColorPreference.values.byName(
-          savedAccentColorPreference ?? 'defaultColor',
+          savedAccentColorPreference ?? 'playingNow',
         );
         updateData(data);
       },
@@ -200,6 +202,77 @@ class SettingsController extends BaseController<SettingsData, SettingsMethods> {
             loadingSupporters: false,
           ),
         );
+      },
+      uninstallApp: () async {
+        if (!Platform.isLinux) {
+          return;
+        }
+
+        final homeDir = Platform.environment['HOME'];
+        if (homeDir == null) {
+          throw Exception('HOME environment variable not found');
+        }
+
+        final uninstallerDir = path.join(
+          homeDir,
+          '.musily',
+          'data',
+          'flutter_assets',
+          'assets',
+          'uninstaller',
+        );
+
+        final tarGzPath = path.join(uninstallerDir, 'musily_installer.tar.gz');
+        final extractedDir = path.join(uninstallerDir, 'musily_installer');
+        final binaryPath = path.join(extractedDir, 'musily_installer');
+
+        String executablePath;
+
+        final tarGzFile = File(tarGzPath);
+        final extractedBinary = File(binaryPath);
+
+        if (await extractedBinary.exists()) {
+          executablePath = binaryPath;
+        } else if (await tarGzFile.exists()) {
+          final bytes = await tarGzFile.readAsBytes();
+          final archive = TarDecoder().decodeBytes(
+            GZipDecoder().decodeBytes(bytes),
+          );
+
+          final extractDir = Directory(extractedDir);
+          if (!await extractDir.exists()) {
+            await extractDir.create(recursive: true);
+          }
+
+          String? foundBinaryPath;
+
+          for (final file in archive) {
+            if (file.isFile) {
+              final filePath = path.join(extractedDir, file.name);
+              final outFile = File(filePath);
+              await outFile.parent.create(recursive: true);
+              await outFile.writeAsBytes(file.content as List<int>);
+
+              if (file.name == 'musily_installer') {
+                foundBinaryPath = filePath;
+              }
+            }
+          }
+
+          if (foundBinaryPath != null) {
+            await Process.run('chmod', ['+x', foundBinaryPath]);
+            executablePath = foundBinaryPath;
+          } else if (await extractedBinary.exists()) {
+            await Process.run('chmod', ['+x', binaryPath]);
+            executablePath = binaryPath;
+          } else {
+            throw Exception('Uninstaller binary not found after extraction');
+          }
+        } else {
+          throw Exception('Uninstaller not found');
+        }
+
+        await Process.run(executablePath, []);
       },
     );
   }

@@ -18,6 +18,7 @@ class SettingsMethods {
   final void Function() loadAccentColorPreference;
   final Future<void> Function({bool forceRefresh}) loadSupporters;
   final void Function(String imageUrl) updatePlayerAccentColor;
+  final Future<void> Function() uninstallApp;
 
   SettingsMethods({
     required this.changeLanguage,
@@ -31,5 +32,6 @@ class SettingsMethods {
     required this.loadAccentColorPreference,
     required this.loadSupporters,
     required this.updatePlayerAccentColor,
+    required this.uninstallApp,
   });
 }
