@@ -103,56 +103,6 @@ class _RecommendedTrackTileState extends State<RecommendedTrackTile> {
           borderRadius: BorderRadius.circular(16),
           child: Stack(
             children: [
-              // Background Image with Overlay
-              if (widget.recommendation.track.highResImg != null &&
-                  widget.recommendation.track.highResImg!.isNotEmpty)
-                Positioned.fill(
-                  child: Stack(
-                    children: [
-                      AppImage(
-                        widget.recommendation.track.highResImg!,
-                        fit: BoxFit.cover,
-                      ),
-                      // Gradient Overlay
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              backgroundColor.withValues(alpha: 0.75),
-                              backgroundColor.withValues(alpha: 0.85),
-                              backgroundColor,
-                            ],
-                            stops: const [0.0, 0.4, 1.0],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          backgroundColor,
-                          backgroundColor.withValues(alpha: 0.8),
-                        ],
-                      ),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        LucideIcons.music2,
-                        size: 64,
-                        color: textColor.withValues(alpha: 0.2),
-                      ),
-                    ),
-                  ),
-                ),
               // Content
               Padding(
                 padding: const EdgeInsets.all(14),
