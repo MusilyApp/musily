@@ -37,6 +37,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   List<TrackEntity> _shuffledQueue = [];
   TrackEntity? _activeTrack;
   bool _shuffleEnabled = false;
+  bool hasStopped = false;
   MusilyRepeatMode _repeatMode = MusilyRepeatMode.noRepeat;
   MusilyPlayerState _playerState = MusilyPlayerState.disposed;
   bool _loadingTrackUrl = false;
@@ -216,45 +217,64 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> _handlePlaybackEvent(PlaybackEvent event) async {
-    try {
-      _shuffleEnabled = _audioPlayer.shuffleModeEnabled;
-      if (event.processingState == ProcessingState.completed) {
-        switch (_repeatMode) {
-          case MusilyRepeatMode.noRepeat:
-            if (hasNext) {
-              if (_activeTrack == _queue.last) {
-                await seek(Duration.zero);
-                return;
+    const maxRetries = 3;
+    int attempt = 0;
+
+    while (attempt < maxRetries) {
+      try {
+        _shuffleEnabled = _audioPlayer.shuffleModeEnabled;
+        if (event.processingState == ProcessingState.completed) {
+          switch (_repeatMode) {
+            case MusilyRepeatMode.noRepeat:
+              if (hasNext) {
+                if (_activeTrack == _queue.last) {
+                  await seek(Duration.zero);
+                  return;
+                }
+                await skipToNext();
+              } else if (_activeTrack != null) {
+                final trackId = _queue.first.id;
+                await skipToTrack(trackId);
+                if (_audioPlayer.playing) {
+                  await pause();
+                }
+                if (_audioPlayer.duration != Duration.zero) {
+                  await seek(Duration.zero);
+                }
               }
+              break;
+            case MusilyRepeatMode.repeatOne:
+              if (_activeTrack != null) {
+                await playTrack(_activeTrack!);
+              }
+              if (!_audioPlayer.playing) {
+                await play();
+              }
+              break;
+            case MusilyRepeatMode.repeat:
               await skipToNext();
-            } else if (_activeTrack != null) {
-              final trackId = _queue.first.id;
-              await skipToTrack(trackId);
-              if (_audioPlayer.playing) {
-                await pause();
-              }
-              if (_audioPlayer.duration != Duration.zero) {
-                await seek(Duration.zero);
-              }
-            }
-            break;
-          case MusilyRepeatMode.repeatOne:
-            if (_activeTrack != null) {
-              await playTrack(_activeTrack!);
-            }
-            if (!_audioPlayer.playing) {
-              await play();
-            }
-            break;
-          case MusilyRepeatMode.repeat:
-            await skipToNext();
-            break;
+              break;
+          }
         }
+        _updatePlaybackState();
+        return;
+      } catch (e, stackTrace) {
+        attempt++;
+        if (attempt >= maxRetries) {
+          log(
+            '[Error handling playback event] - Failed after $maxRetries attempts',
+            error: e,
+            stackTrace: stackTrace,
+          );
+          return;
+        }
+        log(
+          '[Error handling playback event] - Attempt $attempt/$maxRetries failed, retrying...',
+          error: e,
+          stackTrace: stackTrace,
+        );
+        await Future.delayed(Duration(milliseconds: 100 * attempt));
       }
-      _updatePlaybackState();
-    } catch (e, stackTrace) {
-      // TODO look here
-      log('[Error handling playback event]', error: e, stackTrace: stackTrace);
     }
   }
 
@@ -393,6 +413,10 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     if (_loadingTrackUrl) {
       return;
     }
+    if (hasStopped) {
+      await playTrack(_activeTrack!);
+      return;
+    }
     await _audioPlayer.play();
     _onAction?.call(MusilyPlayerAction.play);
   }
@@ -461,6 +485,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       if (url.isEmpty) {
         if (_audioPlayer.playing) {
           await _audioPlayer.stop();
+          hasStopped = true;
         }
         if (track.id != _activeTrack!.id) {
           return;
@@ -472,6 +497,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
               return;
             }
             await _audioPlayer.stop();
+            hasStopped = true;
           }
           url = uri.toString();
           track.url = uri.toString();
@@ -505,6 +531,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         return;
       }
       await _audioPlayer.play();
+      hasStopped = false;
       unawaited(_persistPlayerState());
     } catch (e, stackTrace) {
       log(
@@ -524,7 +551,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         children: [audioSource],
       );
       await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
-      await _audioPlayer.play();
+      await play();
     } catch (e, stackTrace) {
       log(
         '[Error playing placeholder for repeat one]',
@@ -749,10 +776,12 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
-    _activeTrack = null;
-    _onActiveTrackChanged?.call(null);
+    if (hasStopped) {
+      return;
+    }
     await _audioPlayer.stop();
     _onAction?.call(MusilyPlayerAction.stop);
+    hasStopped = true;
     unawaited(_persistPlayerState());
   }
 
