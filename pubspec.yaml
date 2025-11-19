@@ -94,12 +94,13 @@ dependencies:
   package_info_plus: ^8.3.0
   flutter_curl: ^0.7.0
   markdown_widget: ^2.3.2+8
+  internet_connection_checker_plus: ^2.9.1
   gtk_window: ^0.1.1
   lucide_icons_flutter: ^3.1.5
   toastification: ^3.0.3
   audio_service_win: ^0.0.2
   collection: ^1.19.1
-  audio_metadata_reader: ^1.4.1
+  audio_metadata_reader: ^0.0.11
 
 # Development Dependencies
 dev_dependencies:
