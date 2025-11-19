@@ -7,8 +7,8 @@ class HttpAdapterImpl extends HttpAdapter {
   final Dio _dio = Dio();
 
   HttpAdapterImpl()
-    // TODO Set Api Url
-    : super('') {
+      // TODO Set Api Url
+      : super('') {
     _dio.options.baseUrl = baseUrl;
     _dio.interceptors.add(
       InterceptorsWrapper(
@@ -178,10 +178,12 @@ class HttpAdapterImpl extends HttpAdapter {
   Future<String?> _getAccessToken() async {
     // final token = await _secureStorage.read(key: 'token');
     // return token;
+    return null;
   }
 
   Future<String?> _getRefreshToken() async {
     // return await _secureStorage.read(key: 'refreshToken');
+    return null;
   }
 
   Future<void> _setAccessToken(String accessToken) async {

@@ -1,5 +1,5 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musily/features/auth/data/models/user_model.dart';
+// import 'package:musily/features/auth/data/models/user_model.dart';
 import 'package:musily/features/auth/domain/entities/user_entity.dart';
 
 class UserService {

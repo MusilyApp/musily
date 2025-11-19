@@ -101,11 +101,11 @@ class AuthDatasourceImpl extends BaseDatasource implements AuthDatasource {
 
   Future<void> _storeUser(UserEntity user) async {
     return exec<void>(() async {
-      final userModel = UserModel.fromMap({
-        'id': user.id,
-        'name': user.name,
-        'email': user.email,
-      });
+      // final userModel = UserModel.fromMap({
+      //   'id': user.id,
+      //   'name': user.name,
+      //   'email': user.email,
+      // });
       // await _secureStorage.write(
       //   key: 'user',
       //   value: userModel.toJson(),
