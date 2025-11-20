@@ -191,6 +191,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get offline => 'Оффлайн';
 
   @override
+  String get offlineMode => 'Офлайн режим';
+
+  @override
+  String get offlineModeDescription =>
+      'Вы сейчас в офлайн режиме. Некоторые функции могут быть недоступны.';
+
+  @override
   String get lyricsNotFound => 'Тексты не найдены';
 
   @override
@@ -263,6 +270,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noResults => 'Нет результатов';
+
+  @override
+  String get tryDifferentKeywords =>
+      'Попробуйте другие ключевые слова или проверьте правописание';
 
   @override
   String get downloadCompleted => 'Загрузка завершена';
@@ -833,4 +844,38 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get localPlaylist => 'Локальный плейлист';
+
+  @override
+  String get versionManager => 'Менеджер версий';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get noReleasesFound => 'Версии не найдены';
+
+  @override
+  String get version => 'Версия';
+
+  @override
+  String get alreadyInstalled => 'Уже установлено';
+
+  @override
+  String get update => 'Обновить';
+
+  @override
+  String get changelog => 'Изменения';
+
+  @override
+  String get changelogNotAvailable => 'Изменения недоступны';
+
+  @override
+  String get later => 'Позже';
+
+  @override
+  String get updateAvailableDescription =>
+      'Доступна новая версия Musily. Обновите сейчас, чтобы получить последние функции и улучшения.';
+
+  @override
+  String get recommendations => 'Рекомендации';
 }

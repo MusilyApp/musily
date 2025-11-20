@@ -192,6 +192,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get offline => 'Offline';
 
   @override
+  String get offlineMode => 'Modo Offline';
+
+  @override
+  String get offlineModeDescription =>
+      'Você está offline no momento. Alguns recursos podem estar indisponíveis.';
+
+  @override
   String get lyricsNotFound => 'Letra não encontrada';
 
   @override
@@ -264,6 +271,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noResults => 'Sem resultados';
+
+  @override
+  String get tryDifferentKeywords =>
+      'Tente palavras-chave diferentes ou verifique a ortografia';
 
   @override
   String get downloadCompleted => 'Download concluído';
@@ -831,4 +842,38 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get localPlaylist => 'Playlist local';
+
+  @override
+  String get versionManager => 'Gerenciador de Versões';
+
+  @override
+  String get retry => 'Tentar Novamente';
+
+  @override
+  String get noReleasesFound => 'Nenhuma versão encontrada';
+
+  @override
+  String get version => 'Versão';
+
+  @override
+  String get alreadyInstalled => 'Já Instalado';
+
+  @override
+  String get update => 'Atualizar';
+
+  @override
+  String get changelog => 'Alterações';
+
+  @override
+  String get changelogNotAvailable => 'Alterações não disponíveis';
+
+  @override
+  String get later => 'Depois';
+
+  @override
+  String get updateAvailableDescription =>
+      'Uma nova versão do Musily está disponível. Atualize agora para obter os recursos e melhorias mais recentes.';
+
+  @override
+  String get recommendations => 'Recomendações';
 }

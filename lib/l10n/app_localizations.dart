@@ -464,6 +464,18 @@ abstract class AppLocalizations {
   /// **'Offline'**
   String get offline;
 
+  /// No description provided for @offlineMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Mode'**
+  String get offlineMode;
+
+  /// No description provided for @offlineModeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You are currently offline. Some features may be unavailable.'**
+  String get offlineModeDescription;
+
   /// No description provided for @lyricsNotFound.
   ///
   /// In en, this message translates to:
@@ -607,6 +619,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No results'**
   String get noResults;
+
+  /// No description provided for @tryDifferentKeywords.
+  ///
+  /// In en, this message translates to:
+  /// **'Try different keywords or check your spelling'**
+  String get tryDifferentKeywords;
 
   /// No description provided for @downloadCompleted.
   ///
@@ -1621,6 +1639,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Local playlist'**
   String get localPlaylist;
+
+  /// No description provided for @versionManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Version Manager'**
+  String get versionManager;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @noReleasesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No releases found'**
+  String get noReleasesFound;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @alreadyInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Installed'**
+  String get alreadyInstalled;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @changelog.
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog'**
+  String get changelog;
+
+  /// No description provided for @changelogNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog not available'**
+  String get changelogNotAvailable;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// No description provided for @updateAvailableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of Musily is available. Update now to get the latest features and improvements.'**
+  String get updateAvailableDescription;
+
+  /// No description provided for @recommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get recommendations;
 }
 
 class _AppLocalizationsDelegate
