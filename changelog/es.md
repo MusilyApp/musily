@@ -1,3 +1,66 @@
+## 5.0.0
+
+**Nuevas Funcionalidades**
+
+- Interfaz refinada y más consistente, con mejoras generales en la organización visual y la navegación.
+- UI/UX mejorada en escritorio: mejor comportamiento con ventanas, mouse y uso general de PC.
+- Se agregó el Temporizador de Sueño.
+- Biblioteca Local: ahora puedes agregar carpetas de tu dispositivo a tu biblioteca.
+Nota: La biblioteca local y la biblioteca Musily se administran por separado para garantizar la integridad de los datos.
+- Cola persistente: tu cola de reproducción se conserva incluso después de reiniciar la aplicación.
+- Modo offline: la aplicación ahora detecta automáticamente cuando no hay conexión a internet y cambia al modo offline.
+- Administrador de Actualizaciones: ahora puedes actualizar la aplicación o descargar otras versiones directamente desde la aplicación.
+
+**Mejoras**
+**Respaldo**
+
+- El respaldo y la restauración ahora funcionan completamente en segundo plano sin congelar la aplicación — incluso con un gran número de descargas activas.
+- Los respaldos multiplataforma ahora son más estables y confiables.
+**Descargas**
+
+- Sistema de descarga optimizado con múltiples conexiones simultáneas, control dinámico de velocidad y reconexiones más confiables.
+- Velocidades de descarga significativamente más rápidas — hasta 50× más rápidas dependiendo de la conexión.
+- Múltiples descargas simultáneas sin congelar la aplicación.
+
+**Interfaz**
+
+- El color de acento de la aplicación ahora cambia automáticamente según la pista que se está reproduciendo actualmente
+(Este comportamiento se puede cambiar en la configuración.)
+- Mensajes de retroalimentación revisados para mayor claridad.
+**Recomendaciones**
+
+- Algoritmo de recomendación mejorado, proporcionando sugerencias más relevantes.
+- Sugerencias de música mostradas en la pantalla de inicio basadas en tu perfil de escucha.
+**Listas de Reproducción y Biblioteca**
+
+- Las listas de reproducción ahora muestran el tiempo total de reproducción.
+- Las pistas más antiguas sin duración almacenada ahora tienen su duración actualizada automáticamente cuando se reproducen.
+
+**Reproductor – Correcciones de Estabilidad**
+
+- Se resolvieron varios problemas críticos:
+- Corregidos problemas de concurrencia que causaban que la aplicación se congelara al cambiar rápidamente entre pistas.
+- El modo repetir-una ahora funciona correctamente.
+- Corregido un problema que impedía que la reproducción se reanudara después de largos períodos de inactividad.
+- El reproductor ahora se mueve correctamente a la siguiente pista al final de la reproducción en dispositivos donde anteriormente se detenía inesperadamente.
+- Corregido un error que impedía a los usuarios reordenar la cola.
+- Al reproducir una pista de un álbum o lista de reproducción ya en reproducción, en modo aleatorio, a veces se seleccionaba una pista aleatoria incorrecta — ahora corregido.
+- El modo aleatorio podía desestabilizar la aplicación — esto se ha resuelto completamente.
+
+**Letras**
+
+- Las pistas sin letras sincronizadas ahora muestran un tiempo alineado con el temporizador de reproducción.
+- Para algunas pistas sin marcas de tiempo, se genera la sincronización automática de letras.
+
+**Correcciones Generales**
+
+- Windows: el botón de descarga ahora cambia correctamente a "Completado" cuando termina la descarga.
+- Varias mejoras de estabilidad y rendimiento en toda la aplicación.
+
+**Interfaz y Localización**
+
+- Se agregó soporte para 13 nuevos idiomas: Francés, Alemán, Italiano, Japonés, Chino, Coreano, Hindi, Indonesio, Turco, Árabe, Polaco y Tailandés.
+
 ## 4.0.4
 
 **Correcciones**

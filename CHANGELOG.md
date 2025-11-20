@@ -1,3 +1,63 @@
+## 5.0.0
+
+**New Features**
+
+- Refined and more consistent interface, with general improvements to visual organization and navigation.
+- Improved UI/UX on desktop: better behavior with windows, mouse, and overall PC usage.
+- Added Sleep Timer.
+- Local Library: you can now add folders from your device to your library.
+Note: The local library and the Musily library are managed separately to ensure data integrity.
+- Persistent queue: your playback queue is preserved even after restarting the app.
+- Offline mode: the app now automatically detects when there is no internet connection and switches to offline mode.
+- Update Manager: you can now update the app or download other versions directly from within the application.
+
+**Improvements**
+**Backup**
+
+- Backup and restore now run fully in the background without freezing the app — even with a high number of active downloads.
+- Cross-platform backups are now more stable and reliable.
+- Downloads
+- Download system optimized with multiple simultaneous connections, dynamic speed control, and more reliable reconnections.
+- Significantly faster download speeds — up to 50× faster depending on the connection.
+- Multiple simultaneous downloads without freezing the application.
+
+**Interface**
+
+- The app’s accent color now changes automatically based on the currently playing track
+(This behavior can be changed in the settings.)
+- Feedback messages revised for improved clarity.
+- Recommendations
+- Enhanced recommendation algorithm, providing more relevant suggestions.
+- Music suggestions shown on the home screen based on your listening profile.
+- Playlists and Library
+- Playlists now show total playback time.
+- Older tracks without stored duration now have their duration updated automatically when played.
+
+**Player – Stability Fixes**
+
+- Several critical issues have been resolved:
+- Fixed concurrency issues that caused the app to freeze when rapidly switching tracks.
+- Repeat-one mode now works correctly.
+- Fixed an issue that prevented playback from resuming after long periods of inactivity.
+- The player now correctly moves to the next track at the end of playback on devices where it previously stopped unexpectedly.
+- Fixed a bug that prevented users from reordering the queue.
+- When playing a track from an album or playlist already in playback, in shuffle mode, an incorrect random track was sometimes selected — now fixed.
+- Shuffle mode could destabilize the app — this has been fully resolved.
+
+**Lyrics**
+
+- Tracks without synced lyrics now display timing aligned with the playback timer.
+- For some tracks without timestamps, automatic lyric syncing is generated.
+
+**General Fixes**
+
+- Windows: the download button now correctly switches to “Completed” when the download finishes.
+- Various stability and performance improvements throughout the application.
+
+**Interface and Localization**
+
+- Added support for 13 new languages: French, German, Italian, Japanese, Chinese, Korean, Hindi, Indonesian, Turkish, Arabic, Polish, and Thai.
+
 ## 4.0.4
 
 **Fixes**

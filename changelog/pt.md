@@ -1,3 +1,66 @@
+## 5.0.0
+
+**Novos Recursos**
+
+- Interface refinada e mais consistente, com melhorias gerais na organização visual e navegação.
+- UI/UX melhorada no desktop: melhor comportamento com janelas, mouse e uso geral do PC.
+- Adicionado Timer de Sono.
+- Biblioteca Local: você pode agora adicionar pastas do seu dispositivo à sua biblioteca.
+Nota: A biblioteca local e a biblioteca Musily são gerenciadas separadamente para garantir a integridade dos dados.
+- Fila persistente: sua fila de reprodução é preservada mesmo após reiniciar o aplicativo.
+- Modo offline: o aplicativo agora detecta automaticamente quando não há conexão com a internet e muda para o modo offline.
+- Gerenciador de Atualizações: você pode agora atualizar o aplicativo ou baixar outras versões diretamente de dentro do aplicativo.
+
+**Melhorias**
+**Backup**
+
+- Backup e restauração agora funcionam completamente em segundo plano sem congelar o aplicativo — mesmo com um grande número de downloads ativos.
+- Backups multiplataforma agora são mais estáveis e confiáveis.
+**Downloads**
+
+- Sistema de download otimizado com múltiplas conexões simultâneas, controle dinâmico de velocidade e reconexões mais confiáveis.
+- Velocidades de download significativamente mais rápidas — até 50× mais rápidas dependendo da conexão.
+- Múltiplos downloads simultâneos sem congelar o aplicativo.
+
+**Interface**
+
+- A cor de destaque do aplicativo agora muda automaticamente com base na faixa atualmente em reprodução
+(Este comportamento pode ser alterado nas configurações.)
+- Mensagens de feedback revisadas para maior clareza.
+**Recomendações**
+
+- Algoritmo de recomendação aprimorado, fornecendo sugestões mais relevantes.
+- Sugestões de música mostradas na tela inicial com base no seu perfil de audição.
+**Playlists e Biblioteca**
+
+- Playlists agora mostram o tempo total de reprodução.
+- Faixas mais antigas sem duração armazenada agora têm sua duração atualizada automaticamente quando reproduzidas.
+
+**Player – Correções de Estabilidade**
+
+- Vários problemas críticos foram resolvidos:
+- Corrigidos problemas de concorrência que causavam o congelamento do aplicativo ao alternar rapidamente entre faixas.
+- Modo repetir-um agora funciona corretamente.
+- Corrigido um problema que impedia a reprodução de retomar após longos períodos de inatividade.
+- O player agora move corretamente para a próxima faixa no final da reprodução em dispositivos onde anteriormente parava inesperadamente.
+- Corrigido um bug que impedia os usuários de reordenar a fila.
+- Ao reproduzir uma faixa de um álbum ou playlist já em reprodução, no modo aleatório, uma faixa aleatória incorreta era às vezes selecionada — agora corrigido.
+- Modo aleatório poderia desestabilizar o aplicativo — isso foi totalmente resolvido.
+
+**Letras**
+
+- Faixas sem letras sincronizadas agora exibem tempo alinhado com o temporizador de reprodução.
+- Para algumas faixas sem timestamps, a sincronização automática de letras é gerada.
+
+**Correções Gerais**
+
+- Windows: o botão de download agora muda corretamente para "Concluído" quando o download termina.
+- Várias melhorias de estabilidade e desempenho em todo o aplicativo.
+
+**Interface e Localização**
+
+- Adicionado suporte para 13 novos idiomas: Francês, Alemão, Italiano, Japonês, Chinês, Coreano, Hindi, Indonésio, Turco, Árabe, Polonês e Tailandês.
+
 ## 4.0.4
 
 **Correções**
