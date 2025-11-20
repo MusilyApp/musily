@@ -97,9 +97,10 @@ class _ResultsPageState extends State<ResultsPage> {
       contextKey: 'SearchResultsPage',
       child: Scaffold(
         appBar: MusilyAppBar(
+          height: 70,
           surfaceTintColor: Colors.transparent,
           title: Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
                 Expanded(
@@ -144,7 +145,7 @@ class _ResultsPageState extends State<ResultsPage> {
                     EmptyState(
                       icon: const Icon(LucideIcons.scanSearch, size: 50),
                       title: context.localization.noResults,
-                      message: 'Try different keywords or check your spelling',
+                      message: context.localization.tryDifferentKeywords,
                     ),
                     PlayerSizedBox(
                       playerController: widget.playerController,

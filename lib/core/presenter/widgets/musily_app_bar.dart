@@ -11,6 +11,8 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? surfaceTintColor;
   final bool autoImplyLeading;
   final bool centerTitle;
+  final double? height;
+
   const MusilyAppBar({
     super.key,
     this.leading,
@@ -20,6 +22,7 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.surfaceTintColor,
     this.autoImplyLeading = true,
     this.centerTitle = true,
+    this.height,
   });
 
   @override
@@ -28,6 +31,7 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         backgroundColor: backgroundColor,
         surfaceTintColor: surfaceTintColor,
+        toolbarHeight: height,
         leading: autoImplyLeading && Navigator.canPop(context)
             ? Tooltip(
                 message: context.localization.back,
@@ -45,5 +49,5 @@ class MusilyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(height ?? kToolbarHeight);
 }
