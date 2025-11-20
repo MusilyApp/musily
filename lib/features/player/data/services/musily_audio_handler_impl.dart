@@ -444,13 +444,15 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       }
 
       List<TrackEntity> queue = getQueue();
-
       final originalTrack = track;
+
       if (!isPlaceholder) {
         _activeTrack = track;
         _activeTrack!.position = Duration.zero;
         _activeTrack!.duration = Duration.zero;
+
         final existingUrl = _activeTrack?.url;
+
         if (existingUrl != null && existingUrl.isNotEmpty) {
           track.url = existingUrl;
           url = existingUrl;
@@ -458,79 +460,91 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
         if (url.isEmpty) {
           _loadingTrackUrl = true;
+
           final placeholderTrack = track.copyWith(
             url: placeholderAudioPath,
           );
+
           await _playPlaceholderForRepeatOne(placeholderTrack);
+
+          if (track.id != _activeTrack?.id) return;
+
           _activeTrack = originalTrack;
         }
       } else {
         if (url.isNotEmpty) {
           final audioSource = await buildAudioSource(track, url);
-          final audioPlayerQueue = ConcatenatingAudioSource(
-            children: [audioSource],
-          );
-          await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
+
+          if (track.id != _activeTrack?.id) return;
+
+          final q = ConcatenatingAudioSource(children: [audioSource]);
+          await _audioPlayer.setAudioSource(q, preload: false);
+
+          if (track.id != _activeTrack?.id) return;
+
           await _audioPlayer.play();
         }
         return;
       }
+
       _onActiveTrackChanged?.call(track);
-      if (queue.where((element) => element.id == track.id).isEmpty) {
+
+      if (queue.where((e) => e.id == track.id).isEmpty) {
         queue = [track];
         _queue = [track];
         _shuffledQueue = [track];
         _onAction?.call(MusilyPlayerAction.queueChanged);
       }
+
       if (url.isEmpty) {
         if (_audioPlayer.playing) {
           await _audioPlayer.stop();
-          hasStopped = true;
         }
-        if (track.id != _activeTrack!.id) {
-          return;
-        }
+
+        if (track.id != _activeTrack?.id) return;
+
         if (_uriGetter != null) {
           final uri = await _uriGetter!.call(track);
+
+          if (track.id != _activeTrack?.id) return;
+
           if (_audioPlayer.playing) {
-            if (track.id != _activeTrack!.id) {
-              return;
-            }
             await _audioPlayer.stop();
-            hasStopped = true;
           }
+
+          if (track.id != _activeTrack?.id) return;
+
           url = uri.toString();
-          track.url = uri.toString();
-          if (_activeTrack != null && track.id == _activeTrack!.id) {
+          track.url = url;
+
+          if (track.id == _activeTrack?.id) {
             _activeTrack!.url = url;
-            _onActiveTrackChanged?.call(_activeTrack);
-          } else {
-            _onActiveTrackChanged?.call(track);
           }
-          if (url.isEmpty) {
-            return;
-          }
+
+          _onActiveTrackChanged?.call(_activeTrack);
+
+          if (url.isEmpty) return;
         }
       }
 
       if (!isPlaceholder) {
         _loadingTrackUrl = false;
       }
-      if (track.id != _activeTrack!.id) {
-        return;
-      }
+
+      if (track.id != _activeTrack?.id) return;
+
       final audioSource = await buildAudioSource(track, url);
-      final audioPlayerQueue = ConcatenatingAudioSource(
-        children: [audioSource],
-      );
-      if (track.id != _activeTrack!.id) {
-        return;
-      }
+      final audioPlayerQueue =
+          ConcatenatingAudioSource(children: [audioSource]);
+
+      if (track.id != _activeTrack?.id) return;
+
       await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
-      if (track.id != _activeTrack!.id) {
-        return;
-      }
+
+      if (track.id != _activeTrack?.id) return;
+
       await _audioPlayer.play();
+
       hasStopped = false;
       unawaited(_persistPlayerState());
     } catch (e, stackTrace) {
@@ -543,15 +557,17 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> _playPlaceholderForRepeatOne(
-      TrackEntity placeholderTrack) async {
+    TrackEntity placeholderTrack,
+  ) async {
     try {
       final url = placeholderTrack.url!;
       final audioSource = await buildAudioSource(placeholderTrack, url);
       final audioPlayerQueue = ConcatenatingAudioSource(
         children: [audioSource],
       );
+
       await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
-      await play();
+      await _audioPlayer.play();
     } catch (e, stackTrace) {
       log(
         '[Error playing placeholder for repeat one]',
