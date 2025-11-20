@@ -108,19 +108,36 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
               .toList();
 
           for (final album in randomAlbums) {
-            final tracks = album.album!.tracks;
-            seedTracks.addAll(tracks);
+            try {
+              final tracks = album.album!.tracks;
+              seedTracks.addAll(tracks);
+            } catch (e) {
+              dev.log(
+                  'Error getting tracks from album ${album.album?.title}: $e');
+              continue;
+            }
           }
           for (final artist in randomArtist) {
-            final artistEntity = await _getArtistUsecase.exec(artist.id);
-            if (artistEntity != null) {
-              seedTracks.addAll(artistEntity.topTracks);
+            try {
+              final artistEntity = await _getArtistUsecase.exec(artist.id);
+              if (artistEntity != null) {
+                seedTracks.addAll(artistEntity.topTracks);
+              }
+            } catch (e) {
+              dev.log(
+                  'Error getting tracks from artist ${artist.artist?.name}: $e');
             }
           }
           for (final playlist in randomPlaylist) {
-            final playlistEntity = await _getPlaylistUsecase.exec(playlist.id);
-            if (playlistEntity != null) {
-              seedTracks.addAll(playlistEntity.tracks);
+            try {
+              final playlistEntity =
+                  await _getPlaylistUsecase.exec(playlist.id);
+              if (playlistEntity != null) {
+                seedTracks.addAll(playlistEntity.tracks);
+              }
+            } catch (e) {
+              dev.log(
+                  'Error getting tracks from playlist ${playlist.playlist?.title}: $e');
             }
           }
 
