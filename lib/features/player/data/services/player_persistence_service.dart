@@ -35,7 +35,7 @@ class PlayerPersistenceService {
       PlayerPersistenceService._();
   factory PlayerPersistenceService() => _instance;
 
-  static const _stateKey = 'player_state_v1';
+  static const _stateKey = 'player_state';
   final _db = Database();
 
   Future<void> saveState({
