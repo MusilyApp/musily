@@ -112,7 +112,7 @@ class TrackOptions extends StatelessWidget {
             onTap: () {
               if (context.display.isDesktop) {
                 LyNavigator.showLyDialog(
-                  context: context,
+                  context: coreController.coreContext!,
                   builder: (context) => Center(
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * .5,
@@ -129,7 +129,7 @@ class TrackOptions extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: PlaylistAdderWidget(
-                            contextDialog: context,
+                            contextDialog: coreController.coreContext!,
                             getPlaylistUsecase: getPlaylistUsecase,
                             coreController: coreController,
                             libraryController: libraryController,

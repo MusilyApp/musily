@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
-import 'package:musily/core/presenter/routers/sized_router.dart';
+import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -46,17 +46,15 @@ class _PlaylistAdderState extends State<PlaylistAdder> {
     return widget.builder(
       context,
       () {
-        Navigator.push(
-          context,
-          SizedRouter(
-            builder: (context) => PlaylistAdderWidget(
-              onAdded: widget.onAdded,
-              coreController: widget.coreController,
-              getPlaylistUsecase: widget.getPlaylistUsecase,
-              libraryController: widget.libraryController,
-              tracks: widget.tracks,
-              asyncTracks: widget.asyncTracks,
-            ),
+        LyNavigator.showLyDialog(
+          context: context,
+          builder: (context) => PlaylistAdderWidget(
+            onAdded: widget.onAdded,
+            coreController: widget.coreController,
+            getPlaylistUsecase: widget.getPlaylistUsecase,
+            libraryController: widget.libraryController,
+            tracks: widget.tracks,
+            asyncTracks: widget.asyncTracks,
           ),
         );
       },
@@ -252,7 +250,7 @@ class PlaylistAdderWidget extends StatelessWidget {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(18),
                             onTap: () async {
-                              Navigator.pop(context);
+                              LyNavigator.pop(contextDialog!);
                               late final List<TrackEntity> tracksToAdd;
                               if (tracks.isEmpty) {
                                 tracksToAdd = await asyncTracks?.call() ?? [];
