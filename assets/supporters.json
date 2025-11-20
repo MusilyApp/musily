@@ -49,5 +49,10 @@
     "name": "Joab Francisco Mendes Gomes",
     "amount": 1,
     "currency": "BRL"
+  },
+  {
+    "name": "Sara Mikaela De Lima",
+    "amount": 10,
+    "currency": "BRL"
   }
 ]
