@@ -1,0 +1,349 @@
+{
+  "home": "Beranda",
+  "search": "Cari",
+  "library": "Pustaka",
+  "favorites": "Favorit",
+  "searchMusicAlbumOrArtist": "Cari Musik, Album, atau Artis",
+  "musics": "Musik",
+  "albums": "Album",
+  "artists": "Artis",
+  "all": "Semua",
+  "playlists": "Daftar Putar",
+  "download": "Unduh",
+  "addToPlaylist": "Tambahkan ke Daftar Putar",
+  "addToQueue": "Tambahkan ke Antrian",
+  "goToAlbum": "Buka Album",
+  "goToArtist": "Buka Artis",
+  "share": "Bagikan",
+  "play": "Putar",
+  "shufflePlay": "Putar Acak",
+  "addToLibrary": "Tambahkan ke Pustaka",
+  "follow": "Ikuti",
+  "following": "Mengikuti",
+  "more": "Lainnya",
+  "topSongs": "Lagu Teratas",
+  "topAlbums": "Album Teratas",
+  "topSingles": "Singel Teratas",
+  "similarArtists": "Artis Serupa",
+  "removeFromLibrary": "Hapus dari Pustaka",
+  "createPlaylist": "Buat Daftar Putar",
+  "playlistName": "Nama Daftar Putar",
+  "cancel": "Batal",
+  "back": "Kembali",
+  "create": "Buat",
+  "playlist": "Daftar Putar",
+  "songs": "Lagu",
+  "deletePlaylist": "Hapus Daftar Putar",
+  "editPlaylist": "Edit Daftar Putar",
+  "confirm": "Konfirmasi",
+  "doYouWantToDeleteThePlaylist": "Apakah Anda ingin menghapus daftar putar?",
+  "delete": "Hapus",
+  "theActionCannotBeUndone": "Tindakan ini tidak dapat dibatalkan.",
+  "playingNow": "Sedang Diputar",
+  "emptyLibrary": "Pustaka Anda kosong",
+  "emptyLibraryDescription": "Tambahkan item ke pustaka Anda untuk melihatnya di sini",
+  "albumNotFound": "Album tidak ditemukan",
+  "artistNotFound": "Artis tidak ditemukan",
+  "cancelDownload": "Batal Unduh",
+  "pause": "Jeda",
+  "album": "Album",
+  "singles": "Singel",
+  "noMoreSingles": "Tidak ada singel lagi yang tersedia untuk artis ini.",
+  "noMoreAlbums": "Tidak ada album lagi yang tersedia untuk artis ini.",
+  "songsNotFound": "Tidak ada lagu yang ditemukan.",
+  "playlistNotFound": "Daftar putar tidak ditemukan.",
+  "requiredField": "Bidang ini wajib diisi.",
+  "deleteDownload": "Hapus Unduhan",
+  "noPlaylists": "Anda tidak memiliki daftar putar.",
+  "removeFromPlaylist": "Hapus dari Daftar Putar",
+  "downloadManager": "Pengelola Unduhan",
+  "downloads": "Unduhan",
+  "offline": "Offline",
+  "offlineMode": "Mode Offline",
+  "offlineModeDescription": "Anda sedang offline saat ini. Beberapa fitur mungkin tidak tersedia.",
+  "lyricsNotFound": "Lirik tidak ditemukan",
+  "lyricsNotSynced": "Lirik tidak disinkronkan",
+  "lyricsNotSyncedDescription": "Baris-baris ini tidak akan bergerak dengan pemutaran musik.",
+  "lyricsParsedSync": "Kami menyinkronkan lirik ini untuk Anda",
+  "lyricsParsedSyncDescription": "Ini dihasilkan secara otomatis dan mungkin sedikit tidak selaras dengan ketukan.",
+  "lyrics": "Lirik",
+  "settings": "Pengaturan",
+  "accounts": "Akun",
+  "language": "Bahasa",
+  "theme": "Tema",
+  "dark": "Gelap",
+  "light": "Terang",
+  "system": "Sistem",
+  "licenses": "Lisensi",
+  "about": "Tentang",
+  "aboutSupporters": "Tentang & Pendukung",
+  "application": "Aplikasi",
+  "others": "Lainnya",
+  "supportersTitle": "Pendukung",
+  "supportersEmpty": "Belum ada pendukung yang terdaftar.",
+  "close": "Tutup",
+  "copiedToClipboard": "Disalin ke papan klip",
+  "noDownloads": "Tidak ada unduhan",
+  "noResults": "Tidak ada hasil",
+  "tryDifferentKeywords": "Coba kata kunci yang berbeda atau periksa ejaan Anda",
+  "downloadCompleted": "Unduhan selesai",
+  "selectALanguage": "Pilih bahasa",
+  "account": "Akun",
+  "login": "Masuk",
+  "email": "E-mail",
+  "password": "Kata Sandi",
+  "pleaseEnterYourEmail": "Masukkan e-mail Anda",
+  "pleaseEnterAValidEmail": "Masukkan e-mail yang valid",
+  "pleaseEnterYourPassword": "Masukkan kata sandi Anda",
+  "passwordMustBeAtLeast8Characters": "Kata sandi harus minimal 8 karakter",
+  "createAccount": "Buat Akun",
+  "name": "Nama",
+  "pleaseEnterYourName": "Masukkan nama Anda",
+  "artist": "Artis",
+  "internalServerError": "Kesalahan server internal",
+  "invalidRequest": "Permintaan tidak valid",
+  "emailAlreadyInUse": "E-mail sudah digunakan",
+  "invalidCredentials": "Kredensial tidak valid",
+  "loginRequired": "Login diperlukan",
+  "itemNotFound": "Item tidak ditemukan",
+  "invalidUserId": "ID pengguna tidak valid",
+  "userNotFound": "Pengguna tidak ditemukan",
+  "comeCheckTEMPLATEOnMusily": "Lihat TEMPLATE di Musily!",
+  "backup": "Cadangan",
+  "restore": "Pulihkan",
+  "backupLibrary": "Cadangan Pustaka",
+  "backupCompletedSuccessfully": "Cadangan berhasil diselesaikan!",
+  "backupFailed": "Cadangan gagal",
+  "includeLibrary": "Sertakan Pustaka",
+  "includeDownloads": "Sertakan Unduhan",
+  "startBackup": "Mulai Cadangan",
+  "doYouWantToRestoreThisBackup": "Apakah Anda ingin memulihkan cadangan ini?",
+  "backupInProgress": "Cadangan sedang berlangsung",
+  "backupRestoredSuccessfully": "Cadangan berhasil dipulihkan",
+  "backupFileDoesNotExist": "File cadangan tidak ada",
+  "musicSavedToDownloads": "Musik disimpan ke unduhan",
+  "saveToDownloads": "Simpan ke Unduhan",
+  "importingPlaylist": "Mengimpor Daftar Putar",
+  "playlistNameOrUrl": "Nama atau URL daftar putar",
+  "hide": "Sembunyikan",
+  "whenClosingTheApplication": "Saat menutup aplikasi",
+  "showWindow": "Tampilkan Jendela",
+  "closeWindow": "Tutup Jendela",
+  "newUpdateAvailable": "Pembaruan Baru Tersedia",
+  "defaultColor": "Warna Default",
+  "accentColor": "Warna Aksen",
+  "recommendedAlbums": "Album Direkomendasikan",
+  "recommendedMusic": "Musik Direkomendasikan",
+  "moreRecommendations": "Rekomendasi Lainnya",
+  "cancelOperation": "Batalkan Operasi?",
+  "cancelBackupConfirmation": "Apakah Anda yakin ingin membatalkan cadangan? Progres akan hilang.",
+  "cancelRestoreConfirmation": "Apakah Anda yakin ingin membatalkan pemulihan? Progres akan hilang.",
+  "yes": "Ya",
+  "no": "Tidak",
+  "initializingBackup": "Menginisialisasi cadangan...",
+  "creatingBackupArchive": "Membuat arsip cadangan...",
+  "backingUpDownloadsMetadata": "Mencadangkan metadata unduhan...",
+  "backingUpAudioFiles": "Mencadangkan file audio...",
+  "backingUpLibraryData": "Mencadangkan data pustaka...",
+  "writingBackupFile": "Menulis file cadangan...",
+  "savingToStorage": "Menyimpan ke penyimpanan...",
+  "backupCancelled": "Cadangan dibatalkan",
+  "startingBackup": "Memulai cadangan...",
+  "startingRestore": "Memulai pemulihan...",
+  "initializingRestore": "Menginisialisasi pemulihan...",
+  "readingBackupFile": "Membaca file cadangan...",
+  "extractingLibraryData": "Mengekstrak data pustaka...",
+  "extractingDownloadsData": "Mengekstrak data unduhan...",
+  "extractingAudioFiles": "Mengekstrak file audio...",
+  "finalizingRestore": "Menyelesaikan pemulihan...",
+  "restoreCompletedSuccessfully": "Pemulihan berhasil diselesaikan!",
+  "restoreFailed": "Pemulihan gagal",
+  "backupFileNotFound": "File cadangan tidak ditemukan",
+  "savedTo": "Disimpan ke: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "Berikan identitas baru pada daftar putar Anda.",
+  "playlistDetailsTitle": "Detail",
+  "playlistEmptyStateDescription": "Buat daftar putar untuk mulai menyimpan lagu favorit Anda.",
+  "playlistSelectTitle": "Pilih daftar putar",
+  "playlistSelectDescription": "Pilih di mana trek yang dipilih harus ditambahkan.",
+  "playlistCreatorSubtitle": "Tambahkan nama atau tempel tautan daftar putar",
+  "playlistCreatorPasteInfo": "Anda dapat menempel URL daftar putar YouTube untuk mengimpornya secara otomatis.",
+  "artistNotFoundDescription": "Artis yang Anda cari tidak ditemukan.",
+  "artistNoSinglesDescription": "Tidak ada singel yang tersedia untuk artis ini.",
+  "artistNoAlbumsDescription": "Tidak ada album yang tersedia untuk artis ini.",
+  "artistNoSongsDescription": "Tidak ada lagu yang tersedia untuk artis ini.",
+  "lyricsNotAvailable": "Tidak ada lirik yang tersedia untuk trek ini.",
+  "queueEmptyTitle": "Antrian Anda kosong",
+  "queueEmptyMessage": "Tambahkan lagu ke antrian untuk menikmati pengalaman musik Anda.",
+  "noItemsFound": "Tidak ada item yang ditemukan",
+  "downloadsEmptyMessage": "Trek yang Anda unduh akan muncul di sini.",
+  "downloadingSectionTitle": "Mengunduh",
+  "queuedSectionTitle": "Dalam Antrian",
+  "completedSectionTitle": "Selesai",
+  "failedSectionTitle": "Gagal",
+  "searchSuggestions": "Saran",
+  "searchStartTyping": "Mulai mengetik untuk mencari",
+  "smartSuggestionsTitle": "Saran Cerdas",
+  "smartSuggestionsDescription": "Tambahkan trek serupa secara otomatis",
+  "libraryManagementSectionTitle": "Manajemen Pustaka",
+  "localLibraryTitle": "Pustaka Lokal",
+  "localLibraryDescription": "Kelola folder dari perangkat Anda untuk memutar file audio lokal.",
+  "localFilesLabel": "File Lokal",
+  "@localFilesLabel": {
+    "description": "Label fallback yang digunakan ketika trek lokal tidak memiliki metadata artis."
+  },
+  "manageLocalFolders": "Kelola folder lokal",
+  "manageLocalFoldersDescription": "Tambahkan, ubah nama atau hapus direktori yang disinkronkan dengan pustaka Musily Anda.",
+  "addLocalFolder": "Tambahkan folder lokal",
+  "emptyLocalLibrary": "Belum ada folder lokal",
+  "emptyLocalLibraryDescription": "Tambahkan folder dari perangkat Anda untuk menjaga lagu lokal dapat diakses di dalam Musily.",
+  "chooseDirectory": "Pilih direktori",
+  "invalidDirectory": "Direktori tidak ditemukan",
+  "invalidDirectoryDescription": "Kami tidak dapat mengakses folder ini. Perbarui jalur atau hapus entri.",
+  "removeLocalFolderConfirmation": "Hapus \"{name}\" dari pustaka lokal Anda?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Tidak ada lagu yang ditemukan",
+  "emptyLocalPlaylistDescription": "Pastikan folder masih ada dan berisi file audio yang didukung.",
+  "changeDirectory": "Ubah direktori",
+  "updateDirectory": "Perbarui direktori",
+  "localFolderPreviewOverflow": "+{count} folder lainnya",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Buka",
+  "rename": "Ubah Nama",
+  "remove": "Hapus",
+  "refresh": "Muat Ulang",
+  "backupLibraryDescription": "Buat cadangan pustaka Anda",
+  "restoreLibraryDescription": "Pulihkan pustaka Anda dari cadangan",
+  "includeLibraryDescription": "Cadangkan album, artis, dan daftar putar yang Anda simpan",
+  "includeDownloadsDescription": "Cadangkan trek yang Anda unduh",
+  "fullScreenPlayerTooltip": "Pemutar layar penuh",
+  "sleepTimer": "Timer Tidur",
+  "sleepTimerDescription": "Musik akan dijeda setelah waktu yang dipilih",
+  "sleepTimerActive": "Timer tidur: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} mnt",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} jam",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 jam",
+  "customTime": "Kustom",
+  "enterTime": "Masukkan waktu",
+  "minutesLabel": "Menit",
+  "hoursLabel": "Jam",
+  "cancelTimer": "Batalkan Timer",
+  "cancelTimerQuestion": "Apakah Anda ingin membatalkan timer tidur?",
+  "timerInfo": "Timer aktif selama {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Tambahkan waktu",
+  "clearQueueTitle": "Bersihkan Antrian",
+  "clearQueueMessage": "Bersihkan semua unduhan dalam antrian/pending?",
+  "clearQueueDescription": "Ini akan membatalkan semua unduhan yang tertunda. Unduhan yang selesai tidak akan terpengaruh.",
+  "downloadManagerSummary": "{active} aktif • {queued} dalam antrian",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Coba ulang semua",
+  "downloadManagerClearFailed": "Hapus yang gagal",
+  "downloadManagerClearCompleted": "Hapus yang selesai",
+  "clearCompletedDownloadsTitle": "Hapus unduhan yang selesai",
+  "clearCompletedDownloadsMessage": "Hapus semua unduhan yang selesai?",
+  "clearCompletedDownloadsDescription": "Ini akan menghapus file yang diunduh dari penyimpanan. Tindakan ini tidak dapat dibatalkan.",
+  "itemCount": "{count, plural, =1{1 item} other{{count} item}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} selesai • {failed} gagal",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Perkiraan total waktu",
+  "downloadErrorResolveUrl": "Tidak dapat menyelesaikan URL unduhan",
+  "downloadErrorFileValidation": "Validasi file yang diunduh gagal",
+  "downloadErrorUnexpectedMessage": "Respons unduhan tidak terduga",
+  "clear": "Bersihkan",
+  "queueTools": "Alat Antrian",
+  "queueToolsDescription": "Urutkan ulang antrian Anda dan buat daftar putar",
+  "playlistCreated": "Daftar putar berhasil dibuat",
+  "queue": "Antrian",
+  "tracksSelected": "trek dipilih",
+  "selectAll": "Pilih Semua",
+  "deselectAll": "Batalkan Pilihan Semua",
+  "updateDirectoryDescription": "Pilih direktori baru untuk daftar putar ini",
+  "select": "Pilih",
+  "invalidDirectory": "Direktori tidak valid",
+  "renameLocalFolder": "Ubah nama folder",
+  "removeLocalFolder": "Hapus folder",
+  "save": "Simpan",
+  "localPlaylist": "Daftar putar lokal",
+  "versionManager": "Pengelola Versi",
+  "retry": "Coba Lagi",
+  "noReleasesFound": "Tidak ada rilis yang ditemukan",
+  "version": "Versi",
+  "alreadyInstalled": "Sudah Terpasang",
+  "update": "Perbarui",
+  "changelog": "Catatan Perubahan",
+  "changelogNotAvailable": "Catatan perubahan tidak tersedia",
+  "later": "Nanti",
+  "updateAvailableDescription": "Versi baru Musily tersedia. Perbarui sekarang untuk mendapatkan fitur dan peningkatan terbaru.",
+  "recommendations": "Rekomendasi"
+}

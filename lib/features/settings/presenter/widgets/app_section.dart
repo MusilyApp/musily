@@ -95,6 +95,54 @@ class _AppSectionState extends State<AppSection> {
                       value: 'uk',
                       child: Text('Українська'),
                     ),
+                    DropdownMenuItem(
+                      value: 'fr',
+                      child: Text('Français'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'it',
+                      child: Text('Italiano'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'de',
+                      child: Text('Deutsch'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'ja',
+                      child: Text('日本語'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'zh',
+                      child: Text('中文'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'ko',
+                      child: Text('한국어'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'hi',
+                      child: Text('हिन्दी'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'id',
+                      child: Text('Bahasa Indonesia'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'tr',
+                      child: Text('Türkçe'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'ar',
+                      child: Text('العربية'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'pl',
+                      child: Text('Polski'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'th',
+                      child: Text('ไทย'),
+                    ),
                   ],
                   value: data.locale?.languageCode,
                   onChanged: (value) {

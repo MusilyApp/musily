@@ -1,0 +1,349 @@
+{
+  "home": "होम",
+  "search": "खोजें",
+  "library": "लाइब्रेरी",
+  "favorites": "पसंदीदा",
+  "searchMusicAlbumOrArtist": "संगीत, एल्बम या कलाकार खोजें",
+  "musics": "संगीत",
+  "albums": "एल्बम",
+  "artists": "कलाकार",
+  "all": "सभी",
+  "playlists": "प्लेलिस्ट",
+  "download": "डाउनलोड",
+  "addToPlaylist": "प्लेलिस्ट में जोड़ें",
+  "addToQueue": "कतार में जोड़ें",
+  "goToAlbum": "एल्बम पर जाएं",
+  "goToArtist": "कलाकार पर जाएं",
+  "share": "साझा करें",
+  "play": "चलाएं",
+  "shufflePlay": "अव्यवस्थित चलाएं",
+  "addToLibrary": "लाइब्रेरी में जोड़ें",
+  "follow": "फॉलो करें",
+  "following": "फॉलो कर रहे हैं",
+  "more": "और",
+  "topSongs": "शीर्ष गाने",
+  "topAlbums": "शीर्ष एल्बम",
+  "topSingles": "शीर्ष सिंगल्स",
+  "similarArtists": "समान कलाकार",
+  "removeFromLibrary": "लाइब्रेरी से हटाएं",
+  "createPlaylist": "प्लेलिस्ट बनाएं",
+  "playlistName": "प्लेलिस्ट का नाम",
+  "cancel": "रद्द करें",
+  "back": "वापस",
+  "create": "बनाएं",
+  "playlist": "प्लेलिस्ट",
+  "songs": "गाने",
+  "deletePlaylist": "प्लेलिस्ट हटाएं",
+  "editPlaylist": "प्लेलिस्ट संपादित करें",
+  "confirm": "पुष्टि करें",
+  "doYouWantToDeleteThePlaylist": "क्या आप प्लेलिस्ट हटाना चाहते हैं?",
+  "delete": "हटाएं",
+  "theActionCannotBeUndone": "इस क्रिया को पूर्ववत नहीं किया जा सकता है।",
+  "playingNow": "अभी चल रहा है",
+  "emptyLibrary": "आपकी लाइब्रेरी खाली है",
+  "emptyLibraryDescription": "यहां देखने के लिए अपनी लाइब्रेरी में आइटम जोड़ें",
+  "albumNotFound": "एल्बम नहीं मिला",
+  "artistNotFound": "कलाकार नहीं मिला",
+  "cancelDownload": "डाउनलोड रद्द करें",
+  "pause": "ठहराएं",
+  "album": "एल्बम",
+  "singles": "सिंगल्स",
+  "noMoreSingles": "इस कलाकार के लिए और कोई सिंगल उपलब्ध नहीं है।",
+  "noMoreAlbums": "इस कलाकार के लिए और कोई एल्बम उपलब्ध नहीं है।",
+  "songsNotFound": "कोई गाना नहीं मिला।",
+  "playlistNotFound": "प्लेलिस्ट नहीं मिली।",
+  "requiredField": "यह फ़ील्ड आवश्यक है।",
+  "deleteDownload": "डाउनलोड हटाएं",
+  "noPlaylists": "आपके पास कोई प्लेलिस्ट नहीं है।",
+  "removeFromPlaylist": "प्लेलिस्ट से हटाएं",
+  "downloadManager": "डाउनलोड मैनेजर",
+  "downloads": "डाउनलोड",
+  "offline": "ऑफलाइन",
+  "offlineMode": "ऑफलाइन मोड",
+  "offlineModeDescription": "आप वर्तमान में ऑफलाइन हैं। कुछ सुविधाएं अनुपलब्ध हो सकती हैं।",
+  "lyricsNotFound": "गीत नहीं मिले",
+  "lyricsNotSynced": "गीत सिंक्रनाइज़ नहीं हैं",
+  "lyricsNotSyncedDescription": "ये पंक्तियां संगीत प्लेबैक के साथ नहीं चलेंगी।",
+  "lyricsParsedSync": "हमने आपके लिए इस गीत को सिंक किया है",
+  "lyricsParsedSyncDescription": "यह स्वचालित रूप से उत्पन्न किया गया था और थोड़ा बीट से बाहर हो सकता है।",
+  "lyrics": "गीत",
+  "settings": "सेटिंग्स",
+  "accounts": "खाते",
+  "language": "भाषा",
+  "theme": "थीम",
+  "dark": "डार्क",
+  "light": "लाइट",
+  "system": "सिस्टम",
+  "licenses": "लाइसेंस",
+  "about": "के बारे में",
+  "aboutSupporters": "के बारे में और समर्थक",
+  "application": "एप्लिकेशन",
+  "others": "अन्य",
+  "supportersTitle": "समर्थक",
+  "supportersEmpty": "अभी तक कोई समर्थक सूचीबद्ध नहीं है।",
+  "close": "बंद करें",
+  "copiedToClipboard": "क्लिपबोर्ड पर कॉपी किया गया",
+  "noDownloads": "कोई डाउनलोड नहीं",
+  "noResults": "कोई परिणाम नहीं",
+  "tryDifferentKeywords": "अलग कीवर्ड आज़माएं या अपनी वर्तनी जांचें",
+  "downloadCompleted": "डाउनलोड पूरा हो गया",
+  "selectALanguage": "भाषा चुनें",
+  "account": "खाता",
+  "login": "लॉगिन",
+  "email": "ई-मेल",
+  "password": "पासवर्ड",
+  "pleaseEnterYourEmail": "कृपया अपना ई-मेल दर्ज करें",
+  "pleaseEnterAValidEmail": "कृपया एक वैध ई-मेल दर्ज करें",
+  "pleaseEnterYourPassword": "कृपया अपना पासवर्ड दर्ज करें",
+  "passwordMustBeAtLeast8Characters": "पासवर्ड कम से कम 8 वर्णों का होना चाहिए",
+  "createAccount": "खाता बनाएं",
+  "name": "नाम",
+  "pleaseEnterYourName": "कृपया अपना नाम दर्ज करें",
+  "artist": "कलाकार",
+  "internalServerError": "आंतरिक सर्वर त्रुटि",
+  "invalidRequest": "अमान्य अनुरोध",
+  "emailAlreadyInUse": "ई-मेल पहले से उपयोग में है",
+  "invalidCredentials": "अमान्य क्रेडेंशियल",
+  "loginRequired": "लॉगिन आवश्यक",
+  "itemNotFound": "आइटम नहीं मिला",
+  "invalidUserId": "अमान्य उपयोगकर्ता आईडी",
+  "userNotFound": "उपयोगकर्ता नहीं मिला",
+  "comeCheckTEMPLATEOnMusily": "Musily पर TEMPLATE देखने आएं!",
+  "backup": "बैकअप",
+  "restore": "पुनर्स्थापित करें",
+  "backupLibrary": "लाइब्रेरी बैकअप",
+  "backupCompletedSuccessfully": "बैकअप सफलतापूर्वक पूरा हुआ!",
+  "backupFailed": "बैकअप विफल",
+  "includeLibrary": "लाइब्रेरी शामिल करें",
+  "includeDownloads": "डाउनलोड शामिल करें",
+  "startBackup": "बैकअप शुरू करें",
+  "doYouWantToRestoreThisBackup": "क्या आप इस बैकअप को पुनर्स्थापित करना चाहते हैं?",
+  "backupInProgress": "बैकअप प्रगति में है",
+  "backupRestoredSuccessfully": "बैकअप सफलतापूर्वक पुनर्स्थापित किया गया",
+  "backupFileDoesNotExist": "बैकअप फ़ाइल मौजूद नहीं है",
+  "musicSavedToDownloads": "संगीत डाउनलोड में सहेजा गया",
+  "saveToDownloads": "डाउनलोड में सहेजें",
+  "importingPlaylist": "प्लेलिस्ट आयात कर रहे हैं",
+  "playlistNameOrUrl": "प्लेलिस्ट नाम या URL",
+  "hide": "छुपाएं",
+  "whenClosingTheApplication": "एप्लिकेशन बंद करते समय",
+  "showWindow": "विंडो दिखाएं",
+  "closeWindow": "विंडो बंद करें",
+  "newUpdateAvailable": "नया अपडेट उपलब्ध है",
+  "defaultColor": "डिफ़ॉल्ट रंग",
+  "accentColor": "एक्सेंट रंग",
+  "recommendedAlbums": "अनुशंसित एल्बम",
+  "recommendedMusic": "अनुशंसित संगीत",
+  "moreRecommendations": "और सिफारिशें",
+  "cancelOperation": "ऑपरेशन रद्द करें?",
+  "cancelBackupConfirmation": "क्या आप वाकई बैकअप रद्द करना चाहते हैं? प्रगति खो जाएगी।",
+  "cancelRestoreConfirmation": "क्या आप वाकई पुनर्स्थापना रद्द करना चाहते हैं? प्रगति खो जाएगी।",
+  "yes": "हाँ",
+  "no": "नहीं",
+  "initializingBackup": "बैकअप प्रारंभ कर रहे हैं...",
+  "creatingBackupArchive": "बैकअप संग्रह बना रहे हैं...",
+  "backingUpDownloadsMetadata": "डाउनलोड मेटाडेटा का बैकअप ले रहे हैं...",
+  "backingUpAudioFiles": "ऑडियो फ़ाइलों का बैकअप ले रहे हैं...",
+  "backingUpLibraryData": "लाइब्रेरी डेटा का बैकअप ले रहे हैं...",
+  "writingBackupFile": "बैकअप फ़ाइल लिख रहे हैं...",
+  "savingToStorage": "स्टोरेज में सहेज रहे हैं...",
+  "backupCancelled": "बैकअप रद्द किया गया",
+  "startingBackup": "बैकअप शुरू कर रहे हैं...",
+  "startingRestore": "पुनर्स्थापना शुरू कर रहे हैं...",
+  "initializingRestore": "पुनर्स्थापना प्रारंभ कर रहे हैं...",
+  "readingBackupFile": "बैकअप फ़ाइल पढ़ रहे हैं...",
+  "extractingLibraryData": "लाइब्रेरी डेटा निकाल रहे हैं...",
+  "extractingDownloadsData": "डाउनलोड डेटा निकाल रहे हैं...",
+  "extractingAudioFiles": "ऑडियो फ़ाइलें निकाल रहे हैं...",
+  "finalizingRestore": "पुनर्स्थापना अंतिम रूप दे रहे हैं...",
+  "restoreCompletedSuccessfully": "पुनर्स्थापना सफलतापूर्वक पूरी हुई!",
+  "restoreFailed": "पुनर्स्थापना विफल",
+  "backupFileNotFound": "बैकअप फ़ाइल नहीं मिली",
+  "savedTo": "सहेजा गया: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "अपनी प्लेलिस्ट को एक नई पहचान दें।",
+  "playlistDetailsTitle": "विवरण",
+  "playlistEmptyStateDescription": "अपने पसंदीदा ट्रैक्स को सहेजना शुरू करने के लिए एक प्लेलिस्ट बनाएं।",
+  "playlistSelectTitle": "एक प्लेलिस्ट चुनें",
+  "playlistSelectDescription": "चुनें कि चयनित ट्रैक कहाँ जोड़े जाने चाहिए।",
+  "playlistCreatorSubtitle": "एक नाम जोड़ें या प्लेलिस्ट लिंक पेस्ट करें",
+  "playlistCreatorPasteInfo": "आप स्वचालित रूप से आयात करने के लिए एक YouTube प्लेलिस्ट URL पेस्ट कर सकते हैं।",
+  "artistNotFoundDescription": "आप जिस कलाकार की तलाश कर रहे हैं वह नहीं मिला।",
+  "artistNoSinglesDescription": "इस कलाकार के लिए कोई सिंगल उपलब्ध नहीं है।",
+  "artistNoAlbumsDescription": "इस कलाकार के लिए कोई एल्बम उपलब्ध नहीं है।",
+  "artistNoSongsDescription": "इस कलाकार के लिए कोई गाना उपलब्ध नहीं है।",
+  "lyricsNotAvailable": "इस ट्रैक के लिए कोई गीत उपलब्ध नहीं है।",
+  "queueEmptyTitle": "आपकी कतार खाली है",
+  "queueEmptyMessage": "अपने संगीत अनुभव का आनंद लेने के लिए कतार में गाने जोड़ें।",
+  "noItemsFound": "कोई आइटम नहीं मिला",
+  "downloadsEmptyMessage": "आपके डाउनलोड किए गए ट्रैक यहां दिखाई देंगे।",
+  "downloadingSectionTitle": "डाउनलोड हो रहा है",
+  "queuedSectionTitle": "कतार में",
+  "completedSectionTitle": "पूर्ण",
+  "failedSectionTitle": "विफल",
+  "searchSuggestions": "सुझाव",
+  "searchStartTyping": "खोज करने के लिए टाइप करना शुरू करें",
+  "smartSuggestionsTitle": "स्मार्ट सुझाव",
+  "smartSuggestionsDescription": "स्वचालित रूप से समान ट्रैक जोड़ें",
+  "libraryManagementSectionTitle": "लाइब्रेरी प्रबंधन",
+  "localLibraryTitle": "स्थानीय लाइब्रेरी",
+  "localLibraryDescription": "स्थानीय ऑडियो फ़ाइलें चलाने के लिए अपने डिवाइस से फ़ोल्डर प्रबंधित करें।",
+  "localFilesLabel": "स्थानीय फ़ाइलें",
+  "@localFilesLabel": {
+    "description": "फॉलबैक लेबल जब किसी स्थानीय ट्रैक में कलाकार मेटाडेटा नहीं होता है।"
+  },
+  "manageLocalFolders": "स्थानीय फ़ोल्डर प्रबंधित करें",
+  "manageLocalFoldersDescription": "अपनी Musily लाइब्रेरी के साथ सिंक की गई निर्देशिकाओं को जोड़ें, नाम बदलें या हटाएं।",
+  "addLocalFolder": "स्थानीय फ़ोल्डर जोड़ें",
+  "emptyLocalLibrary": "अभी तक कोई स्थानीय फ़ोल्डर नहीं",
+  "emptyLocalLibraryDescription": "Musily के अंदर स्थानीय गानों को सुलभ रखने के लिए अपने डिवाइस से एक फ़ोल्डर जोड़ें।",
+  "chooseDirectory": "निर्देशिका चुनें",
+  "invalidDirectory": "निर्देशिका नहीं मिली",
+  "invalidDirectoryDescription": "हम इस फ़ोल्डर तक पहुंच नहीं सके। पथ अपडेट करें या प्रविष्टि हटाएं।",
+  "removeLocalFolderConfirmation": "अपनी स्थानीय लाइब्रेरी से \"{name}\" हटाएं?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "कोई गाना नहीं मिला",
+  "emptyLocalPlaylistDescription": "सुनिश्चित करें कि फ़ोल्डर अभी भी मौजूद है और इसमें समर्थित ऑडियो फ़ाइलें हैं।",
+  "changeDirectory": "निर्देशिका बदलें",
+  "updateDirectory": "निर्देशिका अपडेट करें",
+  "localFolderPreviewOverflow": "+{count} और फ़ोल्डर",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "खोलें",
+  "rename": "नाम बदलें",
+  "remove": "हटाएं",
+  "refresh": "ताज़ा करें",
+  "backupLibraryDescription": "अपनी लाइब्रेरी का बैकअप बनाएं",
+  "restoreLibraryDescription": "एक बैकअप से अपनी लाइब्रेरी पुनर्स्थापित करें",
+  "includeLibraryDescription": "अपने सहेजे गए एल्बम, कलाकार और प्लेलिस्ट का बैकअप लें",
+  "includeDownloadsDescription": "अपने डाउनलोड किए गए ट्रैक्स का बैकअप लें",
+  "fullScreenPlayerTooltip": "पूर्ण स्क्रीन प्लेयर",
+  "sleepTimer": "स्लीप टाइमर",
+  "sleepTimerDescription": "चयनित समय के बाद संगीत रुक जाएगा",
+  "sleepTimerActive": "स्लीप टाइमर: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} मिनट",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} घंटे",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 घंटा",
+  "customTime": "कस्टम",
+  "enterTime": "समय दर्ज करें",
+  "minutesLabel": "मिनट",
+  "hoursLabel": "घंटे",
+  "cancelTimer": "टाइमर रद्द करें",
+  "cancelTimerQuestion": "क्या आप स्लीप टाइमर रद्द करना चाहते हैं?",
+  "timerInfo": "टाइमर {time} के लिए सक्रिय",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "समय जोड़ें",
+  "clearQueueTitle": "कतार साफ़ करें",
+  "clearQueueMessage": "सभी कतारबद्ध/लंबित डाउनलोड साफ़ करें?",
+  "clearQueueDescription": "यह सभी लंबित डाउनलोड को रद्द कर देगा। पूर्ण डाउनलोड प्रभावित नहीं होंगे।",
+  "downloadManagerSummary": "{active} सक्रिय • {queued} कतार में",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "सभी पुनः प्रयास करें",
+  "downloadManagerClearFailed": "विफल साफ़ करें",
+  "downloadManagerClearCompleted": "पूर्ण साफ़ करें",
+  "clearCompletedDownloadsTitle": "पूर्ण डाउनलोड साफ़ करें",
+  "clearCompletedDownloadsMessage": "सभी पूर्ण डाउनलोड हटाएं?",
+  "clearCompletedDownloadsDescription": "यह डाउनलोड की गई फ़ाइलों को स्टोरेज से हटा देगा। इस क्रिया को पूर्ववत नहीं किया जा सकता है।",
+  "itemCount": "{count, plural, =1{1 आइटम} other{{count} आइटम}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} पूर्ण • {failed} विफल",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "अनुमानित कुल समय",
+  "downloadErrorResolveUrl": "डाउनलोड URL हल नहीं कर सका",
+  "downloadErrorFileValidation": "डाउनलोड की गई फ़ाइल सत्यापन विफल",
+  "downloadErrorUnexpectedMessage": "अनपेक्षित डाउनलोड प्रतिक्रिया",
+  "clear": "साफ़ करें",
+  "queueTools": "कतार उपकरण",
+  "queueToolsDescription": "अपनी कतार को पुन: क्रमबद्ध करें और प्लेलिस्ट बनाएं",
+  "playlistCreated": "प्लेलिस्ट सफलतापूर्वक बनाई गई",
+  "queue": "कतार",
+  "tracksSelected": "ट्रैक चयनित",
+  "selectAll": "सभी चुनें",
+  "deselectAll": "सभी अचयनित करें",
+  "updateDirectoryDescription": "इस प्लेलिस्ट के लिए एक नई निर्देशिका चुनें",
+  "select": "चुनें",
+  "invalidDirectory": "अमान्य निर्देशिका",
+  "renameLocalFolder": "फ़ोल्डर का नाम बदलें",
+  "removeLocalFolder": "फ़ोल्डर हटाएं",
+  "save": "सहेजें",
+  "localPlaylist": "स्थानीय प्लेलिस्ट",
+  "versionManager": "संस्करण प्रबंधक",
+  "retry": "पुनः प्रयास करें",
+  "noReleasesFound": "कोई रिलीज़ नहीं मिली",
+  "version": "संस्करण",
+  "alreadyInstalled": "पहले से स्थापित",
+  "update": "अपडेट करें",
+  "changelog": "चेंजलॉग",
+  "changelogNotAvailable": "चेंजलॉग उपलब्ध नहीं है",
+  "later": "बाद में",
+  "updateAvailableDescription": "Musily का एक नया संस्करण उपलब्ध है। नवीनतम सुविधाओं और सुधारों को प्राप्त करने के लिए अभी अपडेट करें।",
+  "recommendations": "सिफारिशें"
+}

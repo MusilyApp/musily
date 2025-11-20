@@ -1,0 +1,349 @@
+{
+  "home": "홈",
+  "search": "검색",
+  "library": "라이브러리",
+  "favorites": "즐겨찾기",
+  "searchMusicAlbumOrArtist": "음악, 앨범 또는 아티스트 검색",
+  "musics": "음악",
+  "albums": "앨범",
+  "artists": "아티스트",
+  "all": "전체",
+  "playlists": "플레이리스트",
+  "download": "다운로드",
+  "addToPlaylist": "플레이리스트에 추가",
+  "addToQueue": "대기열에 추가",
+  "goToAlbum": "앨범으로 이동",
+  "goToArtist": "아티스트로 이동",
+  "share": "공유",
+  "play": "재생",
+  "shufflePlay": "셔플 재생",
+  "addToLibrary": "라이브러리에 추가",
+  "follow": "팔로우",
+  "following": "팔로잉 중",
+  "more": "더 보기",
+  "topSongs": "인기곡",
+  "topAlbums": "인기 앨범",
+  "topSingles": "인기 싱글",
+  "similarArtists": "비슷한 아티스트",
+  "removeFromLibrary": "라이브러리에서 제거",
+  "createPlaylist": "플레이리스트 생성",
+  "playlistName": "플레이리스트 이름",
+  "cancel": "취소",
+  "back": "뒤로",
+  "create": "생성",
+  "playlist": "플레이리스트",
+  "songs": "곡",
+  "deletePlaylist": "플레이리스트 삭제",
+  "editPlaylist": "플레이리스트 편집",
+  "confirm": "확인",
+  "doYouWantToDeleteThePlaylist": "이 플레이리스트를 삭제하시겠습니까?",
+  "delete": "삭제",
+  "theActionCannotBeUndone": "이 작업은 되돌릴 수 없습니다.",
+  "playingNow": "지금 재생 중",
+  "emptyLibrary": "라이브러리가 비어 있습니다",
+  "emptyLibraryDescription": "항목을 추가하면 여기에 표시됩니다",
+  "albumNotFound": "앨범을 찾을 수 없습니다",
+  "artistNotFound": "아티스트를 찾을 수 없습니다",
+  "cancelDownload": "다운로드 취소",
+  "pause": "일시정지",
+  "album": "앨범",
+  "singles": "싱글",
+  "noMoreSingles": "이 아티스트의 추가 싱글이 없습니다.",
+  "noMoreAlbums": "이 아티스트의 추가 앨범이 없습니다.",
+  "songsNotFound": "곡을 찾을 수 없습니다.",
+  "playlistNotFound": "플레이리스트를 찾을 수 없습니다.",
+  "requiredField": "필수 입력 항목입니다.",
+  "deleteDownload": "다운로드 삭제",
+  "noPlaylists": "플레이리스트가 없습니다.",
+  "removeFromPlaylist": "플레이리스트에서 제거",
+  "downloadManager": "다운로드 관리자",
+  "downloads": "다운로드",
+  "offline": "오프라인",
+  "offlineMode": "오프라인 모드",
+  "offlineModeDescription": "현재 오프라인입니다. 일부 기능을 사용할 수 없습니다.",
+  "lyricsNotFound": "가사를 찾을 수 없습니다",
+  "lyricsNotSynced": "가사가 동기화되지 않았습니다",
+  "lyricsNotSyncedDescription": "이 줄은 음악 재생과 함께 이동하지 않습니다.",
+  "lyricsParsedSync": "이 노래의 가사를 자동으로 동기화했습니다",
+  "lyricsParsedSyncDescription": "자동 생성되었으며 박자와 약간 다를 수 있습니다.",
+  "lyrics": "가사",
+  "settings": "설정",
+  "accounts": "계정",
+  "language": "언어",
+  "theme": "테마",
+  "dark": "다크",
+  "light": "라이트",
+  "system": "시스템",
+  "licenses": "라이선스",
+  "about": "정보",
+  "aboutSupporters": "정보 & 후원자",
+  "application": "애플리케이션",
+  "others": "기타",
+  "supportersTitle": "후원자",
+  "supportersEmpty": "등록된 후원자가 없습니다.",
+  "close": "닫기",
+  "copiedToClipboard": "클립보드에 복사되었습니다",
+  "noDownloads": "다운로드 없음",
+  "noResults": "결과 없음",
+  "tryDifferentKeywords": "다른 키워드로 검색하거나 철자를 확인하세요",
+  "downloadCompleted": "다운로드 완료",
+  "selectALanguage": "언어 선택",
+  "account": "계정",
+  "login": "로그인",
+  "email": "이메일",
+  "password": "비밀번호",
+  "pleaseEnterYourEmail": "이메일을 입력하세요",
+  "pleaseEnterAValidEmail": "유효한 이메일을 입력하세요",
+  "pleaseEnterYourPassword": "비밀번호를 입력하세요",
+  "passwordMustBeAtLeast8Characters": "비밀번호는 최소 8자여야 합니다",
+  "createAccount": "계정 만들기",
+  "name": "이름",
+  "pleaseEnterYourName": "이름을 입력하세요",
+  "artist": "아티스트",
+  "internalServerError": "서버 내부 오류",
+  "invalidRequest": "잘못된 요청",
+  "emailAlreadyInUse": "이미 사용 중인 이메일입니다",
+  "invalidCredentials": "잘못된 자격 증명",
+  "loginRequired": "로그인이 필요합니다",
+  "itemNotFound": "항목을 찾을 수 없습니다",
+  "invalidUserId": "잘못된 사용자 ID",
+  "userNotFound": "사용자를 찾을 수 없습니다",
+  "comeCheckTEMPLATEOnMusily": "Musily에서 TEMPLATE를 확인하세요!",
+  "backup": "백업",
+  "restore": "복원",
+  "backupLibrary": "라이브러리 백업",
+  "backupCompletedSuccessfully": "백업이 성공적으로 완료되었습니다!",
+  "backupFailed": "백업 실패",
+  "includeLibrary": "라이브러리 포함",
+  "includeDownloads": "다운로드 포함",
+  "startBackup": "백업 시작",
+  "doYouWantToRestoreThisBackup": "이 백업을 복원하시겠습니까?",
+  "backupInProgress": "백업 진행 중",
+  "backupRestoredSuccessfully": "백업이 성공적으로 복원되었습니다",
+  "backupFileDoesNotExist": "백업 파일이 존재하지 않습니다",
+  "musicSavedToDownloads": "곡이 다운로드 폴더에 저장되었습니다",
+  "saveToDownloads": "다운로드에 저장",
+  "importingPlaylist": "플레이리스트 가져오는 중",
+  "playlistNameOrUrl": "플레이리스트 이름 또는 URL",
+  "hide": "숨기기",
+  "whenClosingTheApplication": "애플리케이션 종료 시",
+  "showWindow": "창 표시",
+  "closeWindow": "창 닫기",
+  "newUpdateAvailable": "새 업데이트가 있습니다",
+  "defaultColor": "기본 색상",
+  "accentColor": "포인트 색상",
+  "recommendedAlbums": "추천 앨범",
+  "recommendedMusic": "추천 음악",
+  "moreRecommendations": "더 많은 추천",
+  "cancelOperation": "작업을 취소하시겠습니까?",
+  "cancelBackupConfirmation": "백업을 취소하시겠습니까? 진행 상황이 사라집니다.",
+  "cancelRestoreConfirmation": "복원을 취소하시겠습니까? 진행 상황이 사라집니다.",
+  "yes": "예",
+  "no": "아니요",
+  "initializingBackup": "백업 초기화 중...",
+  "creatingBackupArchive": "백업 아카이브 생성 중...",
+  "backingUpDownloadsMetadata": "다운로드 메타데이터 백업 중...",
+  "backingUpAudioFiles": "오디오 파일 백업 중...",
+  "backingUpLibraryData": "라이브러리 데이터 백업 중...",
+  "writingBackupFile": "백업 파일 작성 중...",
+  "savingToStorage": "스토리지에 저장 중...",
+  "backupCancelled": "백업 취소됨",
+  "startingBackup": "백업 시작 중...",
+  "startingRestore": "복원 시작 중...",
+  "initializingRestore": "복원 초기화 중...",
+  "readingBackupFile": "백업 파일 읽는 중...",
+  "extractingLibraryData": "라이브러리 데이터 추출 중...",
+  "extractingDownloadsData": "다운로드 데이터 추출 중...",
+  "extractingAudioFiles": "오디오 파일 추출 중...",
+  "finalizingRestore": "복원 마무리 중...",
+  "restoreCompletedSuccessfully": "복원이 성공적으로 완료되었습니다!",
+  "restoreFailed": "복원 실패",
+  "backupFileNotFound": "백업 파일을 찾을 수 없습니다",
+  "savedTo": "저장 위치: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "플레이리스트에 새로운 개성을 부여하세요.",
+  "playlistDetailsTitle": "세부 정보",
+  "playlistEmptyStateDescription": "플레이리스트를 만들어 좋아하는 트랙을 저장하세요.",
+  "playlistSelectTitle": "플레이리스트 선택",
+  "playlistSelectDescription": "선택한 트랙을 추가할 플레이리스트를 고르세요.",
+  "playlistCreatorSubtitle": "이름을 입력하거나 링크를 붙여넣으세요",
+  "playlistCreatorPasteInfo": "YouTube 플레이리스트 URL을 붙여넣으면 자동으로 가져옵니다.",
+  "artistNotFoundDescription": "찾고 있는 아티스트를 찾을 수 없습니다.",
+  "artistNoSinglesDescription": "이 아티스트의 싱글이 없습니다.",
+  "artistNoAlbumsDescription": "이 아티스트의 앨범이 없습니다.",
+  "artistNoSongsDescription": "이 아티스트의 곡이 없습니다.",
+  "lyricsNotAvailable": "이 트랙에 대한 가사가 없습니다.",
+  "queueEmptyTitle": "대기열이 비어 있습니다",
+  "queueEmptyMessage": "대기열에 곡을 추가하여 음악을 즐겨보세요.",
+  "noItemsFound": "항목을 찾을 수 없습니다",
+  "downloadsEmptyMessage": "다운로드된 곡이 여기에 표시됩니다.",
+  "downloadingSectionTitle": "다운로드 중",
+  "queuedSectionTitle": "대기 중",
+  "completedSectionTitle": "완료됨",
+  "failedSectionTitle": "실패",
+  "searchSuggestions": "추천 검색어",
+  "searchStartTyping": "검색하려면 입력을 시작하세요",
+  "smartSuggestionsTitle": "스마트 제안",
+  "smartSuggestionsDescription": "유사한 트랙 자동 추가",
+  "libraryManagementSectionTitle": "라이브러리 관리",
+  "localLibraryTitle": "로컬 라이브러리",
+  "localLibraryDescription": "장치의 폴더를 관리하여 로컬 오디오 파일을 재생할 수 있습니다.",
+  "localFilesLabel": "로컬 파일",
+  "@localFilesLabel": {
+    "description": "메타데이터에 아티스트 정보가 없는 로컬 트랙의 기본 라벨"
+  },
+  "manageLocalFolders": "로컬 폴더 관리",
+  "manageLocalFoldersDescription": "폴더를 추가, 이름 변경 또는 제거하여 Musily 라이브러리와 동기화합니다.",
+  "addLocalFolder": "로컬 폴더 추가",
+  "emptyLocalLibrary": "로컬 폴더가 없습니다",
+  "emptyLocalLibraryDescription": "장치에서 폴더를 추가하면 Musily에서 로컬 음악을 사용할 수 있습니다.",
+  "chooseDirectory": "디렉터리 선택",
+  "invalidDirectory": "디렉터리를 찾을 수 없습니다",
+  "invalidDirectoryDescription": "이 폴더에 접근할 수 없습니다. 경로를 업데이트하거나 항목을 제거하세요.",
+  "removeLocalFolderConfirmation": "\"{name}\"을(를) 로컬 라이브러리에서 제거하시겠습니까?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "곡을 찾을 수 없습니다",
+  "emptyLocalPlaylistDescription": "폴더가 여전히 존재하며 지원되는 오디오 파일이 포함되어 있는지 확인하세요.",
+  "changeDirectory": "디렉터리 변경",
+  "updateDirectory": "디렉터리 업데이트",
+  "localFolderPreviewOverflow": "+{count}개의 폴더 더 보기",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "열기",
+  "rename": "이름 변경",
+  "remove": "제거",
+  "refresh": "새로고침",
+  "backupLibraryDescription": "라이브러리 백업 생성",
+  "restoreLibraryDescription": "백업에서 라이브러리 복원",
+  "includeLibraryDescription": "저장된 앨범, 아티스트 및 플레이리스트 백업",
+  "includeDownloadsDescription": "다운로드된 트랙 백업",
+  "fullScreenPlayerTooltip": "전체 화면 플레이어",
+  "sleepTimer": "수면 타이머",
+  "sleepTimerDescription": "선택한 시간이 지나면 음악이 일시정지됩니다",
+  "sleepTimerActive": "수면 타이머: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count}분",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count}시간",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1시간",
+  "customTime": "사용자 지정",
+  "enterTime": "시간 입력",
+  "minutesLabel": "분",
+  "hoursLabel": "시간",
+  "cancelTimer": "타이머 취소",
+  "cancelTimerQuestion": "수면 타이머를 취소하시겠습니까?",
+  "timerInfo": "{time} 동안 타이머 활성화됨",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "시간 추가",
+  "clearQueueTitle": "대기열 비우기",
+  "clearQueueMessage": "모든 대기/보류 중인 다운로드를 지우시겠습니까?",
+  "clearQueueDescription": "이 작업은 보류 중인 다운로드를 모두 취소합니다. 완료된 다운로드는 영향을 받지 않습니다.",
+  "downloadManagerSummary": "{active} 활성 • {queued} 대기",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "모두 재시도",
+  "downloadManagerClearFailed": "실패 항목 지우기",
+  "downloadManagerClearCompleted": "완료 항목 지우기",
+  "clearCompletedDownloadsTitle": "완료된 다운로드 지우기",
+  "clearCompletedDownloadsMessage": "완료된 다운로드를 모두 삭제하시겠습니까?",
+  "clearCompletedDownloadsDescription": "다운로드 파일이 저장소에서 제거됩니다. 이 작업은 되돌릴 수 없습니다.",
+  "itemCount": "{count, plural, =1{1개 항목} other{{count}개 항목}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} 완료 • {failed} 실패",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "예상 총 시간",
+  "downloadErrorResolveUrl": "다운로드 URL을 확인할 수 없습니다",
+  "downloadErrorFileValidation": "다운로드된 파일 검증 실패",
+  "downloadErrorUnexpectedMessage": "예상치 못한 다운로드 응답",
+  "clear": "지우기",
+  "queueTools": "대기열 도구",
+  "queueToolsDescription": "대기열을 정렬하고 플레이리스트를 생성하세요",
+  "playlistCreated": "플레이리스트가 성공적으로 생성되었습니다",
+  "queue": "대기열",
+  "tracksSelected": "트랙 선택됨",
+  "selectAll": "모두 선택",
+  "deselectAll": "선택 해제",
+  "updateDirectoryDescription": "이 플레이리스트의 새 디렉터리를 선택하세요",
+  "select": "선택",
+  "invalidDirectory": "잘못된 디렉터리",
+  "renameLocalFolder": "폴더 이름 변경",
+  "removeLocalFolder": "폴더 제거",
+  "save": "저장",
+  "localPlaylist": "로컬 플레이리스트",
+  "versionManager": "버전 관리자",
+  "retry": "재시도",
+  "noReleasesFound": "릴리스를 찾을 수 없습니다",
+  "version": "버전",
+  "alreadyInstalled": "이미 설치됨",
+  "update": "업데이트",
+  "changelog": "변경 로그",
+  "changelogNotAvailable": "변경 로그를 사용할 수 없습니다",
+  "later": "나중에",
+  "updateAvailableDescription": "Musily의 새 버전이 출시되었습니다. 최신 기능과 개선 사항을 받아보세요.",
+  "recommendations": "추천"
+}

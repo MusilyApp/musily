@@ -1,0 +1,349 @@
+{
+  "home": "หน้าแรก",
+  "search": "ค้นหา",
+  "library": "ไลบรารี",
+  "favorites": "รายการโปรด",
+  "searchMusicAlbumOrArtist": "ค้นหาดนตรี อัลบั้ม หรือศิลปิน",
+  "musics": "ดนตรี",
+  "albums": "อัลบั้ม",
+  "artists": "ศิลปิน",
+  "all": "ทั้งหมด",
+  "playlists": "เพลย์ลิสต์",
+  "download": "ดาวน์โหลด",
+  "addToPlaylist": "เพิ่มลงในเพลย์ลิสต์",
+  "addToQueue": "เพิ่มลงในคิว",
+  "goToAlbum": "ไปที่อัลบั้ม",
+  "goToArtist": "ไปที่ศิลปิน",
+  "share": "แชร์",
+  "play": "เล่น",
+  "shufflePlay": "สลับเล่น",
+  "addToLibrary": "เพิ่มลงในไลบรารี",
+  "follow": "ติดตาม",
+  "following": "กำลังติดตาม",
+  "more": "เพิ่มเติม",
+  "topSongs": "เพลงยอดนิยม",
+  "topAlbums": "อัลบั้มยอดนิยม",
+  "topSingles": "ซิงเกิลยอดนิยม",
+  "similarArtists": "ศิลปินที่คล้ายกัน",
+  "removeFromLibrary": "ลบออกจากไลบรารี",
+  "createPlaylist": "สร้างเพลย์ลิสต์",
+  "playlistName": "ชื่อเพลย์ลิสต์",
+  "cancel": "ยกเลิก",
+  "back": "กลับ",
+  "create": "สร้าง",
+  "playlist": "เพลย์ลิสต์",
+  "songs": "เพลง",
+  "deletePlaylist": "ลบเพลย์ลิสต์",
+  "editPlaylist": "แก้ไขเพลย์ลิสต์",
+  "confirm": "ยืนยัน",
+  "doYouWantToDeleteThePlaylist": "คุณต้องการลบเพลย์ลิสต์หรือไม่?",
+  "delete": "ลบ",
+  "theActionCannotBeUndone": "การกระทำนี้ไม่สามารถยกเลิกได้",
+  "playingNow": "กำลังเล่น",
+  "emptyLibrary": "ไลบรารีของคุณว่างเปล่า",
+  "emptyLibraryDescription": "เพิ่มรายการลงในไลบรารีของคุณเพื่อดูที่นี่",
+  "albumNotFound": "ไม่พบอัลบั้ม",
+  "artistNotFound": "ไม่พบศิลปิน",
+  "cancelDownload": "ยกเลิกการดาวน์โหลด",
+  "pause": "หยุดชั่วคราว",
+  "album": "อัลบั้ม",
+  "singles": "ซิงเกิล",
+  "noMoreSingles": "ไม่มีซิงเกิลเพิ่มเติมสำหรับศิลปินนี้",
+  "noMoreAlbums": "ไม่มีอัลบั้มเพิ่มเติมสำหรับศิลปินนี้",
+  "songsNotFound": "ไม่พบเพลง",
+  "playlistNotFound": "ไม่พบเพลย์ลิสต์",
+  "requiredField": "ฟิลด์นี้จำเป็นต้องกรอก",
+  "deleteDownload": "ลบการดาวน์โหลด",
+  "noPlaylists": "คุณยังไม่มีเพลย์ลิสต์",
+  "removeFromPlaylist": "ลบออกจากเพลย์ลิสต์",
+  "downloadManager": "จัดการการดาวน์โหลด",
+  "downloads": "การดาวน์โหลด",
+  "offline": "ออฟไลน์",
+  "offlineMode": "โหมดออฟไลน์",
+  "offlineModeDescription": "คุณกำลังออฟไลน์อยู่ บางฟีเจอร์อาจไม่พร้อมใช้งาน",
+  "lyricsNotFound": "ไม่พบเนื้อเพลง",
+  "lyricsNotSynced": "เนื้อเพลงไม่ได้รับการซิงค์",
+  "lyricsNotSyncedDescription": "บรรทัดเหล่านี้จะไม่เคลื่อนไหวพร้อมกับการเล่นเพลง",
+  "lyricsParsedSync": "เราซิงค์เนื้อเพลงนี้ให้คุณแล้ว",
+  "lyricsParsedSyncDescription": "มันถูกสร้างขึ้นโดยอัตโนมัติและอาจผิดจังหวะเล็กน้อย",
+  "lyrics": "เนื้อเพลง",
+  "settings": "การตั้งค่า",
+  "accounts": "บัญชี",
+  "language": "ภาษา",
+  "theme": "ธีม",
+  "dark": "มืด",
+  "light": "สว่าง",
+  "system": "ระบบ",
+  "licenses": "ใบอนุญาต",
+  "about": "เกี่ยวกับ",
+  "aboutSupporters": "เกี่ยวกับและผู้สนับสนุน",
+  "application": "แอปพลิเคชัน",
+  "others": "อื่นๆ",
+  "supportersTitle": "ผู้สนับสนุน",
+  "supportersEmpty": "ยังไม่มีผู้สนับสนุนที่ระบุไว้",
+  "close": "ปิด",
+  "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว",
+  "noDownloads": "ไม่มีการดาวน์โหลด",
+  "noResults": "ไม่พบผลลัพธ์",
+  "tryDifferentKeywords": "ลองใช้คำค้นหาที่แตกต่างหรือตรวจสอบการสะกดของคุณ",
+  "downloadCompleted": "การดาวน์โหลดเสร็จสมบูรณ์",
+  "selectALanguage": "เลือกภาษา",
+  "account": "บัญชี",
+  "login": "เข้าสู่ระบบ",
+  "email": "อีเมล",
+  "password": "รหัสผ่าน",
+  "pleaseEnterYourEmail": "กรุณากรอกอีเมลของคุณ",
+  "pleaseEnterAValidEmail": "กรุณากรอกอีเมลที่ถูกต้อง",
+  "pleaseEnterYourPassword": "กรุณากรอกรหัสผ่านของคุณ",
+  "passwordMustBeAtLeast8Characters": "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร",
+  "createAccount": "สร้างบัญชี",
+  "name": "ชื่อ",
+  "pleaseEnterYourName": "กรุณากรอกชื่อของคุณ",
+  "artist": "ศิลปิน",
+  "internalServerError": "ข้อผิดพลาดภายในเซิร์ฟเวอร์",
+  "invalidRequest": "คำขอไม่ถูกต้อง",
+  "emailAlreadyInUse": "อีเมลนี้ถูกใช้งานแล้ว",
+  "invalidCredentials": "ข้อมูลประจำตัวไม่ถูกต้อง",
+  "loginRequired": "จำเป็นต้องเข้าสู่ระบบ",
+  "itemNotFound": "ไม่พบรายการ",
+  "invalidUserId": "รหัสผู้ใช้ไม่ถูกต้อง",
+  "userNotFound": "ไม่พบผู้ใช้",
+  "comeCheckTEMPLATEOnMusily": "มาดู TEMPLATE ใน Musily!",
+  "backup": "สำรองข้อมูล",
+  "restore": "กู้คืน",
+  "backupLibrary": "สำรองข้อมูลไลบรารี",
+  "backupCompletedSuccessfully": "การสำรองข้อมูลเสร็จสมบูรณ์!",
+  "backupFailed": "การสำรองข้อมูลล้มเหลว",
+  "includeLibrary": "รวมไลบรารี",
+  "includeDownloads": "รวมการดาวน์โหลด",
+  "startBackup": "เริ่มสำรองข้อมูล",
+  "doYouWantToRestoreThisBackup": "คุณต้องการกู้คืนการสำรองข้อมูลนี้หรือไม่?",
+  "backupInProgress": "กำลังสำรองข้อมูล",
+  "backupRestoredSuccessfully": "กู้คืนการสำรองข้อมูลสำเร็จ",
+  "backupFileDoesNotExist": "ไฟล์สำรองข้อมูลไม่มีอยู่",
+  "musicSavedToDownloads": "ดนตรีถูกบันทึกในการดาวน์โหลด",
+  "saveToDownloads": "บันทึกไปยังการดาวน์โหลด",
+  "importingPlaylist": "กำลังนำเข้าเพลย์ลิสต์",
+  "playlistNameOrUrl": "ชื่อหรือ URL เพลย์ลิสต์",
+  "hide": "ซ่อน",
+  "whenClosingTheApplication": "เมื่อปิดแอปพลิเคชัน",
+  "showWindow": "แสดงหน้าต่าง",
+  "closeWindow": "ปิดหน้าต่าง",
+  "newUpdateAvailable": "อัปเดตใหม่พร้อมใช้งาน",
+  "defaultColor": "สีเริ่มต้น",
+  "accentColor": "สีเน้น",
+  "recommendedAlbums": "อัลบั้มที่แนะนำ",
+  "recommendedMusic": "ดนตรีที่แนะนำ",
+  "moreRecommendations": "คำแนะนำเพิ่มเติม",
+  "cancelOperation": "ยกเลิกการดำเนินการ?",
+  "cancelBackupConfirmation": "คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการสำรองข้อมูล? ความคืบหน้าจะสูญหาย",
+  "cancelRestoreConfirmation": "คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการกู้คืน? ความคืบหน้าจะสูญหาย",
+  "yes": "ใช่",
+  "no": "ไม่",
+  "initializingBackup": "กำลังเริ่มต้นการสำรองข้อมูล...",
+  "creatingBackupArchive": "กำลังสร้างไฟล์เก็บถาวรการสำรองข้อมูล...",
+  "backingUpDownloadsMetadata": "กำลังสำรองข้อมูลเมตาเดตาของการดาวน์โหลด...",
+  "backingUpAudioFiles": "กำลังสำรองข้อมูลไฟล์เสียง...",
+  "backingUpLibraryData": "กำลังสำรองข้อมูลไลบรารี...",
+  "writingBackupFile": "กำลังเขียนไฟล์สำรองข้อมูล...",
+  "savingToStorage": "กำลังบันทึกลงที่เก็บข้อมูล...",
+  "backupCancelled": "ยกเลิกการสำรองข้อมูลแล้ว",
+  "startingBackup": "กำลังเริ่มสำรองข้อมูล...",
+  "startingRestore": "กำลังเริ่มกู้คืน...",
+  "initializingRestore": "กำลังเริ่มต้นการกู้คืน...",
+  "readingBackupFile": "กำลังอ่านไฟล์สำรองข้อมูล...",
+  "extractingLibraryData": "กำลังแยกข้อมูลไลบรารี...",
+  "extractingDownloadsData": "กำลังแยกข้อมูลการดาวน์โหลด...",
+  "extractingAudioFiles": "กำลังแยกไฟล์เสียง...",
+  "finalizingRestore": "กำลังสรุปการกู้คืน...",
+  "restoreCompletedSuccessfully": "การกู้คืนเสร็จสมบูรณ์!",
+  "restoreFailed": "การกู้คืนล้มเหลว",
+  "backupFileNotFound": "ไม่พบไฟล์สำรองข้อมูล",
+  "savedTo": "บันทึกไว้ที่: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "ให้เพลย์ลิสต์ของคุณมีตัวตนใหม่",
+  "playlistDetailsTitle": "รายละเอียด",
+  "playlistEmptyStateDescription": "สร้างเพลย์ลิสต์เพื่อเริ่มบันทึกเพลงโปรดของคุณ",
+  "playlistSelectTitle": "เลือกเพลย์ลิสต์",
+  "playlistSelectDescription": "เลือกว่าจะเพิ่มแทร็กที่เลือกไว้ที่ใด",
+  "playlistCreatorSubtitle": "เพิ่มชื่อหรือวางลิงก์เพลย์ลิสต์",
+  "playlistCreatorPasteInfo": "คุณสามารถวาง URL เพลย์ลิสต์ YouTube เพื่อนำเข้าโดยอัตโนมัติ",
+  "artistNotFoundDescription": "ไม่พบศิลปินที่คุณกำลังมองหา",
+  "artistNoSinglesDescription": "ไม่มีซิงเกิลสำหรับศิลปินนี้",
+  "artistNoAlbumsDescription": "ไม่มีอัลบั้มสำหรับศิลปินนี้",
+  "artistNoSongsDescription": "ไม่มีเพลงสำหรับศิลปินนี้",
+  "lyricsNotAvailable": "ไม่มีเนื้อเพลงสำหรับแทร็กนี้",
+  "queueEmptyTitle": "คิวของคุณว่างเปล่า",
+  "queueEmptyMessage": "เพิ่มเพลงลงในคิวเพื่อเพลิดเพลินกับประสบการณ์ดนตรีของคุณ",
+  "noItemsFound": "ไม่พบรายการ",
+  "downloadsEmptyMessage": "แทร็กที่คุณดาวน์โหลดจะแสดงที่นี่",
+  "downloadingSectionTitle": "กำลังดาวน์โหลด",
+  "queuedSectionTitle": "อยู่ในคิว",
+  "completedSectionTitle": "เสร็จสมบูรณ์",
+  "failedSectionTitle": "ล้มเหลว",
+  "searchSuggestions": "คำแนะนำ",
+  "searchStartTyping": "เริ่มพิมพ์เพื่อค้นหา",
+  "smartSuggestionsTitle": "คำแนะนำอัจฉริยะ",
+  "smartSuggestionsDescription": "เพิ่มแทร็กที่คล้ายกันโดยอัตโนมัติ",
+  "libraryManagementSectionTitle": "การจัดการไลบรารี",
+  "localLibraryTitle": "ไลบรารีท้องถิ่น",
+  "localLibraryDescription": "จัดการโฟลเดอร์จากอุปกรณ์ของคุณเพื่อเล่นไฟล์เสียงท้องถิ่น",
+  "localFilesLabel": "ไฟล์ท้องถิ่น",
+  "@localFilesLabel": {
+    "description": "ป้ายที่ใช้เมื่อแทร็กท้องถิ่นไม่มีเมตาเดตาของศิลปิน"
+  },
+  "manageLocalFolders": "จัดการโฟลเดอร์ท้องถิ่น",
+  "manageLocalFoldersDescription": "เพิ่ม เปลี่ยนชื่อ หรือลบไดเรกทอรีที่ซิงค์กับไลบรารี Musily ของคุณ",
+  "addLocalFolder": "เพิ่มโฟลเดอร์ท้องถิ่น",
+  "emptyLocalLibrary": "ยังไม่มีโฟลเดอร์ท้องถิ่น",
+  "emptyLocalLibraryDescription": "เพิ่มโฟลเดอร์จากอุปกรณ์ของคุณเพื่อให้สามารถเข้าถึงเพลงท้องถิ่นภายใน Musily",
+  "chooseDirectory": "เลือกไดเรกทอรี",
+  "invalidDirectory": "ไม่พบไดเรกทอรี",
+  "invalidDirectoryDescription": "เราไม่สามารถเข้าถึงโฟลเดอร์นี้ได้ อัปเดตเส้นทางหรือลบรายการ",
+  "removeLocalFolderConfirmation": "ลบ \"{name}\" ออกจากไลบรารีท้องถิ่นของคุณ?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "ไม่พบเพลง",
+  "emptyLocalPlaylistDescription": "ตรวจสอบให้แน่ใจว่าโฟลเดอร์ยังคงมีอยู่และมีไฟล์เสียงที่รองรับ",
+  "changeDirectory": "เปลี่ยนไดเรกทอรี",
+  "updateDirectory": "อัปเดตไดเรกทอรี",
+  "localFolderPreviewOverflow": "+{count} โฟลเดอร์เพิ่มเติม",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "เปิด",
+  "rename": "เปลี่ยนชื่อ",
+  "remove": "ลบ",
+  "refresh": "รีเฟรช",
+  "backupLibraryDescription": "สร้างการสำรองข้อมูลไลบรารีของคุณ",
+  "restoreLibraryDescription": "กู้คืนไลบรารีของคุณจากการสำรองข้อมูล",
+  "includeLibraryDescription": "สำรองข้อมูลอัลบั้ม ศิลปิน และเพลย์ลิสต์ที่บันทึกไว้ของคุณ",
+  "includeDownloadsDescription": "สำรองข้อมูลแทร็กที่คุณดาวน์โหลด",
+  "fullScreenPlayerTooltip": "เครื่องเล่นแบบเต็มหน้าจอ",
+  "sleepTimer": "ตัวจับเวลาเข้านอน",
+  "sleepTimerDescription": "ดนตรีจะหยุดชั่วคราวหลังจากเวลาที่เลือก",
+  "sleepTimerActive": "ตัวจับเวลาเข้านอน: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} นาที",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} ชั่วโมง",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 ชั่วโมง",
+  "customTime": "กำหนดเอง",
+  "enterTime": "ป้อนเวลา",
+  "minutesLabel": "นาที",
+  "hoursLabel": "ชั่วโมง",
+  "cancelTimer": "ยกเลิกตัวจับเวลา",
+  "cancelTimerQuestion": "คุณต้องการยกเลิกตัวจับเวลาเข้านอนหรือไม่?",
+  "timerInfo": "ตัวจับเวลาใช้งานเป็นเวลา {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "เพิ่มเวลา",
+  "clearQueueTitle": "ล้างคิว",
+  "clearQueueMessage": "ล้างการดาวน์โหลดทั้งหมดในคิว/รอดำเนินการ?",
+  "clearQueueDescription": "นี่จะยกเลิกการดาวน์โหลดที่รอดำเนินการทั้งหมด การดาวน์โหลดที่เสร็จสมบูรณ์จะไม่ได้รับผลกระทบ",
+  "downloadManagerSummary": "{active} ใช้งานอยู่ • {queued} ในคิว",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "ลองใหม่ทั้งหมด",
+  "downloadManagerClearFailed": "ล้างที่ล้มเหลว",
+  "downloadManagerClearCompleted": "ล้างที่เสร็จสมบูรณ์",
+  "clearCompletedDownloadsTitle": "ล้างการดาวน์โหลดที่เสร็จสมบูรณ์",
+  "clearCompletedDownloadsMessage": "ลบการดาวน์โหลดที่เสร็จสมบูรณ์ทั้งหมด?",
+  "clearCompletedDownloadsDescription": "นี่จะลบไฟล์ที่ดาวน์โหลดจากที่เก็บข้อมูล การกระทำนี้ไม่สามารถยกเลิกได้",
+  "itemCount": "{count, plural, =1{1 รายการ} other{{count} รายการ}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} เสร็จสมบูรณ์ • {failed} ล้มเหลว",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "เวลารวมโดยประมาณ",
+  "downloadErrorResolveUrl": "ไม่สามารถแก้ไข URL การดาวน์โหลดได้",
+  "downloadErrorFileValidation": "การตรวจสอบไฟล์ที่ดาวน์โหลดล้มเหลว",
+  "downloadErrorUnexpectedMessage": "การตอบกลับการดาวน์โหลดที่ไม่คาดคิด",
+  "clear": "ล้าง",
+  "queueTools": "เครื่องมือคิว",
+  "queueToolsDescription": "จัดเรียงคิวใหม่และสร้างเพลย์ลิสต์",
+  "playlistCreated": "สร้างเพลย์ลิสต์สำเร็จ",
+  "queue": "คิว",
+  "tracksSelected": "แทร็กที่เลือก",
+  "selectAll": "เลือกทั้งหมด",
+  "deselectAll": "ยกเลิกการเลือกทั้งหมด",
+  "updateDirectoryDescription": "เลือกไดเรกทอรีใหม่สำหรับเพลย์ลิสต์นี้",
+  "select": "เลือก",
+  "invalidDirectory": "ไดเรกทอรีไม่ถูกต้อง",
+  "renameLocalFolder": "เปลี่ยนชื่อโฟลเดอร์",
+  "removeLocalFolder": "ลบโฟลเดอร์",
+  "save": "บันทึก",
+  "localPlaylist": "เพลย์ลิสต์ท้องถิ่น",
+  "versionManager": "ตัวจัดการเวอร์ชัน",
+  "retry": "ลองใหม่",
+  "noReleasesFound": "ไม่พบเวอร์ชัน",
+  "version": "เวอร์ชัน",
+  "alreadyInstalled": "ติดตั้งแล้ว",
+  "update": "อัปเดต",
+  "changelog": "บันทึกการเปลี่ยนแปลง",
+  "changelogNotAvailable": "บันทึกการเปลี่ยนแปลงไม่พร้อมใช้งาน",
+  "later": "ภายหลัง",
+  "updateAvailableDescription": "เวอร์ชันใหม่ของ Musily พร้อมใช้งาน อัปเดตตอนนี้เพื่อรับฟีเจอร์และปรับปรุงล่าสุด",
+  "recommendations": "คำแนะนำ"
+}

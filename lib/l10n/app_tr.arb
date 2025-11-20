@@ -1,0 +1,349 @@
+{
+  "home": "Ana Sayfa",
+  "search": "Ara",
+  "library": "Kütüphane",
+  "favorites": "Favoriler",
+  "searchMusicAlbumOrArtist": "Müzik, Albüm veya Sanatçı Ara",
+  "musics": "Müzik",
+  "albums": "Albümler",
+  "artists": "Sanatçılar",
+  "all": "Tümü",
+  "playlists": "Çalma Listeleri",
+  "download": "İndir",
+  "addToPlaylist": "Çalma Listesine Ekle",
+  "addToQueue": "Kuyruğa Ekle",
+  "goToAlbum": "Albüme Git",
+  "goToArtist": "Sanatçıya Git",
+  "share": "Paylaş",
+  "play": "Oynat",
+  "shufflePlay": "Karışık Oynat",
+  "addToLibrary": "Kütüphaneye Ekle",
+  "follow": "Takip Et",
+  "following": "Takip Ediliyor",
+  "more": "Daha Fazla",
+  "topSongs": "En İyi Şarkılar",
+  "topAlbums": "En İyi Albümler",
+  "topSingles": "En İyi Tekliler",
+  "similarArtists": "Benzer Sanatçılar",
+  "removeFromLibrary": "Kütüphaneden Kaldır",
+  "createPlaylist": "Çalma Listesi Oluştur",
+  "playlistName": "Çalma Listesi Adı",
+  "cancel": "İptal",
+  "back": "Geri",
+  "create": "Oluştur",
+  "playlist": "Çalma Listesi",
+  "songs": "Şarkılar",
+  "deletePlaylist": "Çalma Listesini Sil",
+  "editPlaylist": "Çalma Listesini Düzenle",
+  "confirm": "Onayla",
+  "doYouWantToDeleteThePlaylist": "Çalma listesini silmek istiyor musunuz?",
+  "delete": "Sil",
+  "theActionCannotBeUndone": "Bu işlem geri alınamaz.",
+  "playingNow": "Şimdi Oynatılıyor",
+  "emptyLibrary": "Kütüphaneniz boş",
+  "emptyLibraryDescription": "Burada görmek için öğeleri kütüphanenize ekleyin",
+  "albumNotFound": "Albüm bulunamadı",
+  "artistNotFound": "Sanatçı bulunamadı",
+  "cancelDownload": "İndirmeyi İptal Et",
+  "pause": "Duraklat",
+  "album": "Albüm",
+  "singles": "Tekliler",
+  "noMoreSingles": "Bu sanatçı için başka tekli bulunmuyor.",
+  "noMoreAlbums": "Bu sanatçı için başka albüm bulunmuyor.",
+  "songsNotFound": "Şarkı bulunamadı.",
+  "playlistNotFound": "Çalma listesi bulunamadı.",
+  "requiredField": "Bu alan zorunludur.",
+  "deleteDownload": "İndirmeyi Sil",
+  "noPlaylists": "Çalma listeniz yok.",
+  "removeFromPlaylist": "Çalma Listesinden Kaldır",
+  "downloadManager": "İndirme Yöneticisi",
+  "downloads": "İndirmeler",
+  "offline": "Çevrimdışı",
+  "offlineMode": "Çevrimdışı Mod",
+  "offlineModeDescription": "Şu anda çevrimdışısınız. Bazı özellikler kullanılamayabilir.",
+  "lyricsNotFound": "Şarkı sözleri bulunamadı",
+  "lyricsNotSynced": "Şarkı sözleri senkronize edilmemiş",
+  "lyricsNotSyncedDescription": "Bu satırlar müzik çalma ile birlikte hareket etmeyecek.",
+  "lyricsParsedSync": "Bu şarkı sözlerini sizin için senkronize ettik",
+  "lyricsParsedSyncDescription": "Otomatik olarak oluşturuldu ve biraz ritimden kaçmış olabilir.",
+  "lyrics": "Şarkı Sözleri",
+  "settings": "Ayarlar",
+  "accounts": "Hesaplar",
+  "language": "Dil",
+  "theme": "Tema",
+  "dark": "Koyu",
+  "light": "Açık",
+  "system": "Sistem",
+  "licenses": "Lisanslar",
+  "about": "Hakkında",
+  "aboutSupporters": "Hakkında ve Destekleyenler",
+  "application": "Uygulama",
+  "others": "Diğerleri",
+  "supportersTitle": "Destekleyenler",
+  "supportersEmpty": "Henüz destekleyen listelenmemiş.",
+  "close": "Kapat",
+  "copiedToClipboard": "Panoya kopyalandı",
+  "noDownloads": "İndirme yok",
+  "noResults": "Sonuç yok",
+  "tryDifferentKeywords": "Farklı anahtar kelimeler deneyin veya yazımınızı kontrol edin",
+  "downloadCompleted": "İndirme tamamlandı",
+  "selectALanguage": "Bir dil seçin",
+  "account": "Hesap",
+  "login": "Giriş Yap",
+  "email": "E-posta",
+  "password": "Şifre",
+  "pleaseEnterYourEmail": "Lütfen e-postanızı girin",
+  "pleaseEnterAValidEmail": "Lütfen geçerli bir e-posta girin",
+  "pleaseEnterYourPassword": "Lütfen şifrenizi girin",
+  "passwordMustBeAtLeast8Characters": "Şifre en az 8 karakter olmalıdır",
+  "createAccount": "Hesap Oluştur",
+  "name": "Ad",
+  "pleaseEnterYourName": "Lütfen adınızı girin",
+  "artist": "Sanatçı",
+  "internalServerError": "Dahili sunucu hatası",
+  "invalidRequest": "Geçersiz istek",
+  "emailAlreadyInUse": "E-posta zaten kullanılıyor",
+  "invalidCredentials": "Geçersiz kimlik bilgileri",
+  "loginRequired": "Giriş gerekli",
+  "itemNotFound": "Öğe bulunamadı",
+  "invalidUserId": "Geçersiz kullanıcı kimliği",
+  "userNotFound": "Kullanıcı bulunamadı",
+  "comeCheckTEMPLATEOnMusily": "Musily'de TEMPLATE'i kontrol edin!",
+  "backup": "Yedekleme",
+  "restore": "Geri Yükle",
+  "backupLibrary": "Kütüphaneyi Yedekle",
+  "backupCompletedSuccessfully": "Yedekleme başarıyla tamamlandı!",
+  "backupFailed": "Yedekleme başarısız",
+  "includeLibrary": "Kütüphaneyi Dahil Et",
+  "includeDownloads": "İndirmeleri Dahil Et",
+  "startBackup": "Yedeklemeyi Başlat",
+  "doYouWantToRestoreThisBackup": "Bu yedeği geri yüklemek istiyor musunuz?",
+  "backupInProgress": "Yedekleme devam ediyor",
+  "backupRestoredSuccessfully": "Yedekleme başarıyla geri yüklendi",
+  "backupFileDoesNotExist": "Yedekleme dosyası mevcut değil",
+  "musicSavedToDownloads": "Müzik indirmelere kaydedildi",
+  "saveToDownloads": "İndirmelere Kaydet",
+  "importingPlaylist": "Çalma Listesini İçe Aktarıyor",
+  "playlistNameOrUrl": "Çalma listesi adı veya URL",
+  "hide": "Gizle",
+  "whenClosingTheApplication": "Uygulamayı kapatırken",
+  "showWindow": "Pencereyi Göster",
+  "closeWindow": "Pencereyi Kapat",
+  "newUpdateAvailable": "Yeni Güncelleme Mevcut",
+  "defaultColor": "Varsayılan Renk",
+  "accentColor": "Vurgu Rengi",
+  "recommendedAlbums": "Önerilen Albümler",
+  "recommendedMusic": "Önerilen Müzik",
+  "moreRecommendations": "Daha Fazla Öneri",
+  "cancelOperation": "İşlemi İptal Et?",
+  "cancelBackupConfirmation": "Yedeklemeyi iptal etmek istediğinizden emin misiniz? İlerleme kaybolacak.",
+  "cancelRestoreConfirmation": "Geri yüklemeyi iptal etmek istediğinizden emin misiniz? İlerleme kaybolacak.",
+  "yes": "Evet",
+  "no": "Hayır",
+  "initializingBackup": "Yedekleme başlatılıyor...",
+  "creatingBackupArchive": "Yedekleme arşivi oluşturuluyor...",
+  "backingUpDownloadsMetadata": "İndirme meta verileri yedekleniyor...",
+  "backingUpAudioFiles": "Ses dosyaları yedekleniyor...",
+  "backingUpLibraryData": "Kütüphane verileri yedekleniyor...",
+  "writingBackupFile": "Yedekleme dosyası yazılıyor...",
+  "savingToStorage": "Depolamaya kaydediliyor...",
+  "backupCancelled": "Yedekleme iptal edildi",
+  "startingBackup": "Yedekleme başlatılıyor...",
+  "startingRestore": "Geri yükleme başlatılıyor...",
+  "initializingRestore": "Geri yükleme başlatılıyor...",
+  "readingBackupFile": "Yedekleme dosyası okunuyor...",
+  "extractingLibraryData": "Kütüphane verileri çıkarılıyor...",
+  "extractingDownloadsData": "İndirme verileri çıkarılıyor...",
+  "extractingAudioFiles": "Ses dosyaları çıkarılıyor...",
+  "finalizingRestore": "Geri yükleme tamamlanıyor...",
+  "restoreCompletedSuccessfully": "Geri yükleme başarıyla tamamlandı!",
+  "restoreFailed": "Geri yükleme başarısız",
+  "backupFileNotFound": "Yedekleme dosyası bulunamadı",
+  "savedTo": "Kaydedildi: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "Çalma listenize yeni bir kimlik verin.",
+  "playlistDetailsTitle": "Detaylar",
+  "playlistEmptyStateDescription": "Favori parçalarınızı kaydetmeye başlamak için bir çalma listesi oluşturun.",
+  "playlistSelectTitle": "Bir çalma listesi seçin",
+  "playlistSelectDescription": "Seçilen parçaların nereye ekleneceğini seçin.",
+  "playlistCreatorSubtitle": "Bir ad ekleyin veya çalma listesi bağlantısı yapıştırın",
+  "playlistCreatorPasteInfo": "Otomatik olarak içe aktarmak için bir YouTube çalma listesi URL'si yapıştırabilirsiniz.",
+  "artistNotFoundDescription": "Aradığınız sanatçı bulunamadı.",
+  "artistNoSinglesDescription": "Bu sanatçı için tekli bulunmuyor.",
+  "artistNoAlbumsDescription": "Bu sanatçı için albüm bulunmuyor.",
+  "artistNoSongsDescription": "Bu sanatçı için şarkı bulunmuyor.",
+  "lyricsNotAvailable": "Bu parça için şarkı sözleri bulunmuyor.",
+  "queueEmptyTitle": "Kuyruğunuz boş",
+  "queueEmptyMessage": "Müzik deneyiminizin tadını çıkarmak için kuyruğa şarkı ekleyin.",
+  "noItemsFound": "Öğe bulunamadı",
+  "downloadsEmptyMessage": "İndirdiğiniz parçalar burada görünecek.",
+  "downloadingSectionTitle": "İndiriliyor",
+  "queuedSectionTitle": "Kuyrukta",
+  "completedSectionTitle": "Tamamlandı",
+  "failedSectionTitle": "Başarısız",
+  "searchSuggestions": "Öneriler",
+  "searchStartTyping": "Aramak için yazmaya başlayın",
+  "smartSuggestionsTitle": "Akıllı Öneriler",
+  "smartSuggestionsDescription": "Benzer parçaları otomatik olarak ekle",
+  "libraryManagementSectionTitle": "Kütüphane Yönetimi",
+  "localLibraryTitle": "Yerel Kütüphane",
+  "localLibraryDescription": "Yerel ses dosyalarını çalmak için cihazınızdan klasörleri yönetin.",
+  "localFilesLabel": "Yerel Dosyalar",
+  "@localFilesLabel": {
+    "description": "Yerel bir parçada sanatçı meta verisi olmadığında kullanılan yedek etiket."
+  },
+  "manageLocalFolders": "Yerel klasörleri yönetin",
+  "manageLocalFoldersDescription": "Musily kütüphanenizle senkronize edilmiş dizinleri ekleyin, yeniden adlandırın veya kaldırın.",
+  "addLocalFolder": "Yerel klasör ekle",
+  "emptyLocalLibrary": "Henüz yerel klasör yok",
+  "emptyLocalLibraryDescription": "Musily içinde yerel şarkılara erişimi korumak için cihazınızdan bir klasör ekleyin.",
+  "chooseDirectory": "Dizin seçin",
+  "invalidDirectory": "Dizin bulunamadı",
+  "invalidDirectoryDescription": "Bu klasöre erişemedik. Yolu güncelleyin veya girişi kaldırın.",
+  "removeLocalFolderConfirmation": "\"{name}\" öğesini yerel kütüphanenizden kaldırmak istiyor musunuz?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Şarkı bulunamadı",
+  "emptyLocalPlaylistDescription": "Klasörün hala var olduğundan ve desteklenen ses dosyaları içerdiğinden emin olun.",
+  "changeDirectory": "Dizini değiştir",
+  "updateDirectory": "Dizini güncelle",
+  "localFolderPreviewOverflow": "+{count} klasör daha",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Aç",
+  "rename": "Yeniden Adlandır",
+  "remove": "Kaldır",
+  "refresh": "Yenile",
+  "backupLibraryDescription": "Kütüphanenizin yedeğini oluşturun",
+  "restoreLibraryDescription": "Kütüphanenizi bir yedekten geri yükleyin",
+  "includeLibraryDescription": "Kaydedilmiş albümlerinizi, sanatçılarınızı ve çalma listelerinizi yedekleyin",
+  "includeDownloadsDescription": "İndirdiğiniz parçaları yedekleyin",
+  "fullScreenPlayerTooltip": "Tam ekran oynatıcı",
+  "sleepTimer": "Uyku Zamanlayıcısı",
+  "sleepTimerDescription": "Müzik seçilen süre sonrasında duraklatılacak",
+  "sleepTimerActive": "Uyku zamanlayıcısı: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} dk",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} saat",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 saat",
+  "customTime": "Özel",
+  "enterTime": "Zaman girin",
+  "minutesLabel": "Dakika",
+  "hoursLabel": "Saat",
+  "cancelTimer": "Zamanlayıcıyı İptal Et",
+  "cancelTimerQuestion": "Uyku zamanlayıcısını iptal etmek istiyor musunuz?",
+  "timerInfo": "Zamanlayıcı {time} süresince aktif",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Zaman ekle",
+  "clearQueueTitle": "Kuyruğu Temizle",
+  "clearQueueMessage": "Tüm kuyruğa alınan/bekleyen indirmeleri temizle?",
+  "clearQueueDescription": "Bu, tüm bekleyen indirmeleri iptal edecektir. Tamamlanan indirmeler etkilenmeyecektir.",
+  "downloadManagerSummary": "{active} aktif • {queued} kuyrukta",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Tümünü yeniden dene",
+  "downloadManagerClearFailed": "Başarısızları temizle",
+  "downloadManagerClearCompleted": "Tamamlananları temizle",
+  "clearCompletedDownloadsTitle": "Tamamlanan indirmeleri temizle",
+  "clearCompletedDownloadsMessage": "Tüm tamamlanan indirmeleri sil?",
+  "clearCompletedDownloadsDescription": "Bu, indirilen dosyaları depolamadan kaldıracaktır. Bu işlem geri alınamaz.",
+  "itemCount": "{count, plural, =1{1 öğe} other{{count} öğe}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} tamamlandı • {failed} başarısız",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Tahmini toplam süre",
+  "downloadErrorResolveUrl": "İndirme URL'si çözülemedi",
+  "downloadErrorFileValidation": "İndirilen dosya doğrulaması başarısız",
+  "downloadErrorUnexpectedMessage": "Beklenmeyen indirme yanıtı",
+  "clear": "Temizle",
+  "queueTools": "Kuyruk Araçları",
+  "queueToolsDescription": "Kuyruğunuzu yeniden sıralayın ve çalma listeleri oluşturun",
+  "playlistCreated": "Çalma listesi başarıyla oluşturuldu",
+  "queue": "Kuyruk",
+  "tracksSelected": "parça seçildi",
+  "selectAll": "Tümünü Seç",
+  "deselectAll": "Tümünün Seçimini Kaldır",
+  "updateDirectoryDescription": "Bu çalma listesi için yeni bir dizin seçin",
+  "select": "Seç",
+  "invalidDirectory": "Geçersiz dizin",
+  "renameLocalFolder": "Klasörü yeniden adlandır",
+  "removeLocalFolder": "Klasörü kaldır",
+  "save": "Kaydet",
+  "localPlaylist": "Yerel çalma listesi",
+  "versionManager": "Sürüm Yöneticisi",
+  "retry": "Yeniden Dene",
+  "noReleasesFound": "Sürüm bulunamadı",
+  "version": "Sürüm",
+  "alreadyInstalled": "Zaten Yüklü",
+  "update": "Güncelle",
+  "changelog": "Değişiklik Günlüğü",
+  "changelogNotAvailable": "Değişiklik günlüğü mevcut değil",
+  "later": "Sonra",
+  "updateAvailableDescription": "Musily'nin yeni bir sürümü mevcut. En son özellikler ve iyileştirmeleri almak için şimdi güncelleyin.",
+  "recommendations": "Öneriler"
+}

@@ -1,0 +1,349 @@
+{
+  "home": "Startseite",
+  "search": "Suche",
+  "library": "Bibliothek",
+  "favorites": "Favoriten",
+  "searchMusicAlbumOrArtist": "Musik, Album oder Künstler suchen",
+  "musics": "Titel",
+  "albums": "Alben",
+  "artists": "Künstler",
+  "all": "Alle",
+  "playlists": "Playlists",
+  "download": "Download",
+  "addToPlaylist": "Zur Playlist hinzufügen",
+  "addToQueue": "Zur Warteschlange hinzufügen",
+  "goToAlbum": "Zum Album",
+  "goToArtist": "Zum Künstler",
+  "share": "Teilen",
+  "play": "Abspielen",
+  "shufflePlay": "Shuffle-Wiedergabe",
+  "addToLibrary": "Zur Bibliothek hinzufügen",
+  "follow": "Folgen",
+  "following": "Folgend",
+  "more": "Mehr",
+  "topSongs": "Top-Titel",
+  "topAlbums": "Top-Alben",
+  "topSingles": "Top-Singles",
+  "similarArtists": "Ähnliche Künstler",
+  "removeFromLibrary": "Aus Bibliothek entfernen",
+  "createPlaylist": "Playlist erstellen",
+  "playlistName": "Playlist-Name",
+  "cancel": "Abbrechen",
+  "back": "Zurück",
+  "create": "Erstellen",
+  "playlist": "Playlist",
+  "songs": "Songs",
+  "deletePlaylist": "Playlist löschen",
+  "editPlaylist": "Playlist bearbeiten",
+  "confirm": "Bestätigen",
+  "doYouWantToDeleteThePlaylist": "Möchten Sie die Playlist löschen?",
+  "delete": "Löschen",
+  "theActionCannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
+  "playingNow": "Jetzt läuft",
+  "emptyLibrary": "Ihre Bibliothek ist leer",
+  "emptyLibraryDescription": "Fügen Sie Elemente hinzu, um sie hier anzuzeigen.",
+  "albumNotFound": "Album nicht gefunden",
+  "artistNotFound": "Künstler nicht gefunden",
+  "cancelDownload": "Download abbrechen",
+  "pause": "Pause",
+  "album": "Album",
+  "singles": "Singles",
+  "noMoreSingles": "Keine weiteren Singles für diesen Künstler verfügbar.",
+  "noMoreAlbums": "Keine weiteren Alben für diesen Künstler verfügbar.",
+  "songsNotFound": "Keine Songs gefunden.",
+  "playlistNotFound": "Playlist nicht gefunden.",
+  "requiredField": "Dieses Feld ist erforderlich.",
+  "deleteDownload": "Download löschen",
+  "noPlaylists": "Keine Playlists vorhanden.",
+  "removeFromPlaylist": "Aus Playlist entfernen",
+  "downloadManager": "Download-Manager",
+  "downloads": "Downloads",
+  "offline": "Offline",
+  "offlineMode": "Offline-Modus",
+  "offlineModeDescription": "Sie sind derzeit offline. Einige Funktionen sind möglicherweise nicht verfügbar.",
+  "lyricsNotFound": "Songtext nicht gefunden",
+  "lyricsNotSynced": "Songtext nicht synchronisiert",
+  "lyricsNotSyncedDescription": "Diese Zeilen bewegen sich nicht mit der Musik.",
+  "lyricsParsedSync": "Wir haben diesen Songtext für Sie synchronisiert",
+  "lyricsParsedSyncDescription": "Er wurde automatisch generiert und kann leicht ungenau sein.",
+  "lyrics": "Songtext",
+  "settings": "Einstellungen",
+  "accounts": "Konten",
+  "language": "Sprache",
+  "theme": "Design",
+  "dark": "Dunkel",
+  "light": "Hell",
+  "system": "System",
+  "licenses": "Lizenzen",
+  "about": "Über",
+  "aboutSupporters": "Über & Unterstützer",
+  "application": "Anwendung",
+  "others": "Sonstiges",
+  "supportersTitle": "Unterstützer",
+  "supportersEmpty": "Noch keine Unterstützer eingetragen.",
+  "close": "Schließen",
+  "copiedToClipboard": "In die Zwischenablage kopiert",
+  "noDownloads": "Keine Downloads",
+  "noResults": "Keine Ergebnisse",
+  "tryDifferentKeywords": "Versuchen Sie andere Suchbegriffe oder überprüfen Sie die Schreibweise.",
+  "downloadCompleted": "Download abgeschlossen",
+  "selectALanguage": "Sprache auswählen",
+  "account": "Konto",
+  "login": "Login",
+  "email": "E-Mail",
+  "password": "Passwort",
+  "pleaseEnterYourEmail": "Bitte geben Sie Ihre E-Mail ein",
+  "pleaseEnterAValidEmail": "Bitte geben Sie eine gültige E-Mail ein",
+  "pleaseEnterYourPassword": "Bitte geben Sie Ihr Passwort ein",
+  "passwordMustBeAtLeast8Characters": "Das Passwort muss mindestens 8 Zeichen lang sein",
+  "createAccount": "Konto erstellen",
+  "name": "Name",
+  "pleaseEnterYourName": "Bitte geben Sie Ihren Namen ein",
+  "artist": "Künstler",
+  "internalServerError": "Interner Serverfehler",
+  "invalidRequest": "Ungültige Anfrage",
+  "emailAlreadyInUse": "Diese E-Mail wird bereits verwendet",
+  "invalidCredentials": "Ungültige Anmeldedaten",
+  "loginRequired": "Login erforderlich",
+  "itemNotFound": "Element nicht gefunden",
+  "invalidUserId": "Ungültige Benutzer-ID",
+  "userNotFound": "Benutzer nicht gefunden",
+  "comeCheckTEMPLATEOnMusily": "Schau dir TEMPLATE auf Musily an!",
+  "backup": "Backup",
+  "restore": "Wiederherstellen",
+  "backupLibrary": "Bibliothek sichern",
+  "backupCompletedSuccessfully": "Backup erfolgreich abgeschlossen!",
+  "backupFailed": "Backup fehlgeschlagen",
+  "includeLibrary": "Bibliothek einschließen",
+  "includeDownloads": "Downloads einschließen",
+  "startBackup": "Backup starten",
+  "doYouWantToRestoreThisBackup": "Möchten Sie dieses Backup wiederherstellen?",
+  "backupInProgress": "Backup läuft",
+  "backupRestoredSuccessfully": "Backup erfolgreich wiederhergestellt",
+  "backupFileDoesNotExist": "Backup-Datei existiert nicht",
+  "musicSavedToDownloads": "Musik in Downloads gespeichert",
+  "saveToDownloads": "In Downloads speichern",
+  "importingPlaylist": "Playlist importieren",
+  "playlistNameOrUrl": "Playlist-Name oder URL",
+  "hide": "Ausblenden",
+  "whenClosingTheApplication": "Beim Schließen der Anwendung",
+  "showWindow": "Fenster anzeigen",
+  "closeWindow": "Fenster schließen",
+  "newUpdateAvailable": "Neues Update verfügbar",
+  "defaultColor": "Standardfarbe",
+  "accentColor": "Akzentfarbe",
+  "recommendedAlbums": "Empfohlene Alben",
+  "recommendedMusic": "Empfohlene Musik",
+  "moreRecommendations": "Weitere Empfehlungen",
+  "cancelOperation": "Vorgang abbrechen?",
+  "cancelBackupConfirmation": "Sind Sie sicher, dass Sie das Backup abbrechen möchten? Der Fortschritt geht verloren.",
+  "cancelRestoreConfirmation": "Sind Sie sicher, dass Sie die Wiederherstellung abbrechen möchten? Der Fortschritt geht verloren.",
+  "yes": "Ja",
+  "no": "Nein",
+  "initializingBackup": "Backup wird initialisiert...",
+  "creatingBackupArchive": "Backup-Archiv wird erstellt...",
+  "backingUpDownloadsMetadata": "Downloads-Metadaten werden gesichert...",
+  "backingUpAudioFiles": "Audiodateien werden gesichert...",
+  "backingUpLibraryData": "Bibliotheksdaten werden gesichert...",
+  "writingBackupFile": "Backup-Datei wird geschrieben...",
+  "savingToStorage": "Speicherung...",
+  "backupCancelled": "Backup abgebrochen",
+  "startingBackup": "Backup wird gestartet...",
+  "startingRestore": "Wiederherstellung wird gestartet...",
+  "initializingRestore": "Wiederherstellung wird initialisiert...",
+  "readingBackupFile": "Backup-Datei wird gelesen...",
+  "extractingLibraryData": "Bibliotheksdaten werden extrahiert...",
+  "extractingDownloadsData": "Downloads-Daten werden extrahiert...",
+  "extractingAudioFiles": "Audiodateien werden extrahiert...",
+  "finalizingRestore": "Wiederherstellung wird finalisiert...",
+  "restoreCompletedSuccessfully": "Wiederherstellung erfolgreich abgeschlossen!",
+  "restoreFailed": "Wiederherstellung fehlgeschlagen",
+  "backupFileNotFound": "Backup-Datei nicht gefunden",
+  "savedTo": "Gespeichert unter: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "Geben Sie Ihrer Playlist eine neue Identität.",
+  "playlistDetailsTitle": "Details",
+  "playlistEmptyStateDescription": "Erstellen Sie eine Playlist, um Ihre Lieblingstitel zu speichern.",
+  "playlistSelectTitle": "Playlist auswählen",
+  "playlistSelectDescription": "Wählen Sie aus, wohin die ausgewählten Titel hinzugefügt werden sollen.",
+  "playlistCreatorSubtitle": "Geben Sie einen Namen ein oder fügen Sie einen Playlist-Link ein",
+  "playlistCreatorPasteInfo": "Sie können eine YouTube-Playlist-URL einfügen, um sie automatisch zu importieren.",
+  "artistNotFoundDescription": "Der gesuchte Künstler wurde nicht gefunden.",
+  "artistNoSinglesDescription": "Keine Singles für diesen Künstler verfügbar.",
+  "artistNoAlbumsDescription": "Keine Alben für diesen Künstler verfügbar.",
+  "artistNoSongsDescription": "Keine Songs für diesen Künstler verfügbar.",
+  "lyricsNotAvailable": "Keine Songtexte für diesen Titel verfügbar.",
+  "queueEmptyTitle": "Ihre Warteschlange ist leer",
+  "queueEmptyMessage": "Fügen Sie Songs zur Warteschlange hinzu, um Ihre Musikerfahrung zu genießen.",
+  "noItemsFound": "Keine Elemente gefunden",
+  "downloadsEmptyMessage": "Ihre heruntergeladenen Titel erscheinen hier.",
+  "downloadingSectionTitle": "Wird heruntergeladen",
+  "queuedSectionTitle": "Wartend",
+  "completedSectionTitle": "Abgeschlossen",
+  "failedSectionTitle": "Fehlgeschlagen",
+  "searchSuggestions": "Vorschläge",
+  "searchStartTyping": "Tippen Sie, um zu suchen",
+  "smartSuggestionsTitle": "Intelligente Vorschläge",
+  "smartSuggestionsDescription": "Ähnliche Titel automatisch hinzufügen",
+  "libraryManagementSectionTitle": "Bibliotheksverwaltung",
+  "localLibraryTitle": "Lokale Bibliothek",
+  "localLibraryDescription": "Verwalten Sie Ordner auf Ihrem Gerät, um lokale Audio-Dateien abzuspielen.",
+  "localFilesLabel": "Lokale Dateien",
+  "@localFilesLabel": {
+    "description": "Fallback-Label, wenn ein lokaler Titel keine Künstler-Metadaten besitzt."
+  },
+  "manageLocalFolders": "Lokale Ordner verwalten",
+  "manageLocalFoldersDescription": "Fügen Sie Ordner hinzu, benennen Sie sie um oder entfernen Sie sie.",
+  "addLocalFolder": "Lokalen Ordner hinzufügen",
+  "emptyLocalLibrary": "Keine lokalen Ordner vorhanden",
+  "emptyLocalLibraryDescription": "Fügen Sie einen Ordner hinzu, um lokale Musik in Musily verfügbar zu machen.",
+  "chooseDirectory": "Verzeichnis auswählen",
+  "invalidDirectory": "Ungültiges Verzeichnis",
+  "invalidDirectoryDescription": "Dieses Verzeichnis konnte nicht geöffnet werden. Aktualisieren oder entfernen Sie es.",
+  "removeLocalFolderConfirmation": "„{name}“ aus Ihrer lokalen Bibliothek entfernen?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Keine Songs gefunden",
+  "emptyLocalPlaylistDescription": "Stellen Sie sicher, dass der Ordner existiert und unterstützte Audio-Dateien enthält.",
+  "changeDirectory": "Verzeichnis ändern",
+  "updateDirectory": "Verzeichnis aktualisieren",
+  "localFolderPreviewOverflow": "+{count} weitere Ordner",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Öffnen",
+  "rename": "Umbenennen",
+  "remove": "Entfernen",
+  "refresh": "Aktualisieren",
+  "backupLibraryDescription": "Sichern Sie Ihre Bibliothek",
+  "restoreLibraryDescription": "Stellen Sie Ihre Bibliothek aus einem Backup wieder her",
+  "includeLibraryDescription": "Gespeicherte Alben, Künstler und Playlists sichern",
+  "includeDownloadsDescription": "Heruntergeladene Titel sichern",
+  "fullScreenPlayerTooltip": "Vollbild-Player",
+  "sleepTimer": "Sleep-Timer",
+  "sleepTimerDescription": "Die Musik wird nach der ausgewählten Zeit pausiert",
+  "sleepTimerActive": "Sleep-Timer: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} Min.",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} Stunden",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 Stunde",
+  "customTime": "Benutzerdefiniert",
+  "enterTime": "Zeit eingeben",
+  "minutesLabel": "Minuten",
+  "hoursLabel": "Stunden",
+  "cancelTimer": "Timer abbrechen",
+  "cancelTimerQuestion": "Möchten Sie den Sleep-Timer abbrechen?",
+  "timerInfo": "Timer aktiv für {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Zeit hinzufügen",
+  "clearQueueTitle": "Warteschlange löschen",
+  "clearQueueMessage": "Alle wartenden/ausstehenden Downloads löschen?",
+  "clearQueueDescription": "Dies bricht alle ausstehenden Downloads ab. Abgeschlossene Downloads bleiben erhalten.",
+  "downloadManagerSummary": "{active} aktiv • {queued} wartend",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Alle erneut versuchen",
+  "downloadManagerClearFailed": "Fehlgeschlagene löschen",
+  "downloadManagerClearCompleted": "Abgeschlossene löschen",
+  "clearCompletedDownloadsTitle": "Abgeschlossene Downloads löschen",
+  "clearCompletedDownloadsMessage": "Alle abgeschlossenen Downloads löschen?",
+  "clearCompletedDownloadsDescription": "Dies entfernt Dateien vom Speicher. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "itemCount": "{count, plural, =1{1 Element} other{{count} Elemente}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} abgeschlossen • {failed} fehlgeschlagen",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Geschätzte Gesamtzeit",
+  "downloadErrorResolveUrl": "Download-URL konnte nicht aufgelöst werden",
+  "downloadErrorFileValidation": "Validierung der heruntergeladenen Datei fehlgeschlagen",
+  "downloadErrorUnexpectedMessage": "Unerwartete Download-Antwort",
+  "clear": "Löschen",
+  "queueTools": "Warteschlangen-Tools",
+  "queueToolsDescription": "Warteschlange neu anordnen und Playlists erstellen",
+  "playlistCreated": "Playlist erfolgreich erstellt",
+  "queue": "Warteschlange",
+  "tracksSelected": "Titel ausgewählt",
+  "selectAll": "Alle auswählen",
+  "deselectAll": "Auswahl aufheben",
+  "updateDirectoryDescription": "Wählen Sie ein neues Verzeichnis für diese Playlist",
+  "select": "Auswählen",
+  "invalidDirectory": "Ungültiges Verzeichnis",
+  "renameLocalFolder": "Ordner umbenennen",
+  "removeLocalFolder": "Ordner entfernen",
+  "save": "Speichern",
+  "localPlaylist": "Lokale Playlist",
+  "versionManager": "Versionsmanager",
+  "retry": "Erneut versuchen",
+  "noReleasesFound": "Keine Releases gefunden",
+  "version": "Version",
+  "alreadyInstalled": "Bereits installiert",
+  "update": "Aktualisieren",
+  "changelog": "Changelog",
+  "changelogNotAvailable": "Changelog nicht verfügbar",
+  "later": "Später",
+  "updateAvailableDescription": "Eine neue Version von Musily ist verfügbar. Jetzt aktualisieren, um die neuesten Funktionen zu erhalten.",
+  "recommendations": "Empfehlungen"
+}

@@ -1,0 +1,349 @@
+{
+  "@@locale": "ja",
+  "home": "ホーム",
+  "search": "検索",
+  "library": "ライブラリ",
+  "favorites": "お気に入り",
+  "searchMusicAlbumOrArtist": "楽曲、アルバム、またはアーティストを検索",
+  "musics": "楽曲",
+  "albums": "アルバム",
+  "artists": "アーティスト",
+  "all": "すべて",
+  "playlists": "プレイリスト",
+  "download": "ダウンロード",
+  "addToPlaylist": "プレイリストに追加",
+  "addToQueue": "キューに追加",
+  "goToAlbum": "アルバムへ移動",
+  "goToArtist": "アーティストへ移動",
+  "share": "共有",
+  "play": "再生",
+  "shufflePlay": "シャッフル再生",
+  "addToLibrary": "ライブラリに追加",
+  "follow": "フォロー",
+  "following": "フォロー中",
+  "more": "もっと見る",
+  "topSongs": "トップソング",
+  "topAlbums": "トップアルバム",
+  "topSingles": "トップシングル",
+  "similarArtists": "類似アーティスト",
+  "removeFromLibrary": "ライブラリから削除",
+  "createPlaylist": "プレイリストを作成",
+  "playlistName": "プレイリスト名",
+  "cancel": "キャンセル",
+  "back": "戻る",
+  "create": "作成",
+  "playlist": "プレイリスト",
+  "songs": "曲",
+  "deletePlaylist": "プレイリストを削除",
+  "editPlaylist": "プレイリストを編集",
+  "confirm": "確認",
+  "doYouWantToDeleteThePlaylist": "このプレイリストを削除しますか？",
+  "delete": "削除",
+  "theActionCannotBeUndone": "この操作は元に戻せません。",
+  "playingNow": "再生中",
+  "emptyLibrary": "ライブラリは空です",
+  "emptyLibraryDescription": "ライブラリにアイテムを追加すると、ここに表示されます",
+  "albumNotFound": "アルバムが見つかりません",
+  "artistNotFound": "アーティストが見つかりません",
+  "cancelDownload": "ダウンロードをキャンセル",
+  "pause": "一時停止",
+  "album": "アルバム",
+  "singles": "シングル",
+  "noMoreSingles": "このアーティストの他のシングルはありません。",
+  "noMoreAlbums": "このアーティストの他のアルバムはありません。",
+  "songsNotFound": "曲が見つかりません。",
+  "playlistNotFound": "プレイリストが見つかりません。",
+  "requiredField": "この項目は必須です。",
+  "deleteDownload": "ダウンロードを削除",
+  "noPlaylists": "プレイリストがありません。",
+  "removeFromPlaylist": "プレイリストから削除",
+  "downloadManager": "ダウンロードマネージャー",
+  "downloads": "ダウンロード",
+  "offline": "オフライン",
+  "offlineMode": "オフラインモード",
+  "offlineModeDescription": "現在オフラインです。一部の機能が利用できない場合があります。",
+  "lyricsNotFound": "歌詞が見つかりません",
+  "lyricsNotSynced": "同期されていない歌詞",
+  "lyricsNotSyncedDescription": "これらの行は音楽の再生に合わせて動きません。",
+  "lyricsParsedSync": "この歌詞は自動同期されています",
+  "lyricsParsedSyncDescription": "自動生成されたため、多少ずれる可能性があります。",
+  "lyrics": "歌詞",
+  "settings": "設定",
+  "accounts": "アカウント",
+  "language": "言語",
+  "theme": "テーマ",
+  "dark": "ダーク",
+  "light": "ライト",
+  "system": "システム",
+  "licenses": "ライセンス",
+  "about": "概要",
+  "aboutSupporters": "概要・支援者",
+  "application": "アプリケーション",
+  "others": "その他",
+  "supportersTitle": "支援者",
+  "supportersEmpty": "まだ支援者が登録されていません。",
+  "close": "閉じる",
+  "copiedToClipboard": "クリップボードにコピーしました",
+  "noDownloads": "ダウンロードはありません",
+  "noResults": "結果がありません",
+  "tryDifferentKeywords": "別のキーワードで検索するか、入力内容を確認してください",
+  "downloadCompleted": "ダウンロード完了",
+  "selectALanguage": "言語を選択",
+  "account": "アカウント",
+  "login": "ログイン",
+  "email": "メールアドレス",
+  "password": "パスワード",
+  "pleaseEnterYourEmail": "メールアドレスを入力してください",
+  "pleaseEnterAValidEmail": "有効なメールアドレスを入力してください",
+  "pleaseEnterYourPassword": "パスワードを入力してください",
+  "passwordMustBeAtLeast8Characters": "パスワードは8文字以上必要です",
+  "createAccount": "アカウント作成",
+  "name": "名前",
+  "pleaseEnterYourName": "名前を入力してください",
+  "artist": "アーティスト",
+  "internalServerError": "サーバー内部エラー",
+  "invalidRequest": "無効なリクエスト",
+  "emailAlreadyInUse": "このメールアドレスは既に使用されています",
+  "invalidCredentials": "認証情報が無効です",
+  "loginRequired": "ログインが必要です",
+  "itemNotFound": "項目が見つかりません",
+  "invalidUserId": "無効なユーザーID",
+  "userNotFound": "ユーザーが見つかりません",
+  "comeCheckTEMPLATEOnMusily": "Musilyで「TEMPLATE」をチェックしよう！",
+  "backup": "バックアップ",
+  "restore": "復元",
+  "backupLibrary": "ライブラリをバックアップ",
+  "backupCompletedSuccessfully": "バックアップが正常に完了しました！",
+  "backupFailed": "バックアップに失敗しました",
+  "includeLibrary": "ライブラリを含める",
+  "includeDownloads": "ダウンロードを含める",
+  "startBackup": "バックアップ開始",
+  "doYouWantToRestoreThisBackup": "このバックアップを復元しますか？",
+  "backupInProgress": "バックアップ中",
+  "backupRestoredSuccessfully": "バックアップが正常に復元されました",
+  "backupFileDoesNotExist": "バックアップファイルが存在しません",
+  "musicSavedToDownloads": "ダウンロードに保存されました",
+  "saveToDownloads": "ダウンロードに保存",
+  "importingPlaylist": "プレイリストをインポートしています",
+  "playlistNameOrUrl": "プレイリスト名またはURL",
+  "hide": "非表示",
+  "whenClosingTheApplication": "アプリ終了時",
+  "showWindow": "ウィンドウを表示",
+  "closeWindow": "ウィンドウを閉じる",
+  "newUpdateAvailable": "新しいアップデートがあります",
+  "defaultColor": "デフォルトカラー",
+  "accentColor": "アクセントカラー",
+  "recommendedAlbums": "おすすめアルバム",
+  "recommendedMusic": "おすすめの曲",
+  "moreRecommendations": "さらにおすすめ",
+  "cancelOperation": "操作をキャンセルしますか？",
+  "cancelBackupConfirmation": "バックアップをキャンセルしますか？ 進行状況は失われます。",
+  "cancelRestoreConfirmation": "復元をキャンセルしますか？ 進行状況は失われます。",
+  "yes": "はい",
+  "no": "いいえ",
+  "initializingBackup": "バックアップを初期化しています...",
+  "creatingBackupArchive": "バックアップアーカイブを作成しています...",
+  "backingUpDownloadsMetadata": "ダウンロードメタデータをバックアップしています...",
+  "backingUpAudioFiles": "音声ファイルをバックアップしています...",
+  "backingUpLibraryData": "ライブラリデータをバックアップしています...",
+  "writingBackupFile": "バックアップファイルを書き込んでいます...",
+  "savingToStorage": "ストレージに保存しています...",
+  "backupCancelled": "バックアップがキャンセルされました",
+  "startingBackup": "バックアップを開始しています...",
+  "startingRestore": "復元を開始しています...",
+  "initializingRestore": "復元を初期化しています...",
+  "readingBackupFile": "バックアップファイルを読み込んでいます...",
+  "extractingLibraryData": "ライブラリデータを展開しています...",
+  "extractingDownloadsData": "ダウンロードデータを展開しています...",
+  "extractingAudioFiles": "音声ファイルを展開しています...",
+  "finalizingRestore": "復元を完了しています...",
+  "restoreCompletedSuccessfully": "復元が正常に完了しました！",
+  "restoreFailed": "復元に失敗しました",
+  "backupFileNotFound": "バックアップファイルが見つかりません",
+  "savedTo": "{filename} に保存しました",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "あなたのプレイリストに新しい個性を与えましょう。",
+  "playlistDetailsTitle": "詳細",
+  "playlistEmptyStateDescription": "お気に入りの曲を保存するには、プレイリストを作成してください。",
+  "playlistSelectTitle": "プレイリストを選択",
+  "playlistSelectDescription": "選択した曲をどこに追加するか選択してください。",
+  "playlistCreatorSubtitle": "名前を入力するか、プレイリストリンクを貼り付けてください",
+  "playlistCreatorPasteInfo": "YouTube プレイリストのURLを貼り付けると自動的にインポートされます。",
+  "artistNotFoundDescription": "お探しのアーティストは見つかりませんでした。",
+  "artistNoSinglesDescription": "このアーティストのシングルはありません。",
+  "artistNoAlbumsDescription": "このアーティストのアルバムはありません。",
+  "artistNoSongsDescription": "このアーティストの曲はありません。",
+  "lyricsNotAvailable": "この曲の歌詞は利用できません。",
+  "queueEmptyTitle": "キューは空です",
+  "queueEmptyMessage": "曲をキューに追加して音楽を楽しみましょう。",
+  "noItemsFound": "項目が見つかりません",
+  "downloadsEmptyMessage": "ダウンロードした曲はここに表示されます。",
+  "downloadingSectionTitle": "ダウンロード中",
+  "queuedSectionTitle": "キューに追加済み",
+  "completedSectionTitle": "完了",
+  "failedSectionTitle": "失敗",
+  "searchSuggestions": "候補",
+  "searchStartTyping": "検索するには入力を開始してください",
+  "smartSuggestionsTitle": "スマート提案",
+  "smartSuggestionsDescription": "類似曲を自動で追加",
+  "libraryManagementSectionTitle": "ライブラリ管理",
+  "localLibraryTitle": "ローカルライブラリ",
+  "localLibraryDescription": "デバイスのフォルダーを管理し、ローカルオーディオファイルを再生できます。",
+  "localFilesLabel": "ローカルファイル",
+  "@localFilesLabel": {
+    "description": "アーティスト情報がないローカルトラックに使用されるラベル"
+  },
+  "manageLocalFolders": "ローカルフォルダーを管理",
+  "manageLocalFoldersDescription": "Musilyライブラリと同期するフォルダーを追加、名前変更、削除できます。",
+  "addLocalFolder": "ローカルフォルダーを追加",
+  "emptyLocalLibrary": "ローカルフォルダーがありません",
+  "emptyLocalLibraryDescription": "デバイスのフォルダーを追加すると、Musily内でローカル曲にアクセスできます。",
+  "chooseDirectory": "ディレクトリを選択",
+  "invalidDirectory": "ディレクトリが見つかりません",
+  "invalidDirectoryDescription": "このフォルダーにアクセスできませんでした。パスを更新するか、エントリを削除してください。",
+  "removeLocalFolderConfirmation": "ローカルライブラリから「{name}」を削除しますか？",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "曲が見つかりません",
+  "emptyLocalPlaylistDescription": "フォルダーが存在し、対応する音声ファイルが含まれていることを確認してください。",
+  "changeDirectory": "ディレクトリを変更",
+  "updateDirectory": "ディレクトリを更新",
+  "localFolderPreviewOverflow": "他 {count} 件のフォルダー",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "開く",
+  "rename": "名前変更",
+  "remove": "削除",
+  "refresh": "更新",
+  "backupLibraryDescription": "ライブラリのバックアップを作成します",
+  "restoreLibraryDescription": "バックアップからライブラリを復元します",
+  "includeLibraryDescription": "保存したアルバム、アーティスト、プレイリストをバックアップに含めます",
+  "includeDownloadsDescription": "ダウンロードした曲をバックアップに含めます",
+  "fullScreenPlayerTooltip": "フルスクリーンプレーヤー",
+  "sleepTimer": "スリープタイマー",
+  "sleepTimerDescription": "設定した時間後に音楽を一時停止します",
+  "sleepTimerActive": "スリープタイマー：{time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} 分",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} 時間",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 時間",
+  "customTime": "カスタム",
+  "enterTime": "時間を入力",
+  "minutesLabel": "分",
+  "hoursLabel": "時間",
+  "cancelTimer": "タイマーをキャンセル",
+  "cancelTimerQuestion": "スリープタイマーをキャンセルしますか？",
+  "timerInfo": "{time} のタイマーが有効です",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "時間を追加",
+  "clearQueueTitle": "キューをクリア",
+  "clearQueueMessage": "すべてのキュー/保留中のダウンロードをクリアしますか？",
+  "clearQueueDescription": "保留中のダウンロードはキャンセルされます。完了済みのダウンロードは影響を受けません。",
+  "downloadManagerSummary": "{active} 件進行中 • {queued} 件待機中",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "すべて再試行",
+  "downloadManagerClearFailed": "失敗をクリア",
+  "downloadManagerClearCompleted": "完了をクリア",
+  "clearCompletedDownloadsTitle": "完了したダウンロードをクリア",
+  "clearCompletedDownloadsMessage": "完了した全ダウンロードを削除しますか？",
+  "clearCompletedDownloadsDescription": "これにより、保存されたファイルが削除されます。この操作は元に戻せません。",
+  "itemCount": "{count, plural, =1{1 件} other{{count} 件}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} 件完了 • {failed} 件失敗",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "推定合計時間",
+  "downloadErrorResolveUrl": "ダウンロードURLを解決できません",
+  "downloadErrorFileValidation": "ダウンロードしたファイルの検証に失敗しました",
+  "downloadErrorUnexpectedMessage": "予期しないダウンロード応答",
+  "clear": "クリア",
+  "queueTools": "キューツール",
+  "queueToolsDescription": "キューを並べ替えたり、プレイリストを作成したりできます",
+  "playlistCreated": "プレイリストを作成しました",
+  "queue": "キュー",
+  "tracksSelected": "件の曲を選択",
+  "selectAll": "すべて選択",
+  "deselectAll": "選択を解除",
+  "updateDirectoryDescription": "このプレイリストの新しいフォルダーを選択",
+  "select": "選択",
+  "renameLocalFolder": "フォルダー名の変更",
+  "removeLocalFolder": "フォルダーを削除",
+  "save": "保存",
+  "localPlaylist": "ローカルプレイリスト",
+  "versionManager": "バージョンマネージャー",
+  "retry": "再試行",
+  "noReleasesFound": "リリースが見つかりません",
+  "version": "バージョン",
+  "alreadyInstalled": "インストール済み",
+  "update": "更新",
+  "changelog": "変更履歴",
+  "changelogNotAvailable": "変更履歴は利用できません",
+  "later": "後で",
+  "updateAvailableDescription": "Musily の新しいバージョンが利用可能です。最新の機能と改善を手に入れましょう。",
+  "recommendations": "おすすめ"
+}
