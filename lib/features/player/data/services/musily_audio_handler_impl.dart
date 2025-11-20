@@ -8,13 +8,13 @@ import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
+import 'package:musily/features/player/data/services/player_persistence_service.dart';
 import 'package:musily/features/player/domain/entities/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:smtc_windows/smtc_windows.dart';
 
 class MusilyAudioHandlerImpl extends BaseAudioHandler
     implements MusilyAudioHandler {
@@ -27,15 +27,17 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     }
 
     loadPlaceholderAudioPath();
+    unawaited(_restorePersistedState());
   }
 
   final _audioPlayer = AudioPlayer();
-  SMTCWindows? _smtc;
+  final _persistenceService = PlayerPersistenceService();
 
   List<TrackEntity> _queue = [];
   List<TrackEntity> _shuffledQueue = [];
   TrackEntity? _activeTrack;
   bool _shuffleEnabled = false;
+  bool hasStopped = false;
   MusilyRepeatMode _repeatMode = MusilyRepeatMode.noRepeat;
   MusilyPlayerState _playerState = MusilyPlayerState.disposed;
   bool _loadingTrackUrl = false;
@@ -83,61 +85,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Stream<double> get volumeStream => _audioPlayer.volumeStream;
 
   void _setupEventSubscriptions() {
-    if (Platform.isWindows) {
-      _smtc = SMTCWindows(
-        metadata: const MusicMetadata(
-          album: '',
-          albumArtist: '',
-          artist: '',
-          thumbnail: '',
-          title: '',
-        ),
-        repeatMode: _repeatMode.toSMTC(),
-        shuffleEnabled: _shuffleEnabled,
-        status: _playerState.toPlaybackStatus(),
-        timeline: const PlaybackTimeline(
-          startTimeMs: 0,
-          endTimeMs: 0,
-          positionMs: 0,
-        ),
-        config: const SMTCConfig(
-          playEnabled: true,
-          pauseEnabled: true,
-          stopEnabled: false,
-          nextEnabled: true,
-          prevEnabled: true,
-          fastForwardEnabled: false,
-          rewindEnabled: false,
-        ),
-        enabled: false,
-      );
-      _smtc!.buttonPressStream.listen(
-        (event) async {
-          switch (event) {
-            case PressedButton.play:
-              if (_loadingTrackUrl) {
-                return;
-              }
-              await play();
-              break;
-            case PressedButton.next:
-              await skipToNext();
-              break;
-            case PressedButton.previous:
-              await skipToPrevious();
-              break;
-            case PressedButton.pause:
-              if (_loadingTrackUrl) {
-                return;
-              }
-              await pause();
-              break;
-            default:
-              break;
-          }
-        },
-      );
-    }
     _playbackEventSubscription = _audioPlayer.playbackEventStream.listen(
       (playbackEvent) async {
         await _handlePlaybackEvent(playbackEvent);
@@ -185,6 +132,58 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     );
   }
 
+  Future<void> _restorePersistedState() async {
+    final persisted = await _persistenceService.loadState();
+    if (persisted == null) {
+      return;
+    }
+
+    _repeatMode = persisted.repeatMode;
+    _shuffleEnabled = persisted.shuffleEnabled;
+    _queue = List<TrackEntity>.from(persisted.queue);
+    _shuffledQueue = persisted.shuffledQueue.isNotEmpty
+        ? List<TrackEntity>.from(persisted.shuffledQueue)
+        : List<TrackEntity>.from(persisted.queue);
+
+    _activeTrack = _resolveActiveTrack(
+      persisted.currentTrack,
+      persisted.currentTrackId,
+      persisted.currentTrackHash,
+    );
+
+    _onRepeatModeChanged?.call(_repeatMode);
+    _onShuffleChanged?.call(_shuffleEnabled);
+    _onAction?.call(MusilyPlayerAction.queueChanged);
+    if (_activeTrack != null) {
+      _onActiveTrackChanged?.call(_activeTrack);
+    }
+  }
+
+  TrackEntity? _resolveActiveTrack(
+    TrackEntity? fallback,
+    String? id,
+    String? hash,
+  ) {
+    for (final track in _queue) {
+      final matchesId = id != null && id.isNotEmpty && track.id == id;
+      final matchesHash = hash != null && hash.isNotEmpty && track.hash == hash;
+      if (matchesId || matchesHash) {
+        return track;
+      }
+    }
+    return fallback;
+  }
+
+  Future<void> _persistPlayerState() {
+    return _persistenceService.saveState(
+      queue: List<TrackEntity>.from(_queue),
+      shuffledQueue: List<TrackEntity>.from(_shuffledQueue),
+      shuffleEnabled: _shuffleEnabled,
+      repeatMode: _repeatMode,
+      currentTrack: _activeTrack,
+    );
+  }
+
   void _handleCurrentSongIndexChanged(int? index) {
     try {
       if (index != null && queue.value.isNotEmpty) {
@@ -218,143 +217,91 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> _handlePlaybackEvent(PlaybackEvent event) async {
-    try {
-      _shuffleEnabled = _audioPlayer.shuffleModeEnabled;
-      if (event.processingState == ProcessingState.completed) {
-        switch (_repeatMode) {
-          case MusilyRepeatMode.noRepeat:
-            if (hasNext) {
-              if (_activeTrack == _queue.last) {
-                await seek(Duration.zero);
-                return;
+    const maxRetries = 3;
+    int attempt = 0;
+
+    while (attempt < maxRetries) {
+      try {
+        _shuffleEnabled = _audioPlayer.shuffleModeEnabled;
+        if (event.processingState == ProcessingState.completed) {
+          switch (_repeatMode) {
+            case MusilyRepeatMode.noRepeat:
+              if (hasNext) {
+                if (_activeTrack == _queue.last) {
+                  await seek(Duration.zero);
+                  return;
+                }
+                await skipToNext();
+              } else if (_activeTrack != null) {
+                final trackId = _queue.first.id;
+                await skipToTrack(trackId);
+                if (_audioPlayer.playing) {
+                  await pause();
+                }
+                if (_audioPlayer.duration != Duration.zero) {
+                  await seek(Duration.zero);
+                }
               }
+              break;
+            case MusilyRepeatMode.repeatOne:
+              if (_activeTrack != null) {
+                await playTrack(_activeTrack!);
+              }
+              if (!_audioPlayer.playing) {
+                await play();
+              }
+              break;
+            case MusilyRepeatMode.repeat:
               await skipToNext();
-            } else if (_activeTrack != null) {
-              await skipToTrack(0);
-              if (_audioPlayer.playing) {
-                await pause();
-              }
-              if (_audioPlayer.duration != Duration.zero) {
-                await seek(Duration.zero);
-              }
-            }
-            break;
-          case MusilyRepeatMode.repeatOne:
-            if (_activeTrack != null) {
-              await playTrack(_activeTrack!);
-            }
-            if (!_audioPlayer.playing) {
-              await play();
-            }
-            break;
-          case MusilyRepeatMode.repeat:
-            await skipToNext();
-            break;
+              break;
+          }
         }
+        _updatePlaybackState();
+        return;
+      } catch (e, stackTrace) {
+        attempt++;
+        if (attempt >= maxRetries) {
+          log(
+            '[Error handling playback event] - Failed after $maxRetries attempts',
+            error: e,
+            stackTrace: stackTrace,
+          );
+          return;
+        }
+        log(
+          '[Error handling playback event] - Attempt $attempt/$maxRetries failed, retrying...',
+          error: e,
+          stackTrace: stackTrace,
+        );
+        await Future.delayed(Duration(milliseconds: 100 * attempt));
       }
-      _updatePlaybackState();
-    } catch (e, stackTrace) {
-      log('[Error handling playback event]', error: e, stackTrace: stackTrace);
     }
   }
 
   void _updatePlaybackState() {
-    if (Platform.isWindows && _activeTrack != null) {
-      if (_smtc!.metadata.title != _activeTrack!.title) {
-        _smtc!.setTitle(_activeTrack!.title);
-      }
-
-      if (_loadingTrackUrl) {
-        _smtc!.setIsPauseEnabled(false);
-      }
-      if (_loadingTrackUrl) {
-        _smtc!.setIsPlayEnabled(false);
-      }
-      if (!_loadingTrackUrl) {
-        _smtc!.setIsPauseEnabled(true);
-      }
-      if (!_loadingTrackUrl) {
-        _smtc!.setIsPlayEnabled(true);
-      }
-
-      if (_smtc!.metadata.album != _activeTrack!.album.title) {
-        _smtc!.setAlbum(_activeTrack!.album.title);
-      }
-
-      if (_smtc!.metadata.artist != _activeTrack!.artist.name) {
-        _smtc!.setArtist(_activeTrack!.artist.name);
-      }
-
-      if (_smtc!.metadata.thumbnail != _activeTrack!.highResImg!) {
-        _smtc!.setThumbnail(_activeTrack!.highResImg!);
-      }
-
-      if (_smtc!.metadata.albumArtist != _activeTrack!.artist.name) {
-        _smtc!.setAlbumArtist(_activeTrack!.artist.name);
-      }
-
-      if (_smtc!.timeline.endTimeMs != _activeTrack!.duration.inMilliseconds) {
-        _smtc!.setEndTime(_activeTrack!.duration);
-      }
-
-      if (_smtc!.timeline.startTimeMs != 0) {
-        _smtc!.setStartTime(const Duration(seconds: 0));
-      }
-
-      if (_smtc!.timeline.positionMs != _activeTrack!.position.inMilliseconds) {
-        _smtc!.setPosition(_activeTrack!.position);
-      }
-
-      if (_smtc!.repeatMode != _repeatMode.toSMTC()) {
-        _smtc!.setRepeatMode(_repeatMode.toSMTC());
-      }
-
-      if (_smtc!.isShuffleEnabled != _shuffleEnabled) {
-        _smtc!.setShuffleEnabled(_shuffleEnabled);
-      }
-
-      _smtc!.setIsNextEnabled(
-        hasNext || _shuffleEnabled || _repeatMode == MusilyRepeatMode.repeat,
-      );
-
-      _smtc!.setIsPrevEnabled(
-        hasPrevious ||
-            _shuffleEnabled ||
-            _repeatMode == MusilyRepeatMode.repeat,
-      );
-
-      if (_smtc!.status != _playerState.toPlaybackStatus()) {
-        _smtc!.setPlaybackStatus(_playerState.toPlaybackStatus());
-      }
-
-      _smtc!.enableSmtc();
-    } else if (Platform.isWindows && _activeTrack == null) {
-      _smtc!.disableSmtc();
-    } else {
-      playbackState.add(
-        playbackState.value.copyWith(
-          controls: [
-            MediaControl.skipToPrevious,
-            if (_audioPlayer.playing) MediaControl.pause else MediaControl.play,
-            MediaControl.skipToNext
-          ],
-          systemActions: const {
-            MediaAction.seek,
-          },
-          androidCompactActionIndices: const [0, 1, 2],
-          processingState: _processingStateMap[_audioPlayer.processingState]!,
-          repeatMode: _repeatModeMap[_audioPlayer.loopMode]!,
-          shuffleMode: _shuffleEnabled
-              ? AudioServiceShuffleMode.all
-              : AudioServiceShuffleMode.none,
-          playing: _audioPlayer.playing,
-          updatePosition: _audioPlayer.position,
-          bufferedPosition: _audioPlayer.bufferedPosition,
-          speed: _audioPlayer.speed,
-          queueIndex: _audioPlayer.currentIndex ?? 0,
-        ),
-      );
-    }
+    playbackState.add(
+      playbackState.value.copyWith(
+        controls: [
+          MediaControl.skipToPrevious,
+          if (_audioPlayer.playing) MediaControl.pause else MediaControl.play,
+          MediaControl.skipToNext
+        ],
+        systemActions: const {
+          MediaAction.seek,
+        },
+        androidCompactActionIndices: const [0, 1, 2],
+        processingState: _processingStateMap[_audioPlayer.processingState]!,
+        repeatMode: _repeatModeMap[_audioPlayer.loopMode]!,
+        shuffleMode: _shuffleEnabled
+            ? AudioServiceShuffleMode.all
+            : AudioServiceShuffleMode.none,
+        playing: _audioPlayer.playing,
+        updatePosition: _audioPlayer.position,
+        bufferedPosition: _audioPlayer.bufferedPosition,
+        speed: _audioPlayer.speed,
+        queueIndex: _audioPlayer.currentIndex ?? 0,
+      ),
+    );
   }
 
   void _handleDurationChange(Duration? duration) {
@@ -392,6 +339,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
               _onAction?.call(MusilyPlayerAction.pause);
               break;
             case AudioInterruptionType.unknown:
+              await _audioPlayer.pause();
+              _onAction?.call(MusilyPlayerAction.pause);
               break;
           }
         } else {
@@ -402,6 +351,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
             case AudioInterruptionType.pause:
               break;
             case AudioInterruptionType.unknown:
+              await playTrack(_activeTrack!);
+              _onAction?.call(MusilyPlayerAction.play);
               break;
           }
         }
@@ -420,6 +371,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     _queue.add(track);
     _shuffledQueue.add(track);
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -461,13 +413,17 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     if (_loadingTrackUrl) {
       return;
     }
+    if (hasStopped) {
+      await playTrack(_activeTrack!);
+      return;
+    }
     await _audioPlayer.play();
     _onAction?.call(MusilyPlayerAction.play);
   }
 
   @override
   Future<void> playPlaylist() async {
-    if (_queue.isEmpty) {
+    if (_queue.isNotEmpty) {
       await playTrack(_queue.first);
     }
   }
@@ -487,78 +443,134 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
         url = '';
       }
 
-      late List<TrackEntity> queue;
-      if (_shuffleEnabled) {
-        queue = _shuffledQueue;
-      } else {
-        queue = _queue;
-      }
-      _activeTrack = track;
-      _activeTrack!.position = Duration.zero;
-      _activeTrack!.duration = Duration.zero;
+      List<TrackEntity> queue = getQueue();
+      final originalTrack = track;
+
       if (!isPlaceholder) {
-        _loadingTrackUrl = true;
-        await playTrack(
-          track.copyWith(
+        _activeTrack = track;
+        _activeTrack!.position = Duration.zero;
+        _activeTrack!.duration = Duration.zero;
+
+        final existingUrl = _activeTrack?.url;
+
+        if (existingUrl != null && existingUrl.isNotEmpty) {
+          track.url = existingUrl;
+          url = existingUrl;
+        }
+
+        if (url.isEmpty) {
+          _loadingTrackUrl = true;
+
+          final placeholderTrack = track.copyWith(
             url: placeholderAudioPath,
-          ),
-          isPlaceholder: true,
-        );
+          );
+
+          await _playPlaceholderForRepeatOne(placeholderTrack);
+
+          if (track.id != _activeTrack?.id) return;
+
+          _activeTrack = originalTrack;
+        }
+      } else {
+        if (url.isNotEmpty) {
+          final audioSource = await buildAudioSource(track, url);
+
+          if (track.id != _activeTrack?.id) return;
+
+          final q = ConcatenatingAudioSource(children: [audioSource]);
+          await _audioPlayer.setAudioSource(q, preload: false);
+
+          if (track.id != _activeTrack?.id) return;
+
+          await _audioPlayer.play();
+        }
+        return;
       }
+
       _onActiveTrackChanged?.call(track);
-      if (queue.where((element) => element.id == track.id).isEmpty) {
+
+      if (queue.where((e) => e.id == track.id).isEmpty) {
         queue = [track];
         _queue = [track];
         _shuffledQueue = [track];
         _onAction?.call(MusilyPlayerAction.queueChanged);
       }
+
       if (url.isEmpty) {
         if (_audioPlayer.playing) {
           await _audioPlayer.stop();
         }
-        if (track.id != _activeTrack!.id) {
-          return;
-        }
+
+        if (track.id != _activeTrack?.id) return;
+
         if (_uriGetter != null) {
           final uri = await _uriGetter!.call(track);
+
+          if (track.id != _activeTrack?.id) return;
+
           if (_audioPlayer.playing) {
-            if (track.id != _activeTrack!.id) {
-              return;
-            }
             await _audioPlayer.stop();
           }
+
+          if (track.id != _activeTrack?.id) return;
+
           url = uri.toString();
-          track.url = uri.toString();
-          if (track.id == _activeTrack!.id) {
-            _onActiveTrackChanged?.call(track);
+          track.url = url;
+
+          if (track.id == _activeTrack?.id) {
+            _activeTrack!.url = url;
           }
-          if (url.isEmpty) {
-            return;
-          }
+
+          _onActiveTrackChanged?.call(_activeTrack);
+
+          if (url.isEmpty) return;
         }
       }
 
       if (!isPlaceholder) {
         _loadingTrackUrl = false;
       }
-      if (track.id != _activeTrack!.id) {
-        return;
-      }
+
+      if (track.id != _activeTrack?.id) return;
+
       final audioSource = await buildAudioSource(track, url);
-      final audioPlayerQueue = ConcatenatingAudioSource(
-        children: [audioSource],
-      );
-      if (track.id != _activeTrack!.id) {
-        return;
-      }
+      final audioPlayerQueue =
+          ConcatenatingAudioSource(children: [audioSource]);
+
+      if (track.id != _activeTrack?.id) return;
+
       await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
-      if (track.id != _activeTrack!.id) {
-        return;
-      }
+
+      if (track.id != _activeTrack?.id) return;
+
       await _audioPlayer.play();
+
+      hasStopped = false;
+      unawaited(_persistPlayerState());
     } catch (e, stackTrace) {
       log(
         '[Error playing song]',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  Future<void> _playPlaceholderForRepeatOne(
+    TrackEntity placeholderTrack,
+  ) async {
+    try {
+      final url = placeholderTrack.url!;
+      final audioSource = await buildAudioSource(placeholderTrack, url);
+      final audioPlayerQueue = ConcatenatingAudioSource(
+        children: [audioSource],
+      );
+
+      await _audioPlayer.setAudioSource(audioPlayerQueue, preload: false);
+      await _audioPlayer.play();
+    } catch (e, stackTrace) {
+      log(
+        '[Error playing placeholder for repeat one]',
         error: e,
         stackTrace: stackTrace,
       );
@@ -597,6 +609,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       (element) => element.id == track.id || element.hash == track.hash,
     );
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -692,6 +705,14 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       _shuffledQueue = queueClone..shuffle();
     }
     _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
+  }
+
+  @override
+  Future<void> setShuffledQueue(List<TrackEntity> items) async {
+    _shuffledQueue = items;
+    _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -718,52 +739,66 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> skipToNext() async {
-    late final List<TrackEntity> queue;
-    if (_shuffleEnabled) {
-      queue = _shuffledQueue;
-    } else {
-      queue = _queue;
-    }
+    late final List<TrackEntity> queue = getQueue();
     if (queue[activeTrackIndex()] == queue.last) {
-      await skipToTrack(0);
+      final trackId = queue.first.id;
+      await skipToTrack(trackId);
       return;
     }
-    await skipToTrack(activeTrackIndex() + 1);
+    final trackId = queue[activeTrackIndex() + 1].id;
+    await skipToTrack(trackId);
+  }
+
+  @override
+  Future<void> reorderQueue(int newIndex, int oldIndex) async {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final queueCopy = List.from(getQueue());
+    final newQueue = queueCopy..insert(newIndex, queueCopy.removeAt(oldIndex));
+    if (_shuffleEnabled) {
+      _shuffledQueue = List.from(newQueue);
+    } else {
+      _queue = List.from(newQueue);
+    }
+    _onAction?.call(MusilyPlayerAction.queueChanged);
+    unawaited(_persistPlayerState());
   }
 
   @override
   Future<void> skipToPrevious() async {
+    final queue = getQueue();
     if (_audioPlayer.position.inSeconds > 5) {
       await seek(Duration.zero);
       return;
     }
-    if (_queue[activeTrackIndex()] == _queue.first) {
-      await skipToTrack(_queue.length - 1);
+    if (queue[activeTrackIndex()] == queue.first) {
+      final trackId = queue.last.id;
+      await skipToTrack(trackId);
       return;
     }
-    await skipToTrack(activeTrackIndex() - 1);
+    final trackId = queue[activeTrackIndex() - 1].id;
+    await skipToTrack(trackId);
   }
 
   @override
-  Future<void> skipToTrack(int newIndex) async {
-    late final List<TrackEntity> queue;
-    if (_shuffleEnabled) {
-      queue = _shuffledQueue;
-    } else {
-      queue = _queue;
-    }
-    if (newIndex >= 0 && newIndex < queue.length) {
-      final newTrack = queue[newIndex];
+  Future<void> skipToTrack(String trackId) async {
+    late final List<TrackEntity> queue = getQueue();
+    if (queue.any((element) => element.id == trackId)) {
+      final newTrack = queue.firstWhere((element) => element.id == trackId);
       await playTrack(newTrack);
     }
   }
 
   @override
   Future<void> stop() async {
-    _activeTrack = null;
-    _onActiveTrackChanged?.call(null);
+    if (hasStopped) {
+      return;
+    }
     await _audioPlayer.stop();
     _onAction?.call(MusilyPlayerAction.stop);
+    hasStopped = true;
+    unawaited(_persistPlayerState());
   }
 
   bool get hasNext => activeTrackIndex() + 1 < _queue.length;
@@ -774,13 +809,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   Future<void> toggleRepeatMode(MusilyRepeatMode repeatMode) async {
     _repeatMode = repeatMode;
     _onRepeatModeChanged?.call(repeatMode);
-    if (Platform.isWindows) {
-      _smtc!.setIsNextEnabled(
-          _shuffleEnabled || hasNext || repeatMode == MusilyRepeatMode.repeat);
-      _smtc!.setIsPrevEnabled(_shuffleEnabled ||
-          hasPrevious ||
-          repeatMode == MusilyRepeatMode.repeat);
-    }
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -788,6 +817,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     await setShuffleMode(
       enabled ? AudioServiceShuffleMode.all : AudioServiceShuffleMode.none,
     );
+    unawaited(_persistPlayerState());
   }
 
   @override
@@ -798,13 +828,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     final List<TrackEntity> queue = List.from(_queue);
     _shuffledQueue = queue..shuffle();
     _onShuffleChanged?.call(shuffleEnabled);
-    if (Platform.isWindows) {
-      _smtc!.setIsNextEnabled(
-          shuffleEnabled || hasNext || _repeatMode == MusilyRepeatMode.repeat);
-      _smtc!.setIsPrevEnabled(shuffleEnabled ||
-          hasPrevious ||
-          _repeatMode == MusilyRepeatMode.repeat);
-    }
     _onAction?.call(MusilyPlayerAction.queueChanged);
   }
 
@@ -817,10 +840,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     await _currentIndexSubscription.cancel();
     await _sequenceStateSubscription.cancel();
     await _positionChangeSubscription.cancel();
-    if (Platform.isWindows) {
-      _smtc!.disableSmtc();
-      _smtc!.dispose();
-    }
     await super.onTaskRemoved();
   }
 }

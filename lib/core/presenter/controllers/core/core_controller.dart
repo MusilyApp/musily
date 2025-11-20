@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:musily/core/data/services/library_backup_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
@@ -47,6 +50,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   final GetPlaylistUsecase getPlaylistUsecase;
 
   late final BackupService backupService;
+  StreamSubscription<InternetStatus>? _connectionSubscription;
+  final InternetConnection _connectionChecker = InternetConnection();
 
   CoreController({
     required this.playerController,
@@ -65,6 +70,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       downloaderController: downloaderController,
       libraryController: libraryController,
     );
+    _initConnectionListener();
     ReceiveSharingIntent.instance.getMediaStream().listen((data) {
       updateData(
         this.data.copyWith(
@@ -94,7 +100,26 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       backupFileDir: '',
       isMaximized: false,
       windowTitle: 'Musily',
+      offlineMode: false,
     );
+  }
+
+  void _initConnectionListener() {
+    _connectionChecker.hasInternetAccess.then((hasConnection) {
+      updateData(data.copyWith(offlineMode: !hasConnection));
+    });
+
+    _connectionSubscription =
+        _connectionChecker.onStatusChange.listen((status) {
+      final isOffline = status == InternetStatus.disconnected;
+      updateData(data.copyWith(offlineMode: isOffline));
+    });
+  }
+
+  @override
+  void dispose() {
+    _connectionSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -122,15 +147,10 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
 
           await backupService.saveTrackToDownloads(track);
 
-          ScaffoldMessenger.of(coreContext!).showSnackBar(
-            SnackBar(
-              content: Text(
-                coreContext!.localization.musicSavedToDownloads,
-              ),
-            ),
-          );
+          LySnackbar.showSuccess(
+              coreContext!.localization.musicSavedToDownloads);
         } catch (e) {
-          LySnackbar.show(':P');
+          LySnackbar.showError(':P');
         }
       },
       restoreLibraryBackup: () async {
@@ -155,12 +175,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
                 updateData(data.copyWith(
                   backupInProgress: false,
                 ));
-                ScaffoldMessenger.of(coreContext!).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      coreContext!.localization.backupRestoredSuccessfully,
-                    ),
-                  ),
+                LySnackbar.showSuccess(
+                  coreContext!.localization.backupRestoredSuccessfully,
                 );
               },
               child: Text(context.localization.restore),
@@ -174,6 +190,19 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
         List<Permission> permissions = [
           Permission.storage,
         ];
+
+        // On Android 11+ (API 30+), request MANAGE_EXTERNAL_STORAGE for full directory access
+        if (Platform.isAndroid) {
+          try {
+            final androidInfo = await DeviceInfoPlugin().androidInfo;
+            if (androidInfo.version.sdkInt >= 30) {
+              // Request manage external storage permission for Android 11+
+              permissions.add(Permission.manageExternalStorage);
+            }
+          } catch (e) {
+            // If we can't determine SDK version, just request storage
+          }
+        }
 
         await permissions.request();
         MediaStore.appFolder = 'Musily';
@@ -264,6 +293,7 @@ https://musily.app/album/${album.id}
                       getArtistAlbumsUsecase: getArtistAlbumsUsecase,
                       getArtistTracksUsecase: getArtistTracksUsecase,
                       getArtistSinglesUsecase: getArtistSinglesUsecase,
+                      getTrackUsecase: getTrackUsecase,
                     ),
                   );
                 }
@@ -288,6 +318,7 @@ https://musily.app/album/${album.id}
                     context,
                     AsyncAlbumPage(
                       albumId: id,
+                      getTrackUsecase: getTrackUsecase,
                       coreController: this,
                       playerController: playerController,
                       downloaderController: downloaderController,
@@ -308,6 +339,7 @@ https://musily.app/album/${album.id}
                   LyNavigator.push(
                     context,
                     AsyncPlaylistPage(
+                      getTrackUsecase: getTrackUsecase,
                       playlistId: id,
                       coreController: this,
                       playerController: playerController,
@@ -325,14 +357,6 @@ https://musily.app/album/${album.id}
                           : ContentOrigin.dataFetch,
                     ),
                   );
-                }
-                break;
-              case 'song':
-                if (id != null) {
-                  final song = await getTrackUsecase.exec(id);
-                  if (song != null) {
-                    playerController.methods.addToQueue([song]);
-                  }
                 }
                 break;
               default:

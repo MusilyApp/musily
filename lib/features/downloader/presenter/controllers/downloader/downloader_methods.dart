@@ -10,6 +10,7 @@ class DownloaderMethods {
     TrackEntity track, {
     int position,
   }) addDownload;
+  final Future<void> Function(List<TrackEntity> tracks)? addDownloadBatch;
   final void Function(String key) setDownloadingKey;
   final Future<DownloadTask?> Function(
     String path,
@@ -37,6 +38,9 @@ class DownloaderMethods {
   final Future<void> Function(
     List<TrackEntity> tracks,
   ) cancelDownloadCollection;
+  final Future<void> Function() clearAllDownloads;
+  final Future<void> Function() clearQueuedDownloads;
+  final Future<void> Function() clearCompletedDownloads;
 
   final Future<void> Function() loadStoredQueue;
   final Future<void> Function() updateStoredQueue;
@@ -49,8 +53,16 @@ class DownloaderMethods {
     String downloadDir,
   ) registerListeners;
 
+  // Enhanced ParallelDownloader methods
+  final Future<void> Function(TrackEntity track)? retryDownload;
+  final Future<void> Function(TrackEntity track)? pauseDownload;
+  final Future<void> Function(TrackEntity track)? resumeDownload;
+  final Future<void> Function()? retryAllFailed;
+  final Future<Map<String, dynamic>> Function()? getDownloadStats;
+
   DownloaderMethods({
     required this.addDownload,
+    this.addDownloadBatch,
     required this.setDownloadingKey,
     required this.downloadFile,
     required this.saveMd5,
@@ -65,5 +77,13 @@ class DownloaderMethods {
     required this.getItem,
     required this.cancelDownload,
     required this.cancelDownloadCollection,
+    required this.clearAllDownloads,
+    required this.clearQueuedDownloads,
+    required this.clearCompletedDownloads,
+    this.retryDownload,
+    this.pauseDownload,
+    this.resumeDownload,
+    this.retryAllFailed,
+    this.getDownloadStats,
   });
 }

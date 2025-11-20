@@ -11,9 +11,7 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 class LibraryRepositoryImpl implements LibraryRepository {
   late final LibraryDatasource _libraryDatasource;
 
-  LibraryRepositoryImpl({
-    required LibraryDatasource libraryDatasource,
-  }) {
+  LibraryRepositoryImpl({required LibraryDatasource libraryDatasource}) {
     _libraryDatasource = libraryDatasource;
   }
 
@@ -30,7 +28,9 @@ class LibraryRepositoryImpl implements LibraryRepository {
 
   @override
   Future<void> addTracksToPlaylist(
-      String playlistId, List<TrackEntity> tracks) {
+    String playlistId,
+    List<TrackEntity> tracks,
+  ) {
     return _libraryDatasource.addTracksToPlaylist(playlistId, tracks);
   }
 
@@ -66,8 +66,23 @@ class LibraryRepositoryImpl implements LibraryRepository {
 
   @override
   Future<void> removeTracksFromPlaylist(
-      String playlistId, List<String> trackIds) {
+    String playlistId,
+    List<String> trackIds,
+  ) {
     return _libraryDatasource.removeTracksFromPlaylist(playlistId, trackIds);
+  }
+
+  @override
+  Future<void> updateTrackInPlaylist(
+    String playlistId,
+    String trackId,
+    TrackEntity updatedTrack,
+  ) {
+    return _libraryDatasource.updateTrackInPlaylist(
+      playlistId,
+      trackId,
+      updatedTrack,
+    );
   }
 
   @override

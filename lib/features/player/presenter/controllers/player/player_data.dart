@@ -2,6 +2,7 @@ import 'package:dart_ytmusic_api/types.dart';
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
+import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 
 class Lyrics {
@@ -28,7 +29,7 @@ class PlayerData implements BaseControllerData {
   MusilyRepeatMode repeatMode;
   bool isBuffering;
 
-  bool showLyrics;
+  PlayerMode playerMode;
   bool loadingLyrics;
   Lyrics lyrics;
   bool syncedLyrics;
@@ -40,10 +41,15 @@ class PlayerData implements BaseControllerData {
   bool loadingSmartQueue;
 
   bool addingToFavorites;
-  bool showQueue;
   bool showDownloadManager;
 
   ThemeMode? themeMode;
+  double volume;
+
+  // Sleep timer
+  bool sleepTimerActive;
+  Duration? sleepTimerDuration;
+  DateTime? sleepTimerEndTime;
 
   PlayerData({
     required this.queue,
@@ -57,18 +63,21 @@ class PlayerData implements BaseControllerData {
     required this.shuffleEnabled,
     required this.repeatMode,
     required this.isBuffering,
-    required this.showLyrics,
+    required this.playerMode,
     required this.loadingLyrics,
     required this.lyrics,
     required this.syncedLyrics,
     required this.tracksFromSmartQueue,
     required this.loadingSmartQueue,
     required this.addingToFavorites,
-    required this.showQueue,
     required this.showDownloadManager,
     required this.autoSmartQueue,
     required this.isPositionTriggered,
     this.themeMode,
+    required this.volume,
+    required this.sleepTimerActive,
+    this.sleepTimerDuration,
+    this.sleepTimerEndTime,
   });
 
   @override
@@ -83,7 +92,7 @@ class PlayerData implements BaseControllerData {
     bool? shuffleEnabled,
     MusilyRepeatMode? repeatMode,
     bool? isBuffering,
-    bool? showLyrics,
+    PlayerMode? playerMode,
     bool? loadingLyrics,
     Lyrics? lyrics,
     bool? syncedLyrics,
@@ -93,9 +102,13 @@ class PlayerData implements BaseControllerData {
     bool? isPositionTriggered,
     bool? loadingSmartQueue,
     bool? addingToFavorites,
-    bool? showQueue,
     bool? showDownloadManager,
     ThemeMode? themeMode,
+    double? volume,
+    bool? sleepTimerActive,
+    Duration? sleepTimerDuration,
+    DateTime? sleepTimerEndTime,
+    bool clearSleepTimer = false,
   }) {
     return PlayerData(
       queue: queue ?? this.queue,
@@ -108,7 +121,7 @@ class PlayerData implements BaseControllerData {
       shuffleEnabled: shuffleEnabled ?? this.shuffleEnabled,
       repeatMode: repeatMode ?? this.repeatMode,
       isBuffering: isBuffering ?? this.isBuffering,
-      showLyrics: showLyrics ?? this.showLyrics,
+      playerMode: playerMode ?? this.playerMode,
       loadingLyrics: loadingLyrics ?? this.loadingLyrics,
       lyrics: lyrics ?? this.lyrics,
       syncedLyrics: syncedLyrics ?? this.syncedLyrics,
@@ -116,11 +129,18 @@ class PlayerData implements BaseControllerData {
       tracksFromSmartQueue: tracksFromSmartQueue ?? this.tracksFromSmartQueue,
       loadingSmartQueue: loadingSmartQueue ?? this.loadingSmartQueue,
       addingToFavorites: addingToFavorites ?? this.addingToFavorites,
-      showQueue: showQueue ?? this.showQueue,
       showDownloadManager: showDownloadManager ?? this.showDownloadManager,
       themeMode: themeMode ?? this.themeMode,
       autoSmartQueue: autoSmartQueue ?? this.autoSmartQueue,
       isPositionTriggered: isPositionTriggered ?? this.isPositionTriggered,
+      volume: volume ?? this.volume,
+      sleepTimerActive: sleepTimerActive ?? this.sleepTimerActive,
+      sleepTimerDuration: clearSleepTimer
+          ? null
+          : (sleepTimerDuration ?? this.sleepTimerDuration),
+      sleepTimerEndTime: clearSleepTimer
+          ? null
+          : (sleepTimerEndTime ?? this.sleepTimerEndTime),
     );
   }
 }

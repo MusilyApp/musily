@@ -17,7 +17,6 @@ import 'package:musily/features/player/data/services/musily_service.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/widgets/app_material.dart';
 import 'package:musily/core/core_module.dart';
-import 'package:smtc_windows/smtc_windows.dart';
 
 final mediaStorePlugin = MediaStore();
 
@@ -48,10 +47,6 @@ void main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await WindowService.init();
     await TrayService.init();
-  }
-
-  if (Platform.isWindows) {
-    await SMTCWindows.initialize();
   }
 
   final userService = UserService();

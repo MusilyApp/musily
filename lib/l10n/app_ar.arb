@@ -1,0 +1,348 @@
+{
+  "home": "الرئيسية",
+  "search": "بحث",
+  "library": "المكتبة",
+  "favorites": "المفضلة",
+  "searchMusicAlbumOrArtist": "ابحث عن موسيقى أو ألبوم أو فنان",
+  "musics": "الموسيقى",
+  "albums": "الألبومات",
+  "artists": "الفنانون",
+  "all": "الكل",
+  "playlists": "قوائم التشغيل",
+  "download": "تنزيل",
+  "addToPlaylist": "إضافة إلى قائمة التشغيل",
+  "addToQueue": "إضافة إلى القائمة",
+  "goToAlbum": "انتقال إلى الألبوم",
+  "goToArtist": "انتقال إلى الفنان",
+  "share": "مشاركة",
+  "play": "تشغيل",
+  "shufflePlay": "تشغيل عشوائي",
+  "addToLibrary": "إضافة إلى المكتبة",
+  "follow": "متابعة",
+  "following": "تتابعه",
+  "more": "المزيد",
+  "topSongs": "أفضل الأغاني",
+  "topAlbums": "أفضل الألبومات",
+  "topSingles": "أفضل الفرديات",
+  "similarArtists": "فنانون مشابهون",
+  "removeFromLibrary": "إزالة من المكتبة",
+  "createPlaylist": "إنشاء قائمة تشغيل",
+  "playlistName": "اسم قائمة التشغيل",
+  "cancel": "إلغاء",
+  "back": "رجوع",
+  "create": "إنشاء",
+  "playlist": "قائمة تشغيل",
+  "songs": "الأغاني",
+  "deletePlaylist": "حذف قائمة التشغيل",
+  "editPlaylist": "تعديل قائمة التشغيل",
+  "confirm": "تأكيد",
+  "doYouWantToDeleteThePlaylist": "هل تريد حذف قائمة التشغيل؟",
+  "delete": "حذف",
+  "theActionCannotBeUndone": "لا يمكن التراجع عن هذا الإجراء.",
+  "playingNow": "قيد التشغيل الآن",
+  "emptyLibrary": "مكتبتك فارغة",
+  "emptyLibraryDescription": "أضف عناصر إلى مكتبتك لتظهر هنا",
+  "albumNotFound": "الألبوم غير موجود",
+  "artistNotFound": "الفنان غير موجود",
+  "cancelDownload": "إلغاء التنزيل",
+  "pause": "إيقاف مؤقت",
+  "album": "ألبوم",
+  "singles": "فرديات",
+  "noMoreSingles": "لا توجد المزيد من الفرديات لهذا الفنان.",
+  "noMoreAlbums": "لا توجد المزيد من الألبومات لهذا الفنان.",
+  "songsNotFound": "لم يتم العثور على أغاني.",
+  "playlistNotFound": "قائمة التشغيل غير موجودة.",
+  "requiredField": "هذا الحقل مطلوب.",
+  "deleteDownload": "حذف التنزيل",
+  "noPlaylists": "ليس لديك قوائم تشغيل.",
+  "removeFromPlaylist": "إزالة من قائمة التشغيل",
+  "downloadManager": "مدير التنزيلات",
+  "downloads": "التنزيلات",
+  "offline": "غير متصل",
+  "offlineMode": "وضع عدم الاتصال",
+  "offlineModeDescription": "أنت غير متصل حالياً. قد تكون بعض الميزات غير متاحة.",
+  "lyricsNotFound": "لم يتم العثور على الكلمات",
+  "lyricsNotSynced": "الكلمات غير متزامنة",
+  "lyricsNotSyncedDescription": "لن تتحرك هذه الأسطر مع تشغيل الموسيقى.",
+  "lyricsParsedSync": "قمنا بمزامنة هذه الكلمات لك",
+  "lyricsParsedSyncDescription": "تم إنشاؤها تلقائياً وقد تكون غير دقيقة قليلاً.",
+  "lyrics": "الكلمات",
+  "settings": "الإعدادات",
+  "accounts": "الحسابات",
+  "language": "اللغة",
+  "theme": "السمة",
+  "dark": "داكن",
+  "light": "فاتح",
+  "system": "النظام",
+  "licenses": "التراخيص",
+  "about": "حول",
+  "aboutSupporters": "حول & الداعمون",
+  "application": "التطبيق",
+  "others": "أخرى",
+  "supportersTitle": "الداعمون",
+  "supportersEmpty": "لا يوجد داعمون حالياً.",
+  "close": "إغلاق",
+  "copiedToClipboard": "تم النسخ إلى الحافظة",
+  "noDownloads": "لا توجد تنزيلات",
+  "noResults": "لا توجد نتائج",
+  "tryDifferentKeywords": "جرّب كلمات مختلفة أو تحقق من الإملاء",
+  "downloadCompleted": "اكتمل التنزيل",
+  "selectALanguage": "اختر لغة",
+  "account": "الحساب",
+  "login": "تسجيل الدخول",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "pleaseEnterYourEmail": "يرجى إدخال بريدك الإلكتروني",
+  "pleaseEnterAValidEmail": "يرجى إدخال بريد إلكتروني صالح",
+  "pleaseEnterYourPassword": "يرجى إدخال كلمة المرور",
+  "passwordMustBeAtLeast8Characters": "يجب أن تكون كلمة المرور على الأقل 8 أحرف",
+  "createAccount": "إنشاء حساب",
+  "name": "الاسم",
+  "pleaseEnterYourName": "يرجى إدخال اسمك",
+  "artist": "فنان",
+  "internalServerError": "خطأ داخلي في الخادم",
+  "invalidRequest": "طلب غير صالح",
+  "emailAlreadyInUse": "البريد الإلكتروني مستخدم بالفعل",
+  "invalidCredentials": "بيانات الدخول غير صالحة",
+  "loginRequired": "تسجيل الدخول مطلوب",
+  "itemNotFound": "العنصر غير موجود",
+  "invalidUserId": "معرّف المستخدم غير صالح",
+  "userNotFound": "المستخدم غير موجود",
+  "comeCheckTEMPLATEOnMusily": "تعال وشاهد TEMPLATE على Musily!",
+  "backup": "نسخة احتياطية",
+  "restore": "استعادة",
+  "backupLibrary": "نسخ المكتبة احتياطياً",
+  "backupCompletedSuccessfully": "تم إنشاء النسخة الاحتياطية بنجاح!",
+  "backupFailed": "فشل النسخ الاحتياطي",
+  "includeLibrary": "تضمين المكتبة",
+  "includeDownloads": "تضمين التنزيلات",
+  "startBackup": "بدء النسخ الاحتياطي",
+  "doYouWantToRestoreThisBackup": "هل تريد استعادة هذه النسخة الاحتياطية؟",
+  "backupInProgress": "جاري النسخ الاحتياطي",
+  "backupRestoredSuccessfully": "تمت الاستعادة بنجاح",
+  "backupFileDoesNotExist": "ملف النسخة الاحتياطية غير موجود",
+  "musicSavedToDownloads": "تم حفظ الموسيقى في التنزيلات",
+  "saveToDownloads": "حفظ في التنزيلات",
+  "importingPlaylist": "جارٍ استيراد قائمة التشغيل",
+  "playlistNameOrUrl": "اسم قائمة التشغيل أو الرابط",
+  "hide": "إخفاء",
+  "whenClosingTheApplication": "عند إغلاق التطبيق",
+  "showWindow": "إظهار النافذة",
+  "closeWindow": "إغلاق النافذة",
+  "newUpdateAvailable": "تحديث جديد متاح",
+  "defaultColor": "اللون الافتراضي",
+  "accentColor": "لون التمييز",
+  "recommendedAlbums": "ألبومات مقترحة",
+  "recommendedMusic": "موسيقى مقترحة",
+  "moreRecommendations": "المزيد من الاقتراحات",
+  "cancelOperation": "إلغاء العملية؟",
+  "cancelBackupConfirmation": "هل أنت متأكد أنك تريد إلغاء النسخ الاحتياطي؟ سيتم فقدان التقدم.",
+  "cancelRestoreConfirmation": "هل أنت متأكد أنك تريد إلغاء الاستعادة؟ سيتم فقدان التقدم.",
+  "yes": "نعم",
+  "no": "لا",
+  "initializingBackup": "جارٍ بدء النسخ الاحتياطي...",
+  "creatingBackupArchive": "جارٍ إنشاء ملف النسخة الاحتياطية...",
+  "backingUpDownloadsMetadata": "جارٍ نسخ بيانات التنزيلات...",
+  "backingUpAudioFiles": "جارٍ نسخ الملفات الصوتية...",
+  "backingUpLibraryData": "جارٍ نسخ بيانات المكتبة...",
+  "writingBackupFile": "جارٍ كتابة ملف النسخة الاحتياطية...",
+  "savingToStorage": "جارٍ الحفظ في التخزين...",
+  "backupCancelled": "تم إلغاء النسخ الاحتياطي",
+  "startingBackup": "جارٍ بدء النسخ الاحتياطي...",
+  "startingRestore": "جارٍ بدء الاستعادة...",
+  "initializingRestore": "جارٍ بدء عملية الاستعادة...",
+  "readingBackupFile": "جارٍ قراءة ملف النسخة الاحتياطية...",
+  "extractingLibraryData": "جارٍ استخراج بيانات المكتبة...",
+  "extractingDownloadsData": "جارٍ استخراج بيانات التنزيلات...",
+  "extractingAudioFiles": "جارٍ استخراج الملفات الصوتية...",
+  "finalizingRestore": "جارٍ إنهاء الاستعادة...",
+  "restoreCompletedSuccessfully": "تمت الاستعادة بنجاح!",
+  "restoreFailed": "فشلت الاستعادة",
+  "backupFileNotFound": "ملف النسخة الاحتياطية غير موجود",
+  "savedTo": "تم الحفظ في: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "امنح قائمة التشغيل هوية جديدة.",
+  "playlistDetailsTitle": "التفاصيل",
+  "playlistEmptyStateDescription": "أنشئ قائمة تشغيل لبدء حفظ أغانيك المفضلة.",
+  "playlistSelectTitle": "اختر قائمة تشغيل",
+  "playlistSelectDescription": "اختر أين يجب إضافة المقاطع المحددة.",
+  "playlistCreatorSubtitle": "أضف اسماً أو الصق رابط قائمة تشغيل",
+  "playlistCreatorPasteInfo": "يمكنك لصق رابط قائمة تشغيل من YouTube لاستيرادها تلقائياً.",
+  "artistNotFoundDescription": "لم يتم العثور على الفنان الذي تبحث عنه.",
+  "artistNoSinglesDescription": "لا توجد فرديات لهذا الفنان.",
+  "artistNoAlbumsDescription": "لا توجد ألبومات لهذا الفنان.",
+  "artistNoSongsDescription": "لا توجد أغاني لهذا الفنان.",
+  "lyricsNotAvailable": "لا توجد كلمات لهذه الأغنية.",
+  "queueEmptyTitle": "قائمتك فارغة",
+  "queueEmptyMessage": "أضف أغاني إلى القائمة للاستمتاع بالموسيقى.",
+  "noItemsFound": "لم يتم العثور على عناصر",
+  "downloadsEmptyMessage": "ستظهر المقاطع التي تم تنزيلها هنا.",
+  "downloadingSectionTitle": "جاري التنزيل",
+  "queuedSectionTitle": "في القائمة",
+  "completedSectionTitle": "اكتملت",
+  "failedSectionTitle": "فشلت",
+  "searchSuggestions": "اقتراحات",
+  "searchStartTyping": "ابدأ الكتابة للبحث",
+  "smartSuggestionsTitle": "اقتراحات ذكية",
+  "smartSuggestionsDescription": "إضافة تلقائية لمقاطع مشابهة",
+  "libraryManagementSectionTitle": "إدارة المكتبة",
+  "localLibraryTitle": "المكتبة المحلية",
+  "localLibraryDescription": "إدارة مجلدات جهازك لتشغيل الملفات الصوتية المحلية.",
+  "localFilesLabel": "ملفات محلية",
+  "@localFilesLabel": {
+    "description": "علامة احتياطية عند عدم وجود بيانات الفنان للمسار المحلي."
+  },
+  "manageLocalFolders": "إدارة المجلدات المحلية",
+  "manageLocalFoldersDescription": "إضافة أو إعادة تسمية أو إزالة المجلدات المرتبطة بمكتبتك في Musily.",
+  "addLocalFolder": "إضافة مجلد محلي",
+  "emptyLocalLibrary": "لا توجد مجلدات محلية",
+  "emptyLocalLibraryDescription": "أضف مجلداً من جهازك لإتاحة الأغاني المحلية داخل Musily.",
+  "chooseDirectory": "اختر مجلداً",
+  "invalidDirectory": "المجلد غير موجود",
+  "invalidDirectoryDescription": "لم نتمكن من الوصول إلى هذا المجلد. حدّث المسار أو قم بإزالته.",
+  "removeLocalFolderConfirmation": "إزالة \"{name}\" من المكتبة المحلية؟",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "لا توجد أغاني",
+  "emptyLocalPlaylistDescription": "تأكد من أن المجلد موجود ويحتوي على ملفات صوتية مدعومة.",
+  "changeDirectory": "تغيير المجلد",
+  "updateDirectory": "تحديث المجلد",
+  "localFolderPreviewOverflow": "+{count} مجلدات إضافية",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "فتح",
+  "rename": "إعادة تسمية",
+  "remove": "إزالة",
+  "refresh": "تحديث",
+  "backupLibraryDescription": "إنشاء نسخة احتياطية من مكتبتك",
+  "restoreLibraryDescription": "استعادة مكتبتك من نسخة احتياطية",
+  "includeLibraryDescription": "نسخ الألبومات والفنانين وقوائم التشغيل",
+  "includeDownloadsDescription": "نسخ المقاطع التي تم تنزيلها",
+  "fullScreenPlayerTooltip": "مشغل ملء الشاشة",
+  "sleepTimer": "مؤقت الإيقاف",
+  "sleepTimerDescription": "سيتم إيقاف الموسيقى بعد الوقت المحدد",
+  "sleepTimerActive": "مؤقت الإيقاف: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} دقيقة",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} ساعة",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 ساعة",
+  "customTime": "مخصص",
+  "enterTime": "أدخل الوقت",
+  "minutesLabel": "الدقائق",
+  "hoursLabel": "الساعات",
+  "cancelTimer": "إلغاء المؤقت",
+  "cancelTimerQuestion": "هل تريد إلغاء مؤقت الإيقاف؟",
+  "timerInfo": "المؤقت فعال لمدة {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "إضافة وقت",
+  "clearQueueTitle": "مسح القائمة",
+  "clearQueueMessage": "مسح جميع التنزيلات في القائمة؟",
+  "clearQueueDescription": "سيتم إلغاء جميع التنزيلات المعلقة. لن تتأثر التنزيلات المكتملة.",
+  "downloadManagerSummary": "{active} نشط • {queued} في القائمة",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "إعادة المحاولة للجميع",
+  "downloadManagerClearFailed": "مسح الفاشلة",
+  "downloadManagerClearCompleted": "مسح المكتملة",
+  "clearCompletedDownloadsTitle": "مسح التنزيلات المكتملة",
+  "clearCompletedDownloadsMessage": "حذف جميع التنزيلات المكتملة؟",
+  "clearCompletedDownloadsDescription": "سيتم حذف الملفات من التخزين. لا يمكن التراجع عن هذا الإجراء.",
+  "itemCount": "{count, plural, =1{عنصر واحد} other{{count} عناصر}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} مكتملة • {failed} فاشلة",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "الوقت الإجمالي المتوقع",
+  "downloadErrorResolveUrl": "تعذر حل رابط التنزيل",
+  "downloadErrorFileValidation": "فشل التحقق من الملف الذي تم تنزيله",
+  "downloadErrorUnexpectedMessage": "استجابة تنزيل غير متوقعة",
+  "clear": "مسح",
+  "queueTools": "أدوات القائمة",
+  "queueToolsDescription": "إعادة ترتيب القائمة وإنشاء قوائم تشغيل",
+  "playlistCreated": "تم إنشاء قائمة التشغيل بنجاح",
+  "queue": "قائمة التشغيل",
+  "tracksSelected": "مقاطع محددة",
+  "selectAll": "تحديد الكل",
+  "deselectAll": "إلغاء التحديد",
+  "updateDirectoryDescription": "اختر مجلداً جديداً لهذه القائمة",
+  "select": "اختيار",
+  "renameLocalFolder": "إعادة تسمية المجلد",
+  "removeLocalFolder": "إزالة المجلد",
+  "save": "حفظ",
+  "localPlaylist": "قائمة تشغيل محلية",
+  "versionManager": "مدير الإصدارات",
+  "retry": "إعادة المحاولة",
+  "noReleasesFound": "لم يتم العثور على إصدارات",
+  "version": "الإصدار",
+  "alreadyInstalled": "مثبّت بالفعل",
+  "update": "تحديث",
+  "changelog": "سجل التغييرات",
+  "changelogNotAvailable": "سجل التغييرات غير متاح",
+  "later": "لاحقاً",
+  "updateAvailableDescription": "هناك إصدار جديد من Musily متاح. قم بالتحديث للحصول على أحدث الميزات والتحسينات.",
+  "recommendations": "التوصيات"
+}

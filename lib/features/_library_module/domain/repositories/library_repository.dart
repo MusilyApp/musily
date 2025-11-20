@@ -14,17 +14,17 @@ abstract class LibraryRepository {
 
   // Playlist
   Future<PlaylistEntity> createPlaylist(CreatePlaylistDTO data);
-  Future<void> addTracksToPlaylist(
-    String playlistId,
-    List<TrackEntity> tracks,
-  );
+  Future<void> addTracksToPlaylist(String playlistId, List<TrackEntity> tracks);
   Future<void> removeTracksFromPlaylist(
     String playlistId,
     List<String> trackIds,
   );
-  Future<PlaylistEntity?> updatePlaylist(
-    UpdatePlaylistDto data,
+  Future<void> updateTrackInPlaylist(
+    String playlistId,
+    String trackId,
+    TrackEntity updatedTrack,
   );
+  Future<PlaylistEntity?> updatePlaylist(UpdatePlaylistDto data);
   Future<void> deletePlaylist(String playlistId);
 
   // Artist

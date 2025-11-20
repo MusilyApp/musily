@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/core/presenter/widgets/player_sized_box.dart';
+import 'package:musily/core/presenter/widgets/empty_state.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
@@ -18,6 +20,8 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ArtistAlbumsPage extends StatefulWidget {
   final List<AlbumEntity> albums;
@@ -34,6 +38,7 @@ class ArtistAlbumsPage extends StatefulWidget {
   final void Function(List<AlbumEntity> albums) onLoadedAlbums;
   final GetArtistUsecase getArtistUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const ArtistAlbumsPage({
     super.key,
@@ -51,6 +56,7 @@ class ArtistAlbumsPage extends StatefulWidget {
     required this.getArtistUsecase,
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -98,14 +104,14 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
     return LyPage(
       contextKey: 'ArtistAlbumsPage_${widget.artist.id}',
       child: Scaffold(
-        appBar: AppBar(
+        appBar: MusilyAppBar(
           title: Text(context.localization.albums),
         ),
         body: Builder(
           builder: (context) {
             if (loadingAlbums) {
               return Center(
-                child: LoadingAnimationWidget.halfTriangleDot(
+                child: MusilyDotsLoading(
                   color: context.themeData.colorScheme.primary,
                   size: 50,
                 ),
@@ -113,50 +119,37 @@ class _ArtistAlbumsPageState extends State<ArtistAlbumsPage> {
             }
             if (allAlbums.isEmpty) {
               return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.album_rounded,
-                      size: 50,
-                      color: context.themeData.iconTheme.color
-                          ?.withValues(alpha: .5),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Text(
-                      context.localization.noMoreAlbums,
-                    ),
-                  ],
+                child: EmptyState(
+                  icon: Icon(
+                    LucideIcons.disc,
+                    size: 50,
+                    color: context.themeData.iconTheme.color
+                        ?.withValues(alpha: .5),
+                  ),
+                  title: context.localization.noMoreAlbums,
+                  message: context.localization.artistNoAlbumsDescription,
                 ),
               );
             }
-            return Column(
+            return ListView(
+              shrinkWrap: true,
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: allAlbums.length,
-                    itemBuilder: (context, index) {
-                      final album = allAlbums[index];
-                      return AlbumTile(
-                        album: album,
-                        contentOrigin: ContentOrigin.dataFetch,
-                        coreController: widget.coreController,
-                        getPlaylistUsecase: widget.getPlaylistUsecase,
-                        playerController: widget.playerController,
-                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
-                        libraryController: widget.libraryController,
-                        downloaderController: widget.downloaderController,
-                        getAlbumUsecase: widget.getAlbumUsecase,
-                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
-                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
-                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
-                        getArtistUsecase: widget.getArtistUsecase,
-                      );
-                    },
-                  ),
-                ),
+                ...allAlbums.map((album) => AlbumTile(
+                      album: album,
+                      getTrackUsecase: widget.getTrackUsecase,
+                      contentOrigin: ContentOrigin.dataFetch,
+                      coreController: widget.coreController,
+                      getPlaylistUsecase: widget.getPlaylistUsecase,
+                      playerController: widget.playerController,
+                      getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                      libraryController: widget.libraryController,
+                      downloaderController: widget.downloaderController,
+                      getAlbumUsecase: widget.getAlbumUsecase,
+                      getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                      getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                      getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                      getArtistUsecase: widget.getArtistUsecase,
+                    )),
                 PlayerSizedBox(
                   playerController: widget.playerController,
                 ),

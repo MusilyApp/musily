@@ -9,9 +9,9 @@ import 'package:musily/features/settings/domain/enums/accent_color_preference.da
 import 'package:musily/features/settings/domain/enums/close_preference.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppMaterial extends StatefulWidget {
   const AppMaterial({super.key});
@@ -109,12 +109,14 @@ class _AppMaterialState extends State<AppMaterial>
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'ElmsSans',
         colorScheme:
             lightColorScheme ?? ColorScheme.fromSeed(seedColor: accentColor),
         useMaterial3: true,
         cardTheme: const CardThemeData(shadowColor: Colors.transparent),
       ),
       darkTheme: ThemeData(
+        fontFamily: 'ElmsSans',
         colorScheme: dakColorScheme ??
             ColorScheme.fromSeed(
               seedColor: accentColor,
@@ -137,14 +139,24 @@ class _AppMaterialState extends State<AppMaterial>
     return settingsController.builder(
       builder: (context, data) {
         if (Platform.isAndroid) {
+          late final Color accentColor;
+          if (data.accentColorPreference ==
+              AccentColorPreference.defaultColor) {
+            accentColor = Colors.deepPurple;
+          } else if (data.accentColorPreference ==
+              AccentColorPreference.system) {
+            accentColor = Theme.of(context).colorScheme.primary;
+          } else if (data.accentColorPreference ==
+              AccentColorPreference.playingNow) {
+            accentColor = data.playerAccentColor ?? Colors.deepPurple;
+          } else {
+            accentColor = Colors.deepPurple;
+          }
           return DynamicColorBuilder(
+            key: ValueKey(data.playerAccentColor.toString()),
             builder: (lightDynamic, darkDynamic) {
               return getMaterialApp(
-                data.accentColorPreference == AccentColorPreference.defaultColor
-                    ? Colors.deepPurple
-                    : data.accentColorPreference == AccentColorPreference.system
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.deepPurple,
+                accentColor,
                 data,
                 dakColorScheme: data.accentColorPreference ==
                         AccentColorPreference.defaultColor
@@ -152,14 +164,28 @@ class _AppMaterialState extends State<AppMaterial>
                         seedColor: Colors.deepPurple,
                         brightness: Brightness.dark,
                       )
-                    : darkDynamic,
+                    : data.accentColorPreference ==
+                            AccentColorPreference.playingNow
+                        ? ColorScheme.fromSeed(
+                            seedColor:
+                                data.playerAccentColor ?? Colors.deepPurple,
+                            brightness: Brightness.dark,
+                          )
+                        : darkDynamic,
                 lightColorScheme: data.accentColorPreference ==
                         AccentColorPreference.defaultColor
                     ? ColorScheme.fromSeed(
                         seedColor: Colors.deepPurple,
                         brightness: Brightness.light,
                       )
-                    : lightDynamic,
+                    : data.accentColorPreference ==
+                            AccentColorPreference.playingNow
+                        ? ColorScheme.fromSeed(
+                            seedColor:
+                                data.playerAccentColor ?? Colors.deepPurple,
+                            brightness: Brightness.light,
+                          )
+                        : lightDynamic,
               );
             },
           );
@@ -178,7 +204,11 @@ class _AppMaterialState extends State<AppMaterial>
           future: DynamicColorPlugin.getAccentColor(),
           builder: (context, snapshot) {
             late final Color accentColor;
-            if (data.accentColorPreference == AccentColorPreference.system) {
+            if (data.accentColorPreference ==
+                AccentColorPreference.playingNow) {
+              accentColor = data.playerAccentColor ?? Colors.deepPurple;
+            } else if (data.accentColorPreference ==
+                AccentColorPreference.system) {
               accentColor = snapshot.data ?? Colors.deepPurple;
             } else {
               accentColor = data.accentColorPreference ==

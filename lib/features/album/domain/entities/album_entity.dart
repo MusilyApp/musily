@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:musily/core/domain/entities/identifiable.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
@@ -34,4 +35,9 @@ class AlbumEntity implements Identifiable {
     this.highResImg,
     this.lowResImg,
   });
+
+  @override
+  String toString() {
+    return 'AlbumEntity(id: $id, title: $title, year: $year, artist: $artist, tracks: $tracks, lowResImg: $lowResImg, highResImg: $highResImg)';
+  }
 }

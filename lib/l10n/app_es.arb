@@ -7,6 +7,8 @@
   "musics": "Música",
   "albums": "Álbumes",
   "artists": "Artistas",
+  "all": "Todos",
+  "playlists": "Listas de Reproducción",
   "download": "Descargar",
   "addToPlaylist": "Agregar a la Lista de Reproducción",
   "addToQueue": "Agregar a la Cola",
@@ -27,6 +29,7 @@
   "createPlaylist": "Crear Lista de Reproducción",
   "playlistName": "Nombre de la Lista de Reproducción",
   "cancel": "Cancelar",
+  "back": "Volver",
   "create": "Crear",
   "playlist": "Lista de Reproducción",
   "songs": "Canciones",
@@ -38,6 +41,7 @@
   "theActionCannotBeUndone": "Esta acción no se puede deshacer.",
   "playingNow": "Reproduciendo Ahora",
   "emptyLibrary": "Tu biblioteca está vacía",
+  "emptyLibraryDescription": "Agrega elementos a tu biblioteca para verlos aquí",
   "albumNotFound": "Álbum no encontrado",
   "artistNotFound": "Artista no encontrado",
   "cancelDownload": "Cancelar Descarga",
@@ -55,7 +59,14 @@
   "downloadManager": "Gestor de Descargas",
   "downloads": "Descargas",
   "offline": "Desconectado",
+  "offlineMode": "Modo Sin Conexión",
+  "offlineModeDescription": "Estás desconectado en este momento. Algunas funciones pueden no estar disponibles.",
   "lyricsNotFound": "Letras no encontradas",
+  "lyricsNotSynced": "Las letras no están sincronizadas",
+  "lyricsNotSyncedDescription": "Las líneas no se moverán automáticamente con la música.",
+  "lyricsParsedSync": "Sincronizamos esta letra por ti",
+  "lyricsParsedSyncDescription": "Se generó automáticamente y podría estar un poco fuera de ritmo.",
+  "lyrics": "Letras",
   "settings": "Configuración",
   "accounts": "Cuentas",
   "language": "Idioma",
@@ -65,12 +76,16 @@
   "system": "Sistema",
   "licenses": "Licencias",
   "about": "Acerca de",
+  "aboutSupporters": "Acerca de y Patrocinadores",
   "application": "Aplicación",
   "others": "Otros",
+  "supportersTitle": "Patrocinadores",
+  "supportersEmpty": "Aún no hay patrocinadores listados.",
   "close": "Cerrar",
   "copiedToClipboard": "Copiado al portapapeles",
   "noDownloads": "No hay descargas",
   "noResults": "Sin resultados",
+  "tryDifferentKeywords": "Prueba con palabras clave diferentes o revisa la ortografía",
   "downloadCompleted": "Descarga completada",
   "selectALanguage": "Seleccione un idioma",
   "account": "Cuenta",
@@ -116,5 +131,211 @@
   "closeWindow": "Cerrar ventana",
   "newUpdateAvailable": "Nueva actualización disponible",
   "defaultColor": "Color predeterminado",
-  "accentColor": "Color de acento"
+  "accentColor": "Color de acento",
+  "recommendedAlbums": "Álbumes Recomendados",
+  "recommendedMusic": "Música Recomendada",
+  "moreRecommendations": "Más Recomendaciones",
+  "cancelOperation": "¿Cancelar Operación?",
+  "cancelBackupConfirmation": "¿Está seguro de que desea cancelar el respaldo? Se perderá el progreso.",
+  "cancelRestoreConfirmation": "¿Está seguro de que desea cancelar la restauración? Se perderá el progreso.",
+  "yes": "Sí",
+  "no": "No",
+  "initializingBackup": "Inicializando respaldo...",
+  "creatingBackupArchive": "Creando archivo de respaldo...",
+  "backingUpDownloadsMetadata": "Respaldando metadatos de descargas...",
+  "backingUpAudioFiles": "Respaldando archivos de audio...",
+  "backingUpLibraryData": "Respaldando datos de biblioteca...",
+  "writingBackupFile": "Escribiendo archivo de respaldo...",
+  "savingToStorage": "Guardando en almacenamiento...",
+  "backupCancelled": "Respaldo cancelado",
+  "startingBackup": "Iniciando respaldo...",
+  "startingRestore": "Iniciando restauración...",
+  "initializingRestore": "Inicializando restauración...",
+  "readingBackupFile": "Leyendo archivo de respaldo...",
+  "extractingLibraryData": "Extrayendo datos de biblioteca...",
+  "extractingDownloadsData": "Extrayendo datos de descargas...",
+  "extractingAudioFiles": "Extrayendo archivos de audio...",
+  "finalizingRestore": "Finalizando restauración...",
+  "restoreCompletedSuccessfully": "¡Restauración completada con éxito!",
+  "restoreFailed": "Falló la restauración",
+  "backupFileNotFound": "Archivo de respaldo no encontrado",
+  "savedTo": "Guardado en: {filename}",
+  "playlistEditSubtitle": "Dale una nueva identidad a tu playlist.",
+  "playlistDetailsTitle": "Detalles",
+  "playlistEmptyStateDescription": "Crea una playlist para empezar a guardar tus pistas favoritas.",
+  "playlistSelectTitle": "Selecciona una playlist",
+  "playlistSelectDescription": "Elige dónde se deben agregar las pistas seleccionadas.",
+  "playlistCreatorSubtitle": "Agrega un nombre o pega un enlace de playlist",
+  "playlistCreatorPasteInfo": "Puedes pegar la URL de una playlist de YouTube para importarla automáticamente.",
+  "artistNotFoundDescription": "No se encontró el artista que buscas.",
+  "artistNoSinglesDescription": "No hay sencillos disponibles para este artista.",
+  "artistNoAlbumsDescription": "No hay álbumes disponibles para este artista.",
+  "artistNoSongsDescription": "No hay canciones disponibles para este artista.",
+  "lyricsNotAvailable": "No hay letras disponibles para esta canción.",
+  "queueEmptyTitle": "Tu cola está vacía",
+  "queueEmptyMessage": "Agrega canciones a la cola para disfrutar tu experiencia musical.",
+  "noItemsFound": "No se encontraron elementos",
+  "downloadsEmptyMessage": "Tus pistas descargadas aparecerán aquí.",
+  "downloadingSectionTitle": "Descargando",
+  "queuedSectionTitle": "En cola",
+  "completedSectionTitle": "Completado",
+  "failedSectionTitle": "Fallido",
+  "searchSuggestions": "Sugerencias",
+  "searchStartTyping": "Comienza a escribir para buscar",
+  "smartSuggestionsTitle": "Sugerencias inteligentes",
+  "smartSuggestionsDescription": "Agregar automáticamente pistas similares",
+  "libraryManagementSectionTitle": "Administración de la biblioteca",
+  "localLibraryTitle": "Biblioteca local",
+  "localLibraryDescription": "Administra carpetas del dispositivo para reproducir archivos de audio locales.",
+  "localFilesLabel": "Archivos locales",
+  "@localFilesLabel": {
+    "description": "Etiqueta utilizada cuando una pista local no tiene metadatos de artista."
+  },
+  "manageLocalFolders": "Gestionar carpetas locales",
+  "manageLocalFoldersDescription": "Añade, renombra o elimina directorios sincronizados con tu biblioteca.",
+  "addLocalFolder": "Agregar carpeta local",
+  "emptyLocalLibrary": "Aún no hay carpetas locales",
+  "emptyLocalLibraryDescription": "Agrega una carpeta de tu dispositivo para mantener tus canciones locales accesibles en Musily.",
+  "chooseDirectory": "Elegir directorio",
+  "invalidDirectory": "Directorio no encontrado",
+  "invalidDirectoryDescription": "No pudimos acceder a esta carpeta. Actualiza la ruta o elimina la entrada.",
+  "removeLocalFolderConfirmation": "¿Eliminar \"{name}\" de la biblioteca local?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "No se encontraron canciones",
+  "emptyLocalPlaylistDescription": "Asegúrate de que la carpeta aún exista y contenga archivos de audio compatibles.",
+  "changeDirectory": "Cambiar directorio",
+  "updateDirectory": "Actualizar directorio",
+  "updateDirectoryDescription": "Selecciona un nuevo directorio para esta playlist",
+  "localFolderPreviewOverflow": "+{count} carpetas más",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Abrir",
+  "select": "Seleccionar",
+  "rename": "Renombrar",
+  "renameLocalFolder": "Renombrar carpeta local",
+  "remove": "Eliminar",
+  "removeLocalFolder": "Eliminar carpeta local",
+  "refresh": "Actualizar",
+  "save": "Guardar",
+  "localPlaylist": "Playlist local",
+  "backupLibraryDescription": "Crea una copia de seguridad de tu biblioteca",
+  "restoreLibraryDescription": "Restaura tu biblioteca desde una copia de seguridad",
+  "includeLibraryDescription": "Respalda tus álbumes, artistas y listas de reproducción guardados",
+  "includeDownloadsDescription": "Respalda tus pistas descargadas",
+  "fullScreenPlayerTooltip": "Reproductor a pantalla completa",
+  "sleepTimer": "Temporizador",
+  "sleepTimerDescription": "La música se pausará después del tiempo seleccionado",
+  "sleepTimerActive": "Temporizador: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} horas",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 hora",
+  "customTime": "Personalizado",
+  "enterTime": "Ingrese el tiempo",
+  "minutesLabel": "Minutos",
+  "hoursLabel": "Horas",
+  "cancelTimer": "Cancelar Temporizador",
+  "cancelTimerQuestion": "¿Desea cancelar el temporizador?",
+  "timerInfo": "Temporizador activo por {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Agregar tiempo",
+  "clearQueueTitle": "Limpiar Cola",
+  "clearQueueMessage": "¿Limpiar todas las descargas en cola/pendientes?",
+  "clearQueueDescription": "Esto cancelará todas las descargas pendientes. Las descargas completadas no se verán afectadas.",
+  "downloadManagerSummary": "{active} activos • {queued} en cola",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Reintentar todos",
+  "downloadManagerClearFailed": "Borrar fallidos",
+  "downloadManagerClearCompleted": "Limpiar completados",
+  "clearCompletedDownloadsTitle": "Limpiar descargas completadas",
+  "clearCompletedDownloadsMessage": "¿Eliminar todas las descargas completadas?",
+  "clearCompletedDownloadsDescription": "Esto eliminará los archivos descargados del almacenamiento. Esta acción no se puede deshacer.",
+  "itemCount": "{count, plural, =1{1 elemento} other{{count} elementos}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} completados • {failed} fallidos",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Tiempo total estimado",
+  "downloadErrorResolveUrl": "No se pudo resolver la URL de descarga",
+  "downloadErrorFileValidation": "La validación del archivo descargado falló",
+  "downloadErrorUnexpectedMessage": "Respuesta inesperada al procesar la descarga",
+  "clear": "Limpiar",
+  "queueTools": "Herramientas de Cola",
+  "queueToolsDescription": "Reordenar tu cola y crear playlists",
+  "playlistCreated": "Playlist creada exitosamente",
+  "queue": "Cola",
+  "tracksSelected": "canciones seleccionadas",
+  "selectAll": "Seleccionar Todo",
+  "deselectAll": "Deseleccionar Todo",
+  "versionManager": "Gestor de Versiones",
+  "retry": "Reintentar",
+  "noReleasesFound": "No se encontraron versiones",
+  "version": "Versión",
+  "alreadyInstalled": "Ya Instalado",
+  "update": "Actualizar",
+  "changelog": "Cambios",
+  "changelogNotAvailable": "Cambios no disponibles",
+  "later": "Después",
+  "updateAvailableDescription": "Una nueva versión de Musily está disponible. Actualiza ahora para obtener las últimas funciones y mejoras.",
+  "recommendations": "Recomendaciones"
 }

@@ -47,10 +47,6 @@ class TrayService {
       items: [
         MenuItem(key: 'show_window', label: localization.showWindow),
         MenuItem.separator(),
-        MenuItem(key: 'library', label: localization.library),
-        MenuItem(key: 'settings', label: localization.settings),
-        MenuItem(key: 'downloads', label: localization.downloads),
-        MenuItem.separator(),
         MenuItem(key: 'exit_app', label: localization.closeWindow),
       ],
     );

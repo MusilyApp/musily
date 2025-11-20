@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -18,6 +20,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class ArtistTile extends StatefulWidget {
   final ArtistEntity artist;
@@ -32,7 +35,9 @@ class ArtistTile extends StatefulWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final ContentOrigin contentOrigin;
+  final LyDensity density;
 
   const ArtistTile({
     super.key,
@@ -47,8 +52,10 @@ class ArtistTile extends StatefulWidget {
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
+    required this.getTrackUsecase,
     required this.contentOrigin,
     required this.getPlaylistUsecase,
+    this.density = LyDensity.normal,
   });
 
   @override
@@ -66,6 +73,7 @@ class _ArtistTileState extends State<ArtistTile> {
           )
           .firstOrNull,
       child: LyListTile(
+        density: widget.density,
         onTap: () {
           LyNavigator.push(
             context.showingPageContext,
@@ -83,8 +91,10 @@ class _ArtistTileState extends State<ArtistTile> {
                     getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
                     getArtistTracksUsecase: widget.getArtistTracksUsecase,
                     getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                    getTrackUsecase: widget.getTrackUsecase,
                   )
                 : ArtistPage(
+                    getTrackUsecase: widget.getTrackUsecase,
                     getAlbumUsecase: widget.getAlbumUsecase,
                     artist: widget.artist,
                     coreController: widget.coreController,
@@ -103,16 +113,32 @@ class _ArtistTileState extends State<ArtistTile> {
             widget.libraryController.methods.getLibraryItem(widget.artist.id);
           }
         },
-        subtitle: Text(
-          context.localization.artist,
+        subtitle: Row(
+          children: [
+            Icon(
+              LucideIcons.music2,
+              size: 14,
+              color: context.themeData.colorScheme.onSurfaceVariant
+                  .withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              context.localization.artist,
+              style: TextStyle(
+                color: context.themeData.colorScheme.onSurfaceVariant
+                    .withValues(alpha: 0.7),
+              ),
+            ),
+          ],
         ),
         leading: Card(
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(360),
             side: BorderSide(
-              width: 1,
+              width: 2,
               color:
-                  context.themeData.colorScheme.outline.withValues(alpha: .2),
+                  context.themeData.colorScheme.outline.withValues(alpha: .15),
             ),
           ),
           child: Builder(
@@ -122,21 +148,45 @@ class _ArtistTileState extends State<ArtistTile> {
                   borderRadius: BorderRadius.circular(360),
                   child: AppImage(
                     widget.artist.lowResImg!,
-                    width: 40,
-                    height: 40,
+                    width: 48,
+                    height: 48,
+                    fit: BoxFit.cover,
                   ),
                 );
               }
-              return const Padding(
-                padding: EdgeInsets.all(8.0),
+              return Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      context.themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.8),
+                      context.themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.4),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
                 child: Icon(
-                  Icons.person_rounded,
+                  LucideIcons.userRound,
+                  color: context.themeData.colorScheme.onSurfaceVariant
+                      .withValues(alpha: 0.5),
+                  size: 24,
                 ),
               );
             },
           ),
         ),
-        title: Text(widget.artist.name),
+        title: Text(
+          widget.artist.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.2,
+          ),
+        ),
       ),
     );
   }

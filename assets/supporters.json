@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Darlison dos Santos Bernardo",
+    "amount": 10,
+    "currency": "BRL"
+  },
+  {
+    "name": "Miguel Silva Esch Gomes",
+    "amount": 1,
+    "currency": "BRL"
+  },
+  {
+    "name": "Ageu Isaque dos Santos",
+    "amount": 0.16,
+    "currency": "BRL"
+  },
+  {
+    "name": "Ageu Isaque dos Santos",
+    "amount": 0.05,
+    "currency": "BRL"
+  },
+  {
+    "name": "Nyckolas Tiaran Ribeiro Ferreira",
+    "amount": 30,
+    "currency": "BRL"
+  },
+  {
+    "name": "Gabrieli Christina da Cruz Nogueira",
+    "amount": 220,
+    "currency": "BRL",
+    "master_supporter": true
+  },
+  {
+    "name": "Jose Manoel Silva da Conceicao",
+    "amount": 26,
+    "currency": "BRL"
+  },
+  {
+    "name": "Raul Seixas Afonso de Oliveira",
+    "amount": 0.6,
+    "currency": "BRL"
+  },
+  {
+    "name": "Joo Victor de Sousa Oliveira",
+    "amount": 4.93,
+    "currency": "BRL"
+  },
+  {
+    "name": "Joab Francisco Mendes Gomes",
+    "amount": 1,
+    "currency": "BRL"
+  }
+]

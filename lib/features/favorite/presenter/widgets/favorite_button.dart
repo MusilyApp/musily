@@ -9,10 +9,12 @@ import 'package:musily/features/track/domain/entities/track_entity.dart';
 class FavoriteButton extends StatefulWidget {
   final TrackEntity track;
   final LibraryController libraryController;
+  final Color? color;
 
   const FavoriteButton({
     required this.libraryController,
     required this.track,
+    this.color,
     super.key,
   });
 
@@ -73,7 +75,8 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                       ? Icons.favorite_rounded
                       : Icons.favorite_border_rounded,
                   color: data.loadedFavoritesHash.contains(widget.track.hash)
-                      ? context.themeData.buttonTheme.colorScheme?.primary
+                      ? widget.color ??
+                          context.themeData.buttonTheme.colorScheme?.primary
                       : null,
                 ),
         );

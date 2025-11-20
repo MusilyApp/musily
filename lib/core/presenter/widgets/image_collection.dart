@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:musily/core/presenter/ui/boxes/ly_card.dart';
+import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 
 class ImageCollection extends StatelessWidget {
   final List<String> urls;
   final double size;
-  const ImageCollection({
-    required this.urls,
-    this.size = 50,
-    super.key,
-  });
+  const ImageCollection({required this.urls, this.size = 50, super.key});
 
   @override
   Widget build(BuildContext context) {
     String compressedImage(String url) {
       return url.replaceAll(
-          'w600-h600', 'w${(size).toInt()}-h${(size).toInt()}');
+        'w600-h600',
+        'w${(size).toInt()}-h${(size).toInt()}',
+      );
     }
 
     return SizedBox(
@@ -68,16 +66,12 @@ class ImageCollection extends StatelessWidget {
               fit: BoxFit.cover,
             );
           }
-          return LyCard(
+          return Container(
             width: size,
             height: size,
-            content: const Center(
-              child: AppImage(
-                '',
-                width: 210,
-                height: 210,
-                fit: BoxFit.cover,
-              ),
+            decoration: BoxDecoration(color: context.themeData.cardColor),
+            child: const Center(
+              child: AppImage('', width: 100, height: 100, fit: BoxFit.cover),
             ),
           );
         },

@@ -4,6 +4,7 @@ import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/core/utils/validate_email.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 
@@ -51,9 +52,9 @@ class _LoginPageState extends State<LoginPage> {
           preventPop: data.loading,
           child: Scaffold(
             key: widget.authController.loginPageKey,
-            appBar: AppBar(
+            appBar: MusilyAppBar(
               title: Text(context.localization.login),
-              automaticallyImplyLeading: !data.loading,
+              autoImplyLeading: !data.loading,
             ),
             body: Center(
               child: SizedBox(

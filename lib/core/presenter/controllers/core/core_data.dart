@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:musily/core/domain/presenter/app_controller.dart';
 
 class CoreData extends BaseControllerData {
@@ -9,6 +8,7 @@ class CoreData extends BaseControllerData {
   String backupFileDir;
   String windowTitle;
   bool isMaximized;
+  bool offlineMode;
 
   CoreData({
     required this.isShowingDialog,
@@ -18,6 +18,7 @@ class CoreData extends BaseControllerData {
     required this.backupFileDir,
     required this.isMaximized,
     required this.windowTitle,
+    this.offlineMode = false,
   });
 
   @override
@@ -29,6 +30,7 @@ class CoreData extends BaseControllerData {
     String? backupFileDir,
     String? windowTitle,
     bool? isMaximized,
+    bool? offlineMode,
   }) {
     return CoreData(
       isShowingDialog: isShowingDialog ?? this.isShowingDialog,
@@ -38,6 +40,7 @@ class CoreData extends BaseControllerData {
       backupFileDir: backupFileDir ?? this.backupFileDir,
       windowTitle: windowTitle ?? this.windowTitle,
       isMaximized: isMaximized ?? this.isMaximized,
+      offlineMode: offlineMode ?? this.offlineMode,
     );
   }
 }

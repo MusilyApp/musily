@@ -132,9 +132,9 @@ class MusilyPlayer implements MusilyAudioHandler {
   }
 
   @override
-  Future<void> skipToTrack(int newIndex) async {
+  Future<void> skipToTrack(String trackId) async {
     if (_audioHandler != null) {
-      await _audioHandler!.skipToTrack(newIndex);
+      await _audioHandler!.skipToTrack(trackId);
     }
   }
 
@@ -166,6 +166,13 @@ class MusilyPlayer implements MusilyAudioHandler {
       return queue;
     }
     return [];
+  }
+
+  @override
+  Future<void> setShuffledQueue(List<TrackEntity> items) async {
+    if (_audioHandler != null) {
+      await _audioHandler!.setShuffledQueue(items);
+    }
   }
 
   @override
@@ -236,6 +243,13 @@ class MusilyPlayer implements MusilyAudioHandler {
   void setVolume(double volume) {
     if (_audioHandler != null) {
       (_audioHandler as MusilyAudioHandlerImpl).setVolume(volume);
+    }
+  }
+
+  @override
+  Future<void> reorderQueue(int newIndex, int oldIndex) async {
+    if (_audioHandler != null) {
+      await _audioHandler!.reorderQueue(newIndex, oldIndex);
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/routers/downup_router.dart';
-import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
@@ -20,6 +20,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class SearchPage extends StatefulWidget {
   final CoreController coreController;
@@ -35,7 +36,7 @@ class SearchPage extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final GetSearchSuggestionsUsecase getSearchSuggestionsUsecase;
-
+  final GetTrackUsecase getTrackUsecase;
   const SearchPage({
     required this.coreController,
     required this.downloaderController,
@@ -51,6 +52,7 @@ class SearchPage extends StatefulWidget {
     required this.getArtistSinglesUsecase,
     required this.getSearchSuggestionsUsecase,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -102,6 +104,7 @@ class _SearchPageState extends State<SearchPage> {
     final action = await Navigator.of(context).push(
       DownupRouter(
         builder: (context) => ResultsPage(
+          getTrackUsecase: widget.getTrackUsecase,
           searchQuery: searchTextController.text,
           getPlaylistUsecase: widget.getPlaylistUsecase,
           resultsPageController: widget.resultsPageController,
@@ -145,11 +148,12 @@ class _SearchPageState extends State<SearchPage> {
         body: SafeArea(
           child: Column(
             children: [
+              // Search Bar
               Row(
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(16),
                       child: LyTextField(
                         hintText: context.localization.searchMusicAlbumOrArtist,
                         autocorrect: false,
@@ -158,58 +162,192 @@ class _SearchPageState extends State<SearchPage> {
                         onChanged: onSearchTextChanged,
                         onSubmitted: submitSearch,
                         autofocus: true,
-                        prefixIcon: const Icon(
-                          Icons.search,
+                        prefixIcon: Icon(
+                          LucideIcons.search,
+                          size: 20,
+                          color: context.themeData.colorScheme.onSurface
+                              .withValues(alpha: 0.7),
                         ),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.transparent),
+                        ),
+                        margin: EdgeInsets.zero,
                       ),
                     ),
                   ),
                   if (searchTextController.text.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12),
+                    Material(
+                      color: Colors.transparent,
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(300),
                         onTap: () {
                           searchTextController.text = '';
                           searchFocusNode.requestFocus();
-                          setState(
-                            () {
-                              searchSuggestions = [];
-                            },
-                          );
+                          setState(() {
+                            searchSuggestions = [];
+                          });
                         },
-                        child: const Icon(
-                          Icons.close,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            LucideIcons.x,
+                            size: 18,
+                            color: context.themeData.colorScheme.onSurface
+                                .withValues(alpha: 0.7),
+                          ),
                         ),
                       ),
                     ),
                 ],
               ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    ...searchSuggestions.map(
-                      (suggestion) => LyListTile(
-                        onTap: () {
-                          submitSearch(suggestion);
-                          searchTextController.text = suggestion;
-                          getSearchSuggestions();
-                        },
-                        leading: const Icon(Icons.search_rounded),
-                        title: Text(suggestion),
-                        trailing: IconButton(
-                          onPressed: () {
-                            searchTextController.text = suggestion;
-                            getSearchSuggestions();
-                          },
-                          icon: const Icon(
-                            Icons.north_west,
-                          ),
+              // Suggestions Header
+              if (searchSuggestions.isNotEmpty) ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: context.themeData.colorScheme.primary,
+                          borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 12),
+                      Text(
+                        context.localization.searchSuggestions,
+                        style:
+                            context.themeData.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+              ],
+              // Suggestions List
+              Expanded(
+                child: searchSuggestions.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              LucideIcons.search,
+                              size: 64,
+                              color: context.themeData.colorScheme.onSurface
+                                  .withValues(alpha: 0.3),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              context.localization.searchStartTyping,
+                              style: context.themeData.textTheme.bodyLarge
+                                  ?.copyWith(
+                                color: context.themeData.colorScheme.onSurface
+                                    .withValues(alpha: 0.6),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: searchSuggestions.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 4),
+                        itemBuilder: (context, index) {
+                          final suggestion = searchSuggestions[index];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 4),
+                            decoration: BoxDecoration(
+                              color: context
+                                  .themeData.colorScheme.surfaceContainerHighest
+                                  .withValues(alpha: 0.4),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: context.themeData.colorScheme.outline
+                                    .withValues(alpha: 0.1),
+                                width: 1,
+                              ),
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {
+                                  submitSearch(suggestion);
+                                  searchTextController.text = suggestion;
+                                  getSearchSuggestions();
+                                },
+                                borderRadius: BorderRadius.circular(12),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: context
+                                              .themeData.colorScheme.primary
+                                              .withValues(alpha: 0.15),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Icon(
+                                          LucideIcons.search,
+                                          size: 16,
+                                          color: context
+                                              .themeData.colorScheme.primary,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          suggestion,
+                                          style: context
+                                              .themeData.textTheme.bodyMedium
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () {
+                                            searchTextController.text =
+                                                suggestion;
+                                            getSearchSuggestions();
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Icon(
+                                              LucideIcons.moveUpLeft,
+                                              size: 18,
+                                              color: context.themeData
+                                                  .colorScheme.onSurface
+                                                  .withValues(alpha: 0.6),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
               ),
             ],
           ),

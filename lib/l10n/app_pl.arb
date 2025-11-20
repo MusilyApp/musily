@@ -1,0 +1,349 @@
+{
+  "home": "Strona główna",
+  "search": "Szukaj",
+  "library": "Biblioteka",
+  "favorites": "Ulubione",
+  "searchMusicAlbumOrArtist": "Szukaj muzyki, albumu lub artysty",
+  "musics": "Muzyka",
+  "albums": "Albumy",
+  "artists": "Artyści",
+  "all": "Wszystko",
+  "playlists": "Playlisty",
+  "download": "Pobierz",
+  "addToPlaylist": "Dodaj do playlisty",
+  "addToQueue": "Dodaj do kolejki",
+  "goToAlbum": "Przejdź do albumu",
+  "goToArtist": "Przejdź do artysty",
+  "share": "Udostępnij",
+  "play": "Odtwarzaj",
+  "shufflePlay": "Odtwarzaj losowo",
+  "addToLibrary": "Dodaj do biblioteki",
+  "follow": "Obserwuj",
+  "following": "Obserwowany",
+  "more": "Więcej",
+  "topSongs": "Najpopularniejsze utwory",
+  "topAlbums": "Najpopularniejsze albumy",
+  "topSingles": "Najpopularniejsze single",
+  "similarArtists": "Podobni artyści",
+  "removeFromLibrary": "Usuń z biblioteki",
+  "createPlaylist": "Utwórz playlistę",
+  "playlistName": "Nazwa playlisty",
+  "cancel": "Anuluj",
+  "back": "Wstecz",
+  "create": "Utwórz",
+  "playlist": "Playlista",
+  "songs": "Utwory",
+  "deletePlaylist": "Usuń playlistę",
+  "editPlaylist": "Edytuj playlistę",
+  "confirm": "Potwierdź",
+  "doYouWantToDeleteThePlaylist": "Czy chcesz usunąć playlistę?",
+  "delete": "Usuń",
+  "theActionCannotBeUndone": "Tej czynności nie można cofnąć.",
+  "playingNow": "Odtwarzane teraz",
+  "emptyLibrary": "Twoja biblioteka jest pusta",
+  "emptyLibraryDescription": "Dodaj elementy do swojej biblioteki, aby je tu zobaczyć",
+  "albumNotFound": "Album nie znaleziony",
+  "artistNotFound": "Artysta nie znaleziony",
+  "cancelDownload": "Anuluj pobieranie",
+  "pause": "Wstrzymaj",
+  "album": "Album",
+  "singles": "Single",
+  "noMoreSingles": "Brak więcej singli dostępnych dla tego artysty.",
+  "noMoreAlbums": "Brak więcej albumów dostępnych dla tego artysty.",
+  "songsNotFound": "Nie znaleziono utworów.",
+  "playlistNotFound": "Playlista nie znaleziona.",
+  "requiredField": "To pole jest wymagane.",
+  "deleteDownload": "Usuń pobieranie",
+  "noPlaylists": "Nie masz żadnych playlist.",
+  "removeFromPlaylist": "Usuń z playlisty",
+  "downloadManager": "Menedżer pobierania",
+  "downloads": "Pobieranie",
+  "offline": "Offline",
+  "offlineMode": "Tryb offline",
+  "offlineModeDescription": "Jesteś obecnie offline. Niektóre funkcje mogą być niedostępne.",
+  "lyricsNotFound": "Tekst piosenki nie znaleziony",
+  "lyricsNotSynced": "Tekst piosenki nie jest zsynchronizowany",
+  "lyricsNotSyncedDescription": "Te linie nie będą się poruszać z odtwarzaniem muzyki.",
+  "lyricsParsedSync": "Zsynchronizowaliśmy ten tekst dla Ciebie",
+  "lyricsParsedSyncDescription": "Został wygenerowany automatycznie i może być nieco poza rytmem.",
+  "lyrics": "Teksty piosenek",
+  "settings": "Ustawienia",
+  "accounts": "Konta",
+  "language": "Język",
+  "theme": "Motyw",
+  "dark": "Ciemny",
+  "light": "Jasny",
+  "system": "Systemowy",
+  "licenses": "Licencje",
+  "about": "O aplikacji",
+  "aboutSupporters": "O aplikacji i wspierających",
+  "application": "Aplikacja",
+  "others": "Inne",
+  "supportersTitle": "Wspierający",
+  "supportersEmpty": "Brak jeszcze wymienionych wspierających.",
+  "close": "Zamknij",
+  "copiedToClipboard": "Skopiowano do schowka",
+  "noDownloads": "Brak pobierania",
+  "noResults": "Brak wyników",
+  "tryDifferentKeywords": "Spróbuj innych słów kluczowych lub sprawdź pisownię",
+  "downloadCompleted": "Pobieranie zakończone",
+  "selectALanguage": "Wybierz język",
+  "account": "Konto",
+  "login": "Zaloguj się",
+  "email": "E-mail",
+  "password": "Hasło",
+  "pleaseEnterYourEmail": "Wprowadź swój e-mail",
+  "pleaseEnterAValidEmail": "Wprowadź prawidłowy e-mail",
+  "pleaseEnterYourPassword": "Wprowadź swoje hasło",
+  "passwordMustBeAtLeast8Characters": "Hasło musi zawierać co najmniej 8 znaków",
+  "createAccount": "Utwórz konto",
+  "name": "Nazwa",
+  "pleaseEnterYourName": "Wprowadź swoje imię",
+  "artist": "Artysta",
+  "internalServerError": "Błąd wewnętrzny serwera",
+  "invalidRequest": "Nieprawidłowe żądanie",
+  "emailAlreadyInUse": "Ten e-mail jest już w użyciu",
+  "invalidCredentials": "Nieprawidłowe dane logowania",
+  "loginRequired": "Wymagane logowanie",
+  "itemNotFound": "Element nie znaleziony",
+  "invalidUserId": "Nieprawidłowy identyfikator użytkownika",
+  "userNotFound": "Użytkownik nie znaleziony",
+  "comeCheckTEMPLATEOnMusily": "Sprawdź TEMPLATE w Musily!",
+  "backup": "Kopia zapasowa",
+  "restore": "Przywróć",
+  "backupLibrary": "Kopia zapasowa biblioteki",
+  "backupCompletedSuccessfully": "Kopia zapasowa zakończona pomyślnie!",
+  "backupFailed": "Kopia zapasowa nie powiodła się",
+  "includeLibrary": "Uwzględnij bibliotekę",
+  "includeDownloads": "Uwzględnij pobieranie",
+  "startBackup": "Rozpocznij kopię zapasową",
+  "doYouWantToRestoreThisBackup": "Czy chcesz przywrócić tę kopię zapasową?",
+  "backupInProgress": "Kopia zapasowa w toku",
+  "backupRestoredSuccessfully": "Kopia zapasowa przywrócona pomyślnie",
+  "backupFileDoesNotExist": "Plik kopii zapasowej nie istnieje",
+  "musicSavedToDownloads": "Muzyka zapisana w pobieraniu",
+  "saveToDownloads": "Zapisz w pobieraniu",
+  "importingPlaylist": "Importowanie playlisty",
+  "playlistNameOrUrl": "Nazwa lub URL playlisty",
+  "hide": "Ukryj",
+  "whenClosingTheApplication": "Przy zamykaniu aplikacji",
+  "showWindow": "Pokaż okno",
+  "closeWindow": "Zamknij okno",
+  "newUpdateAvailable": "Nowa aktualizacja dostępna",
+  "defaultColor": "Domyślny kolor",
+  "accentColor": "Kolor akcentu",
+  "recommendedAlbums": "Polecane albumy",
+  "recommendedMusic": "Polecana muzyka",
+  "moreRecommendations": "Więcej rekomendacji",
+  "cancelOperation": "Anulować operację?",
+  "cancelBackupConfirmation": "Czy na pewno chcesz anulować kopię zapasową? Postęp zostanie utracony.",
+  "cancelRestoreConfirmation": "Czy na pewno chcesz anulować przywracanie? Postęp zostanie utracony.",
+  "yes": "Tak",
+  "no": "Nie",
+  "initializingBackup": "Inicjalizacja kopii zapasowej...",
+  "creatingBackupArchive": "Tworzenie archiwum kopii zapasowej...",
+  "backingUpDownloadsMetadata": "Tworzenie kopii zapasowej metadanych pobierania...",
+  "backingUpAudioFiles": "Tworzenie kopii zapasowej plików audio...",
+  "backingUpLibraryData": "Tworzenie kopii zapasowej danych biblioteki...",
+  "writingBackupFile": "Zapisywanie pliku kopii zapasowej...",
+  "savingToStorage": "Zapisywanie do magazynu...",
+  "backupCancelled": "Kopia zapasowa anulowana",
+  "startingBackup": "Rozpoczynanie kopii zapasowej...",
+  "startingRestore": "Rozpoczynanie przywracania...",
+  "initializingRestore": "Inicjalizacja przywracania...",
+  "readingBackupFile": "Odczytywanie pliku kopii zapasowej...",
+  "extractingLibraryData": "Wyodrębnianie danych biblioteki...",
+  "extractingDownloadsData": "Wyodrębnianie danych pobierania...",
+  "extractingAudioFiles": "Wyodrębnianie plików audio...",
+  "finalizingRestore": "Finalizowanie przywracania...",
+  "restoreCompletedSuccessfully": "Przywracanie zakończone pomyślnie!",
+  "restoreFailed": "Przywracanie nie powiodło się",
+  "backupFileNotFound": "Plik kopii zapasowej nie znaleziony",
+  "savedTo": "Zapisano w: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "Nadaj swojej playliście świeżą tożsamość.",
+  "playlistDetailsTitle": "Szczegóły",
+  "playlistEmptyStateDescription": "Utwórz playlistę, aby zacząć zapisywać swoje ulubione utwory.",
+  "playlistSelectTitle": "Wybierz playlistę",
+  "playlistSelectDescription": "Wybierz, gdzie mają być dodane wybrane utwory.",
+  "playlistCreatorSubtitle": "Dodaj nazwę lub wklej link do playlisty",
+  "playlistCreatorPasteInfo": "Możesz wkleić URL playlisty YouTube, aby automatycznie ją zaimportować.",
+  "artistNotFoundDescription": "Szukany artysta nie został znaleziony.",
+  "artistNoSinglesDescription": "Brak singli dostępnych dla tego artysty.",
+  "artistNoAlbumsDescription": "Brak albumów dostępnych dla tego artysty.",
+  "artistNoSongsDescription": "Brak utworów dostępnych dla tego artysty.",
+  "lyricsNotAvailable": "Brak tekstu piosenki dostępnego dla tego utworu.",
+  "queueEmptyTitle": "Twoja kolejka jest pusta",
+  "queueEmptyMessage": "Dodaj utwory do kolejki, aby cieszyć się muzyką.",
+  "noItemsFound": "Nie znaleziono elementów",
+  "downloadsEmptyMessage": "Twoje pobrane utwory pojawią się tutaj.",
+  "downloadingSectionTitle": "Pobieranie",
+  "queuedSectionTitle": "W kolejce",
+  "completedSectionTitle": "Zakończone",
+  "failedSectionTitle": "Nieudane",
+  "searchSuggestions": "Sugestie",
+  "searchStartTyping": "Zacznij pisać, aby wyszukać",
+  "smartSuggestionsTitle": "Inteligentne sugestie",
+  "smartSuggestionsDescription": "Automatycznie dodawaj podobne utwory",
+  "libraryManagementSectionTitle": "Zarządzanie biblioteką",
+  "localLibraryTitle": "Lokalna biblioteka",
+  "localLibraryDescription": "Zarządzaj folderami z urządzenia, aby odtwarzać lokalne pliki audio.",
+  "localFilesLabel": "Pliki lokalne",
+  "@localFilesLabel": {
+    "description": "Etykieta zapasowa używana, gdy lokalny utwór nie ma metadanych artysty."
+  },
+  "manageLocalFolders": "Zarządzaj lokalnymi folderami",
+  "manageLocalFoldersDescription": "Dodaj, zmień nazwę lub usuń katalogi zsynchronizowane z biblioteką Musily.",
+  "addLocalFolder": "Dodaj lokalny folder",
+  "emptyLocalLibrary": "Brak jeszcze lokalnych folderów",
+  "emptyLocalLibraryDescription": "Dodaj folder z urządzenia, aby zachować dostęp do lokalnych utworów w Musily.",
+  "chooseDirectory": "Wybierz katalog",
+  "invalidDirectory": "Katalog nie znaleziony",
+  "invalidDirectoryDescription": "Nie można uzyskać dostępu do tego folderu. Zaktualizuj ścieżkę lub usuń wpis.",
+  "removeLocalFolderConfirmation": "Usunąć \"{name}\" z lokalnej biblioteki?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Nie znaleziono utworów",
+  "emptyLocalPlaylistDescription": "Upewnij się, że folder nadal istnieje i zawiera obsługiwane pliki audio.",
+  "changeDirectory": "Zmień katalog",
+  "updateDirectory": "Zaktualizuj katalog",
+  "localFolderPreviewOverflow": "+{count} więcej folderów",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Otwórz",
+  "rename": "Zmień nazwę",
+  "remove": "Usuń",
+  "refresh": "Odśwież",
+  "backupLibraryDescription": "Utwórz kopię zapasową swojej biblioteki",
+  "restoreLibraryDescription": "Przywróć swoją bibliotekę z kopii zapasowej",
+  "includeLibraryDescription": "Utwórz kopię zapasową zapisanych albumów, artystów i playlist",
+  "includeDownloadsDescription": "Utwórz kopię zapasową pobranych utworów",
+  "fullScreenPlayerTooltip": "Odtwarzacz pełnoekranowy",
+  "sleepTimer": "Timer snu",
+  "sleepTimerDescription": "Muzyka wstrzyma się po wybranym czasie",
+  "sleepTimerActive": "Timer snu: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} godz.",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 godz.",
+  "customTime": "Niestandardowy",
+  "enterTime": "Wprowadź czas",
+  "minutesLabel": "Minuty",
+  "hoursLabel": "Godziny",
+  "cancelTimer": "Anuluj timer",
+  "cancelTimerQuestion": "Czy chcesz anulować timer snu?",
+  "timerInfo": "Timer aktywny przez {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Dodaj czas",
+  "clearQueueTitle": "Wyczyść kolejkę",
+  "clearQueueMessage": "Wyczyścić wszystkie pobierania w kolejce/oczekujące?",
+  "clearQueueDescription": "To anuluje wszystkie oczekujące pobierania. Zakończone pobierania nie zostaną naruszone.",
+  "downloadManagerSummary": "{active} aktywne • {queued} w kolejce",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Ponów wszystkie",
+  "downloadManagerClearFailed": "Wyczyść nieudane",
+  "downloadManagerClearCompleted": "Wyczyść zakończone",
+  "clearCompletedDownloadsTitle": "Wyczyść zakończone pobierania",
+  "clearCompletedDownloadsMessage": "Usunąć wszystkie zakończone pobierania?",
+  "clearCompletedDownloadsDescription": "To usunie pobrane pliki z magazynu. Tej czynności nie można cofnąć.",
+  "itemCount": "{count, plural, =1{1 element} other{{count} elementów}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} zakończone • {failed} nieudane",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Szacowany całkowity czas",
+  "downloadErrorResolveUrl": "Nie można rozwiązać URL pobierania",
+  "downloadErrorFileValidation": "Walidacja pobranego pliku nie powiodła się",
+  "downloadErrorUnexpectedMessage": "Nieoczekiwana odpowiedź pobierania",
+  "clear": "Wyczyść",
+  "queueTools": "Narzędzia kolejki",
+  "queueToolsDescription": "Zmień kolejność kolejki i utwórz playlisty",
+  "playlistCreated": "Playlista utworzona pomyślnie",
+  "queue": "Kolejka",
+  "tracksSelected": "utworów wybranych",
+  "selectAll": "Zaznacz wszystkie",
+  "deselectAll": "Odznacz wszystkie",
+  "updateDirectoryDescription": "Wybierz nowy katalog dla tej playlisty",
+  "select": "Wybierz",
+  "invalidDirectory": "Nieprawidłowy katalog",
+  "renameLocalFolder": "Zmień nazwę folderu",
+  "removeLocalFolder": "Usuń folder",
+  "save": "Zapisz",
+  "localPlaylist": "Lokalna playlista",
+  "versionManager": "Menedżer wersji",
+  "retry": "Ponów",
+  "noReleasesFound": "Nie znaleziono wydań",
+  "version": "Wersja",
+  "alreadyInstalled": "Już zainstalowane",
+  "update": "Aktualizuj",
+  "changelog": "Dziennik zmian",
+  "changelogNotAvailable": "Dziennik zmian niedostępny",
+  "later": "Później",
+  "updateAvailableDescription": "Dostępna jest nowa wersja Musily. Zaktualizuj teraz, aby uzyskać najnowsze funkcje i ulepszenia.",
+  "recommendations": "Rekomendacje"
+}

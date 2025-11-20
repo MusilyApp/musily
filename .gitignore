@@ -73,6 +73,7 @@ android/.kotlin
 
 # Project related
 .oldfiles
+untranslated_messages.txt
 
 # Flatpak
 *.flatpak

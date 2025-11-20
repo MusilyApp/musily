@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -11,6 +12,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 import 'package:musily/features/track/presenter/widgets/track_tile.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
@@ -27,6 +29,7 @@ class TrackSearcher extends StatelessWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final void Function(TrackEntity track, SearchController controller)?
       clickAction;
   final List<TrackEntity> tracks;
@@ -46,6 +49,7 @@ class TrackSearcher extends StatelessWidget {
     required this.getArtistSinglesUsecase,
     this.clickAction,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -57,9 +61,7 @@ class TrackSearcher extends StatelessWidget {
           onPressed: () {
             controller.openView();
           },
-          icon: const Icon(
-            Icons.search_rounded,
-          ),
+          icon: const Icon(LucideIcons.search),
         );
       },
       viewBackgroundColor: context.display.isDesktop
@@ -67,13 +69,9 @@ class TrackSearcher extends StatelessWidget {
           : context.themeData.scaffoldBackgroundColor,
       viewShape: context.display.isDesktop
           ? RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                12,
-              ),
+              borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: context.themeData.dividerColor.withValues(
-                  alpha: .2,
-                ),
+                color: context.themeData.dividerColor.withValues(alpha: .2),
               ),
             )
           : null,
@@ -81,9 +79,7 @@ class TrackSearcher extends StatelessWidget {
         return [
           ...tracks
               .where(
-                (e) => RegExp(
-                  controller.text.toLowerCase().trim(),
-                ).hasMatch(
+                (e) => RegExp(controller.text.toLowerCase().trim()).hasMatch(
                   '${e.title} ${e.artist.name} ${e.album.title}'
                       .toLowerCase()
                       .trim(),
@@ -91,6 +87,7 @@ class TrackSearcher extends StatelessWidget {
               )
               .map<Widget>(
                 (e) => TrackTile(
+                  getTrackUsecase: getTrackUsecase,
                   customAction: () => clickAction?.call(e, controller),
                   track: e,
                   coreController: coreController,
@@ -107,13 +104,7 @@ class TrackSearcher extends StatelessWidget {
                 ),
               )
               .toList()
-            ..addAll(
-              [
-                PlayerSizedBox(
-                  playerController: playerController,
-                ),
-              ],
-            ),
+            ..addAll([PlayerSizedBox(playerController: playerController)]),
         ];
       },
     );

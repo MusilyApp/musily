@@ -112,12 +112,14 @@ class _LyTextFieldState extends State<LyTextField> {
               TextStyle(
                 color: hasFocus
                     ? context.themeData.colorScheme.primary
-                    : context.themeData.colorScheme.onSurface,
+                    : context.themeData.colorScheme.onSurface
+                        .withValues(alpha: 0.9),
+                fontWeight: hasFocus ? FontWeight.w600 : FontWeight.w500,
               ),
           hintStyle: widget.hintStyle ??
               TextStyle(
                 color: context.themeData.colorScheme.onSurface
-                    .withValues(alpha: 0.5),
+                    .withValues(alpha: 0.6),
               ),
           contentPadding: widget.contentPadding ??
               EdgeInsets.symmetric(
@@ -125,32 +127,58 @@ class _LyTextFieldState extends State<LyTextField> {
                 horizontal: 16,
               ),
           border: OutlineInputBorder(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
             borderSide: BorderSide(
               color: hasFocus
                   ? context.themeData.colorScheme.primary
-                  : context.themeData.colorScheme.onSurface
-                      .withValues(alpha: 0.4),
+                  : context.themeData.colorScheme.outline
+                      .withValues(alpha: 0.15),
+              width: hasFocus ? 1.5 : 1,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: context.themeData.colorScheme.onSurface
-                  .withValues(alpha: 0.4),
+              color:
+                  context.themeData.colorScheme.outline.withValues(alpha: 0.15),
+              width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
             borderSide: BorderSide(
               color: context.themeData.colorScheme.primary,
-              width: 2,
+              width: 1.5,
+            ),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
+            borderSide: BorderSide(
+              color:
+                  context.themeData.colorScheme.outline.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
+            borderSide: BorderSide(
+              color: context.themeData.colorScheme.error,
+              width: 1.5,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
+            borderSide: BorderSide(
+              color: context.themeData.colorScheme.error,
+              width: 1.5,
             ),
           ),
           filled: true,
           fillColor: hasFocus
-              ? context.themeData.colorScheme.onPrimary.withValues(alpha: 0.1)
-              : context.themeData.colorScheme.surface,
+              ? context.themeData.colorScheme.primaryContainer
+                  .withValues(alpha: 0.3)
+              : context.themeData.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.4),
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.suffixIcon,
         ),

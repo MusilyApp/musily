@@ -7,6 +7,8 @@
   "musics": "Музика",
   "albums": "Альбоми",
   "artists": "Виконавці",
+  "all": "Всі",
+  "playlists": "Плейлисти",
   "download": "Завантажити",
   "addToPlaylist": "Додати до плейлиста",
   "addToQueue": "Додати до черги",
@@ -27,6 +29,7 @@
   "createPlaylist": "Створити плейлист",
   "playlistName": "Назва плейлиста",
   "cancel": "Скасувати",
+  "back": "Назад",
   "create": "Створити",
   "playlist": "Плейлист",
   "songs": "Пісні",
@@ -38,6 +41,7 @@
   "theActionCannotBeUndone": "Цю дію неможливо скасувати.",
   "playingNow": "Зараз грає",
   "emptyLibrary": "Ваша бібліотека порожня",
+  "emptyLibraryDescription": "Додайте елементи до бібліотеки, щоб побачити їх тут",
   "albumNotFound": "Альбом не знайдено",
   "artistNotFound": "Виконавець не знайдено",
   "cancelDownload": "Скасувати завантаження",
@@ -55,7 +59,14 @@
   "downloadManager": "Менеджер завантажень",
   "downloads": "Завантаження",
   "offline": "Офлайн",
+  "offlineMode": "Офлайн режим",
+  "offlineModeDescription": "Ви зараз в офлайн режимі. Деякі функції можуть бути недоступні.",
   "lyricsNotFound": "Текст пісні не знайдено",
+  "lyricsNotSynced": "Текст не синхронізований",
+  "lyricsNotSyncedDescription": "Рядки не рухатимуться разом із музикою.",
+  "lyricsParsedSync": "Ми синхронізували цей текст для вас",
+  "lyricsParsedSyncDescription": "Синхронізацію згенеровано автоматично, тому можливі невеликі неточності.",
+  "lyrics": "Тексти",
   "settings": "Налаштування",
   "accounts": "Акаунти",
   "language": "Мова",
@@ -65,12 +76,16 @@
   "system": "Системна",
   "licenses": "Ліцензії",
   "about": "Про",
+  "aboutSupporters": "Про застосунок і підтримувачів",
   "application": "Програма",
   "others": "Інші",
+  "supportersTitle": "Підтримувачі",
+  "supportersEmpty": "Поки що немає підтримувачів.",
   "close": "Закрити",
   "copiedToClipboard": "Скопійовано до буфера обміну",
   "noDownloads": "Немає завантажень",
   "noResults": "Немає результатів",
+  "tryDifferentKeywords": "Спробуйте інші ключові слова або перевірте правопис",
   "downloadCompleted": "Завантаження завершено",
   "selectALanguage": "Виберіть мову",
   "account": "Акаунт",
@@ -116,5 +131,211 @@
   "closeWindow": "Закрити вікно",
   "newUpdateAvailable": "Доступне нове оновлення",
   "defaultColor": "Колір за замовчуванням",
-  "accentColor": "Акцентний колір"
+  "accentColor": "Акцентний колір",
+  "recommendedAlbums": "Рекомендовані Альбоми",
+  "recommendedMusic": "Рекомендована Музика",
+  "moreRecommendations": "Більше рекомендацій",
+  "cancelOperation": "Скасувати операцію?",
+  "cancelBackupConfirmation": "Ви впевнені, що хочете скасувати резервне копіювання? Прогрес буде втрачено.",
+  "cancelRestoreConfirmation": "Ви впевнені, що хочете скасувати відновлення? Прогрес буде втрачено.",
+  "yes": "Так",
+  "no": "Ні",
+  "initializingBackup": "Ініціалізація резервного копіювання...",
+  "creatingBackupArchive": "Створення архіву резервної копії...",
+  "backingUpDownloadsMetadata": "Резервне копіювання метаданих завантажень...",
+  "backingUpAudioFiles": "Резервне копіювання аудіофайлів...",
+  "backingUpLibraryData": "Резервне копіювання даних бібліотеки...",
+  "writingBackupFile": "Запис файлу резервної копії...",
+  "savingToStorage": "Збереження в сховище...",
+  "backupCancelled": "Резервне копіювання скасовано",
+  "startingBackup": "Запуск резервного копіювання...",
+  "startingRestore": "Запуск відновлення...",
+  "initializingRestore": "Ініціалізація відновлення...",
+  "readingBackupFile": "Читання файлу резервної копії...",
+  "extractingLibraryData": "Вилучення даних бібліотеки...",
+  "extractingDownloadsData": "Вилучення даних завантажень...",
+  "extractingAudioFiles": "Вилучення аудіофайлів...",
+  "finalizingRestore": "Завершення відновлення...",
+  "restoreCompletedSuccessfully": "Відновлення успішно завершено!",
+  "restoreFailed": "Відновлення не вдалося",
+  "backupFileNotFound": "Файл резервної копії не знайдено",
+  "savedTo": "Збережено в: {filename}",
+  "playlistEditSubtitle": "Надайте плейлисту нову індивідуальність.",
+  "playlistDetailsTitle": "Деталі",
+  "playlistEmptyStateDescription": "Створіть плейлист, щоб почати зберігати улюблені треки.",
+  "playlistSelectTitle": "Виберіть плейлист",
+  "playlistSelectDescription": "Виберіть, куди додати вибрані треки.",
+  "playlistCreatorSubtitle": "Додайте назву або вставте посилання на плейлист",
+  "playlistCreatorPasteInfo": "Можете вставити URL плейлиста YouTube, щоб імпортувати його автоматично.",
+  "artistNotFoundDescription": "Потрібного артиста не знайдено.",
+  "artistNoSinglesDescription": "Для цього артиста немає синглів.",
+  "artistNoAlbumsDescription": "Для цього артиста немає альбомів.",
+  "artistNoSongsDescription": "Для цього артиста немає пісень.",
+  "lyricsNotAvailable": "Для цього треку немає тексту.",
+  "queueEmptyTitle": "Ваша черга порожня",
+  "queueEmptyMessage": "Додайте пісні до черги, щоб насолоджуватися музикою.",
+  "noItemsFound": "Жодного елемента не знайдено",
+  "downloadsEmptyMessage": "Ваші завантажені треки з’являться тут.",
+  "downloadingSectionTitle": "Завантаження",
+  "queuedSectionTitle": "У черзі",
+  "completedSectionTitle": "Завершено",
+  "failedSectionTitle": "Помилка",
+  "searchSuggestions": "Пропозиції",
+  "searchStartTyping": "Почніть вводити для пошуку",
+  "smartSuggestionsTitle": "Розумні пропозиції",
+  "smartSuggestionsDescription": "Автоматично додавати схожі треки",
+  "libraryManagementSectionTitle": "Керування бібліотекою",
+  "localLibraryTitle": "Локальна бібліотека",
+  "localLibraryDescription": "Керуйте папками пристрою, щоб відтворювати локальні аудіофайли.",
+  "localFilesLabel": "Локальні файли",
+  "@localFilesLabel": {
+    "description": "Підпис, коли в локального треку немає метаданих виконавця."
+  },
+  "manageLocalFolders": "Керувати локальними папками",
+  "manageLocalFoldersDescription": "Додавайте, перейменовуйте або видаляйте каталоги, синхронізовані з бібліотекою.",
+  "addLocalFolder": "Додати локальну папку",
+  "emptyLocalLibrary": "Немає локальних папок",
+  "emptyLocalLibraryDescription": "Додайте папку з пристрою, щоб мати доступ до локальних треків у Musily.",
+  "chooseDirectory": "Вибрати директорію",
+  "invalidDirectory": "Каталог не знайдено",
+  "invalidDirectoryDescription": "Не вдалося отримати доступ до цієї папки. Оновіть шлях або видаліть запис.",
+  "removeLocalFolderConfirmation": "Видалити «{name}» з локальної бібліотеки?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Треки не знайдені",
+  "emptyLocalPlaylistDescription": "Переконайтеся, що папка існує та містить підтримувані аудіофайли.",
+  "changeDirectory": "Змінити директорію",
+  "updateDirectory": "Оновити директорію",
+  "updateDirectoryDescription": "Оберіть нову директорію для цього плейлиста",
+  "localFolderPreviewOverflow": "+ще {count} папок",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Відкрити",
+  "select": "Вибрати",
+  "rename": "Перейменувати",
+  "renameLocalFolder": "Перейменувати локальну папку",
+  "remove": "Видалити",
+  "removeLocalFolder": "Видалити локальну папку",
+  "refresh": "Оновити",
+  "save": "Зберегти",
+  "localPlaylist": "Локальний плейлист",
+  "backupLibraryDescription": "Створіть резервну копію своєї бібліотеки",
+  "restoreLibraryDescription": "Відновіть бібліотеку з резервної копії",
+  "includeLibraryDescription": "Створіть резервну копію збережених альбомів, виконавців та плейлистів",
+  "includeDownloadsDescription": "Створіть резервну копію завантажених треків",
+  "fullScreenPlayerTooltip": "Повноекранний плеєр",
+  "sleepTimer": "Таймер сну",
+  "sleepTimerDescription": "Музика призупиниться через обраний час",
+  "sleepTimerActive": "Таймер сну: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} хв",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} год",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 год",
+  "customTime": "Вибрати",
+  "enterTime": "Введіть час",
+  "minutesLabel": "Хвилини",
+  "hoursLabel": "Години",
+  "cancelTimer": "Скасувати таймер",
+  "cancelTimerQuestion": "Ви хочете скасувати таймер сну?",
+  "timerInfo": "Таймер активний на {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Додати час",
+  "clearQueueTitle": "Очистити чергу",
+  "clearQueueMessage": "Очистити всі завантаження в черзі/очікуванні?",
+  "clearQueueDescription": "Це скасує всі очікуючі завантаження. Завершені завантаження не будуть порушені.",
+  "downloadManagerSummary": "{active} активних • {queued} у черзі",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Повторити всі",
+  "downloadManagerClearFailed": "Очистити невдалі",
+  "downloadManagerClearCompleted": "Очистити завершені",
+  "clearCompletedDownloadsTitle": "Очистити завершені завантаження",
+  "clearCompletedDownloadsMessage": "Видалити всі завершені завантаження?",
+  "clearCompletedDownloadsDescription": "Це видалить завантажені файли з пам'яті. Дію не можна скасувати.",
+  "itemCount": "{count, plural, =1{1 елемент} other{{count} елементів}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} завершено • {failed} невдалих",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Орієнтовний загальний час",
+  "downloadErrorResolveUrl": "Не вдалося отримати URL завантаження",
+  "downloadErrorFileValidation": "Не вдалося перевірити завантажений файл",
+  "downloadErrorUnexpectedMessage": "Неочікувана відповідь під час завантаження",
+  "clear": "Очистити",
+  "queueTools": "Інструменти черги",
+  "queueToolsDescription": "Змінити порядок черги та створювати плейлисти",
+  "playlistCreated": "Плейлист успішно створено",
+  "queue": "Черга",
+  "tracksSelected": "треків вибрано",
+  "selectAll": "Вибрати все",
+  "deselectAll": "Зняти вибір",
+  "versionManager": "Менеджер версій",
+  "retry": "Повторити",
+  "noReleasesFound": "Версії не знайдено",
+  "version": "Версія",
+  "alreadyInstalled": "Вже встановлено",
+  "update": "Оновити",
+  "changelog": "Зміни",
+  "changelogNotAvailable": "Зміни недоступні",
+  "later": "Пізніше",
+  "updateAvailableDescription": "Доступна нова версія Musily. Оновіть зараз, щоб отримати останні функції та покращення.",
+  "recommendations": "Рекомендації"
 }

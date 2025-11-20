@@ -11,11 +11,14 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 Future<String?> _getYoutubeAudioUrl(String ytId) async {
   try {
     final yt = YoutubeExplode();
-    final manifest = await yt.videos.streamsClient.getManifest(VideoId(ytId),
-        requireWatchPage: true, ytClients: [YoutubeApiClient.androidVr]);
-    final audioStreamInfoSorted = manifest.audioOnly.sortByBitrate();
+    final manifest = await yt.videos.streamsClient.getManifest(
+      VideoId(ytId),
+      requireWatchPage: true,
+      ytClients: [YoutubeApiClient.androidVr],
+    );
+    final supportedStreams = manifest.audioOnly.sortByBitrate();
 
-    final audioStreamInfo = audioStreamInfoSorted.firstOrNull;
+    final audioStreamInfo = supportedStreams.lastOrNull;
     if (audioStreamInfo == null) {
       return null;
     }
@@ -72,7 +75,7 @@ class GetPlayableItemUsecaseImpl implements GetPlayableItemUsecase {
         duration: track.duration,
       );
     } catch (e, stackTrace) {
-      LySnackbar.show(e.toString());
+      LySnackbar.showError(e.toString());
       log('error: $e', stackTrace: stackTrace);
       return track;
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/extensions/color_scheme.dart';
 import 'package:musily/core/presenter/ui/window/ly_window_command_button.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -168,8 +169,16 @@ class _LyHeaderBarState extends State<LyHeaderBar> with WindowListener {
                 child: Container(
                   decoration: BoxDecoration(
                     color: isFocused
-                        ? context.themeData.cardColor
-                        : context.themeData.snackBarTheme.backgroundColor,
+                        ? context.themeData.scaffoldBackgroundColor
+                        : context.themeData.colorScheme.onScaffold,
+                    border: Border(
+                      bottom: BorderSide(
+                        color: context.themeData.iconTheme.color
+                                ?.withValues(alpha: 0.1) ??
+                            Colors.white,
+                        width: 1,
+                      ),
+                    ),
                   ),
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,

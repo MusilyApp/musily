@@ -7,6 +7,8 @@
   "musics": "Музыка",
   "albums": "Альбомы",
   "artists": "Исполнители",
+  "all": "Все",
+  "playlists": "Плейлисты",
   "download": "Скачать",
   "addToPlaylist": "Добавить в плейлист",
   "addToQueue": "Добавить в очередь",
@@ -27,6 +29,7 @@
   "createPlaylist": "Создать плейлист",
   "playlistName": "Название плейлиста",
   "cancel": "Отмена",
+  "back": "Назад",
   "create": "Создать",
   "playlist": "Плейлист",
   "songs": "Песни",
@@ -38,6 +41,7 @@
   "theActionCannotBeUndone": "Это действие нельзя отменить.",
   "playingNow": "Сейчас играет",
   "emptyLibrary": "Ваша библиотека пуста",
+  "emptyLibraryDescription": "Добавьте элементы в библиотеку, чтобы увидеть их здесь",
   "albumNotFound": "Альбом не найден",
   "artistNotFound": "Исполнитель не найден",
   "cancelDownload": "Отменить загрузку",
@@ -55,7 +59,14 @@
   "downloads": "Загрузки",
   "downloadManager": "Менеджер Загрузок",
   "offline": "Оффлайн",
+  "offlineMode": "Офлайн режим",
+  "offlineModeDescription": "Вы сейчас в офлайн режиме. Некоторые функции могут быть недоступны.",
   "lyricsNotFound": "Тексты не найдены",
+  "lyricsNotSynced": "Текст не синхронизирован",
+  "lyricsNotSyncedDescription": "Строки не будут двигаться вместе с музыкой.",
+  "lyricsParsedSync": "Мы синхронизировали текст автоматически",
+  "lyricsParsedSyncDescription": "Синхронизация создана автоматически и может чуть-чуть отставать.",
+  "lyrics": "Тексты",
   "settings": "Настройки",
   "accounts": "Аккаунты",
   "language": "Язык",
@@ -65,12 +76,16 @@
   "system": "Система",
   "licenses": "Лицензии",
   "about": "О приложении",
+  "aboutSupporters": "О приложении и спонсорах",
   "application": "Приложение",
   "others": "Прочие",
+  "supportersTitle": "Спонсоры",
+  "supportersEmpty": "Пока нет спонсоров.",
   "close": "Закрыть",
   "copiedToClipboard": "Скопировано в буфер обмена",
   "noDownloads": "Нет загрузок",
   "noResults": "Нет результатов",
+  "tryDifferentKeywords": "Попробуйте другие ключевые слова или проверьте правописание",
   "downloadCompleted": "Загрузка завершена",
   "selectALanguage": "Выберите язык",
   "account": "Аккаунт",
@@ -115,7 +130,212 @@
   "showWindow": "Показать окно",
   "closeWindow": "Закрыть окно",
   "newUpdateAvailable": "Доступно новое обновление",
-  "newUpdateAvailable": "Доступне нове оновлення",
   "defaultColor": "Цвет по умолчанию",
-  "accentColor": "Акцентный цвет"
+  "accentColor": "Акцентный цвет",
+  "recommendedAlbums": "Рекомендуемые Альбомы",
+  "recommendedMusic": "Рекомендуемая Музыка",
+  "moreRecommendations": "Больше рекомендаций",
+  "cancelOperation": "Отменить операцию?",
+  "cancelBackupConfirmation": "Вы уверены, что хотите отменить резервное копирование? Прогресс будет потерян.",
+  "cancelRestoreConfirmation": "Вы уверены, что хотите отменить восстановление? Прогресс будет потерян.",
+  "yes": "Да",
+  "no": "Нет",
+  "initializingBackup": "Инициализация резервного копирования...",
+  "creatingBackupArchive": "Создание архива резервной копии...",
+  "backingUpDownloadsMetadata": "Резервное копирование метаданных загрузок...",
+  "backingUpAudioFiles": "Резервное копирование аудиофайлов...",
+  "backingUpLibraryData": "Резервное копирование данных библиотеки...",
+  "writingBackupFile": "Запись файла резервной копии...",
+  "savingToStorage": "Сохранение в хранилище...",
+  "backupCancelled": "Резервное копирование отменено",
+  "startingBackup": "Запуск резервного копирования...",
+  "startingRestore": "Запуск восстановления...",
+  "initializingRestore": "Инициализация восстановления...",
+  "readingBackupFile": "Чтение файла резервной копии...",
+  "extractingLibraryData": "Извлечение данных библиотеки...",
+  "extractingDownloadsData": "Извлечение данных загрузок...",
+  "extractingAudioFiles": "Извлечение аудиофайлов...",
+  "finalizingRestore": "Завершение восстановления...",
+  "restoreCompletedSuccessfully": "Восстановление успешно завершено!",
+  "restoreFailed": "Восстановление не удалось",
+  "backupFileNotFound": "Файл резервной копии не найден",
+  "savedTo": "Сохранено в: {filename}",
+  "playlistEditSubtitle": "Придайте плейлисту новую индивидуальность.",
+  "playlistDetailsTitle": "Детали",
+  "playlistEmptyStateDescription": "Создайте плейлист, чтобы начать сохранять любимые треки.",
+  "playlistSelectTitle": "Выберите плейлист",
+  "playlistSelectDescription": "Выберите, куда добавить выбранные треки.",
+  "playlistCreatorSubtitle": "Добавьте название или вставьте ссылку на плейлист",
+  "playlistCreatorPasteInfo": "Вы можете вставить ссылку на плейлист YouTube, чтобы импортировать его автоматически.",
+  "artistNotFoundDescription": "Искомый артист не найден.",
+  "artistNoSinglesDescription": "У этого артиста нет доступных синглов.",
+  "artistNoAlbumsDescription": "У этого артиста нет доступных альбомов.",
+  "artistNoSongsDescription": "У этого артиста нет доступных песен.",
+  "lyricsNotAvailable": "Для этого трека нет текста.",
+  "queueEmptyTitle": "Ваша очередь пуста",
+  "queueEmptyMessage": "Добавьте песни в очередь, чтобы наслаждаться музыкой.",
+  "noItemsFound": "Ничего не найдено",
+  "downloadsEmptyMessage": "Загруженные треки появятся здесь.",
+  "downloadingSectionTitle": "Загрузка",
+  "queuedSectionTitle": "В очереди",
+  "completedSectionTitle": "Завершено",
+  "failedSectionTitle": "Ошибка",
+  "searchSuggestions": "Предложения",
+  "searchStartTyping": "Начните вводить, чтобы искать",
+  "smartSuggestionsTitle": "Умные рекомендации",
+  "smartSuggestionsDescription": "Автоматически добавлять похожие треки",
+  "libraryManagementSectionTitle": "Управление библиотекой",
+  "localLibraryTitle": "Локальная библиотека",
+  "localLibraryDescription": "Управляйте папками на устройстве, чтобы воспроизводить локальные аудиофайлы.",
+  "localFilesLabel": "Локальные файлы",
+  "@localFilesLabel": {
+    "description": "Подпись, используемая когда у локального трека нет данных об исполнителе."
+  },
+  "manageLocalFolders": "Управление локальными папками",
+  "manageLocalFoldersDescription": "Добавляйте, переименовывайте или удаляйте каталоги, синхронизированные с библиотекой.",
+  "addLocalFolder": "Добавить локальную папку",
+  "emptyLocalLibrary": "Локальные папки отсутствуют",
+  "emptyLocalLibraryDescription": "Добавьте папку с устройства, чтобы иметь доступ к локальным трекам в Musily.",
+  "chooseDirectory": "Выбрать директорию",
+  "invalidDirectory": "Каталог не найден",
+  "invalidDirectoryDescription": "Не удалось получить доступ к этой папке. Обновите путь или удалите запись.",
+  "removeLocalFolderConfirmation": "Удалить «{name}» из локальной библиотеки?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "Треки не найдены",
+  "emptyLocalPlaylistDescription": "Убедитесь, что папка существует и содержит поддерживаемые аудиофайлы.",
+  "changeDirectory": "Сменить директорию",
+  "updateDirectory": "Обновить директорию",
+  "updateDirectoryDescription": "Выберите новую директорию для этого плейлиста",
+  "localFolderPreviewOverflow": "+{count} других папок",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Открыть",
+  "select": "Выбрать",
+  "rename": "Переименовать",
+  "renameLocalFolder": "Переименовать локальную папку",
+  "remove": "Удалить",
+  "removeLocalFolder": "Удалить локальную папку",
+  "refresh": "Обновить",
+  "save": "Сохранить",
+  "localPlaylist": "Локальный плейлист",
+  "backupLibraryDescription": "Создайте резервную копию своей библиотеки",
+  "restoreLibraryDescription": "Восстановите библиотеку из резервной копии",
+  "includeLibraryDescription": "Создайте резервную копию сохраненных альбомов, исполнителей и плейлистов",
+  "includeDownloadsDescription": "Создайте резервную копию загруженных треков",
+  "fullScreenPlayerTooltip": "Полноэкранный проигрыватель",
+  "sleepTimer": "Таймер сна",
+  "sleepTimerDescription": "Музыка приостановится через выбранное время",
+  "sleepTimerActive": "Таймер сна: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} мин",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} ч",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 ч",
+  "customTime": "Выбрать",
+  "enterTime": "Введите время",
+  "minutesLabel": "Минуты",
+  "hoursLabel": "Часы",
+  "cancelTimer": "Отменить таймер",
+  "cancelTimerQuestion": "Вы хотите отменить таймер сна?",
+  "timerInfo": "Таймер активен на {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Добавить время",
+  "clearQueueTitle": "Очистить очередь",
+  "clearQueueMessage": "Очистить все загрузки в очереди/ожидании?",
+  "clearQueueDescription": "Это отменит все ожидающие загрузки. Завершенные загрузки не будут затронуты.",
+  "downloadManagerSummary": "{active} активных • {queued} в очереди",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Повторить все",
+  "downloadManagerClearFailed": "Очистить неудачные",
+  "downloadManagerClearCompleted": "Очистить завершенные",
+  "clearCompletedDownloadsTitle": "Очистить завершенные загрузки",
+  "clearCompletedDownloadsMessage": "Удалить все завершенные загрузки?",
+  "clearCompletedDownloadsDescription": "Это удалит загруженные файлы из хранилища. Это действие нельзя отменить.",
+  "itemCount": "{count, plural, =1{1 элемент} other{{count} элементов}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} завершено • {failed} неудачных",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Оценочное общее время",
+  "downloadErrorResolveUrl": "Не удалось получить URL загрузки",
+  "downloadErrorFileValidation": "Не удалось проверить загруженный файл",
+  "downloadErrorUnexpectedMessage": "Неожиданный ответ при обработке загрузки",
+  "clear": "Очистить",
+  "queueTools": "Инструменты очереди",
+  "queueToolsDescription": "Изменение порядка очереди и создание плейлистов",
+  "playlistCreated": "Плейлист успешно создан",
+  "queue": "Очередь",
+  "tracksSelected": "треков выбрано",
+  "selectAll": "Выбрать все",
+  "deselectAll": "Снять выбор",
+  "versionManager": "Менеджер версий",
+  "retry": "Повторить",
+  "noReleasesFound": "Версии не найдены",
+  "version": "Версия",
+  "alreadyInstalled": "Уже установлено",
+  "update": "Обновить",
+  "changelog": "Изменения",
+  "changelogNotAvailable": "Изменения недоступны",
+  "later": "Позже",
+  "updateAvailableDescription": "Доступна новая версия Musily. Обновите сейчас, чтобы получить последние функции и улучшения.",
+  "recommendations": "Рекомендации"
 }

@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.extract_version.outputs.version }}
-      description: ${{ steps.extract_description.outputs.description }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,15 +25,6 @@ jobs:
         run: |
           version=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --version)
           echo "version=${version}" >> $GITHUB_OUTPUT
-
-      - name: Extract description
-        id: extract_description
-        run: |
-          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
-          escaped_description="${description//'%'/'%25'}"
-          escaped_description="${escaped_description//$'\n'/'%0A'}"
-          escaped_description="${escaped_description//$'\r'/'%0D'}"
-          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
 
   build:
     name: Build
@@ -217,6 +207,18 @@ jobs:
     needs: [metadata, build]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract description
+        id: extract_description
+        run: |
+          description=$(chmod +x musily_metadata.sh && ./musily_metadata.sh --description)
+          escaped_description="${description//'%'/'%25'}"
+          escaped_description="${escaped_description//$'\n'/'%0A'}"
+          escaped_description="${escaped_description//$'\r'/'%0D'}"
+          echo "description=${escaped_description}" >> $GITHUB_OUTPUT
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -235,7 +237,7 @@ jobs:
           draft: false
           tag_name: ${{ needs.metadata.outputs.version }}
           name: Release ${{ needs.metadata.outputs.version }}
-          body: "${{ needs.metadata.outputs.description }}"
+          body: "${{ steps.extract_description.outputs.description }}"
           files: |
             dist/**/*.zip
             dist/**/*.tar.gz
@@ -350,4 +352,3 @@ jobs:
           dart run send_telegram_message.dart \
             --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
             --chat "${{ secrets.TELEGRAM_CHAT_ID }}"
-

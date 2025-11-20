@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/lists/ly_list_tile.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/infinity_marquee.dart';
@@ -20,6 +22,7 @@ import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class AlbumTile extends StatefulWidget {
   final AlbumEntity album;
@@ -36,6 +39,8 @@ class AlbumTile extends StatefulWidget {
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
   final ContentOrigin contentOrigin;
+  final GetTrackUsecase getTrackUsecase;
+  final LyDensity density;
 
   const AlbumTile({
     required this.album,
@@ -53,6 +58,8 @@ class AlbumTile extends StatefulWidget {
     required this.getArtistSinglesUsecase,
     required this.contentOrigin,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
+    this.density = LyDensity.normal,
   });
 
   @override
@@ -70,6 +77,7 @@ class _AlbumTileState extends State<AlbumTile> {
           )
           .firstOrNull,
       child: LyListTile(
+        density: widget.density,
         onTap: widget.staticTile
             ? null
             : () {
@@ -78,6 +86,7 @@ class _AlbumTileState extends State<AlbumTile> {
                   widget.album.tracks.isNotEmpty
                       ? AlbumPage(
                           album: widget.album,
+                          getTrackUsecase: widget.getTrackUsecase,
                           getPlaylistUsecase: widget.getPlaylistUsecase,
                           coreController: widget.coreController,
                           playerController: widget.playerController,
@@ -92,6 +101,7 @@ class _AlbumTileState extends State<AlbumTile> {
                           getArtistUsecase: widget.getArtistUsecase,
                         )
                       : AsyncAlbumPage(
+                          getTrackUsecase: widget.getTrackUsecase,
                           albumId: widget.album.id,
                           getPlaylistUsecase: widget.getPlaylistUsecase,
                           coreController: widget.coreController,
@@ -113,12 +123,13 @@ class _AlbumTileState extends State<AlbumTile> {
                 }
               },
         leading: Card(
+          elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-              width: 1,
+              width: 2,
               color:
-                  context.themeData.colorScheme.outline.withValues(alpha: .2),
+                  context.themeData.colorScheme.outline.withValues(alpha: .15),
             ),
           ),
           child: Builder(
@@ -126,22 +137,36 @@ class _AlbumTileState extends State<AlbumTile> {
               if (widget.album.highResImg != null &&
                   widget.album.highResImg!.isNotEmpty) {
                 return ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                   child: AppImage(
                     widget.album.lowResImg!,
-                    width: 40,
-                    height: 40,
+                    width: 48,
+                    height: 48,
                     fit: BoxFit.cover,
                   ),
                 );
               }
-              return SizedBox(
-                width: 40,
-                height: 40,
+              return Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    colors: [
+                      context.themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.8),
+                      context.themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.4),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
                 child: Icon(
-                  Icons.album_rounded,
-                  color:
-                      context.themeData.iconTheme.color?.withValues(alpha: .7),
+                  LucideIcons.disc,
+                  color: context.themeData.colorScheme.onSurfaceVariant
+                      .withValues(alpha: 0.5),
+                  size: 24,
                 ),
               );
             },
@@ -150,17 +175,40 @@ class _AlbumTileState extends State<AlbumTile> {
         title: InfinityMarquee(
           child: Text(
             widget.album.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              letterSpacing: -0.2,
+            ),
           ),
         ),
-        subtitle: InfinityMarquee(
-          child: Text(
-            widget.album.artist.name,
-          ),
+        subtitle: Row(
+          children: [
+            Icon(
+              LucideIcons.disc,
+              size: 14,
+              color: context.themeData.colorScheme.onSurfaceVariant
+                  .withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: InfinityMarquee(
+                child: Text(
+                  widget.album.artist.name,
+                  style: TextStyle(
+                    color: context.themeData.colorScheme.onSurfaceVariant
+                        .withValues(alpha: 0.7),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         trailing: widget.staticTile
             ? null
             : AlbumOptions(
+                getTrackUsecase: widget.getTrackUsecase,
                 album: widget.album,
+                iconSize: widget.density == LyDensity.dense ? 18 : 20,
                 coreController: widget.coreController,
                 playerController: widget.playerController,
                 getAlbumUsecase: widget.getAlbumUsecase,

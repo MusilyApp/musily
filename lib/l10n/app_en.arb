@@ -7,6 +7,8 @@
   "musics": "Music",
   "albums": "Albums",
   "artists": "Artists",
+  "all": "All",
+  "playlists": "Playlists",
   "download": "Download",
   "addToPlaylist": "Add to Playlist",
   "addToQueue": "Add to Queue",
@@ -27,6 +29,7 @@
   "createPlaylist": "Create Playlist",
   "playlistName": "Playlist Name",
   "cancel": "Cancel",
+  "back": "Back",
   "create": "Create",
   "playlist": "Playlist",
   "songs": "Songs",
@@ -38,6 +41,7 @@
   "theActionCannotBeUndone": "This action cannot be undone.",
   "playingNow": "Now Playing",
   "emptyLibrary": "Your library is empty",
+  "emptyLibraryDescription": "Add items to your library to see them here",
   "albumNotFound": "Album not found",
   "artistNotFound": "Artist not found",
   "cancelDownload": "Cancel Download",
@@ -55,7 +59,14 @@
   "downloadManager": "Download Manager",
   "downloads": "Downloads",
   "offline": "Offline",
+  "offlineMode": "Offline Mode",
+  "offlineModeDescription": "You are currently offline. Some features may be unavailable.",
   "lyricsNotFound": "Lyrics not found",
+  "lyricsNotSynced": "Lyrics are not synchronized",
+  "lyricsNotSyncedDescription": "These lines will not move with the music playback.",
+  "lyricsParsedSync": "We synced this lyric for you",
+  "lyricsParsedSyncDescription": "It was generated automatically and may be slightly off the beat.",
+  "lyrics": "Lyrics",
   "settings": "Settings",
   "accounts": "Accounts",
   "language": "Language",
@@ -65,12 +76,16 @@
   "system": "System",
   "licenses": "Licenses",
   "about": "About",
+  "aboutSupporters": "About & Supporters",
   "application": "Application",
   "others": "Others",
+  "supportersTitle": "Supporters",
+  "supportersEmpty": "No supporters listed yet.",
   "close": "Close",
   "copiedToClipboard": "Copied to the clipboard",
   "noDownloads": "No downloads",
   "noResults": "No results",
+  "tryDifferentKeywords": "Try different keywords or check your spelling",
   "downloadCompleted": "Download completed",
   "selectALanguage": "Select a language",
   "account": "Account",
@@ -116,5 +131,219 @@
   "closeWindow": "Close Window",
   "newUpdateAvailable": "New Update Available",
   "defaultColor": "Default Color",
-  "accentColor": "Accent Color"
+  "accentColor": "Accent Color",
+  "recommendedAlbums": "Recommended Albums",
+  "recommendedMusic": "Recommended Music",
+  "moreRecommendations": "More Recommendations",
+  "cancelOperation": "Cancel Operation?",
+  "cancelBackupConfirmation": "Are you sure you want to cancel the backup? Progress will be lost.",
+  "cancelRestoreConfirmation": "Are you sure you want to cancel the restore? Progress will be lost.",
+  "yes": "Yes",
+  "no": "No",
+  "initializingBackup": "Initializing backup...",
+  "creatingBackupArchive": "Creating backup archive...",
+  "backingUpDownloadsMetadata": "Backing up downloads metadata...",
+  "backingUpAudioFiles": "Backing up audio files...",
+  "backingUpLibraryData": "Backing up library data...",
+  "writingBackupFile": "Writing backup file...",
+  "savingToStorage": "Saving to storage...",
+  "backupCancelled": "Backup cancelled",
+  "startingBackup": "Starting backup...",
+  "startingRestore": "Starting restore...",
+  "initializingRestore": "Initializing restore...",
+  "readingBackupFile": "Reading backup file...",
+  "extractingLibraryData": "Extracting library data...",
+  "extractingDownloadsData": "Extracting downloads data...",
+  "extractingAudioFiles": "Extracting audio files...",
+  "finalizingRestore": "Finalizing restore...",
+  "restoreCompletedSuccessfully": "Restore completed successfully!",
+  "restoreFailed": "Restore failed",
+  "backupFileNotFound": "Backup file not found",
+  "savedTo": "Saved to: {filename}",
+  "@savedTo": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "playlistEditSubtitle": "Give your playlist a fresh identity.",
+  "playlistDetailsTitle": "Details",
+  "playlistEmptyStateDescription": "Create a playlist to start saving your favourite tracks.",
+  "playlistSelectTitle": "Select a playlist",
+  "playlistSelectDescription": "Choose where the selected tracks should be added.",
+  "playlistCreatorSubtitle": "Add a name or paste a playlist link",
+  "playlistCreatorPasteInfo": "You can paste a YouTube playlist URL to import it automatically.",
+  "artistNotFoundDescription": "The artist you are looking for was not found.",
+  "artistNoSinglesDescription": "No singles available for this artist.",
+  "artistNoAlbumsDescription": "No albums available for this artist.",
+  "artistNoSongsDescription": "No songs available for this artist.",
+  "lyricsNotAvailable": "No lyrics available for this track.",
+  "queueEmptyTitle": "Your queue is empty",
+  "queueEmptyMessage": "Add songs to the queue to enjoy your music experience.",
+  "noItemsFound": "No items found",
+  "downloadsEmptyMessage": "Your downloaded tracks will appear here.",
+  "downloadingSectionTitle": "Downloading",
+  "queuedSectionTitle": "Queued",
+  "completedSectionTitle": "Completed",
+  "failedSectionTitle": "Failed",
+  "searchSuggestions": "Suggestions",
+  "searchStartTyping": "Start typing to search",
+  "smartSuggestionsTitle": "Smart Suggestions",
+  "smartSuggestionsDescription": "Auto-add similar tracks",
+  "libraryManagementSectionTitle": "Library Management",
+  "localLibraryTitle": "Local Library",
+  "localLibraryDescription": "Manage folders from your device to play local audio files.",
+  "localFilesLabel": "Local Files",
+  "@localFilesLabel": {
+    "description": "Fallback label used when a local track has no artist metadata."
+  },
+  "manageLocalFolders": "Manage local folders",
+  "manageLocalFoldersDescription": "Add, rename or remove directories synced with your Musily library.",
+  "addLocalFolder": "Add local folder",
+  "emptyLocalLibrary": "No local folders yet",
+  "emptyLocalLibraryDescription": "Add a folder from your device to keep local songs accessible inside Musily.",
+  "chooseDirectory": "Choose directory",
+  "invalidDirectory": "Directory not found",
+  "invalidDirectoryDescription": "We could not access this folder. Update the path or remove the entry.",
+  "removeLocalFolderConfirmation": "Remove \"{name}\" from your local library?",
+  "@removeLocalFolderConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyLocalPlaylist": "No songs found",
+  "emptyLocalPlaylistDescription": "Make sure the folder still exists and that it contains supported audio files.",
+  "changeDirectory": "Change directory",
+  "updateDirectory": "Update directory",
+  "localFolderPreviewOverflow": "+{count} more folders",
+  "@localFolderPreviewOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "open": "Open",
+  "rename": "Rename",
+  "remove": "Remove",
+  "refresh": "Refresh",
+  "backupLibraryDescription": "Create a backup of your library",
+  "restoreLibraryDescription": "Restore your library from a backup",
+  "includeLibraryDescription": "Backup your saved albums, artists, and playlists",
+  "includeDownloadsDescription": "Backup your downloaded tracks",
+  "fullScreenPlayerTooltip": "Full screen player",
+  "sleepTimer": "Sleep Timer",
+  "sleepTimerDescription": "Music will pause after selected time",
+  "sleepTimerActive": "Sleep timer: {time}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours": "{count} hours",
+  "@hours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hour": "1 hour",
+  "customTime": "Custom",
+  "enterTime": "Enter time",
+  "minutesLabel": "Minutes",
+  "hoursLabel": "Hours",
+  "cancelTimer": "Cancel Timer",
+  "cancelTimerQuestion": "Do you want to cancel the sleep timer?",
+  "timerInfo": "Timer active for {time}",
+  "@timerInfo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Add time",
+  "clearQueueTitle": "Clear Queue",
+  "clearQueueMessage": "Clear all queued/pending downloads?",
+  "clearQueueDescription": "This will cancel all pending downloads. Completed downloads will not be affected.",
+  "downloadManagerSummary": "{active} active • {queued} queued",
+  "@downloadManagerSummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadManagerRetryAll": "Retry all",
+  "downloadManagerClearFailed": "Clear failed",
+  "downloadManagerClearCompleted": "Clear completed",
+  "clearCompletedDownloadsTitle": "Clear completed downloads",
+  "clearCompletedDownloadsMessage": "Delete all completed downloads?",
+  "clearCompletedDownloadsDescription": "This will remove the downloaded files from storage. This action cannot be undone.",
+  "itemCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadCompletedFailedSummary": "{completed} completed • {failed} failed",
+  "@downloadCompletedFailedSummary": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "downloadTotalEta": "Estimated total time",
+  "downloadErrorResolveUrl": "Could not resolve download URL",
+  "downloadErrorFileValidation": "Downloaded file validation failed",
+  "downloadErrorUnexpectedMessage": "Unexpected download response",
+  "clear": "Clear",
+  "queueTools": "Queue Tools",
+  "queueToolsDescription": "Reorder your queue and create playlists",
+  "playlistCreated": "Playlist created successfully",
+  "queue": "Queue",
+  "tracksSelected": "tracks selected",
+  "selectAll": "Select All",
+  "deselectAll": "Deselect All",
+  "updateDirectoryDescription": "Select a new directory for this playlist",
+  "select": "Select",
+  "invalidDirectory": "Invalid directory",
+  "renameLocalFolder": "Rename folder",
+  "removeLocalFolder": "Remove folder",
+  "save": "Save",
+  "localPlaylist": "Local playlist",
+  "versionManager": "Version Manager",
+  "retry": "Retry",
+  "noReleasesFound": "No releases found",
+  "version": "Version",
+  "alreadyInstalled": "Already Installed",
+  "update": "Update",
+  "changelog": "Changelog",
+  "changelogNotAvailable": "Changelog not available",
+  "later": "Later",
+  "updateAvailableDescription": "A new version of Musily is available. Update now to get the latest features and improvements.",
+  "recommendations": "Recommendations"
 }

@@ -33,6 +33,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get artists => 'Виконавці';
 
   @override
+  String get all => 'Всі';
+
+  @override
+  String get playlists => 'Плейлисти';
+
+  @override
   String get download => 'Завантажити';
 
   @override
@@ -93,6 +99,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get cancel => 'Скасувати';
 
   @override
+  String get back => 'Назад';
+
+  @override
   String get create => 'Створити';
 
   @override
@@ -124,6 +133,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get emptyLibrary => 'Ваша бібліотека порожня';
+
+  @override
+  String get emptyLibraryDescription =>
+      'Додайте елементи до бібліотеки, щоб побачити їх тут';
 
   @override
   String get albumNotFound => 'Альбом не знайдено';
@@ -179,7 +192,31 @@ class AppLocalizationsUk extends AppLocalizations {
   String get offline => 'Офлайн';
 
   @override
+  String get offlineMode => 'Офлайн режим';
+
+  @override
+  String get offlineModeDescription =>
+      'Ви зараз в офлайн режимі. Деякі функції можуть бути недоступні.';
+
+  @override
   String get lyricsNotFound => 'Текст пісні не знайдено';
+
+  @override
+  String get lyricsNotSynced => 'Текст не синхронізований';
+
+  @override
+  String get lyricsNotSyncedDescription =>
+      'Рядки не рухатимуться разом із музикою.';
+
+  @override
+  String get lyricsParsedSync => 'Ми синхронізували цей текст для вас';
+
+  @override
+  String get lyricsParsedSyncDescription =>
+      'Синхронізацію згенеровано автоматично, тому можливі невеликі неточності.';
+
+  @override
+  String get lyrics => 'Тексти';
 
   @override
   String get settings => 'Налаштування';
@@ -209,10 +246,19 @@ class AppLocalizationsUk extends AppLocalizations {
   String get about => 'Про';
 
   @override
+  String get aboutSupporters => 'Про застосунок і підтримувачів';
+
+  @override
   String get application => 'Програма';
 
   @override
   String get others => 'Інші';
+
+  @override
+  String get supportersTitle => 'Підтримувачі';
+
+  @override
+  String get supportersEmpty => 'Поки що немає підтримувачів.';
 
   @override
   String get close => 'Закрити';
@@ -225,6 +271,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get noResults => 'Немає результатів';
+
+  @override
+  String get tryDifferentKeywords =>
+      'Спробуйте інші ключові слова або перевірте правопис';
 
   @override
   String get downloadCompleted => 'Завантаження завершено';
@@ -367,4 +417,458 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get accentColor => 'Акцентний колір';
+
+  @override
+  String get recommendedAlbums => 'Рекомендовані Альбоми';
+
+  @override
+  String get recommendedMusic => 'Рекомендована Музика';
+
+  @override
+  String get moreRecommendations => 'Більше рекомендацій';
+
+  @override
+  String get cancelOperation => 'Скасувати операцію?';
+
+  @override
+  String get cancelBackupConfirmation =>
+      'Ви впевнені, що хочете скасувати резервне копіювання? Прогрес буде втрачено.';
+
+  @override
+  String get cancelRestoreConfirmation =>
+      'Ви впевнені, що хочете скасувати відновлення? Прогрес буде втрачено.';
+
+  @override
+  String get yes => 'Так';
+
+  @override
+  String get no => 'Ні';
+
+  @override
+  String get initializingBackup => 'Ініціалізація резервного копіювання...';
+
+  @override
+  String get creatingBackupArchive => 'Створення архіву резервної копії...';
+
+  @override
+  String get backingUpDownloadsMetadata =>
+      'Резервне копіювання метаданих завантажень...';
+
+  @override
+  String get backingUpAudioFiles => 'Резервне копіювання аудіофайлів...';
+
+  @override
+  String get backingUpLibraryData => 'Резервне копіювання даних бібліотеки...';
+
+  @override
+  String get writingBackupFile => 'Запис файлу резервної копії...';
+
+  @override
+  String get savingToStorage => 'Збереження в сховище...';
+
+  @override
+  String get backupCancelled => 'Резервне копіювання скасовано';
+
+  @override
+  String get startingBackup => 'Запуск резервного копіювання...';
+
+  @override
+  String get startingRestore => 'Запуск відновлення...';
+
+  @override
+  String get initializingRestore => 'Ініціалізація відновлення...';
+
+  @override
+  String get readingBackupFile => 'Читання файлу резервної копії...';
+
+  @override
+  String get extractingLibraryData => 'Вилучення даних бібліотеки...';
+
+  @override
+  String get extractingDownloadsData => 'Вилучення даних завантажень...';
+
+  @override
+  String get extractingAudioFiles => 'Вилучення аудіофайлів...';
+
+  @override
+  String get finalizingRestore => 'Завершення відновлення...';
+
+  @override
+  String get restoreCompletedSuccessfully => 'Відновлення успішно завершено!';
+
+  @override
+  String get restoreFailed => 'Відновлення не вдалося';
+
+  @override
+  String get backupFileNotFound => 'Файл резервної копії не знайдено';
+
+  @override
+  String savedTo(String filename) {
+    return 'Збережено в: $filename';
+  }
+
+  @override
+  String get playlistEditSubtitle => 'Надайте плейлисту нову індивідуальність.';
+
+  @override
+  String get playlistDetailsTitle => 'Деталі';
+
+  @override
+  String get playlistEmptyStateDescription =>
+      'Створіть плейлист, щоб почати зберігати улюблені треки.';
+
+  @override
+  String get playlistSelectTitle => 'Виберіть плейлист';
+
+  @override
+  String get playlistSelectDescription =>
+      'Виберіть, куди додати вибрані треки.';
+
+  @override
+  String get playlistCreatorSubtitle =>
+      'Додайте назву або вставте посилання на плейлист';
+
+  @override
+  String get playlistCreatorPasteInfo =>
+      'Можете вставити URL плейлиста YouTube, щоб імпортувати його автоматично.';
+
+  @override
+  String get artistNotFoundDescription => 'Потрібного артиста не знайдено.';
+
+  @override
+  String get artistNoSinglesDescription => 'Для цього артиста немає синглів.';
+
+  @override
+  String get artistNoAlbumsDescription => 'Для цього артиста немає альбомів.';
+
+  @override
+  String get artistNoSongsDescription => 'Для цього артиста немає пісень.';
+
+  @override
+  String get lyricsNotAvailable => 'Для цього треку немає тексту.';
+
+  @override
+  String get queueEmptyTitle => 'Ваша черга порожня';
+
+  @override
+  String get queueEmptyMessage =>
+      'Додайте пісні до черги, щоб насолоджуватися музикою.';
+
+  @override
+  String get noItemsFound => 'Жодного елемента не знайдено';
+
+  @override
+  String get downloadsEmptyMessage => 'Ваші завантажені треки з’являться тут.';
+
+  @override
+  String get downloadingSectionTitle => 'Завантаження';
+
+  @override
+  String get queuedSectionTitle => 'У черзі';
+
+  @override
+  String get completedSectionTitle => 'Завершено';
+
+  @override
+  String get failedSectionTitle => 'Помилка';
+
+  @override
+  String get searchSuggestions => 'Пропозиції';
+
+  @override
+  String get searchStartTyping => 'Почніть вводити для пошуку';
+
+  @override
+  String get smartSuggestionsTitle => 'Розумні пропозиції';
+
+  @override
+  String get smartSuggestionsDescription => 'Автоматично додавати схожі треки';
+
+  @override
+  String get libraryManagementSectionTitle => 'Керування бібліотекою';
+
+  @override
+  String get localLibraryTitle => 'Локальна бібліотека';
+
+  @override
+  String get localLibraryDescription =>
+      'Керуйте папками пристрою, щоб відтворювати локальні аудіофайли.';
+
+  @override
+  String get localFilesLabel => 'Локальні файли';
+
+  @override
+  String get manageLocalFolders => 'Керувати локальними папками';
+
+  @override
+  String get manageLocalFoldersDescription =>
+      'Додавайте, перейменовуйте або видаляйте каталоги, синхронізовані з бібліотекою.';
+
+  @override
+  String get addLocalFolder => 'Додати локальну папку';
+
+  @override
+  String get emptyLocalLibrary => 'Немає локальних папок';
+
+  @override
+  String get emptyLocalLibraryDescription =>
+      'Додайте папку з пристрою, щоб мати доступ до локальних треків у Musily.';
+
+  @override
+  String get chooseDirectory => 'Вибрати директорію';
+
+  @override
+  String get invalidDirectory => 'Каталог не знайдено';
+
+  @override
+  String get invalidDirectoryDescription =>
+      'Не вдалося отримати доступ до цієї папки. Оновіть шлях або видаліть запис.';
+
+  @override
+  String removeLocalFolderConfirmation(String name) {
+    return 'Видалити «$name» з локальної бібліотеки?';
+  }
+
+  @override
+  String get emptyLocalPlaylist => 'Треки не знайдені';
+
+  @override
+  String get emptyLocalPlaylistDescription =>
+      'Переконайтеся, що папка існує та містить підтримувані аудіофайли.';
+
+  @override
+  String get changeDirectory => 'Змінити директорію';
+
+  @override
+  String get updateDirectory => 'Оновити директорію';
+
+  @override
+  String localFolderPreviewOverflow(int count) {
+    return '+ще $count папок';
+  }
+
+  @override
+  String get open => 'Відкрити';
+
+  @override
+  String get rename => 'Перейменувати';
+
+  @override
+  String get remove => 'Видалити';
+
+  @override
+  String get refresh => 'Оновити';
+
+  @override
+  String get backupLibraryDescription =>
+      'Створіть резервну копію своєї бібліотеки';
+
+  @override
+  String get restoreLibraryDescription =>
+      'Відновіть бібліотеку з резервної копії';
+
+  @override
+  String get includeLibraryDescription =>
+      'Створіть резервну копію збережених альбомів, виконавців та плейлистів';
+
+  @override
+  String get includeDownloadsDescription =>
+      'Створіть резервну копію завантажених треків';
+
+  @override
+  String get fullScreenPlayerTooltip => 'Повноекранний плеєр';
+
+  @override
+  String get sleepTimer => 'Таймер сну';
+
+  @override
+  String get sleepTimerDescription => 'Музика призупиниться через обраний час';
+
+  @override
+  String sleepTimerActive(String time) {
+    return 'Таймер сну: $time';
+  }
+
+  @override
+  String minutes(int count) {
+    return '$count хв';
+  }
+
+  @override
+  String hours(int count) {
+    return '$count год';
+  }
+
+  @override
+  String get hour => '1 год';
+
+  @override
+  String get customTime => 'Вибрати';
+
+  @override
+  String get enterTime => 'Введіть час';
+
+  @override
+  String get minutesLabel => 'Хвилини';
+
+  @override
+  String get hoursLabel => 'Години';
+
+  @override
+  String get cancelTimer => 'Скасувати таймер';
+
+  @override
+  String get cancelTimerQuestion => 'Ви хочете скасувати таймер сну?';
+
+  @override
+  String timerInfo(String time) {
+    return 'Таймер активний на $time';
+  }
+
+  @override
+  String get addTime => 'Додати час';
+
+  @override
+  String get clearQueueTitle => 'Очистити чергу';
+
+  @override
+  String get clearQueueMessage =>
+      'Очистити всі завантаження в черзі/очікуванні?';
+
+  @override
+  String get clearQueueDescription =>
+      'Це скасує всі очікуючі завантаження. Завершені завантаження не будуть порушені.';
+
+  @override
+  String downloadManagerSummary(int active, int queued) {
+    return '$active активних • $queued у черзі';
+  }
+
+  @override
+  String get downloadManagerRetryAll => 'Повторити всі';
+
+  @override
+  String get downloadManagerClearFailed => 'Очистити невдалі';
+
+  @override
+  String get downloadManagerClearCompleted => 'Очистити завершені';
+
+  @override
+  String get clearCompletedDownloadsTitle => 'Очистити завершені завантаження';
+
+  @override
+  String get clearCompletedDownloadsMessage =>
+      'Видалити всі завершені завантаження?';
+
+  @override
+  String get clearCompletedDownloadsDescription =>
+      'Це видалить завантажені файли з пам\'яті. Дію не можна скасувати.';
+
+  @override
+  String itemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count елементів',
+      one: '1 елемент',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String downloadCompletedFailedSummary(int completed, int failed) {
+    return '$completed завершено • $failed невдалих';
+  }
+
+  @override
+  String get downloadTotalEta => 'Орієнтовний загальний час';
+
+  @override
+  String get downloadErrorResolveUrl => 'Не вдалося отримати URL завантаження';
+
+  @override
+  String get downloadErrorFileValidation =>
+      'Не вдалося перевірити завантажений файл';
+
+  @override
+  String get downloadErrorUnexpectedMessage =>
+      'Неочікувана відповідь під час завантаження';
+
+  @override
+  String get clear => 'Очистити';
+
+  @override
+  String get queueTools => 'Інструменти черги';
+
+  @override
+  String get queueToolsDescription =>
+      'Змінити порядок черги та створювати плейлисти';
+
+  @override
+  String get playlistCreated => 'Плейлист успішно створено';
+
+  @override
+  String get queue => 'Черга';
+
+  @override
+  String get tracksSelected => 'треків вибрано';
+
+  @override
+  String get selectAll => 'Вибрати все';
+
+  @override
+  String get deselectAll => 'Зняти вибір';
+
+  @override
+  String get updateDirectoryDescription =>
+      'Оберіть нову директорію для цього плейлиста';
+
+  @override
+  String get select => 'Вибрати';
+
+  @override
+  String get renameLocalFolder => 'Перейменувати локальну папку';
+
+  @override
+  String get removeLocalFolder => 'Видалити локальну папку';
+
+  @override
+  String get save => 'Зберегти';
+
+  @override
+  String get localPlaylist => 'Локальний плейлист';
+
+  @override
+  String get versionManager => 'Менеджер версій';
+
+  @override
+  String get retry => 'Повторити';
+
+  @override
+  String get noReleasesFound => 'Версії не знайдено';
+
+  @override
+  String get version => 'Версія';
+
+  @override
+  String get alreadyInstalled => 'Вже встановлено';
+
+  @override
+  String get update => 'Оновити';
+
+  @override
+  String get changelog => 'Зміни';
+
+  @override
+  String get changelogNotAvailable => 'Зміни недоступні';
+
+  @override
+  String get later => 'Пізніше';
+
+  @override
+  String get updateAvailableDescription =>
+      'Доступна нова версія Musily. Оновіть зараз, щоб отримати останні функції та покращення.';
+
+  @override
+  String get recommendations => 'Рекомендації';
 }

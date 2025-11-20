@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/downloader/presenter/widgets/offline_icon.dart';
@@ -20,15 +21,16 @@ class PlaylistTileThumb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          width: 1,
-          color: context.themeData.colorScheme.outline.withValues(alpha: .2),
+          width: 2,
+          color: context.themeData.colorScheme.outline.withValues(alpha: .15),
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         child: playlist.id == UserService.favoritesId
             ? Builder(
                 builder: (context) {
@@ -49,17 +51,27 @@ class PlaylistTileThumb extends StatelessWidget {
                 ? OfflineIcon(
                     size: size,
                   )
-                : SizedBox(
+                : Container(
                     width: size,
                     height: size,
-                    child: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: Icon(
-                        Icons.playlist_play_rounded,
-                        color: context.themeData.iconTheme.color
-                            ?.withValues(alpha: .7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        colors: [
+                          context.themeData.colorScheme.surfaceContainerHighest
+                              .withValues(alpha: 0.8),
+                          context.themeData.colorScheme.surfaceContainerHighest
+                              .withValues(alpha: 0.4),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
+                    ),
+                    child: Icon(
+                      LucideIcons.listMusic,
+                      size: size * 0.5,
+                      color: context.themeData.colorScheme.onSurfaceVariant
+                          .withValues(alpha: 0.5),
                     ),
                   ),
       ),

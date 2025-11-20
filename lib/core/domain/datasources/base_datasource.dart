@@ -24,6 +24,7 @@ abstract class BaseDatasource {
         throw MusilyError(
           code: e.statusCode,
           id: e.data['error'] ?? 'unknown_error',
+          stackTrace: stracktrace,
         );
       }
       if (e is MusilyError) {

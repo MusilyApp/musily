@@ -1,16 +1,21 @@
 import 'dart:math';
+import 'dart:async';
 
 import 'package:musily/core/domain/presenter/app_controller.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
+import 'package:musily/features/_library_module/domain/usecases/update_track_in_playlist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/data/services/musily_player.dart';
+import 'package:musily/features/player/data/services/player_persistence_service.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
 import 'package:musily/features/player/domain/enums/musily_player_state.dart';
 import 'package:musily/features/player/domain/enums/musily_repeat_mode.dart';
+import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/domain/usecases/get_smart_queue_usecase.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_data.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_methods.dart';
+import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
 import 'package:musily/features/track/domain/usecases/get_timed_lyrics_usecase.dart';
 import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.dart';
@@ -18,32 +23,59 @@ import 'package:musily/features/track/domain/usecases/get_track_lyrics_usecase.d
 class PlayerController extends BaseController<PlayerData, PlayerMethods> {
   final _downloaderController = DownloaderController();
   final MusilyPlayer _musilyPlayer = MusilyPlayer();
+  final PlayerPersistenceService _playerPersistenceService =
+      PlayerPersistenceService();
 
   final GetPlayableItemUsecase getPlayableItemUsecase;
   final GetTrackLyricsUsecase getTrackLyricsUsecase;
   final GetTimedLyricsUsecase getTimedLyricsUsecase;
   final GetSmartQueueUsecase getSmartQueueUsecase;
+  final UpdateTrackInPlaylistUsecase updateTrackInPlaylistUsecase;
+  final SettingsController settingsController;
 
   PlayerController({
     required this.getPlayableItemUsecase,
     required this.getSmartQueueUsecase,
     required this.getTrackLyricsUsecase,
     required this.getTimedLyricsUsecase,
+    required this.updateTrackInPlaylistUsecase,
+    required this.settingsController,
   }) {
     updateData(
       data.copyWith(
         repeatMode: _musilyPlayer.getRepeatMode(),
         shuffleEnabled: _musilyPlayer.getShuffleMode(),
+        volume: _musilyPlayer.volume,
       ),
     );
 
     _downloaderController.setPlayerController(this);
 
+    _musilyPlayer.volumeStream.listen((volume) {
+      updateData(data.copyWith(volume: volume));
+    });
+
     _musilyPlayer.setUriGetter((track) async {
       final offlineItem = _downloaderController.methods.getItem(track);
+
       if (offlineItem != null) {
-        return Uri.parse(offlineItem.track.url!);
+        final cachedUrl = offlineItem.track.url;
+        if (cachedUrl != null && cachedUrl.isNotEmpty) {
+          return Uri.parse(cachedUrl);
+        }
+
+        final fetchedItem = await getPlayableItemUsecase.exec(track);
+        final fetchedUrl = fetchedItem.url;
+
+        if (fetchedUrl != null && fetchedUrl.isNotEmpty) {
+          offlineItem.track.url = fetchedUrl;
+          await _downloaderController.methods.updateStoredQueue();
+          return Uri.parse(fetchedUrl);
+        }
+
+        return Uri.parse('');
       }
+
       final item = await getPlayableItemUsecase.exec(track);
       return Uri.parse(item.url ?? '');
     });
@@ -52,8 +84,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       updateData(
         data.copyWith(
           isPlaying: state == MusilyPlayerState.playing,
-          mediaAvailable: state == MusilyPlayerState.playing ||
-              state == MusilyPlayerState.paused,
+          mediaAvailable: data.currentPlayingItem?.url != null,
           isBuffering: state == MusilyPlayerState.buffering,
         ),
       );
@@ -61,6 +92,13 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
 
     _musilyPlayer.setOnDurationChanged((newDuration) {
       if (data.currentPlayingItem != null) {
+        if (data.currentPlayingItem!.duration != newDuration) {
+          updateTrackInPlaylistUsecase.exec(
+            data.playingId,
+            data.currentPlayingItem!.id,
+            data.currentPlayingItem!.copyWith(duration: newDuration),
+          );
+        }
         data.currentPlayingItem!.duration = newDuration;
         updateData(data);
       }
@@ -76,9 +114,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
             final percentage =
                 position.inMilliseconds / duration.inMilliseconds;
             if (percentage >= 0.35 && !data.isPositionTriggered) {
-              methods.getSmartQueue(customItems: [
-                data.currentPlayingItem!,
-              ]);
+              methods.getSmartQueue(customItems: [data.currentPlayingItem!]);
               data = data.copyWith(isPositionTriggered: true);
             }
             if (percentage < 0.35) {
@@ -92,43 +128,31 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
 
     _musilyPlayer.setOnAction((action) {
       if (action == MusilyPlayerAction.queueChanged) {
-        updateData(
-          data.copyWith(
-            queue: _musilyPlayer.getQueue(),
-          ),
-        );
+        updateData(data.copyWith(queue: _musilyPlayer.getQueue()));
       }
     });
 
     _musilyPlayer.setOnShuffleChanged((enabled) {
-      updateData(
-        data.copyWith(
-          shuffleEnabled: enabled,
-        ),
-      );
+      updateData(data.copyWith(shuffleEnabled: enabled));
     });
 
     _musilyPlayer.setOnRepeatModeChanged((repeatMode) {
-      updateData(
-        data.copyWith(
-          repeatMode: repeatMode,
-        ),
-      );
+      updateData(data.copyWith(repeatMode: repeatMode));
     });
 
     _musilyPlayer.setOnActiveTrackChange((track) async {
-      updateData(
-        data.copyWith(
-          currentPlayingItem: track,
-        ),
-      );
+      if (track != null) {
+        settingsController.methods
+            .updatePlayerAccentColor(track.highResImg ?? '');
+      }
+      updateData(data.copyWith(currentPlayingItem: track));
       dispatchEvent(
         BaseControllerEvent<TrackEntity?>(
           id: 'playingItemUpdated',
           data: data.currentPlayingItem,
         ),
       );
-      if (data.showLyrics) {
+      if (data.playerMode == PlayerMode.lyrics) {
         methods.getLyrics(data.currentPlayingItem?.id ?? '');
       }
       final downloadedQueue = DownloaderController().data.queue;
@@ -146,7 +170,44 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         }
       }
     });
+
+    unawaited(_hydrateFromPersistedState());
   }
+
+  Future<void> _hydrateFromPersistedState() async {
+    final persistedState = await _playerPersistenceService.loadState();
+    if (persistedState == null) {
+      return;
+    }
+
+    final persistedTrack = _resolvePersistedTrack(persistedState);
+
+    updateData(
+      data.copyWith(
+        queue: persistedState.queue.isNotEmpty
+            ? List<TrackEntity>.from(persistedState.queue)
+            : data.queue,
+        currentPlayingItem: persistedTrack ?? data.currentPlayingItem,
+        shuffleEnabled: persistedState.shuffleEnabled,
+        repeatMode: persistedState.repeatMode,
+      ),
+    );
+  }
+
+  TrackEntity? _resolvePersistedTrack(PlayerPersistedState state) {
+    final id = state.currentTrackId;
+    final hash = state.currentTrackHash;
+
+    for (final track in state.queue) {
+      final matchesId = id != null && id.isNotEmpty && track.id == id;
+      final matchesHash = hash != null && hash.isNotEmpty && track.hash == hash;
+      if (matchesId || matchesHash) {
+        return track;
+      }
+    }
+    return state.currentTrack;
+  }
+
   @override
   PlayerData defineData() {
     return PlayerData(
@@ -156,104 +217,65 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       isPlaying: false,
       loadRequested: false,
       seeking: false,
-      mediaAvailable: true,
+      mediaAvailable: false,
       shuffleEnabled: false,
       repeatMode: MusilyRepeatMode.noRepeat,
       isBuffering: false,
-      showLyrics: false,
+      playerMode: PlayerMode.artwork,
       loadingLyrics: false,
       syncedLyrics: true,
-      lyrics: Lyrics(
-        trackId: '',
-        lyrics: null,
-        timedLyrics: null,
-      ),
+      lyrics: Lyrics(trackId: '', lyrics: null, timedLyrics: null),
       tracksFromSmartQueue: [],
       autoSmartQueue: false,
       loadingSmartQueue: false,
       addingToFavorites: false,
-      showQueue: false,
       showDownloadManager: false,
       isPositionTriggered: false,
+      volume: 1.0,
+      sleepTimerActive: false,
     );
   }
+
+  Timer? _sleepTimer;
 
   @override
   PlayerMethods defineMethods() {
     return PlayerMethods(
       toggleShowDownloadManager: () {
         updateData(
-          data.copyWith(
-            showDownloadManager: !data.showDownloadManager,
-            showQueue: false,
-            showLyrics: false,
-          ),
-        );
-      },
-      toggleShowQueue: () {
-        updateData(
-          data.copyWith(
-            showQueue: !data.showQueue,
-            showLyrics: false,
-            showDownloadManager: false,
-          ),
+          data.copyWith(showDownloadManager: !data.showDownloadManager),
         );
       },
       toggleSmartQueue: () {
         if (data.tracksFromSmartQueue.isEmpty) {
-          updateData(
-            data.copyWith(
-              autoSmartQueue: !data.autoSmartQueue,
-            ),
-          );
+          updateData(data.copyWith(autoSmartQueue: !data.autoSmartQueue));
         } else {
-          updateData(
-            data.copyWith(
-              autoSmartQueue: false,
-            ),
-          );
-          if (data.tracksFromSmartQueue
-              .contains(data.currentPlayingItem?.hash)) {
+          updateData(data.copyWith(autoSmartQueue: false));
+          if (data.tracksFromSmartQueue.contains(
+            data.currentPlayingItem?.hash,
+          )) {
             updateData(
-              data.copyWith(
-                currentPlayingItem: data.queue.firstOrNull,
-              ),
+              data.copyWith(currentPlayingItem: data.queue.firstOrNull),
             );
             if (data.queue.isNotEmpty) {
-              _musilyPlayer.skipToTrack(0);
+              _musilyPlayer.skipToTrack(data.queue.first.id);
             }
           }
-          _musilyPlayer.setQueue(
-            [
-              ...data.queue
-                ..removeWhere(
-                  (item) => data.tracksFromSmartQueue.contains(
-                    item.hash,
-                  ),
-                ),
-            ],
-          );
-          updateData(
-            data.copyWith(
-              tracksFromSmartQueue: [],
-            ),
-          );
+          _musilyPlayer.setQueue([
+            ...data.queue
+              ..removeWhere(
+                (item) => data.tracksFromSmartQueue.contains(item.hash),
+              ),
+          ]);
+          updateData(data.copyWith(tracksFromSmartQueue: []));
         }
       },
       getSmartQueue: ({customItems}) async {
-        updateData(
-          data.copyWith(
-            loadingSmartQueue: true,
-          ),
-        );
+        updateData(data.copyWith(loadingSmartQueue: true));
         if (customItems?.isNotEmpty ?? false) {
           final smartItems = await getSmartQueueUsecase.exec(customItems ?? []);
           if (smartItems.isEmpty) {
-            updateData(
-              data.copyWith(
-                loadingSmartQueue: false,
-              ),
-            );
+            updateData(data.copyWith(loadingSmartQueue: false));
             return;
           }
           smartItems.removeWhere(
@@ -262,7 +284,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           final List<TrackEntity> queueClone = List.from(data.queue);
           final random = Random();
           for (final item in smartItems) {
-            late final indexToInsert;
+            late final int indexToInsert;
 
             if (queueClone.length - 1 > 0) {
               indexToInsert = random.nextInt(queueClone.length - 1);
@@ -270,54 +292,35 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
               indexToInsert = 0;
             }
 
-            queueClone.insert(
-              max(indexToInsert, 0),
-              item,
-            );
+            queueClone.insert(max(indexToInsert, 0), item);
           }
           _musilyPlayer.setQueue(queueClone);
           updateData(
             data.copyWith(
               loadingSmartQueue: false,
               tracksFromSmartQueue: data.tracksFromSmartQueue
-                ..addAll(
-                  smartItems.map(
-                    (item) => item.hash,
-                  ),
-                ),
+                ..addAll(smartItems.map((item) => item.hash)),
             ),
           );
           return;
         }
 
-        final smartQueue = await getSmartQueueUsecase.exec(
-          data.queue,
-        );
+        final smartQueue = await getSmartQueueUsecase.exec(data.queue);
         final tracksFromSmartQueue = smartQueue.where(
           (track) => track.fromSmartQueue,
         );
         updateData(
           data.copyWith(
             tracksFromSmartQueue: [
-              ...tracksFromSmartQueue.map(
-                (track) => track.hash,
-              )
+              ...tracksFromSmartQueue.map((track) => track.hash),
             ],
           ),
         );
         _musilyPlayer.setQueue(smartQueue);
-        updateData(
-          data.copyWith(
-            loadingSmartQueue: false,
-          ),
-        );
+        updateData(data.copyWith(loadingSmartQueue: false));
       },
       toggleSyncedLyrics: () {
-        updateData(
-          data.copyWith(
-            syncedLyrics: !data.syncedLyrics,
-          ),
-        );
+        updateData(data.copyWith(syncedLyrics: !data.syncedLyrics));
       },
       getLyrics: (trackId) async {
         if (data.loadingLyrics) {
@@ -326,11 +329,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         if (data.lyrics.trackId == trackId) {
           return data.lyrics.lyrics;
         }
-        updateData(
-          data.copyWith(
-            loadingLyrics: true,
-          ),
-        );
+        updateData(data.copyWith(loadingLyrics: true));
         final lyrics = await getTrackLyricsUsecase.exec(trackId);
         final timedLyrics = await getTimedLyricsUsecase.exec(trackId);
         updateData(
@@ -345,15 +344,11 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         );
         return data.lyrics.lyrics;
       },
-      toggleLyrics: (id) {
-        updateData(
-          data.copyWith(
-            showLyrics: !data.showLyrics,
-            showDownloadManager: false,
-            showQueue: false,
-          ),
-        );
-        methods.getLyrics(id);
+      setPlayerMode: (mode) {
+        updateData(data.copyWith(playerMode: mode, showDownloadManager: false));
+        if (mode == PlayerMode.lyrics) {
+          methods.getLyrics(data.currentPlayingItem?.id ?? '');
+        }
       },
       play: () async {
         await _musilyPlayer.playPlaylist();
@@ -368,17 +363,9 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         return;
       },
       seek: (duration) async {
-        updateData(
-          data.copyWith(
-            seeking: true,
-          ),
-        );
+        updateData(data.copyWith(seeking: true));
         await _musilyPlayer.seek(duration);
-        updateData(
-          data.copyWith(
-            seeking: false,
-          ),
-        );
+        updateData(data.copyWith(seeking: false));
       },
       loadAndPlay: (track, playingId) async {
         if (data.loadRequested) {
@@ -394,12 +381,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           }
           return;
         }
-        updateData(
-          data.copyWith(
-            loadingTrackData: true,
-            loadRequested: true,
-          ),
-        );
+        updateData(data.copyWith(loadingTrackData: true, loadRequested: true));
         updateData(
           data.copyWith(
             loadingTrackData: false,
@@ -410,9 +392,7 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         await _musilyPlayer.playTrack(track);
       },
       toggleShuffle: () async {
-        await _musilyPlayer.toggleShuffleMode(
-          !data.shuffleEnabled,
-        );
+        await _musilyPlayer.toggleShuffleMode(!data.shuffleEnabled);
       },
       toggleRepeatState: () async {
         switch (_musilyPlayer.getRepeatMode()) {
@@ -445,6 +425,17 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
         }
       },
       addToQueue: (items) async {
+        if (data.queue.isNotEmpty && data.queue.first.isLocal) {
+          await _musilyPlayer.stop();
+          await _musilyPlayer.setQueue([]);
+          data = data.copyWith(
+            queue: [],
+            currentPlayingItem: null,
+            playingId: '',
+            tracksFromSmartQueue: [],
+          );
+          updateData(data);
+        }
         final currentItemsHashs = data.queue.map((element) => element.hash);
         final filteredItems = items.where(
           (element) => !currentItemsHashs.contains(element.hash),
@@ -456,36 +447,27 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           await _musilyPlayer.playPlaylist();
         }
       },
-      queueJumpTo: (int index) async {
+      queueJumpTo: (String trackId) async {
         if (data.currentPlayingItem != null) {
-          if (data.currentPlayingItem!.id != data.queue[index].id) {
-            await _musilyPlayer.skipToTrack(index);
+          if (data.currentPlayingItem!.id != trackId) {
+            await _musilyPlayer.skipToTrack(trackId);
           }
         }
       },
       reorderQueue: (int newIndex, int oldIndex) async {
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
-        List<TrackEntity> queueCopy = List.from(_musilyPlayer.getQueue());
-        queueCopy = queueCopy
-          ..insert(
-            newIndex,
-            queueCopy.removeAt(oldIndex),
-          );
-        _musilyPlayer.setQueue(queueCopy);
+        _musilyPlayer.reorderQueue(newIndex, oldIndex);
       },
       playPlaylist: (
         List<TrackEntity> items,
         String playingId, {
-        int startFrom = 1,
+        String startFromTrackId = '',
       }) async {
         if (items.isEmpty) {
           return;
         }
         await _musilyPlayer.stop();
         await _musilyPlayer.setQueue(items);
-        _musilyPlayer.skipToTrack(startFrom);
+        _musilyPlayer.skipToTrack(startFromTrackId);
         if (data.shuffleEnabled) {
           if (playingId != data.playingId) {
             await methods.toggleShuffle();
@@ -493,12 +475,48 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
           }
         }
         updateData(
-          data.copyWith(
-            playingId: playingId,
-            tracksFromSmartQueue: [],
-          ),
+          data.copyWith(playingId: playingId, tracksFromSmartQueue: []),
         );
       },
+      setVolume: (volume) {
+        _musilyPlayer.setVolume(volume);
+        updateData(data.copyWith(volume: volume));
+      },
+      getVolumeStream: () {
+        return _musilyPlayer.volumeStream;
+      },
+      setSleepTimer: (duration) {
+        _sleepTimer?.cancel();
+        final endTime = DateTime.now().add(duration);
+        updateData(data.copyWith(
+          sleepTimerActive: true,
+          sleepTimerDuration: duration,
+          sleepTimerEndTime: endTime,
+        ));
+
+        _sleepTimer = Timer(duration, () async {
+          await methods.pause();
+          updateData(data.copyWith(
+            sleepTimerActive: false,
+            clearSleepTimer: true,
+          ));
+        });
+      },
+      cancelSleepTimer: () {
+        _sleepTimer?.cancel();
+        _sleepTimer = null;
+        updateData(data.copyWith(
+          sleepTimerActive: false,
+          clearSleepTimer: true,
+        ));
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    _sleepTimer?.cancel();
+    _sleepTimer = null;
+    super.dispose();
   }
 }

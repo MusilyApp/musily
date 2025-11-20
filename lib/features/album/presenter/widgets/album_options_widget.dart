@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
@@ -22,6 +23,7 @@ import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_adder.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class AlbumOptions extends StatelessWidget {
   final AlbumEntity album;
@@ -36,9 +38,10 @@ class AlbumOptions extends StatelessWidget {
   final GetArtistAlbumsUsecase getArtistAlbumsUsecase;
   final GetArtistTracksUsecase getArtistTracksUsecase;
   final GetArtistSinglesUsecase getArtistSinglesUsecase;
+  final GetTrackUsecase getTrackUsecase;
   final LibraryController libraryController;
   final bool tonal;
-
+  final double? iconSize;
   const AlbumOptions({
     super.key,
     required this.album,
@@ -48,6 +51,7 @@ class AlbumOptions extends StatelessWidget {
     required this.downloaderController,
     required this.getPlayableItemUsecase,
     required this.getArtistUsecase,
+    required this.getTrackUsecase,
     required this.getArtistAlbumsUsecase,
     required this.getArtistTracksUsecase,
     required this.getArtistSinglesUsecase,
@@ -55,6 +59,7 @@ class AlbumOptions extends StatelessWidget {
     this.onFocus,
     this.tonal = false,
     required this.getPlaylistUsecase,
+    this.iconSize,
   });
 
   @override
@@ -86,10 +91,9 @@ class AlbumOptions extends StatelessWidget {
                   }
                 },
                 leading: Icon(
-                  isAlbumDownloading
-                      ? Icons.cancel_rounded
-                      : Icons.download_rounded,
+                  isAlbumDownloading ? LucideIcons.x : LucideIcons.download,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
+                  size: 20,
                 ),
                 title: Text(
                   isAlbumDownloading
@@ -119,12 +123,14 @@ class AlbumOptions extends StatelessWidget {
                       getArtistTracksUsecase: getArtistTracksUsecase,
                       getArtistSinglesUsecase: getArtistSinglesUsecase,
                       getPlaylistUsecase: getPlaylistUsecase,
+                      getTrackUsecase: getTrackUsecase,
                     ),
                   );
                 },
                 title: Text(context.localization.goToArtist),
                 leading: Icon(
-                  Icons.person_rounded,
+                  LucideIcons.userRound,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
               ),
@@ -142,7 +148,7 @@ class AlbumOptions extends StatelessWidget {
                         ...album.tracks,
                       ],
                       album.id,
-                      startFrom: 0,
+                      startFromTrackId: album.tracks[0].id,
                     );
                     libraryController.methods.updateLastTimePlayed(
                       album.id,
@@ -151,8 +157,9 @@ class AlbumOptions extends StatelessWidget {
                 },
                 leading: Icon(
                   isAlbumPlaying && playerData.isPlaying
-                      ? Icons.pause_rounded
-                      : Icons.play_arrow_rounded,
+                      ? LucideIcons.pause
+                      : LucideIcons.play,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -170,7 +177,7 @@ class AlbumOptions extends StatelessWidget {
                   playerController.methods.playPlaylist(
                     album.tracks,
                     album.id,
-                    startFrom: randomIndex,
+                    startFromTrackId: album.tracks[randomIndex].id,
                   );
                   if (!playerData.shuffleEnabled) {
                     playerController.methods.toggleShuffle();
@@ -183,7 +190,8 @@ class AlbumOptions extends StatelessWidget {
                   );
                 },
                 leading: Icon(
-                  Icons.shuffle_rounded,
+                  LucideIcons.shuffle,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -202,7 +210,8 @@ class AlbumOptions extends StatelessWidget {
                   playerController.methods.addToQueue(tracksToAdd);
                 },
                 leading: Icon(
-                  Icons.playlist_add,
+                  LucideIcons.listPlus,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -214,7 +223,8 @@ class AlbumOptions extends StatelessWidget {
               ),
               AppMenuEntry(
                 leading: Icon(
-                  Icons.queue_music,
+                  LucideIcons.listMusic,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -250,9 +260,8 @@ class AlbumOptions extends StatelessWidget {
                   }
                 },
                 leading: Icon(
-                  isAlbumInLibrary
-                      ? Icons.delete_rounded
-                      : Icons.library_add_rounded,
+                  isAlbumInLibrary ? LucideIcons.trash : LucideIcons.circlePlus,
+                  size: 20,
                   color: context.themeData.buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(
@@ -266,7 +275,8 @@ class AlbumOptions extends StatelessWidget {
                   coreController.methods.shareAlbum(album);
                 },
                 leading: Icon(
-                  Icons.share_rounded,
+                  LucideIcons.share2,
+                  size: 20,
                   color: Theme.of(context).buttonTheme.colorScheme?.primary,
                 ),
                 title: Text(context.localization.share),
@@ -279,15 +289,23 @@ class AlbumOptions extends StatelessWidget {
                   onPressed: invoke,
                   fixedSize: const Size(55, 55),
                   onFocus: onFocus,
-                  icon: const Icon(
-                    Icons.more_vert,
+                  iconSize: iconSize ?? 20,
+                  icon: Icon(
+                    LucideIcons.ellipsis,
+                    size: iconSize ?? 20,
+                    color: context.themeData.colorScheme.onSurface
+                        .withValues(alpha: 0.6),
                   ),
                 );
               }
               return IconButton(
                 onPressed: invoke,
-                icon: const Icon(
-                  Icons.more_vert,
+                iconSize: iconSize ?? 20,
+                icon: Icon(
+                  LucideIcons.ellipsisVertical,
+                  size: iconSize ?? 20,
+                  color: context.themeData.colorScheme.onSurface
+                      .withValues(alpha: 0.6),
                 ),
               );
             },

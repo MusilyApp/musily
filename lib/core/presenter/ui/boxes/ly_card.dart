@@ -96,46 +96,48 @@ class _LyCardState extends State<LyCard> {
         key: ValueKey(hasFocus),
         padding: widget.margin ?? EdgeInsets.zero,
         child: Material(
-          elevation: widget.elevation,
+          elevation: hasFocus ? widget.elevation * 1.5 : widget.elevation,
           color: hasFocus
               ? context.themeData.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.1)
+                  .withValues(alpha: 0.15)
               : context.themeData.colorScheme.surface,
           shape: widget.shape ??
               RoundedRectangleBorder(
                 side: hasFocus
                     ? BorderSide(
-                        color: context.themeData.colorScheme.primary,
-                        width: 2.0,
+                        color: context.themeData.colorScheme.primary
+                            .withValues(alpha: 0.3),
+                        width: 1.5,
                       )
                     : BorderSide(
-                        color: context.themeData.colorScheme.primary
-                            .withValues(alpha: .1),
-                        width: 2.0,
+                        color: context.themeData.colorScheme.outline
+                            .withValues(alpha: 0.1),
+                        width: 1,
                       ),
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(12),
+                borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
               ),
+          shadowColor: hasFocus
+              ? context.themeData.colorScheme.primary.withValues(alpha: 0.1)
+              : Colors.black.withValues(alpha: 0.1),
           child: InkWell(
             focusNode: focusNode,
             onTap: widget.onTap,
             onLongPress: widget.onLongPress,
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(12),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
             child: Container(
               width: widget.width,
               height: widget.height,
               padding: widget.padding ??
-                  EdgeInsets.all(
-                    () {
-                      switch (widget.density) {
-                        case LyDensity.normal:
-                          return 16.0;
-                        case LyDensity.comfortable:
-                          return 24.0;
-                        case LyDensity.dense:
-                          return 8.0;
-                      }
-                    }(),
-                  ),
+                  EdgeInsets.all(() {
+                    switch (widget.density) {
+                      case LyDensity.normal:
+                        return 16.0;
+                      case LyDensity.comfortable:
+                        return 24.0;
+                      case LyDensity.dense:
+                        return 8.0;
+                    }
+                  }()),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -146,18 +148,12 @@ class _LyCardState extends State<LyCard> {
                       child: _buildHeader(context, widget.header!),
                     ),
                   if (widget.content != null) ...[
-                    if (widget.header != null) const SizedBox(height: 8.0),
+                    if (widget.header != null) const SizedBox(height: 12.0),
                     widget.content!,
                   ],
                   if (widget.footer != null) ...[
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 12,
-                        right: 12,
-                      ),
-                      child: widget.footer!,
-                    ),
+                    const SizedBox(height: 4),
+                    widget.footer!,
                   ],
                 ],
               ),
@@ -183,9 +179,6 @@ class _LyCardState extends State<LyCard> {
   }
 
   Widget _defaultTransitionBuilder(Widget child, Animation<double> animation) {
-    return FadeTransition(
-      opacity: animation,
-      child: child,
-    );
+    return FadeTransition(opacity: animation, child: child);
   }
 }

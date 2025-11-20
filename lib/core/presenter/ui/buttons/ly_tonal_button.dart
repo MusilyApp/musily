@@ -84,7 +84,7 @@ class _LyTonalButtonState extends State<LyTonalButton> {
                   : const BorderSide(
                       color: Colors.transparent,
                     ),
-              borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+              borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
             ),
         color: widget.onPressed == null // Verifica se está desabilitado
             ? (widget.disabledColor ??

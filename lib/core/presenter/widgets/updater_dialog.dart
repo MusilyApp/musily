@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:markdown_widget/markdown_widget.dart';
 import 'package:musily/core/data/services/updater_service.dart';
+import 'package:musily/core/presenter/widgets/markdown_content.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
@@ -59,9 +59,11 @@ class UpdaterDialog extends StatelessWidget {
             ],
             SizedBox(
               height: 200,
-              child: MarkdownWidget(
-                data: UpdaterService.instance.releaseNotes,
+              child: SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
+                child: MarkdownContent(
+                  content: UpdaterService.instance.releaseNotes,
+                ),
               ),
             ),
           ],

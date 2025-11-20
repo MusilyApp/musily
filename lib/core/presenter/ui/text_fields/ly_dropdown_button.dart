@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 
@@ -99,40 +100,44 @@ class _LyDropdownButtonState<T> extends State<LyDropdownButton<T>> {
                 horizontal: 16,
               ),
               border: OutlineInputBorder(
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+                borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
                 borderSide: BorderSide(
                   color: hasFocus
                       ? context.themeData.colorScheme.primary
-                      : context.themeData.colorScheme.onSurface
-                          .withValues(alpha: 0.4),
+                      : context.themeData.colorScheme.outline
+                          .withValues(alpha: 0.15),
+                  width: hasFocus ? 1.5 : 1,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+                borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: context.themeData.colorScheme.onSurface
-                      .withValues(alpha: 0.4),
+                  color: context.themeData.colorScheme.outline
+                      .withValues(alpha: 0.15),
+                  width: 1,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+                borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
                 borderSide: BorderSide(
                   color: context.themeData.colorScheme.primary,
-                  width: 2,
+                  width: 1.5,
                 ),
               ),
               filled: true,
               fillColor: hasFocus
-                  ? context.themeData.colorScheme.onPrimary
-                      .withValues(alpha: 0.1)
-                  : context.themeData.colorScheme.surface,
+                  ? context.themeData.colorScheme.primaryContainer
+                      .withValues(alpha: 0.3)
+                  : context.themeData.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.4),
             ),
             icon: Icon(
-              Icons.arrow_drop_down,
+              LucideIcons.chevronDown,
+              size: 20,
               color: hasFocus
                   ? context.themeData.colorScheme.primary
                   : context.themeData.colorScheme.onSurface
-                      .withValues(alpha: 0.6),
+                      .withValues(alpha: 0.7),
             ),
             dropdownColor: context.themeData.colorScheme.surface,
             style: TextStyle(

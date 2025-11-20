@@ -74,7 +74,7 @@ class _LyPageState extends State<LyPage> {
               : widget.ignoreFromStack
                   ? true
                   : false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         setState(() {});
         if (widget.ignoreFromStack || widget.preventPop) {
           return;

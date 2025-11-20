@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:musily/core/domain/entities/app_menu_entry.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
@@ -30,6 +31,7 @@ class PlaylistOptions extends StatelessWidget {
   final LibraryController libraryController;
   final void Function()? onPlaylistDeleted;
   final bool tonal;
+  final double? iconSize;
 
   const PlaylistOptions({
     super.key,
@@ -43,6 +45,7 @@ class PlaylistOptions extends StatelessWidget {
     this.onPlaylistDeleted,
     this.tonal = false,
     required this.getPlaylistUsecase,
+    this.iconSize,
   });
 
   @override
@@ -70,23 +73,27 @@ class PlaylistOptions extends StatelessWidget {
                     .isNotEmpty;
                 return AppMenu(
                   coreController: coreController,
-                  modalHeader: PlaylistStaticTile(
-                    playlist: playlist,
-                  ),
+                  modalHeader: PlaylistStaticTile(playlist: playlist),
                   toggler: (context, invoke) {
                     if (tonal) {
                       return LyTonalIconButton(
                         onPressed: invoke,
                         fixedSize: const Size(55, 55),
-                        icon: const Icon(
-                          Icons.more_vert,
+                        icon: Icon(
+                          LucideIcons.ellipsis,
+                          size: iconSize ?? 20,
+                          color: context.themeData.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       );
                     }
                     return IconButton(
                       onPressed: invoke,
-                      icon: const Icon(
-                        Icons.more_vert,
+                      icon: Icon(
+                        LucideIcons.ellipsisVertical,
+                        size: iconSize ?? 20,
+                        color: context.themeData.colorScheme.onSurface
+                            .withValues(alpha: 0.6),
                       ),
                     );
                   },
@@ -95,12 +102,13 @@ class PlaylistOptions extends StatelessWidget {
                       AppMenuEntry(
                         leading: Icon(
                           isDownloadCompleted
-                              ? Icons.download_done_rounded
+                              ? LucideIcons.circleCheckBig
                               : isPlaylistDownloading
-                                  ? Icons.cancel_rounded
-                                  : Icons.download_rounded,
+                                  ? LucideIcons.circleX
+                                  : LucideIcons.download,
                           color: context
                               .themeData.buttonTheme.colorScheme?.primary,
+                          size: 20,
                         ),
                         onTap: isDownloadCompleted
                             ? null
@@ -130,8 +138,9 @@ class PlaylistOptions extends StatelessWidget {
                       AppMenuEntry(
                         leading: Icon(
                           isPlaylistPlaying && playerData.isPlaying
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
+                              ? LucideIcons.pause
+                              : LucideIcons.play,
+                          size: 20,
                           color: context
                               .themeData.buttonTheme.colorScheme?.primary,
                         ),
@@ -148,12 +157,10 @@ class PlaylistOptions extends StatelessWidget {
                                   await playerController.methods.playPlaylist(
                                     playlist.tracks,
                                     playlist.id,
-                                    startFrom: 0,
+                                    startFromTrackId: playlist.tracks[0].id,
                                   );
                                   libraryController.methods
-                                      .updateLastTimePlayed(
-                                    playlist.id,
-                                  );
+                                      .updateLastTimePlayed(playlist.id);
                                 }
                               },
                         title: Text(
@@ -171,7 +178,7 @@ class PlaylistOptions extends StatelessWidget {
                           playerController.methods.playPlaylist(
                             playlist.tracks,
                             playlist.id,
-                            startFrom: randomIndex,
+                            startFromTrackId: playlist.tracks[randomIndex].id,
                           );
                           if (!playerData.shuffleEnabled) {
                             playerController.methods.toggleShuffle();
@@ -184,38 +191,33 @@ class PlaylistOptions extends StatelessWidget {
                           );
                         },
                         leading: Icon(
-                          Icons.shuffle_rounded,
+                          LucideIcons.shuffle,
+                          size: 20,
                           color: context
                               .themeData.buttonTheme.colorScheme?.primary,
                         ),
-                        title: Text(
-                          context.localization.shufflePlay,
-                        ),
+                        title: Text(context.localization.shufflePlay),
                       ),
                       AppMenuEntry(
                         onTap: () {
-                          playerController.methods.addToQueue(
-                            playlist.tracks,
-                          );
+                          playerController.methods.addToQueue(playlist.tracks);
                         },
                         leading: Icon(
-                          Icons.playlist_add,
+                          LucideIcons.listPlus,
+                          size: 20,
                           color: context
                               .themeData.buttonTheme.colorScheme?.primary,
                         ),
                         title: Text(
                           context.localization.addToQueue,
-                          style: const TextStyle(
-                            color: null,
-                          ),
+                          style: const TextStyle(color: null),
                         ),
                       ),
                       AppMenuEntry(
-                        title: Text(
-                          context.localization.addToPlaylist,
-                        ),
+                        title: Text(context.localization.addToPlaylist),
                         leading: Icon(
-                          Icons.queue_music,
+                          LucideIcons.listMusic,
+                          size: 20,
                           color: context
                               .themeData.buttonTheme.colorScheme?.primary,
                         ),
@@ -231,12 +233,12 @@ class PlaylistOptions extends StatelessWidget {
                                       MediaQuery.of(context).size.height * .7,
                                   child: Card(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(
+                                        12,
+                                      ),
                                       side: BorderSide(
                                         color: context.themeData.dividerColor
-                                            .withValues(
-                                          alpha: .3,
-                                        ),
+                                            .withValues(alpha: .3),
                                       ),
                                     ),
                                     child: PlaylistAdderWidget(
@@ -268,7 +270,7 @@ class PlaylistOptions extends StatelessWidget {
                         isInLibrary)
                       AppMenuEntry(
                         leading: Icon(
-                          Icons.delete,
+                          LucideIcons.trash,
                           color: context
                               .themeData.buttonTheme.colorScheme?.primary,
                         ),
@@ -276,15 +278,13 @@ class PlaylistOptions extends StatelessWidget {
                           final deleteDialog =
                               await LyNavigator.showLyCardDialog<bool>(
                             context: context,
-                            title: Text(context
-                                .localization.doYouWantToDeleteThePlaylist),
+                            title: Text(
+                              context.localization.doYouWantToDeleteThePlaylist,
+                            ),
                             actions: (context) => [
                               LyFilledButton(
                                 onPressed: () {
-                                  Navigator.pop(
-                                    context,
-                                    false,
-                                  );
+                                  Navigator.pop(context, false);
                                 },
                                 child: Text(
                                   context.localization.cancel,
@@ -292,10 +292,7 @@ class PlaylistOptions extends StatelessWidget {
                               ),
                               LyFilledButton(
                                 onPressed: () {
-                                  Navigator.pop(
-                                    context,
-                                    true,
-                                  );
+                                  Navigator.pop(context, true);
                                 },
                                 color: Colors.red,
                                 child: Text(
@@ -310,14 +307,10 @@ class PlaylistOptions extends StatelessWidget {
                           if (deleteDialog != null && deleteDialog) {
                             onPlaylistDeleted?.call();
                             await libraryController.methods
-                                .removePlaylistFromLibrary(
-                              playlist.id,
-                            );
+                                .removePlaylistFromLibrary(playlist.id);
                           }
                         },
-                        title: Text(
-                          context.localization.deletePlaylist,
-                        ),
+                        title: Text(context.localization.deletePlaylist),
                       ),
                   ],
                 );

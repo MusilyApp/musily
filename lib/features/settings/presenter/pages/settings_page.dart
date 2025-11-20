@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/ui/utils/ly_page.dart';
+import 'package:musily/core/presenter/widgets/musily_app_bar.dart';
 import 'package:musily/features/auth/presenter/controllers/auth_controller/auth_controller.dart';
 import 'package:musily/features/settings/presenter/controllers/settings/settings_controller.dart';
 import 'package:musily/features/settings/presenter/widgets/app_section.dart';
@@ -24,12 +25,11 @@ class SettingsPage extends StatelessWidget {
     return LyPage(
       contextKey: 'SettingsPage',
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            context.localization.settings,
-          ),
+        appBar: MusilyAppBar(
+          title: Text(context.localization.settings),
         ),
         body: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           children: [
             if (settingsController.showSyncSection)
               SyncSection(
@@ -39,8 +39,10 @@ class SettingsPage extends StatelessWidget {
             AppSection(
               controller: settingsController,
             ),
-            const Divider(),
-            const OtherSection(),
+            OtherSection(
+              coreController: coreController,
+              settingsController: settingsController,
+            ),
           ],
         ),
       ),

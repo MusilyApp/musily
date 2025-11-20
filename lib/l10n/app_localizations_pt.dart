@@ -33,6 +33,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get artists => 'Artistas';
 
   @override
+  String get all => 'Tudo';
+
+  @override
+  String get playlists => 'Playlists';
+
+  @override
   String get download => 'Baixar';
 
   @override
@@ -93,6 +99,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
+  String get back => 'Voltar';
+
+  @override
   String get create => 'Criar';
 
   @override
@@ -124,6 +133,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get emptyLibrary => 'Sua biblioteca está vazia';
+
+  @override
+  String get emptyLibraryDescription =>
+      'Adicione itens à sua biblioteca para vê-los aqui';
 
   @override
   String get albumNotFound => 'Álbum não encontrado';
@@ -179,7 +192,31 @@ class AppLocalizationsPt extends AppLocalizations {
   String get offline => 'Offline';
 
   @override
-  String get lyricsNotFound => 'Letras não encontradas';
+  String get offlineMode => 'Modo Offline';
+
+  @override
+  String get offlineModeDescription =>
+      'Você está offline no momento. Alguns recursos podem estar indisponíveis.';
+
+  @override
+  String get lyricsNotFound => 'Letra não encontrada';
+
+  @override
+  String get lyricsNotSynced => 'Letra não está sincronizada';
+
+  @override
+  String get lyricsNotSyncedDescription =>
+      'As linhas não acompanham automaticamente a reprodução.';
+
+  @override
+  String get lyricsParsedSync => 'Sincronizamos essa letra para você';
+
+  @override
+  String get lyricsParsedSyncDescription =>
+      'Foi gerada automaticamente e pode estar levemente fora do tempo.';
+
+  @override
+  String get lyrics => 'Letras';
 
   @override
   String get settings => 'Configurações';
@@ -209,10 +246,19 @@ class AppLocalizationsPt extends AppLocalizations {
   String get about => 'Sobre';
 
   @override
+  String get aboutSupporters => 'Sobre & Apoiadores';
+
+  @override
   String get application => 'Aplicativo';
 
   @override
   String get others => 'Outros';
+
+  @override
+  String get supportersTitle => 'Apoiadores';
+
+  @override
+  String get supportersEmpty => 'Nenhum apoiador listado ainda.';
 
   @override
   String get close => 'Fechar';
@@ -225,6 +271,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noResults => 'Sem resultados';
+
+  @override
+  String get tryDifferentKeywords =>
+      'Tente palavras-chave diferentes ou verifique a ortografia';
 
   @override
   String get downloadCompleted => 'Download concluído';
@@ -365,4 +415,465 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get accentColor => 'Cor de destaque';
+
+  @override
+  String get recommendedAlbums => 'Álbuns Recomendados';
+
+  @override
+  String get recommendedMusic => 'Música Recomendada';
+
+  @override
+  String get moreRecommendations => 'Mais Recomendações';
+
+  @override
+  String get cancelOperation => 'Cancelar Operação?';
+
+  @override
+  String get cancelBackupConfirmation =>
+      'Tem certeza que deseja cancelar o backup? O progresso será perdido.';
+
+  @override
+  String get cancelRestoreConfirmation =>
+      'Tem certeza que deseja cancelar a restauração? O progresso será perdido.';
+
+  @override
+  String get yes => 'Sim';
+
+  @override
+  String get no => 'Não';
+
+  @override
+  String get initializingBackup => 'Inicializando backup...';
+
+  @override
+  String get creatingBackupArchive => 'Criando arquivo de backup...';
+
+  @override
+  String get backingUpDownloadsMetadata =>
+      'Fazendo backup dos metadados de downloads...';
+
+  @override
+  String get backingUpAudioFiles => 'Fazendo backup dos arquivos de áudio...';
+
+  @override
+  String get backingUpLibraryData =>
+      'Fazendo backup dos dados da biblioteca...';
+
+  @override
+  String get writingBackupFile => 'Gravando arquivo de backup...';
+
+  @override
+  String get savingToStorage => 'Salvando no armazenamento...';
+
+  @override
+  String get backupCancelled => 'Backup cancelado';
+
+  @override
+  String get startingBackup => 'Iniciando backup...';
+
+  @override
+  String get startingRestore => 'Iniciando restauração...';
+
+  @override
+  String get initializingRestore => 'Inicializando restauração...';
+
+  @override
+  String get readingBackupFile => 'Lendo arquivo de backup...';
+
+  @override
+  String get extractingLibraryData => 'Extraindo dados da biblioteca...';
+
+  @override
+  String get extractingDownloadsData => 'Extraindo dados de downloads...';
+
+  @override
+  String get extractingAudioFiles => 'Extraindo arquivos de áudio...';
+
+  @override
+  String get finalizingRestore => 'Finalizando restauração...';
+
+  @override
+  String get restoreCompletedSuccessfully =>
+      'Restauração concluída com sucesso!';
+
+  @override
+  String get restoreFailed => 'Falha na restauração';
+
+  @override
+  String get backupFileNotFound => 'Arquivo de backup não encontrado';
+
+  @override
+  String savedTo(String filename) {
+    return 'Salvo em: $filename';
+  }
+
+  @override
+  String get playlistEditSubtitle => 'Dê uma nova identidade à sua playlist.';
+
+  @override
+  String get playlistDetailsTitle => 'Detalhes';
+
+  @override
+  String get playlistEmptyStateDescription =>
+      'Crie uma playlist para começar a salvar suas faixas favoritas.';
+
+  @override
+  String get playlistSelectTitle => 'Selecione uma playlist';
+
+  @override
+  String get playlistSelectDescription =>
+      'Escolha onde as faixas selecionadas devem ser adicionadas.';
+
+  @override
+  String get playlistCreatorSubtitle =>
+      'Adicione um nome ou cole o link de uma playlist';
+
+  @override
+  String get playlistCreatorPasteInfo =>
+      'Você pode colar a URL de uma playlist do YouTube para importá-la automaticamente.';
+
+  @override
+  String get artistNotFoundDescription =>
+      'O artista que você está procurando não foi encontrado.';
+
+  @override
+  String get artistNoSinglesDescription =>
+      'Nenhum single disponível para este artista.';
+
+  @override
+  String get artistNoAlbumsDescription =>
+      'Nenhum álbum disponível para este artista.';
+
+  @override
+  String get artistNoSongsDescription =>
+      'Nenhuma música disponível para este artista.';
+
+  @override
+  String get lyricsNotAvailable => 'Não há letras disponíveis para esta faixa.';
+
+  @override
+  String get queueEmptyTitle => 'Sua fila está vazia';
+
+  @override
+  String get queueEmptyMessage =>
+      'Adicione músicas à fila para aproveitar sua experiência musical.';
+
+  @override
+  String get noItemsFound => 'Nenhum item encontrado';
+
+  @override
+  String get downloadsEmptyMessage => 'Suas faixas baixadas aparecerão aqui.';
+
+  @override
+  String get downloadingSectionTitle => 'Baixando';
+
+  @override
+  String get queuedSectionTitle => 'Na fila';
+
+  @override
+  String get completedSectionTitle => 'Concluídos';
+
+  @override
+  String get failedSectionTitle => 'Falhou';
+
+  @override
+  String get searchSuggestions => 'Sugestões';
+
+  @override
+  String get searchStartTyping => 'Comece a digitar para pesquisar';
+
+  @override
+  String get smartSuggestionsTitle => 'Sugestões inteligentes';
+
+  @override
+  String get smartSuggestionsDescription =>
+      'Adicionar automaticamente faixas semelhantes';
+
+  @override
+  String get libraryManagementSectionTitle => 'Gerenciamento da Biblioteca';
+
+  @override
+  String get localLibraryTitle => 'Biblioteca local';
+
+  @override
+  String get localLibraryDescription =>
+      'Gerencie pastas do dispositivo para tocar arquivos de áudio locais.';
+
+  @override
+  String get localFilesLabel => 'Arquivos locais';
+
+  @override
+  String get manageLocalFolders => 'Gerenciar pastas locais';
+
+  @override
+  String get manageLocalFoldersDescription =>
+      'Adicione, renomeie ou remova diretórios sincronizados com a sua biblioteca.';
+
+  @override
+  String get addLocalFolder => 'Adicionar pasta local';
+
+  @override
+  String get emptyLocalLibrary => 'Nenhuma pasta local ainda';
+
+  @override
+  String get emptyLocalLibraryDescription =>
+      'Adicione uma pasta do seu dispositivo para manter as músicas locais acessíveis no Musily.';
+
+  @override
+  String get chooseDirectory => 'Escolher diretório';
+
+  @override
+  String get invalidDirectory => 'Diretório inválido';
+
+  @override
+  String get invalidDirectoryDescription =>
+      'Não foi possível acessar essa pasta. Atualize o caminho ou remova a entrada.';
+
+  @override
+  String removeLocalFolderConfirmation(String name) {
+    return 'Remover \"$name\" da biblioteca local?';
+  }
+
+  @override
+  String get emptyLocalPlaylist => 'Nenhuma música encontrada';
+
+  @override
+  String get emptyLocalPlaylistDescription =>
+      'Verifique se a pasta ainda existe e contém arquivos de áudio suportados.';
+
+  @override
+  String get changeDirectory => 'Alterar diretório';
+
+  @override
+  String get updateDirectory => 'Atualizar diretório';
+
+  @override
+  String localFolderPreviewOverflow(int count) {
+    return '+$count pastas adicionais';
+  }
+
+  @override
+  String get open => 'Abrir';
+
+  @override
+  String get rename => 'Renomear';
+
+  @override
+  String get remove => 'Remover';
+
+  @override
+  String get refresh => 'Atualizar';
+
+  @override
+  String get backupLibraryDescription => 'Crie um backup da sua biblioteca';
+
+  @override
+  String get restoreLibraryDescription =>
+      'Restaure sua biblioteca a partir de um backup';
+
+  @override
+  String get includeLibraryDescription =>
+      'Fazer backup dos seus álbuns, artistas e playlists salvos';
+
+  @override
+  String get includeDownloadsDescription =>
+      'Fazer backup das suas faixas baixadas';
+
+  @override
+  String get fullScreenPlayerTooltip => 'Player em tela cheia';
+
+  @override
+  String get sleepTimer => 'Temporizador';
+
+  @override
+  String get sleepTimerDescription =>
+      'A música pausará após o tempo selecionado';
+
+  @override
+  String sleepTimerActive(String time) {
+    return 'Temporizador: $time';
+  }
+
+  @override
+  String minutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String hours(int count) {
+    return '$count horas';
+  }
+
+  @override
+  String get hour => '1 hora';
+
+  @override
+  String get customTime => 'Personalizado';
+
+  @override
+  String get enterTime => 'Digite o tempo';
+
+  @override
+  String get minutesLabel => 'Minutos';
+
+  @override
+  String get hoursLabel => 'Horas';
+
+  @override
+  String get cancelTimer => 'Cancelar Temporizador';
+
+  @override
+  String get cancelTimerQuestion => 'Você deseja cancelar o temporizador?';
+
+  @override
+  String timerInfo(String time) {
+    return 'Temporizador ativo por $time';
+  }
+
+  @override
+  String get addTime => 'Adicionar tempo';
+
+  @override
+  String get clearQueueTitle => 'Limpar Fila';
+
+  @override
+  String get clearQueueMessage =>
+      'Limpar todos os downloads em fila/pendentes?';
+
+  @override
+  String get clearQueueDescription =>
+      'Isso cancelará todos os downloads pendentes. Downloads concluídos não serão afetados.';
+
+  @override
+  String downloadManagerSummary(int active, int queued) {
+    return '$active ativos • $queued na fila';
+  }
+
+  @override
+  String get downloadManagerRetryAll => 'Tentar novamente todos';
+
+  @override
+  String get downloadManagerClearFailed => 'Limpar falhas';
+
+  @override
+  String get downloadManagerClearCompleted => 'Limpar concluídos';
+
+  @override
+  String get clearCompletedDownloadsTitle => 'Limpar downloads concluídos';
+
+  @override
+  String get clearCompletedDownloadsMessage =>
+      'Excluir todos os downloads concluídos?';
+
+  @override
+  String get clearCompletedDownloadsDescription =>
+      'Isso removerá os arquivos baixados do armazenamento. Esta ação não pode ser desfeita.';
+
+  @override
+  String itemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count itens',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String downloadCompletedFailedSummary(int completed, int failed) {
+    return '$completed concluídos • $failed falhos';
+  }
+
+  @override
+  String get downloadTotalEta => 'Tempo total estimado';
+
+  @override
+  String get downloadErrorResolveUrl =>
+      'Não foi possível resolver a URL de download';
+
+  @override
+  String get downloadErrorFileValidation =>
+      'Falha ao validar o arquivo baixado';
+
+  @override
+  String get downloadErrorUnexpectedMessage =>
+      'Resposta inesperada ao processar o download';
+
+  @override
+  String get clear => 'Limpar';
+
+  @override
+  String get queueTools => 'Ferramentas da Fila';
+
+  @override
+  String get queueToolsDescription => 'Reordenar sua fila e criar playlists';
+
+  @override
+  String get playlistCreated => 'Playlist criada com sucesso';
+
+  @override
+  String get queue => 'Fila';
+
+  @override
+  String get tracksSelected => 'faixas selecionadas';
+
+  @override
+  String get selectAll => 'Selecionar Tudo';
+
+  @override
+  String get deselectAll => 'Desselecionar Tudo';
+
+  @override
+  String get updateDirectoryDescription =>
+      'Selecione um novo diretório para esta playlist';
+
+  @override
+  String get select => 'Selecionar';
+
+  @override
+  String get renameLocalFolder => 'Renomear pasta';
+
+  @override
+  String get removeLocalFolder => 'Remover pasta';
+
+  @override
+  String get save => 'Salvar';
+
+  @override
+  String get localPlaylist => 'Playlist local';
+
+  @override
+  String get versionManager => 'Gerenciador de Versões';
+
+  @override
+  String get retry => 'Tentar Novamente';
+
+  @override
+  String get noReleasesFound => 'Nenhuma versão encontrada';
+
+  @override
+  String get version => 'Versão';
+
+  @override
+  String get alreadyInstalled => 'Já Instalado';
+
+  @override
+  String get update => 'Atualizar';
+
+  @override
+  String get changelog => 'Alterações';
+
+  @override
+  String get changelogNotAvailable => 'Alterações não disponíveis';
+
+  @override
+  String get later => 'Depois';
+
+  @override
+  String get updateAvailableDescription =>
+      'Uma nova versão do Musily está disponível. Atualize agora para obter os recursos e melhorias mais recentes.';
+
+  @override
+  String get recommendations => 'Recomendações';
 }

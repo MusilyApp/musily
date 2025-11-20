@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
+import 'package:musily/core/presenter/widgets/empty_state.dart';
+import 'package:musily/core/presenter/widgets/musily_loading.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
@@ -14,10 +16,13 @@ import 'package:musily/features/artist/domain/usecases/get_artist_singles_usecas
 import 'package:musily/features/artist/domain/usecases/get_artist_tracks_usecase.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_usecase.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
+import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/player/presenter/widgets/queue_widget.dart';
 import 'package:musily/features/player/presenter/widgets/track_lyrics.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
 
 class PlayerBanner extends StatefulWidget {
   final TrackEntity track;
@@ -32,6 +37,7 @@ class PlayerBanner extends StatefulWidget {
   final CoreController coreController;
   final GetPlaylistUsecase getPlaylistUsecase;
   final GetArtistUsecase getArtistUsecase;
+  final GetTrackUsecase getTrackUsecase;
 
   const PlayerBanner({
     super.key,
@@ -47,6 +53,7 @@ class PlayerBanner extends StatefulWidget {
     required this.getArtistUsecase,
     required this.downloaderController,
     required this.getPlaylistUsecase,
+    required this.getTrackUsecase,
   });
 
   @override
@@ -55,214 +62,270 @@ class PlayerBanner extends StatefulWidget {
 
 class _PlayerBannerState extends State<PlayerBanner> {
   @override
+  void initState() {
+    super.initState();
+    _enforceNonLyricsModeIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(covariant PlayerBanner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.track.id != widget.track.id ||
+        oldWidget.track.isLocal != widget.track.isLocal) {
+      _enforceNonLyricsModeIfNeeded();
+    }
+  }
+
+  void _enforceNonLyricsModeIfNeeded() {
+    if (!widget.track.isLocal) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final currentMode = widget.playerController.data.playerMode;
+      if (currentMode == PlayerMode.lyrics) {
+        widget.playerController.methods.setPlayerMode(PlayerMode.artwork);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return widget.playerController.builder(
       builder: (context, data) {
-        return Stack(
-          children: [
-            AnimatedOpacity(
-              opacity: data.showLyrics ? 1.0 : 0.0,
-              duration: Duration(milliseconds: data.showLyrics ? 400 : 70),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 414,
-                width: MediaQuery.of(context).size.width,
-                child: Builder(builder: (context) {
-                  if (data.loadingLyrics) {
-                    return Center(
-                      child: LoadingAnimationWidget.waveDots(
-                        color: IconTheme.of(context).color ?? Colors.white,
-                        size: 45,
-                      ),
-                    );
-                  }
-                  if (data.lyrics.lyrics == null) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.music_off_rounded,
-                            size: 45,
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            context.localization.lyricsNotFound,
-                            style:
-                                context.themeData.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                  return TrackLyrics(
-                    totalDuration: widget.track.duration,
-                    currentPosition: widget.track.position,
-                    synced: data.syncedLyrics,
-                    timedLyrics: data.lyrics.timedLyrics,
-                    lyrics: data.lyrics.lyrics!,
-                    onTimeSelected: (duration) =>
-                        widget.playerController.methods.seek(
-                      duration,
-                    ),
-                  );
-                }),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - 414,
-              child: Center(
-                child: AnimatedOpacity(
-                  opacity: data.showLyrics ? 0.0 : 1.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: data.showLyrics
-                      ? const SizedBox.shrink()
-                      : MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: !data.showLyrics
-                                ? () {
-                                    LyNavigator.close('player');
-                                    LyNavigator.push(
-                                      context.showingPageContext,
-                                      AsyncAlbumPage(
-                                        albumId:
-                                            data.currentPlayingItem!.album.id,
-                                        coreController: widget.coreController,
-                                        getPlaylistUsecase:
-                                            widget.getPlaylistUsecase,
-                                        playerController:
-                                            widget.playerController,
-                                        getAlbumUsecase: widget.getAlbumUsecase,
-                                        downloaderController:
-                                            widget.downloaderController,
-                                        getPlayableItemUsecase:
-                                            widget.getPlayableItemUsecase,
-                                        libraryController:
-                                            widget.libraryController,
-                                        getArtistAlbumsUsecase:
-                                            widget.getArtistAlbumsUsecase,
-                                        getArtistSinglesUsecase:
-                                            widget.getArtistSinglesUsecase,
-                                        getArtistTracksUsecase:
-                                            widget.getArtistTracksUsecase,
-                                        getArtistUsecase:
-                                            widget.getArtistUsecase,
-                                      ),
-                                    );
-                                  }
-                                : null,
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: Builder(
-                                    builder: (context) {
-                                      if (widget.track.highResImg != null &&
-                                          widget.track.highResImg!.isNotEmpty) {
-                                        return Card(
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color: context
-                                                  .themeData.dividerColor
-                                                  .withValues(alpha: .2),
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: AppImage(
-                                              height: 350,
-                                              width: 350,
-                                              widget.track.highResImg!,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      return Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          side: BorderSide(
-                                            width: 1,
-                                            color: context
-                                                .themeData.colorScheme.outline
-                                                .withValues(alpha: .2),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 350,
-                                              width: 350,
-                                              child: Icon(
-                                                Icons.music_note,
-                                                size: 75,
-                                                color: context
-                                                    .themeData.iconTheme.color
-                                                    ?.withValues(alpha: .8),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                if (data.tracksFromSmartQueue.contains(
-                                  widget.track.hash,
-                                ))
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
-                                    child: Container(
-                                      height: 350,
-                                      width: 350,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            context
-                                                .themeData.colorScheme.primary,
-                                            context
-                                                .themeData.colorScheme.primary
-                                                .withValues(alpha: .2),
-                                          ],
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          CupertinoIcons.wand_stars,
-                                          color: context
-                                              .themeData.colorScheme.onPrimary,
-                                          size: 60,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                              ],
-                            ),
-                          ),
-                        ),
-                ),
-              ),
-            ),
-          ],
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: _buildContent(context, data),
         );
       },
+    );
+  }
+
+  Widget _buildContent(BuildContext context, dynamic data) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      switchInCurve: Curves.easeInOut,
+      switchOutCurve: Curves.easeInOut,
+      transitionBuilder: (child, animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: _buildModeContent(context, data),
+    );
+  }
+
+  Widget _buildModeContent(BuildContext context, dynamic data) {
+    Widget content;
+    String key;
+    final effectiveMode =
+        widget.track.isLocal && data.playerMode == PlayerMode.lyrics
+            ? PlayerMode.artwork
+            : data.playerMode;
+
+    switch (effectiveMode) {
+      case PlayerMode.lyrics:
+        content = _buildLyricsContent(context, data);
+        key = 'lyrics_${data.currentPlayingItem?.id ?? 'no_track'}';
+        break;
+      case PlayerMode.queue:
+        content = _buildQueueContent(context, data);
+        key = 'queue';
+        break;
+      case PlayerMode.artwork:
+      default:
+        content = _buildArtworkContent(context, data);
+        key = 'artwork_${data.currentPlayingItem?.id ?? 'no_track'}';
+        break;
+    }
+
+    return Container(key: ValueKey(key), child: content);
+  }
+
+  Widget _buildLyricsContent(BuildContext context, dynamic data) {
+    if (data.loadingLyrics) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: MusilyDotsLoading(
+            color: IconTheme.of(context).color ?? Colors.white,
+            size: 45,
+          ),
+        ),
+      );
+    }
+    if (data.lyrics.lyrics == null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: EmptyState(
+            icon: Icon(
+              LucideIcons.music2,
+              size: 50,
+              color: context.themeData.iconTheme.color?.withValues(alpha: .5),
+            ),
+            title: context.localization.lyricsNotFound,
+            message: context.localization.lyricsNotAvailable,
+          ),
+        ),
+      );
+    }
+    return TrackLyrics(
+      totalDuration: widget.track.duration,
+      currentPosition: widget.track.position,
+      synced: data.syncedLyrics,
+      timedLyrics: data.lyrics.timedLyrics,
+      lyrics: data.lyrics.lyrics!,
+      onTimeSelected: (duration) =>
+          widget.playerController.methods.seek(duration),
+    );
+  }
+
+  Widget _buildQueueContent(BuildContext context, dynamic data) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 1),
+      child: Builder(
+        builder: (context) {
+          if (widget.playerController.data.queue.length <= 1) {
+            return Center(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: EmptyState(
+                  icon: Icon(
+                    LucideIcons.music,
+                    size: 50,
+                    color: context.themeData.iconTheme.color
+                        ?.withValues(alpha: .5),
+                  ),
+                  title: context.localization.queueEmptyTitle,
+                  message: context.localization.queueEmptyMessage,
+                ),
+              ),
+            );
+          }
+          return QueueWidget(
+            playerController: widget.playerController,
+            hideNowPlaying: true,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildArtworkContent(BuildContext context, dynamic data) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: MouseRegion(
+          cursor: widget.track.isLocal
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: widget.track.isLocal
+                ? null
+                : () {
+                    LyNavigator.close('player');
+                    LyNavigator.push(
+                      context.showingPageContext,
+                      AsyncAlbumPage(
+                        getTrackUsecase: widget.getTrackUsecase,
+                        albumId: data.currentPlayingItem!.album.id,
+                        coreController: widget.coreController,
+                        getPlaylistUsecase: widget.getPlaylistUsecase,
+                        playerController: widget.playerController,
+                        getAlbumUsecase: widget.getAlbumUsecase,
+                        downloaderController: widget.downloaderController,
+                        getPlayableItemUsecase: widget.getPlayableItemUsecase,
+                        libraryController: widget.libraryController,
+                        getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
+                        getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
+                        getArtistTracksUsecase: widget.getArtistTracksUsecase,
+                        getArtistUsecase: widget.getArtistUsecase,
+                      ),
+                    );
+                  },
+            child: Stack(
+              children: [
+                Builder(
+                  builder: (context) {
+                    if (widget.track.highResImg != null &&
+                        widget.track.highResImg!.isNotEmpty) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: context.themeData.dividerColor.withValues(
+                              alpha: .2,
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: AppImage(
+                            height: 350,
+                            width: 350,
+                            widget.track.highResImg!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        side: BorderSide(
+                          width: 1,
+                          color: context.themeData.colorScheme.outline
+                              .withValues(alpha: .2),
+                        ),
+                      ),
+                      child: SizedBox(
+                        height: 350,
+                        width: 350,
+                        child: Icon(
+                          LucideIcons.disc3,
+                          size: 75,
+                          color: context.themeData.iconTheme.color
+                              ?.withValues(alpha: .8),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                if (data.tracksFromSmartQueue.contains(widget.track.hash))
+                  Container(
+                    height: 350,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          context.themeData.colorScheme.primary,
+                          context.themeData.colorScheme.primary.withValues(
+                            alpha: .2,
+                          ),
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.wand_stars,
+                        color: context.themeData.colorScheme.onPrimary,
+                        size: 60,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

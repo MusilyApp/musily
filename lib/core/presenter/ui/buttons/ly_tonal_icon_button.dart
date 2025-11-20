@@ -111,20 +111,21 @@ class _LyTonalIconButtonState extends State<LyTonalIconButton> {
         onPressed: widget.onPressed,
         shape: widget.label != null
             ? RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(300),
+                borderRadius: BorderRadius.circular(16),
                 side: hasFocus && !isDisabled
                     ? BorderSide(
-                        width: 2,
+                        width: 1.5,
                         color: context.themeData.colorScheme.primary,
                       )
                     : const BorderSide(
                         color: Colors.transparent,
                       ),
               )
-            : CircleBorder(
+            : RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
                 side: hasFocus && !isDisabled
                     ? BorderSide(
-                        width: 2,
+                        width: 1.5,
                         color: context.themeData.colorScheme.primary,
                       )
                     : const BorderSide(

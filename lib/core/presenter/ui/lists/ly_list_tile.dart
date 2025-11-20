@@ -79,11 +79,11 @@ class _LyListTileState extends State<LyListTile> {
           duration: const Duration(milliseconds: 100),
           padding: widget.contentPadding ??
               EdgeInsets.symmetric(
-                vertical: widget.density == LyDensity.dense ? 8 : 10.5,
-                horizontal: 16,
+                vertical: widget.density == LyDensity.dense ? 4 : 10.5,
+                horizontal: widget.density == LyDensity.dense ? 4 : 16,
               ),
           constraints: BoxConstraints(
-            minHeight: widget.minTileHeight ?? 0, // Aplicando minTileHeight
+            minHeight: widget.minTileHeight ?? 0,
           ),
           decoration: BoxDecoration(
             borderRadius: widget.borderRadius ??
@@ -100,7 +100,9 @@ class _LyListTileState extends State<LyListTile> {
             children: [
               if (widget.leading != null)
                 Padding(
-                  padding: const EdgeInsets.only(right: 16),
+                  padding: EdgeInsets.only(
+                    right: widget.density == LyDensity.dense ? 4 : 16,
+                  ),
                   child: widget.leading,
                 ),
               Expanded(
@@ -118,7 +120,9 @@ class _LyListTileState extends State<LyListTile> {
               ),
               if (widget.trailing != null)
                 Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: EdgeInsets.only(
+                    left: widget.density == LyDensity.dense ? 4 : 16,
+                  ),
                   child: widget.trailing,
                 ),
             ],

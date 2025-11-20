@@ -21,9 +21,17 @@ Get it on [Telegram](https://t.me/MusilyApp) or [GitHub](https://github.com/Musi
 
 ### Screenshots
 
+#### Mobile
+
 | ![Home Page](assets/screenshots/mobile/home.jpg)          | ![Album Page](assets/screenshots/mobile/album.jpg) | ![Artist Page](assets/screenshots/mobile/artist.jpg) |
 | --------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
 | ![Playlist Page](assets/screenshots/mobile/favorites.jpg) | ![Player](assets/screenshots/mobile/player.jpg)    | ![Lyrics](assets/screenshots/mobile/lyrics.jpg)      |
+| ![Library Page](assets/screenshots/mobile/library.jpg)    | ![Queue Page](assets/screenshots/mobile/queue.jpg) | ![Backup Page](assets/screenshots/mobile/backup.jpg) |
+
+#### Desktop
+
+| ![Playlist Page](assets/screenshots/linux/playlist.png) | ![Favorites Page](assets/screenshots/linux/favorites.png) | ![Downloads Page](assets/screenshots/linux/downloads.png) |
+| ------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
 
 ---
 
@@ -94,20 +102,14 @@ sudo pacman -Syu mpv libsecret jsoncpp gnome-keyring libappindicator-gtk3
 
 ### Windows Setup
 
-For building and running Musily from source on Windows, you'll need to set up your development environment. This includes installing Rust via Rustup, which might be required by certain Flutter dependencies for native code compilation.
+For building and running Musily from source on Windows, you'll need to set up your development environment with Microsoft tooling for native builds.
 
-**1. Install Rustup:**
-
-- Go to the official Rust website: [https://rustup.rs/](https://rustup.rs/)
-- Download the `rustup-init.exe` installer for Windows.
-- Run the downloaded installer.
-
-**2. Install Visual Studio Build Tools:**
+**1. Install Visual Studio Build Tools:**
 
 - Download the [Visual Studio Installer](https://visualstudio.microsoft.com/downloads/).
 - Install the "Desktop development with C++" workload.
 
-**3. Enable Developer Mode**
+**2. Enable Developer Mode**
 
 - Open Settings from the Start menu.
 - Go to Update & Security > For Developers.

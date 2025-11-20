@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/core/presenter/extensions/string.dart';
 import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/buttons/ly_outlined_button.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/text_fields/ly_text_field.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
@@ -42,34 +45,44 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
     final String textContent = playlistNameController.text;
     final RegExp playlistIdRegex = RegExp(r'([?&])list=([a-zA-Z0-9_-]+)');
     bool alreadyClosedDialog = false;
-    late final PlaylistEntity playlist;
+    late PlaylistEntity playlist;
 
     if (_formKey.currentState!.validate()) {
       if (textContent.isUrl) {
         final match = playlistIdRegex.firstMatch(textContent);
-        if (match != null) {
-          final playlistId = match.group(2);
-          if (playlistId != null) {
-            if (!alreadyClosedDialog) {
-              alreadyClosedDialog = true;
-              Navigator.pop(widget.coreController.coreContext!);
-            }
-            LySnackbar.show('${context.localization.importingPlaylist}...');
-            final retrievedPlaylist = await widget.getPlaylistUsecase.exec(
-              playlistId,
-            );
-            if (retrievedPlaylist != null) {
-              playlist = PlaylistEntity(
-                id: retrievedPlaylist.id,
-                title: retrievedPlaylist.title,
-                trackCount: retrievedPlaylist.trackCount,
-                tracks: retrievedPlaylist.tracks,
-              );
-            } else {
-              LySnackbar.show(context.localization.playlistNotFound);
-              return;
-            }
-          }
+        if (match == null) {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
+        }
+        final playlistId = match.group(2);
+        if (playlistId == null || playlistId.isEmpty) {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
+        }
+        if (!alreadyClosedDialog) {
+          alreadyClosedDialog = true;
+          Navigator.pop(widget.coreController.coreContext!);
+        }
+        LySnackbar.showInfo('${context.localization.importingPlaylist}...');
+        PlaylistEntity? retrievedPlaylist;
+        try {
+          retrievedPlaylist = await widget.getPlaylistUsecase.exec(
+            playlistId,
+          );
+        } catch (e) {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
+        }
+        if (retrievedPlaylist != null) {
+          playlist = PlaylistEntity(
+            id: retrievedPlaylist.id,
+            title: retrievedPlaylist.title,
+            trackCount: retrievedPlaylist.trackCount,
+            tracks: retrievedPlaylist.tracks,
+          );
+        } else {
+          LySnackbar.showError(context.localization.playlistNotFound);
+          return;
         }
       } else {
         playlist = PlaylistEntity(
@@ -85,15 +98,16 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
         Navigator.pop(widget.coreController.coreContext!);
       }
 
+      final createdPlaylist = playlist;
+
       widget.libraryController.methods.createPlaylist(
         CreatePlaylistDTO(
-          title: playlist.title,
-          id: playlist.id,
-          tracks: playlist.tracks,
+          title: createdPlaylist.title,
+          tracks: createdPlaylist.tracks,
         ),
       );
       playlistNameController.text = '';
-      widget.onCreated?.call(playlist);
+      widget.onCreated?.call(createdPlaylist);
     }
   }
 
@@ -101,40 +115,126 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
   Widget build(BuildContext context) {
     return widget.builder(context, () {
       LyNavigator.showLyCardDialog(
+        density: LyDensity.dense,
         context: widget.coreController.coreContext!,
-        title: Text(context.localization.createPlaylist),
-        builder: (context) => Form(
+        builder: (dialogContext) => Form(
           key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: LyTextField(
-              autofocus: true,
-              controller: playlistNameController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.localization.requiredField;
-                }
-                return null;
-              },
-              hintText: context.localization.playlistNameOrUrl,
-              onSubmitted: (value) => submitNameTextField(context),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: dialogContext.themeData.colorScheme.primary
+                              .withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          LucideIcons.listPlus,
+                          size: 20,
+                          color: dialogContext.themeData.colorScheme.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dialogContext.localization.createPlaylist,
+                              style: dialogContext
+                                  .themeData.textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              dialogContext
+                                  .localization.playlistCreatorSubtitle,
+                              style: dialogContext.themeData.textTheme.bodySmall
+                                  ?.copyWith(
+                                color: dialogContext
+                                    .themeData.colorScheme.onSurface
+                                    .withValues(alpha: 0.7),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LyTextField(
+                        autofocus: true,
+                        controller: playlistNameController,
+                        labelText: dialogContext.localization.playlistNameOrUrl,
+                        hintText: dialogContext.localization.playlistNameOrUrl,
+                        onSubmitted: (value) =>
+                            submitNameTextField(dialogContext),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return dialogContext.localization.requiredField;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        dialogContext.localization.playlistCreatorPasteInfo,
+                        style: dialogContext.themeData.textTheme.bodySmall
+                            ?.copyWith(
+                          color: dialogContext
+                              .themeData.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Actions
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: LyOutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(dialogContext);
+                            playlistNameController.text = '';
+                          },
+                          child: Text(dialogContext.localization.cancel),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: LyFilledButton(
+                          onPressed: () => submitNameTextField(dialogContext),
+                          child: Text(dialogContext.localization.create),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-        actions: (context) => [
-          LyFilledButton(
-            onPressed: () {
-              Navigator.pop(widget.coreController.coreContext!);
-              playlistNameController.text = '';
-            },
-            child: Text(context.localization.cancel),
-          ),
-          LyFilledButton(
-            onPressed: () =>
-                submitNameTextField(widget.coreController.coreContext!),
-            child: Text(context.localization.create),
-          )
-        ],
       );
     });
   }

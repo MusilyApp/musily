@@ -21,9 +21,7 @@ class YoutubeDatasource {
     final prefs = await SharedPreferences.getInstance();
     final locale = prefs.getString('locale');
     try {
-      await ytMusic.initialize(
-        hl: locale,
-      );
+      await ytMusic.initialize(hl: locale);
     } catch (e) {
       final ytMusicHomeRawHtml = await getYtMusicRawHomeHtml();
       await ytMusic.initialize(
@@ -59,14 +57,8 @@ class YoutubeDatasource {
         name: album.artist.name,
       ),
       year: album.year ?? 0,
-      lowResImg: album.thumbnails[0].url.replaceAll(
-        'w60-h60',
-        'w100-h100',
-      ),
-      highResImg: album.thumbnails[0].url.replaceAll(
-        'w60-h60',
-        'w600-h600',
-      ),
+      lowResImg: album.thumbnails[0].url.replaceAll('w60-h60', 'w100-h100'),
+      highResImg: album.thumbnails[0].url.replaceAll('w60-h60', 'w600-h600'),
       tracks: List<TrackEntity>.from(
         album.songs.map(
           (track) => TrackEntity(
@@ -103,17 +95,12 @@ class YoutubeDatasource {
 
   Future<ArtistEntity?> getArtist(String artistId) async {
     final artist = await ytMusic.getArtist(artistId);
+    if (artist.thumbnails.isEmpty) return null;
     return ArtistEntity(
       id: artist.artistId,
       name: artist.name,
-      lowResImg: artist.thumbnails[0].url.replaceAll(
-        'w540-h225',
-        'w100-h100',
-      ),
-      highResImg: artist.thumbnails[0].url.replaceAll(
-        'w540-h225',
-        'w600-h600',
-      ),
+      lowResImg: artist.thumbnails[0].url.replaceAll('w540-h225', 'w100-h100'),
+      highResImg: artist.thumbnails[0].url.replaceAll('w540-h225', 'w600-h600'),
       topTracks: artist.topSongs
           .map(
             (track) => TrackEntity(
@@ -212,9 +199,7 @@ class YoutubeDatasource {
     );
   }
 
-  Future<List<AlbumEntity>> getArtistAlbums(
-    String artistId,
-  ) async {
+  Future<List<AlbumEntity>> getArtistAlbums(String artistId) async {
     final albums = await ytMusic.getArtistAlbums(artistId);
     return albums
         .map(
@@ -225,10 +210,7 @@ class YoutubeDatasource {
               id: album.artist.artistId ?? '',
               name: album.artist.name,
             ),
-            lowResImg: album.thumbnails[0].url.replaceAll(
-              'w60-h60',
-              'w60-h60',
-            ),
+            lowResImg: album.thumbnails[0].url.replaceAll('w60-h60', 'w60-h60'),
             highResImg: album.thumbnails[0].url.replaceAll(
               'w60-h60',
               'w600-h600',
@@ -240,9 +222,7 @@ class YoutubeDatasource {
         .toList();
   }
 
-  Future<List<AlbumEntity>> getArtistSingles(
-    String artistId,
-  ) async {
+  Future<List<AlbumEntity>> getArtistSingles(String artistId) async {
     final singles = await ytMusic.getArtistSingles(artistId);
     return singles
         .map(
@@ -305,43 +285,45 @@ class YoutubeDatasource {
   }
 
   Future<PlaylistEntity?> getPlaylist(String playlistId) async {
+    print('Getting playlist $playlistId...');
     final explode = YoutubeExplode();
-    final videos = await explode.playlists.getVideos(playlistId).toList();
-    final playlist = await explode.playlists.get(playlistId);
-    return PlaylistEntity(
-      id: playlistId,
-      title: playlist.title,
-      artist: SimplifiedArtist(
-        id: '',
-        name: playlist.author,
-      ),
-      tracks: [
-        ...videos.map(
-          (video) => TrackEntity(
-            id: video.id.toString(),
-            title: video.title,
-            hash: generateTrackHash(
+
+    try {
+      final videos = await explode.playlists.getVideos(playlistId).toList();
+
+      final playlist = await explode.playlists.get(playlistId);
+      print('playlist found: ${playlist.title}');
+
+      final tracks = videos
+          .map(
+            (video) => TrackEntity(
+              id: video.id.toString(),
               title: video.title,
-              artist: video.author,
+              hash: generateTrackHash(title: video.title, artist: video.author),
+              artist: SimplifiedArtist(id: '', name: video.author),
+              album: SimplifiedAlbum(id: '', title: ''),
+              highResImg: video.thumbnails.highResUrl,
+              lowResImg: video.thumbnails.lowResUrl,
+              source: 'youtube',
+              fromSmartQueue: false,
+              duration: video.duration ?? Duration.zero,
             ),
-            artist: SimplifiedArtist(
-              id: '',
-              name: video.author,
-            ),
-            album: SimplifiedAlbum(
-              id: '',
-              title: '',
-            ),
-            highResImg: video.thumbnails.highResUrl,
-            lowResImg: video.thumbnails.lowResUrl,
-            source: 'youtube',
-            fromSmartQueue: false,
-            duration: video.duration ?? Duration.zero,
-          ),
-        ),
-      ],
-      trackCount: videos.length,
-    );
+          )
+          .toList();
+
+      return PlaylistEntity(
+        id: playlistId,
+        title: playlist.title,
+        artist: SimplifiedArtist(id: '', name: playlist.author),
+        tracks: tracks,
+        trackCount: tracks.length,
+      );
+    } catch (e) {
+      print('error getting playlist: $e');
+      return null;
+    } finally {
+      explode.close();
+    }
   }
 
   Future<List<PlaylistEntity>> getUserPlaylists() async {
@@ -357,44 +339,62 @@ class YoutubeDatasource {
       );
       final random = Random();
 
-      final explode = YoutubeExplode();
       final List<TrackEntity> relatedTracks = [...tracks];
+      final Set<String> existingHashes = tracks.map((e) => e.hash).toSet();
 
       for (final track in selectedTracks) {
-        final results =
-            await explode.search('${track.title} ${track.artist.name}');
-        if (results.isEmpty) {
-          continue;
-        }
-        final relatedVideosList =
-            await explode.videos.getRelatedVideos(results.first);
-        final selectedVideos = (relatedVideosList?.toList() ?? []).sublist(
-          0,
-          min(3, relatedVideosList?.length ?? 0),
-        );
+        try {
+          final upNextTracks = await ytMusic.getUpNexts(track.id);
 
-        for (final video in selectedVideos) {
-          final relatedSearch = await searchTracks(
-            '${video.title} ${video.author}',
-            includeVideos: false,
-          );
-          final relatedTrack = relatedSearch.firstOrNull;
-          if (relatedTrack != null) {
-            if (relatedTracks.map((e) => e.hash).contains(relatedTrack.hash)) {
-              continue;
-            }
-            relatedTracks.insert(
-              random.nextInt(relatedTracks.length),
-              relatedTrack..fromSmartQueue = true,
+          for (final upNextTrack in upNextTracks.take(5)) {
+            final trackEntity = TrackEntity(
+              id: upNextTrack.videoId,
+              hash: generateTrackHash(
+                title: upNextTrack.title,
+                artist: upNextTrack.artists.name,
+                albumTitle: upNextTrack.album?.name,
+              ),
+              title: upNextTrack.title,
+              artist: SimplifiedArtist(
+                id: upNextTrack.artists.artistId ?? '',
+                name: upNextTrack.artists.name,
+              ),
+              album: SimplifiedAlbum(
+                id: upNextTrack.album?.albumId ?? '',
+                title: upNextTrack.album?.name ?? '',
+              ),
+              lowResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w100-h100',
+                    )
+                  : null,
+              highResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w600-h600',
+                    )
+                  : null,
+              duration: Duration(seconds: upNextTrack.duration),
+              fromSmartQueue: true,
             );
+
+            if (!existingHashes.contains(trackEntity.hash)) {
+              relatedTracks.insert(
+                random.nextInt(relatedTracks.length),
+                trackEntity,
+              );
+              existingHashes.add(trackEntity.hash);
+            }
           }
+        } catch (e) {
+          // Skip this track if getUpNexts fails
+          continue;
         }
       }
       return relatedTracks;
     } catch (e) {
-      LySnackbar.show(
-        'Smart Queue isn’t available right now :c',
-      );
+      LySnackbar.showError('Smart Queue isn\'t available right now :c');
       return tracks;
     }
   }
@@ -408,27 +408,15 @@ class YoutubeDatasource {
     final track = await ytMusic.getSong(trackId);
     return TrackEntity(
       id: track.videoId,
-      hash: generateTrackHash(
-        title: track.name,
-        artist: track.artist.name,
-      ),
+      hash: generateTrackHash(title: track.name, artist: track.artist.name),
       title: track.name,
       artist: SimplifiedArtist(
         id: track.artist.artistId ?? '',
         name: track.artist.name,
       ),
-      album: SimplifiedAlbum(
-        id: '',
-        title: '',
-      ),
-      lowResImg: track.thumbnails[0].url.replaceAll(
-        'w60-h60',
-        'w100-h100',
-      ),
-      highResImg: track.thumbnails[0].url.replaceAll(
-        'w60-h60',
-        'w600-h600',
-      ),
+      album: SimplifiedAlbum(id: '', title: ''),
+      lowResImg: track.thumbnails[0].url.replaceAll('w60-h60', 'w100-h100'),
+      highResImg: track.thumbnails[0].url.replaceAll('w60-h60', 'w600-h600'),
       source: 'youtube',
       fromSmartQueue: false,
       duration: Duration(seconds: track.duration),
@@ -445,9 +433,7 @@ class YoutubeDatasource {
     return timedLyrics;
   }
 
-  Future<List<AlbumEntity>> searchAlbums(
-    String query,
-  ) async {
+  Future<List<AlbumEntity>> searchAlbums(String query) async {
     final albums = await ytMusic.searchAlbums(query);
     return albums.map((album) {
       return AlbumEntity(
@@ -465,22 +451,14 @@ class YoutubeDatasource {
     }).toList();
   }
 
-  Future<List<ArtistEntity>> searchArtists(
-    String query,
-  ) async {
+  Future<List<ArtistEntity>> searchArtists(String query) async {
     final artists = await ytMusic.searchArtists(query);
     return artists.map((artist) {
       return ArtistEntity(
         id: artist.artistId,
         name: artist.name,
-        lowResImg: artist.thumbnails[0].url.replaceAll(
-          'w60-h60',
-          'w100-h100',
-        ),
-        highResImg: artist.thumbnails[0].url.replaceAll(
-          'w60-h60',
-          'w600-h600',
-        ),
+        lowResImg: artist.thumbnails[0].url.replaceAll('w60-h60', 'w100-h100'),
+        highResImg: artist.thumbnails[0].url.replaceAll('w60-h60', 'w600-h600'),
         similarArtists: [],
         topAlbums: [],
         topSingles: [],
@@ -498,20 +476,14 @@ class YoutubeDatasource {
     final trackVideos = videos.map(
       (video) => TrackEntity(
         id: video.videoId,
-        hash: generateTrackHash(
-          title: video.name,
-          artist: video.artist.name,
-        ),
+        hash: generateTrackHash(title: video.name, artist: video.artist.name),
         title: video.name,
         artist: SimplifiedArtist(
           id: video.artist.artistId ?? '',
           name: video.artist.name,
         ),
         album: SimplifiedAlbum(
-          id: generateTrackHash(
-            title: video.name,
-            artist: video.artist.name,
-          ),
+          id: generateTrackHash(title: video.name, artist: video.artist.name),
           title: '',
         ),
         highResImg: video.thumbnails.firstOrNull?.url,
@@ -563,52 +535,96 @@ class YoutubeDatasource {
           (section) => HomeSectionEntity(
             id: generateSectionId(section.title),
             title: section.title,
-            content: section.contents.map(
-              (content) {
-                if (content is AlbumDetailed) {
-                  return AlbumEntity(
-                    id: content.albumId,
-                    title: content.name,
-                    year: content.year ?? 0,
-                    artist: SimplifiedArtist(
-                      id: content.artist.artistId ?? '',
-                      name: content.artist.name,
-                    ),
-                    tracks: [],
-                    lowResImg: content.thumbnails[0].url.replaceAll(
-                      'w60-h60',
-                      'w100-h100',
-                    ),
-                    highResImg: content.thumbnails[0].url.replaceAll(
-                      'w60-h60',
-                      'w600-h600',
-                    ),
-                  );
-                }
-                if (content is PlaylistDetailed) {
-                  return PlaylistEntity(
-                    id: content.playlistId,
-                    title: content.name,
-                    artist: SimplifiedArtist(
-                      id: content.artist.artistId ?? '',
-                      name: content.artist.name,
-                    ),
-                    tracks: [],
-                    lowResImg: content.thumbnails[0].url.replaceAll(
-                      'w60-h60',
-                      'w100-h100',
-                    ),
-                    highResImg: content.thumbnails[0].url.replaceAll(
-                      'w60-h60',
-                      'w600-h600',
-                    ),
-                    trackCount: 0,
-                  );
-                }
-              },
-            ).toList(),
+            content: section.contents.map((content) {
+              if (content is AlbumDetailed) {
+                return AlbumEntity(
+                  id: content.albumId,
+                  title: content.name,
+                  year: content.year ?? 0,
+                  artist: SimplifiedArtist(
+                    id: content.artist.artistId ?? '',
+                    name: content.artist.name,
+                  ),
+                  tracks: [],
+                  lowResImg: content.thumbnails[0].url.replaceAll(
+                    'w60-h60',
+                    'w100-h100',
+                  ),
+                  highResImg: content.thumbnails[0].url.replaceAll(
+                    'w60-h60',
+                    'w600-h600',
+                  ),
+                );
+              }
+              if (content is PlaylistDetailed) {
+                return PlaylistEntity(
+                  id: content.playlistId,
+                  title: content.name,
+                  artist: SimplifiedArtist(
+                    id: content.artist.artistId ?? '',
+                    name: content.artist.name,
+                  ),
+                  tracks: [],
+                  lowResImg: content.thumbnails[0].url.replaceAll(
+                    'w60-h60',
+                    'w100-h100',
+                  ),
+                  highResImg: content.thumbnails[0].url.replaceAll(
+                    'w60-h60',
+                    'w600-h600',
+                  ),
+                  trackCount: 0,
+                );
+              }
+            }).toList(),
           ),
         )
         .toList();
+  }
+
+  Future<List<TrackEntity>> getUpNext(TrackEntity track) async {
+    try {
+      final upNextTracks = await ytMusic.getUpNexts(track.id);
+
+      return upNextTracks
+          .map((upNextTrack) {
+            return TrackEntity(
+              id: upNextTrack.videoId,
+              hash: generateTrackHash(
+                title: upNextTrack.title,
+                artist: upNextTrack.artists.name,
+                albumTitle: upNextTrack.album?.name,
+              ),
+              title: upNextTrack.title,
+              artist: SimplifiedArtist(
+                id: upNextTrack.artists.artistId ?? '',
+                name: upNextTrack.artists.name,
+              ),
+              album: SimplifiedAlbum(
+                id: upNextTrack.album?.albumId ?? '',
+                title: upNextTrack.album?.name ?? '',
+              ),
+              lowResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w100-h100',
+                    )
+                  : null,
+              highResImg: upNextTrack.thumbnails.isNotEmpty
+                  ? upNextTrack.thumbnails[0].url.replaceAll(
+                      'w60-h60',
+                      'w600-h600',
+                    )
+                  : null,
+              duration: Duration(seconds: upNextTrack.duration),
+              fromSmartQueue: false,
+            );
+          })
+          .take(15)
+          .toList();
+    } catch (e) {
+      LySnackbar.showError('Error getting UpNext: ${e.toString()}');
+      return [];
+    }
   }
 }

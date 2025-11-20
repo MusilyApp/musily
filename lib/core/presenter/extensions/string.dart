@@ -4,8 +4,8 @@ extension MusilyString on String {
   }
 
   bool get isDirectory {
-    const directoryPattern = r'^(/[^/ ]*)+/?$';
-    final directoryRegex = RegExp(directoryPattern);
+    final directoryRegex =
+        RegExp(r'^(?:[a-zA-Z]:\\|/)(?:[^<>:"|?*\n]+[\\/])*[^<>:"|?*\n]*$');
     return directoryRegex.hasMatch(this);
   }
 }
