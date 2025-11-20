@@ -9,6 +9,13 @@
       "args": ["--flavor", "dev", "--target", "lib/main.dart" ]
     },
     {
+      "name": "Dev Desktop",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "args": ["--target", "lib/main_dev.dart" ]
+    },
+    {
       "name": "Stable",
       "request": "launch",
       "type": "dart",
