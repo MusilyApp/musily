@@ -142,6 +142,17 @@ class _AboutActions extends StatelessWidget {
         Expanded(
           child: LyTonalButton(
             onPressed: () async {
+              final uri = Uri.parse(
+                  'https://www.paypal.com/donate/?business=UJG25JBY6PA3Y&no_recurring=0&item_name=Support+the+Musily+Project+and+help+us+keep+improving+the+app&currency_code=BRL');
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            },
+            child: const Icon(Icons.paypal),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: LyTonalButton(
+            onPressed: () async {
               await Clipboard.setData(
                 const ClipboardData(
                   text: '4c7837e6-18b3-4892-87c4-d44d1759e611',
