@@ -343,7 +343,7 @@ class MSectionsPage extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 12),
                                     Text(
-                                      context.localization.recommendedMusic,
+                                      context.localization.recommendations,
                                       style: context
                                           .themeData.textTheme.headlineSmall
                                           ?.copyWith(

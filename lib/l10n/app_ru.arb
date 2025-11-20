@@ -335,5 +335,6 @@
   "changelog": "Изменения",
   "changelogNotAvailable": "Изменения недоступны",
   "later": "Позже",
-  "updateAvailableDescription": "Доступна новая версия Musily. Обновите сейчас, чтобы получить последние функции и улучшения."
+  "updateAvailableDescription": "Доступна новая версия Musily. Обновите сейчас, чтобы получить последние функции и улучшения.",
+  "recommendations": "Рекомендации"
 }

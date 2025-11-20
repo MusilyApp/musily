@@ -336,5 +336,6 @@
   "changelog": "Alterações",
   "changelogNotAvailable": "Alterações não disponíveis",
   "later": "Depois",
-  "updateAvailableDescription": "Uma nova versão do Musily está disponível. Atualize agora para obter os recursos e melhorias mais recentes."
+  "updateAvailableDescription": "Uma nova versão do Musily está disponível. Atualize agora para obter os recursos e melhorias mais recentes.",
+  "recommendations": "Recomendações"
 }
