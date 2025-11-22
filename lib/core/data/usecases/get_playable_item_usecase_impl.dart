@@ -16,12 +16,7 @@ Future<String?> _getYoutubeAudioUrl(String ytId) async {
       requireWatchPage: true,
       ytClients: [YoutubeApiClient.androidVr],
     );
-    final supportedStreams = manifest.audioOnly.sortByBitrate();
-
-    final audioStreamInfo = supportedStreams.lastOrNull;
-    if (audioStreamInfo == null) {
-      return null;
-    }
+    final audioStreamInfo = manifest.audioOnly.withHighestBitrate();
     final url = audioStreamInfo.url.toString();
     yt.close();
     return url;
