@@ -54,5 +54,15 @@
     "name": "Sara Mikaela De Lima",
     "amount": 10,
     "currency": "BRL"
+  },
+  {
+    "name": "Fábio Luiz de Oliveira",
+    "amount": 10,
+    "currency": "BRL"
+  },
+  {
+    "name": "Luciano Cesario da Silva",
+    "amount": 15,
+    "currency": "BRL"
   }
 ]
