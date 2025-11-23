@@ -61,91 +61,95 @@ class SyncSection extends StatelessWidget {
           child: authController.builder(builder: (context, data) {
             if (data.user != null) {
               // Logged In State
-              return Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: context.themeData.colorScheme.surfaceContainerHighest
-                      .withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: context.themeData.colorScheme.outline
-                        .withValues(alpha: 0.1),
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            context.themeData.colorScheme.tertiary
-                                .withValues(alpha: 0.8),
-                            context.themeData.colorScheme.secondary
-                                .withValues(alpha: 0.8),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: context.themeData.colorScheme.tertiary
-                                .withValues(alpha: 0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          data.user!.name[0].toUpperCase(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 32,
-                            color: context.themeData.colorScheme.onSurface,
-                            letterSpacing: 0,
-                          ),
-                        ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: context
+                          .themeData.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.35),
+                      border: Border.all(
+                        color: context.themeData.colorScheme.outline
+                            .withValues(alpha: 0.1),
+                        width: 1,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      data.user!.name,
-                      style: context.themeData.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.3,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: LyOutlinedButton(
-                        onPressed: () {
-                          authController.methods.logout();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            Icon(
-                              LucideIcons.logOut,
-                              size: 18,
-                              color: context.themeData.colorScheme.error,
+                            CircleAvatar(
+                              radius: 24,
+                              backgroundColor:
+                                  context.themeData.colorScheme.primary,
+                              child: Text(
+                                data.user!.name[0].toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color:
+                                      context.themeData.colorScheme.onPrimary,
+                                  letterSpacing: 0,
+                                ),
+                              ),
                             ),
-                            const SizedBox(width: 8),
-                            const Text(
-                              'Logout',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data.user!.name,
+                                    style: context
+                                        .themeData.textTheme.titleMedium
+                                        ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    data.user!.email,
+                                    style: context.themeData.textTheme.bodySmall
+                                        ?.copyWith(
+                                      color: context
+                                          .themeData.colorScheme.onSurface
+                                          .withValues(alpha: 0.7),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: LyOutlinedButton(
+                            onPressed: () {
+                              authController.methods.logout();
+                            },
+                            icon: Icon(
+                              LucideIcons.logOut,
+                              size: 18,
+                              color: context.themeData.colorScheme.error,
+                            ),
+                            child: Text(
+                              'Logout',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: context.themeData.colorScheme.error,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               );
             }
@@ -165,22 +169,12 @@ class SyncSection extends StatelessWidget {
                     );
                   },
                   fullWidth: true,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        LucideIcons.logIn,
-                        size: 18,
-                        color: context.themeData.colorScheme.onPrimary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        context.localization.login,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                  icon: const Icon(
+                    LucideIcons.logIn,
+                    size: 18,
+                  ),
+                  child: Text(
+                    context.localization.login,
                   ),
                 ),
                 LyOutlinedButton(
@@ -193,22 +187,12 @@ class SyncSection extends StatelessWidget {
                     );
                   },
                   fullWidth: true,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        LucideIcons.userPlus,
-                        size: 18,
-                        color: context.themeData.colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        context.localization.createAccount,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                  icon: const Icon(
+                    LucideIcons.userPlus,
+                    size: 18,
+                  ),
+                  child: Text(
+                    context.localization.createAccount,
                   ),
                 ),
               ],

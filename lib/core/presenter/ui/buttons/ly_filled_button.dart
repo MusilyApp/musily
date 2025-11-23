@@ -15,12 +15,14 @@ class LyFilledButton extends StatefulWidget {
   final void Function()? onPressed;
   final ShapeBorder? shape;
   final Widget? child;
+  final Widget? icon;
   final bool loading;
   final Color? color;
 
   const LyFilledButton({
     super.key,
     this.child,
+    this.icon,
     this.onPressed,
     this.onFocus,
     this.onFocusOut,
@@ -116,42 +118,114 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                     ),
                   ),
                 )
-              : Builder(
-                  builder: (context) {
-                    if (widget.child is Text &&
-                        (widget.child as Text).style == null) {
-                      final Text originalText = widget.child as Text;
-                      return Text(
-                        originalText.data ?? '',
-                        style: TextStyle(
-                          color: isDisabled
-                              ? context.themeData.colorScheme.onSurface
-                                  .withValues(alpha: 0.38)
-                              : widget.color == null
-                                  ? (hasFocus
-                                      ? context.themeData.colorScheme.primary
-                                      : context.themeData.colorScheme.onPrimary)
-                                  : null,
-                        ),
-                        strutStyle: originalText.strutStyle,
-                        textAlign: originalText.textAlign,
-                        textDirection: originalText.textDirection,
-                        locale: originalText.locale,
-                        softWrap: originalText.softWrap,
-                        overflow: originalText.overflow,
-                        textScaler: originalText.textScaler,
-                        maxLines: originalText.maxLines,
-                        semanticsLabel: originalText.semanticsLabel,
-                        textWidthBasis: originalText.textWidthBasis,
-                        textHeightBehavior: originalText.textHeightBehavior,
-                        selectionColor: originalText.selectionColor,
-                      );
-                    }
-                    return widget.child ?? const SizedBox.shrink();
-                  },
+              : _ButtonContent(
+                  icon: widget.icon,
+                  child: widget.child,
+                  isDisabled: isDisabled,
+                  hasFocus: hasFocus,
+                  color: widget.color,
                 ),
         ),
       ),
+    );
+  }
+}
+
+class _ButtonContent extends StatelessWidget {
+  final Widget? icon;
+  final Widget? child;
+  final bool isDisabled;
+  final bool hasFocus;
+  final Color? color;
+
+  const _ButtonContent({
+    this.icon,
+    this.child,
+    required this.isDisabled,
+    required this.hasFocus,
+    this.color,
+  });
+
+  Color? _getDefaultColor(BuildContext context) {
+    if (isDisabled) {
+      return context.themeData.colorScheme.onSurface.withValues(alpha: 0.38);
+    }
+    if (color == null) {
+      return hasFocus
+          ? context.themeData.colorScheme.primary
+          : context.themeData.colorScheme.onPrimary;
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        final defaultColor = _getDefaultColor(context);
+
+        Widget? iconWidget;
+        if (icon != null) {
+          if (icon is Icon) {
+            final originalIcon = icon as Icon;
+            if (originalIcon.color == null && defaultColor != null) {
+              iconWidget = Icon(
+                originalIcon.icon,
+                size: originalIcon.size,
+                color: defaultColor,
+                semanticLabel: originalIcon.semanticLabel,
+                textDirection: originalIcon.textDirection,
+              );
+            } else {
+              iconWidget = originalIcon;
+            }
+          } else if (defaultColor != null) {
+            iconWidget = IconTheme(
+              data: IconThemeData(color: defaultColor),
+              child: icon!,
+            );
+          } else {
+            iconWidget = icon;
+          }
+        }
+
+        Widget? textWidget;
+        if (child is Text && (child as Text).style == null) {
+          final Text originalText = child as Text;
+          textWidget = Text(
+            originalText.data ?? '',
+            style: TextStyle(color: defaultColor),
+            strutStyle: originalText.strutStyle,
+            textAlign: originalText.textAlign,
+            textDirection: originalText.textDirection,
+            locale: originalText.locale,
+            softWrap: originalText.softWrap,
+            overflow: originalText.overflow,
+            textScaler: originalText.textScaler,
+            maxLines: originalText.maxLines,
+            semanticsLabel: originalText.semanticsLabel,
+            textWidthBasis: originalText.textWidthBasis,
+            textHeightBehavior: originalText.textHeightBehavior,
+            selectionColor: originalText.selectionColor,
+          );
+        } else if (child != null) {
+          textWidget = child;
+        }
+
+        if (iconWidget != null && textWidget != null) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              iconWidget,
+              const SizedBox(width: 8),
+              textWidget,
+            ],
+          );
+        }
+
+        return iconWidget ?? textWidget ?? const SizedBox.shrink();
+      },
     );
   }
 }
