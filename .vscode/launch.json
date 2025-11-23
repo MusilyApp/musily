@@ -5,22 +5,22 @@
       "name": "Dev",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main.dart",
-      "args": ["--flavor", "dev", "--target", "lib/main.dart" ]
+      "program": "lib/main_dev.dart",
+      "args": ["--flavor", "dev", "--target", "lib/main_dev.dart"]
     },
     {
       "name": "Dev Desktop",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_dev.dart",
-      "args": ["--target", "lib/main_dev.dart" ]
+      "args": ["--target", "lib/main_dev.dart"]
     },
     {
       "name": "Stable",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart",
-      "args": ["--flavor", "stable", "--target", "lib/main.dart" ]
+      "args": ["--flavor", "stable", "--target", "lib/main.dart"]
     }
   ],
   "compounds": []
