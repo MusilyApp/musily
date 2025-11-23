@@ -545,6 +545,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
       await _audioPlayer.play();
 
+      print(_activeTrack?.copyWith(url: ''));
+
       hasStopped = false;
       unawaited(_persistPlayerState());
     } catch (e, stackTrace) {
@@ -721,12 +723,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   }
 
   int activeTrackIndex() {
-    late final List<TrackEntity> queue;
-    if (_shuffleEnabled) {
-      queue = _shuffledQueue;
-    } else {
-      queue = _queue;
-    }
+    final List<TrackEntity> queue = getQueue();
 
     final filteredTrack = queue.where(
       (element) => element.id == _activeTrack?.id,
