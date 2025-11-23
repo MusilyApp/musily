@@ -1,3 +1,18 @@
+## 5.0.1
+
+**Correzioni**
+
+- Risolto un problema in cui la rinomina delle playlist non funzionava.
+- Risolto un problema che impediva l'aggiunta di brani alle playlist su Android.
+- Risolti errori che si verificavano all'avvio dell'app senza connessione Internet.
+- Ripristinata l'inizializzazione corretta di YouTube Music dopo la riconnessione a Internet — in precedenza, l'app richiedeva il riavvio con una connessione attiva per riacquistare l'accesso.
+
+**Miglioramenti**
+
+- Aggiunte icone di controllo finestra (riduci, ingrandisci, chiudi) per Windows e Linux, ora visualizzate correttamente al passaggio del mouse sui pulsanti.
+- Migliorato il monitoraggio della connessione per una transizione più affidabile tra modalità online e offline.
+- Migliorata l'estrazione audio: l'app ora recupera la massima qualità audio disponibile da YouTube.
+
 ## 5.0.0
 
 **Nuove Funzionalità**
