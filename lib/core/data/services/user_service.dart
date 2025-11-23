@@ -1,5 +1,5 @@
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:musily/features/auth/data/models/user_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musily/features/auth/data/models/user_model.dart';
 import 'package:musily/features/auth/domain/entities/user_entity.dart';
 
 class UserService {
@@ -9,7 +9,7 @@ class UserService {
   }
   UserService._internal();
 
-  // final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   UserEntity? _currentUser;
   UserEntity? get currentUser => _currentUser;
@@ -28,11 +28,11 @@ class UserService {
   }
 
   Future<void> initialize() async {
-    // final user = await _secureStorage.read(key: 'user');
-    // if (user != null) {
-    // _currentUser = UserModel.fromJson(user);
-    // } else {
-    _currentUser = null;
-    // }
+    final user = await _secureStorage.read(key: 'user');
+    if (user != null) {
+      _currentUser = UserModel.fromJson(user);
+    } else {
+      _currentUser = null;
+    }
   }
 }

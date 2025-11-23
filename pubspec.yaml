@@ -101,6 +101,7 @@ dependencies:
   audio_service_win: ^0.0.2
   collection: ^1.19.1
   audio_metadata_reader: ^0.0.11
+  flutter_secure_storage: ^9.2.4
 
 # Development Dependencies
 dev_dependencies:

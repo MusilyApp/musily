@@ -437,7 +437,9 @@ class LibraryDatasourceImpl extends BaseDatasource
       }
 
       if (UserService.loggedIn) {
-        await _httpAdapter.patch('/library/merge_library', data: itemsToMerge);
+        await _httpAdapter.patch('/library/merge_library', data: {
+          'items': itemsToMerge,
+        });
       }
 
       for (int i = 0; i < items.length; i++) {

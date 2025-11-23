@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musily/core/domain/adapters/http_adapter.dart';
 import 'package:musily/core/domain/errors/musily_error.dart';
 
@@ -70,6 +72,9 @@ class HttpAdapterImpl extends HttpAdapter {
         response.headers.map,
       );
     } catch (e, stackTracke) {
+      if (e is DioException) {
+        log('Error on route $url: ${e.response?.data}');
+      }
       throw _handleError(e, stackTracke);
     }
   }
@@ -114,6 +119,9 @@ class HttpAdapterImpl extends HttpAdapter {
         response.headers.map,
       );
     } catch (e, stackTracke) {
+      if (e is DioException) {
+        log('Error on route $url: ${e.response?.data}');
+      }
       throw _handleError(e, stackTracke);
     }
   }
@@ -160,7 +168,7 @@ class HttpAdapterImpl extends HttpAdapter {
 
   HttpResponse _handleError(dynamic error, StackTrace stackTracke) {
     if (error is DioException) {
-      // log('$error - $stackTracke');
+      log('$error - $stackTracke');
       return HttpResponse(
         error.response?.statusCode ?? 500,
         error.response?.data ?? {},
@@ -173,21 +181,19 @@ class HttpAdapterImpl extends HttpAdapter {
     }, {});
   }
 
-  // final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<String?> _getAccessToken() async {
-    // final token = await _secureStorage.read(key: 'token');
-    // return token;
-    return null;
+    final token = await _secureStorage.read(key: 'token');
+    return token;
   }
 
   Future<String?> _getRefreshToken() async {
-    // return await _secureStorage.read(key: 'refreshToken');
-    return null;
+    return await _secureStorage.read(key: 'refreshToken');
   }
 
   Future<void> _setAccessToken(String accessToken) async {
-    // await _secureStorage.write(key: 'accessToken', value: accessToken);
+    await _secureStorage.write(key: 'accessToken', value: accessToken);
   }
 
   Future<String?> _refreshToken(String refreshToken) async {
@@ -207,7 +213,7 @@ class HttpAdapterImpl extends HttpAdapter {
   }
 
   Future<void> _logout() async {
-    // await _secureStorage.delete(key: 'accessToken');
-    // await _secureStorage.delete(key: 'refreshToken');
+    await _secureStorage.delete(key: 'accessToken');
+    await _secureStorage.delete(key: 'refreshToken');
   }
 }
