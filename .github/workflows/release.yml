@@ -113,6 +113,12 @@ jobs:
         if: matrix.os == 'ubuntu-22.04'
         run: flutter build linux --release
 
+      - name: Extract uninstaller from Musily build
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          mkdir -p build/linux/x64/release/bundle/data/flutter_assets/assets/uninstaller/musily_installer
+          tar -xzf build/linux/x64/release/bundle/data/flutter_assets/assets/uninstaller/musily_installer.tar.gz -C build/linux/x64/release/bundle/data/flutter_assets/assets/uninstaller/musily_installer
+
       - name: Copy musily build to musily_installer/assets/app
         if: matrix.os == 'ubuntu-22.04'
         run: |
