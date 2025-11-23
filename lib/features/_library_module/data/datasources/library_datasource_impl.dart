@@ -341,10 +341,11 @@ class LibraryDatasourceImpl extends BaseDatasource
           responseData = response.data;
         }
         final currentPlaylist = await _modelAdapter.findById(data.id);
-        currentPlaylist?['title'] = data.title;
         if (currentPlaylist != null) {
+          currentPlaylist['playlist']?['title'] = data.title;
           await _modelAdapter.put(currentPlaylist);
-          return PlaylistModel.fromMap(responseData ?? currentPlaylist);
+          return PlaylistModel.fromMap(
+              responseData ?? currentPlaylist['playlist']);
         }
         return null;
       },
