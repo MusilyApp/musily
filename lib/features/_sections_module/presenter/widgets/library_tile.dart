@@ -61,179 +61,51 @@ class LibraryTile extends StatefulWidget {
 }
 
 class _LibraryTileState extends State<LibraryTile> {
-  bool _isHovered = false;
-
   @override
   Widget build(BuildContext context) {
-    if (widget.item.album != null) {
-      return _buildTile(
-        context: context,
-        imageUrl: widget.item.album!.highResImg,
-        title: widget.item.album!.title,
-        onTap: () => _navigateToAlbum(context),
-      );
-    }
-    if (widget.item.playlist != null) {
-      return _buildTile(
-        context: context,
-        title: widget.item.playlist!.id == UserService.favoritesId
-            ? context.localization.favorites
-            : widget.item.playlist!.title,
-        onTap: () => _navigateToPlaylist(context),
-        customLeading: widget.item.playlist!.id == UserService.favoritesId
-            ? widget.playerController.builder(
-                builder: (context, data) {
-                  return SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: FavoriteIcon(
-                      animated: data.isPlaying &&
-                          data.playingId.startsWith('favorites'),
-                    ),
-                  );
-                },
-              )
-            : Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      context.themeData.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.8),
-                      context.themeData.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.4),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  LucideIcons.listMusic,
-                  size: 20,
-                  color:
-                      context.themeData.iconTheme.color?.withValues(alpha: 0.6),
-                ),
-              ),
-      );
-    }
-    if (widget.item.artist != null) {
-      return _buildTile(
-        context: context,
-        imageUrl: widget.item.artist!.highResImg,
-        title: widget.item.artist!.name,
-        onTap: () => _navigateToArtist(context),
-      );
-    }
-    return const SizedBox.shrink();
-  }
-
-  Widget _buildTile({
-    required BuildContext context,
-    String? imageUrl,
-    required String title,
-    required VoidCallback onTap,
-    Widget? customLeading,
-  }) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        highlightColor:
-            context.themeData.colorScheme.primary.withValues(alpha: 0.1),
-        splashColor:
-            context.themeData.colorScheme.primary.withValues(alpha: 0.3),
-        onTap: onTap,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            decoration: BoxDecoration(
-              color: context.themeData.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: context.themeData.colorScheme.outline
-                    .withValues(alpha: 0.15),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: _isHovered
-                      ? context.themeData.colorScheme.primary
-                          .withValues(alpha: 0.25)
-                      : context.themeData.colorScheme.primary
-                          .withValues(alpha: 0.08),
-                  blurRadius: _isHovered ? 16 : 8,
-                  offset: Offset(0, _isHovered ? 5 : 2),
-                  spreadRadius: _isHovered ? 1 : 0,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Row(
-                children: [
-                  AnimatedScale(
-                    scale: _isHovered ? 1.04 : 1.0,
-                    duration: const Duration(milliseconds: 200),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: customLeading ??
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  context.themeData.colorScheme
-                                      .surfaceContainerHighest
-                                      .withValues(alpha: 0.8),
-                                  context.themeData.colorScheme
-                                      .surfaceContainerHighest
-                                      .withValues(alpha: 0.4),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: imageUrl != null && imageUrl.isNotEmpty
-                                ? AppImage(
-                                    imageUrl,
-                                    width: 48,
-                                    height: 48,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Icon(
-                                    LucideIcons.music,
-                                    color: context.themeData.iconTheme.color
-                                        ?.withValues(alpha: 0.6),
-                                    size: 24,
-                                  ),
-                          ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: InfinityMarquee(
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.2,
+    return Builder(
+      builder: (context) {
+        if (widget.item.album != null) {
+          return _LibraryTileContent(
+            imageUrl: widget.item.album!.lowResImg,
+            title: widget.item.album!.title,
+            onTap: () => _navigateToAlbum(context),
+            playerController: widget.playerController,
+          );
+        }
+        if (widget.item.playlist != null) {
+          return _LibraryTileContent(
+            title: widget.item.playlist!.id == UserService.favoritesId
+                ? context.localization.favorites
+                : widget.item.playlist!.title,
+            onTap: () => _navigateToPlaylist(context),
+            playerController: widget.playerController,
+            customLeading: widget.item.playlist!.id == UserService.favoritesId
+                ? widget.playerController.builder(
+                    builder: (context, data) {
+                      return SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: FavoriteIcon(
+                          animated: data.isPlaying &&
+                              data.playingId.startsWith('favorites'),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+                      );
+                    },
+                  )
+                : _PlaylistIcon(),
+          );
+        }
+        if (widget.item.artist != null) {
+          return _LibraryTileContent(
+            imageUrl: widget.item.artist!.highResImg,
+            title: widget.item.artist!.name,
+            onTap: () => _navigateToArtist(context),
+            playerController: widget.playerController,
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 
@@ -346,6 +218,177 @@ class _LibraryTileState extends State<LibraryTile> {
               getArtistAlbumsUsecase: widget.getArtistAlbumsUsecase,
               getArtistSinglesUsecase: widget.getArtistSinglesUsecase,
             ),
+    );
+  }
+}
+
+class _LibraryTileContent extends StatefulWidget {
+  final String? imageUrl;
+  final String title;
+  final VoidCallback onTap;
+  final Widget? customLeading;
+  final PlayerController playerController;
+
+  const _LibraryTileContent({
+    this.imageUrl,
+    required this.title,
+    required this.onTap,
+    this.customLeading,
+    required this.playerController,
+  });
+
+  @override
+  State<_LibraryTileContent> createState() => _LibraryTileContentState();
+}
+
+class _LibraryTileContentState extends State<_LibraryTileContent> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        highlightColor:
+            context.themeData.colorScheme.primary.withValues(alpha: 0.1),
+        splashColor:
+            context.themeData.colorScheme.primary.withValues(alpha: 0.3),
+        onTap: widget.onTap,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: context.themeData.colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: context.themeData.colorScheme.outline
+                    .withValues(alpha: 0.15),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: _isHovered
+                      ? context.themeData.colorScheme.primary
+                          .withValues(alpha: 0.25)
+                      : context.themeData.colorScheme.primary
+                          .withValues(alpha: 0.08),
+                  blurRadius: _isHovered ? 16 : 8,
+                  offset: Offset(0, _isHovered ? 5 : 2),
+                  spreadRadius: _isHovered ? 1 : 0,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: Row(
+                children: [
+                  AnimatedScale(
+                    scale: _isHovered ? 1.04 : 1.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: widget.customLeading ??
+                          _TileLeading(imageUrl: widget.imageUrl),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: InfinityMarquee(
+                      child: Text(
+                        widget.title,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TileLeading extends StatelessWidget {
+  final String? imageUrl;
+
+  const _TileLeading({
+    this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            context.themeData.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.8),
+            context.themeData.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.4),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Builder(
+        builder: (context) {
+          if (imageUrl != null && imageUrl!.isNotEmpty) {
+            return AppImage(
+              imageUrl!,
+              width: 48,
+              height: 48,
+              fit: BoxFit.cover,
+            );
+          }
+          return Icon(
+            LucideIcons.music,
+            color: context.themeData.iconTheme.color?.withValues(alpha: 0.6),
+            size: 24,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _PlaylistIcon extends StatelessWidget {
+  const _PlaylistIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            context.themeData.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.8),
+            context.themeData.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.4),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        LucideIcons.listMusic,
+        size: 20,
+        color: context.themeData.iconTheme.color?.withValues(alpha: 0.6),
+      ),
     );
   }
 }
