@@ -54,6 +54,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   StreamSubscription<InternetStatus>? _connectionSubscription;
   final InternetConnection _connectionChecker = InternetConnection();
 
+  final List<Future<dynamic> Function()> networkListeners = [];
+
   CoreController({
     required this.playerController,
     required this.downloaderController,
@@ -115,9 +117,12 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       final isOffline = status == InternetStatus.disconnected;
       updateData(data.copyWith(offlineMode: isOffline));
       if (!isOffline) {
-        MusilyRepositoryImpl().initialize().then((value) {
+        MusilyRepositoryImpl().initialize().then((value) async {
           libraryController.methods.getLibraryItems();
           libraryController.methods.loadFavorites();
+          for (final listener in networkListeners) {
+            await listener();
+          }
         });
       }
     });

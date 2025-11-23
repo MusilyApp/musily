@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'dart:developer' as dev;
 import 'package:dart_ytmusic_api/dart_ytmusic_api.dart';
 import 'package:musily/core/data/services/curl_service.dart';
 import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
@@ -22,29 +23,40 @@ class YoutubeDatasource {
     final locale = prefs.getString('locale');
     try {
       await ytMusic.initialize(hl: locale);
+      dev.log('[YouTube Initialized Succesfully]');
     } catch (e) {
       final ytMusicHomeRawHtml = await getYtMusicRawHomeHtml();
-      await ytMusic.initialize(
-        hl: locale,
-        ytMusicHomeRawHtml: ytMusicHomeRawHtml,
-      );
+      try {
+        await ytMusic.initialize(
+          hl: locale,
+          ytMusicHomeRawHtml: ytMusicHomeRawHtml,
+        );
+        dev.log('[YouTube Initialized Succesfully]');
+      } catch (e) {
+        dev.log('[Failed to initialize YouTube datasource] $e');
+      }
     }
   }
 
   Future<String?> getYtMusicRawHomeHtml() async {
-    final curlService = CurlService();
-    await curlService.init();
+    try {
+      final curlService = CurlService();
+      await curlService.init();
 
-    final response = await curlService.get(
-      'https://music.youtube.com/',
-      headers: {
-        'User-Agent':
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.5',
-      },
-    );
+      final response = await curlService.get(
+        'https://music.youtube.com/',
+        headers: {
+          'User-Agent':
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36',
+          'Accept-Language': 'en-US,en;q=0.5',
+        },
+      );
 
-    return response;
+      return response;
+    } catch (e) {
+      dev.log('[Error getting raw HTML]: $e');
+      return null;
+    }
   }
 
   Future<AlbumEntity?> getAlbum(String albumId) async {
