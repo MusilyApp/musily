@@ -28,22 +28,24 @@ class SettingsPage extends StatelessWidget {
         appBar: MusilyAppBar(
           title: Text(context.localization.settings),
         ),
-        body: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          children: [
-            if (settingsController.showSyncSection)
-              SyncSection(
-                coreController: coreController,
-                authController: authController,
+        body: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            children: [
+              if (settingsController.showSyncSection)
+                SyncSection(
+                  coreController: coreController,
+                  authController: authController,
+                ),
+              AppSection(
+                controller: settingsController,
               ),
-            AppSection(
-              controller: settingsController,
-            ),
-            OtherSection(
-              coreController: coreController,
-              settingsController: settingsController,
-            ),
-          ],
+              OtherSection(
+                coreController: coreController,
+                settingsController: settingsController,
+              ),
+            ],
+          ),
         ),
       ),
     );
