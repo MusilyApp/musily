@@ -545,8 +545,6 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
       await _audioPlayer.play();
 
-      print(_activeTrack?.copyWith(url: ''));
-
       hasStopped = false;
       unawaited(_persistPlayerState());
     } catch (e, stackTrace) {
