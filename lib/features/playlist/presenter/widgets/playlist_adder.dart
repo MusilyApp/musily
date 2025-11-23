@@ -250,7 +250,7 @@ class PlaylistAdderWidget extends StatelessWidget {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(18),
                             onTap: () async {
-                              LyNavigator.pop(contextDialog!);
+                              LyNavigator.pop(contextDialog ?? context);
                               late final List<TrackEntity> tracksToAdd;
                               if (tracks.isEmpty) {
                                 tracksToAdd = await asyncTracks?.call() ?? [];

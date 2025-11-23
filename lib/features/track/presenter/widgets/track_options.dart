@@ -143,7 +143,7 @@ class TrackOptions extends StatelessWidget {
                 return;
               }
               LyNavigator.push(
-                coreController.coreContext!,
+                context,
                 PlaylistAdderWidget(
                   coreController: coreController,
                   getPlaylistUsecase: getPlaylistUsecase,
