@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
+import 'package:musily/core/presenter/extensions/date_time.dart';
 import 'package:musily/core/presenter/extensions/duration.dart';
 import 'package:musily/core/presenter/widgets/app_image.dart';
 import 'package:musily/core/presenter/widgets/musily_loading.dart';
@@ -69,19 +70,6 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
   Duration _seekDuration = Duration.zero;
   bool _useSeekDuration = false;
   double _previousVolume = 1.0;
-
-  String _formatRemainingTime(DateTime endTime) {
-    final now = DateTime.now();
-    final remaining = endTime.difference(now);
-
-    if (remaining.isNegative || remaining.inSeconds == 0) {
-      return '0:00';
-    }
-
-    final minutes = remaining.inMinutes;
-    final seconds = remaining.inSeconds % 60;
-    return '$minutes:${seconds.toString().padLeft(2, '0')}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -445,8 +433,13 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                               ),
                               child: Slider(
                                 min: 0,
-                                max: track.duration.inSeconds.toDouble(),
+                                max: data.mediaAvailable
+                                    ? track.duration.inSeconds.toDouble()
+                                    : 0,
                                 value: () {
+                                  if (!data.mediaAvailable) {
+                                    return 0.0;
+                                  }
                                   if (track.position.inSeconds >
                                       track.duration.inSeconds) {
                                     return 0.0;
@@ -460,22 +453,27 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                                   }
                                   return 0.0;
                                 }(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _useSeekDuration = true;
-                                    _seekDuration = Duration(
-                                      seconds: value.toInt(),
-                                    );
-                                  });
-                                },
-                                onChangeEnd: (value) async {
-                                  setState(() {
-                                    _useSeekDuration = false;
-                                  });
-                                  await widget.playerController.methods.seek(
-                                    _seekDuration,
-                                  );
-                                },
+                                onChanged: data.mediaAvailable
+                                    ? (value) {
+                                        setState(() {
+                                          _useSeekDuration = true;
+                                          _seekDuration = Duration(
+                                            seconds: value.toInt(),
+                                          );
+                                        });
+                                      }
+                                    : null,
+                                onChangeEnd: data.mediaAvailable
+                                    ? (value) async {
+                                        setState(() {
+                                          _useSeekDuration = false;
+                                        });
+                                        await widget.playerController.methods
+                                            .seek(
+                                          _seekDuration,
+                                        );
+                                      }
+                                    : null,
                               ),
                             ),
                           ),
@@ -595,7 +593,7 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                           message: data.sleepTimerActive &&
                                   data.sleepTimerEndTime != null
                               ? context.localization.sleepTimerActive(
-                                  _formatRemainingTime(data.sleepTimerEndTime!))
+                                  data.sleepTimerEndTime!.toFormattedDate())
                               : context.localization.sleepTimer,
                           child: IconButton(
                             onPressed: () {

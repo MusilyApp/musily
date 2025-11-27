@@ -51,6 +51,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   void Function(
     MusilyPlayerState playerState,
+    bool playingPlaceholder,
   )? _onPlayerStateChanged;
   void Function(Duration duration)? _onDurationChanged;
   void Function(Duration position)? _onPositionChanged;
@@ -108,7 +109,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
               _playerState = MusilyPlayerState.completed;
               break;
           }
-          _onPlayerStateChanged!.call(_playerState);
+          _onPlayerStateChanged!.call(_playerState, _loadingTrackUrl);
           if (_playerState == MusilyPlayerState.completed) {
             _onPlayerComplete?.call();
           }
@@ -415,6 +416,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     }
     if (hasStopped) {
       await playTrack(_activeTrack!);
+      _onAction?.call(MusilyPlayerAction.play);
       return;
     }
     await _audioPlayer.play();
@@ -465,7 +467,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
             url: placeholderAudioPath,
           );
 
-          await _playPlaceholderForRepeatOne(placeholderTrack);
+          await _playPlaceholder(placeholderTrack);
 
           if (track.id != _activeTrack?.id) return;
 
@@ -483,6 +485,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
           if (track.id != _activeTrack?.id) return;
 
           await _audioPlayer.play();
+          hasStopped = false;
         }
         return;
       }
@@ -490,27 +493,18 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       _onActiveTrackChanged?.call(track);
 
       if (queue.where((e) => e.id == track.id).isEmpty) {
-        queue = [track];
         _queue = [track];
         _shuffledQueue = [track];
         _onAction?.call(MusilyPlayerAction.queueChanged);
       }
 
       if (url.isEmpty) {
-        if (_audioPlayer.playing) {
-          await _audioPlayer.stop();
-        }
-
         if (track.id != _activeTrack?.id) return;
 
         if (_uriGetter != null) {
           final uri = await _uriGetter!.call(track);
 
           if (track.id != _activeTrack?.id) return;
-
-          if (_audioPlayer.playing) {
-            await _audioPlayer.stop();
-          }
 
           if (track.id != _activeTrack?.id) return;
 
@@ -556,7 +550,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     }
   }
 
-  Future<void> _playPlaceholderForRepeatOne(
+  Future<void> _playPlaceholder(
     TrackEntity placeholderTrack,
   ) async {
     try {
@@ -570,7 +564,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       await _audioPlayer.play();
     } catch (e, stackTrace) {
       log(
-        '[Error playing placeholder for repeat one]',
+        '[Error playing placeholder]',
         error: e,
         stackTrace: stackTrace,
       );
@@ -671,7 +665,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   @override
   void setOnPlayerStateChanged(
-      Function(MusilyPlayerState playerState) callback) {
+      Function(MusilyPlayerState playerState, bool playingPlaceholder)
+          callback) {
     _onPlayerStateChanged = callback;
   }
 

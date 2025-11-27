@@ -80,11 +80,11 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
       return Uri.parse(item.url ?? '');
     });
 
-    _musilyPlayer.setOnPlayerStateChanged((state) {
+    _musilyPlayer.setOnPlayerStateChanged((state, playingPlaceholder) {
       updateData(
         data.copyWith(
           isPlaying: state == MusilyPlayerState.playing,
-          mediaAvailable: data.currentPlayingItem?.url != null,
+          mediaAvailable: !playingPlaceholder,
           isBuffering: state == MusilyPlayerState.buffering,
         ),
       );
@@ -92,7 +92,12 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
 
     _musilyPlayer.setOnDurationChanged((newDuration) {
       if (data.currentPlayingItem != null) {
-        if (data.currentPlayingItem!.duration != newDuration) {
+        if (!data.mediaAvailable) {
+          data.currentPlayingItem!.duration = Duration.zero;
+          updateData(data);
+          return;
+        }
+        if (data.currentPlayingItem!.duration != Duration.zero) {
           updateTrackInPlaylistUsecase.exec(
             data.playingId,
             data.currentPlayingItem!.id,
@@ -105,6 +110,11 @@ class PlayerController extends BaseController<PlayerData, PlayerMethods> {
     });
 
     _musilyPlayer.setOnPositionChanged((newPosition) {
+      if (!data.mediaAvailable) {
+        data.currentPlayingItem!.position = Duration.zero;
+        updateData(data);
+        return;
+      }
       if (data.currentPlayingItem != null) {
         data.currentPlayingItem!.position = newPosition;
         if (data.autoSmartQueue) {

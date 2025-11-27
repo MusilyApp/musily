@@ -7,6 +7,7 @@ abstract class MusilyAudioHandler {
   void setOnPlayerStateChanged(
     Function(
       MusilyPlayerState playerState,
+      bool playingPlaceholder,
     ) callback,
   );
   void setOnDurationChanged(
