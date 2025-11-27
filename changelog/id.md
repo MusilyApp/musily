@@ -1,3 +1,18 @@
+## 5.0.1
+
+**Perbaikan**
+
+- Memperbaiki masalah di mana mengganti nama daftar putar tidak berfungsi.
+- Memperbaiki masalah yang mencegah menambahkan trek ke daftar putar di Android.
+- Memperbaiki kesalahan yang terjadi saat memulai aplikasi tanpa koneksi internet.
+- Memulihkan inisialisasi YouTube Music yang tepat setelah terhubung kembali ke internet — sebelumnya, aplikasi memerlukan restart dengan koneksi aktif untuk mendapatkan kembali akses.
+
+**Peningkatan**
+
+- Menambahkan ikon kontrol jendela (minimalkan, maksimalkan, tutup) untuk Windows dan Linux, sekarang ditampilkan dengan benar saat mengarahkan mouse ke tombol.
+- Meningkatkan pemantauan koneksi untuk transisi yang lebih andal antara mode online dan offline.
+- Meningkatkan ekstraksi audio: aplikasi sekarang mengambil kualitas audio tertinggi yang tersedia dari YouTube.
+
 ## 5.0.0
 
 **Fitur Baru**

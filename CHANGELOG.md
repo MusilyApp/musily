@@ -1,3 +1,18 @@
+## 5.0.1
+
+**Fixes**
+
+- Fixed an issue where renaming playlists did not work.
+- Fixed a problem that prevented adding tracks to playlists on Android.
+- Fixed errors that occurred when starting the app without an internet connection.
+- Restored proper initialization of YouTube Music after reconnecting to the internet — previously, the app required restarting with an active connection to regain access.
+
+**Improvements**
+
+- Added window control icons (minimize, maximize, close) for Windows and Linux, now displayed correctly when hovering over the buttons.
+- Improved connection monitoring for a more reliable transition between online and offline modes.
+- Enhanced audio extraction: the app now retrieves the highest audio quality available from YouTube.
+
 ## 5.0.0
 
 **New Features**

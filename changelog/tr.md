@@ -1,3 +1,18 @@
+## 5.0.1
+
+**Düzeltmeler**
+
+- Çalma listelerini yeniden adlandırmanın çalışmadığı bir sorun düzeltildi.
+- Android'de çalma listelerine parça eklenmesini engelleyen bir sorun düzeltildi.
+- İnternet bağlantısı olmadan uygulamayı başlatırken oluşan hatalar düzeltildi.
+- İnternete yeniden bağlandıktan sonra YouTube Music'in uygun başlatılması geri yüklendi — daha önce, uygulamanın erişimi yeniden kazanmak için aktif bir bağlantıyla yeniden başlatılması gerekiyordu.
+
+**İyileştirmeler**
+
+- Windows ve Linux için pencere kontrol simgeleri (küçült, büyüt, kapat) eklendi, artık düğmelerin üzerine gelindiğinde doğru şekilde görüntüleniyor.
+- Çevrimiçi ve çevrimdışı modlar arasında daha güvenilir bir geçiş için bağlantı izleme iyileştirildi.
+- Ses çıkarma geliştirildi: uygulama artık YouTube'dan mevcut en yüksek ses kalitesini alıyor.
+
 ## 5.0.0
 
 **Yeni Özellikler**

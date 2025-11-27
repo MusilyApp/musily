@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:musily/core/domain/presenter/app_controller.dart';
+import 'package:musily/core/presenter/controllers/core/core_controller.dart';
 import 'package:musily/features/_library_module/domain/usecases/get_library_items_usecase.dart';
 import 'package:musily/features/_sections_module/data/services/recommendations_color_processor.dart';
 import 'package:musily/features/_sections_module/domain/entities/section_entity.dart';
@@ -20,6 +21,7 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
   late final GetUpNextUsecase _getUpNextUsecase;
   late final GetArtistUsecase _getArtistUsecase;
   late final GetPlaylistUsecase _getPlaylistUsecase;
+  late final CoreController _coreController;
 
   SectionsController({
     required GetSectionsUsecase getSectionsUsecase,
@@ -27,13 +29,16 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
     required GetUpNextUsecase getUpNextUsecase,
     required GetArtistUsecase getArtistUsecase,
     required GetPlaylistUsecase getPlaylistUsecase,
+    required CoreController coreController,
   }) {
     _getSectionsUsecase = getSectionsUsecase;
     _getLibraryItemsUsecase = getLibraryItemsUsecase;
     _getUpNextUsecase = getUpNextUsecase;
     _getArtistUsecase = getArtistUsecase;
     _getPlaylistUsecase = getPlaylistUsecase;
-    methods.getSections();
+    _coreController = coreController;
+
+    _coreController.networkListeners.add(methods.getSections);
   }
 
   @override
@@ -55,6 +60,9 @@ class SectionsController extends BaseController<SectionsData, SectionsMethods> {
   SectionsMethods defineMethods() {
     return SectionsMethods(
       getSections: () async {
+        if (_coreController.data.offlineMode) {
+          return;
+        }
         updateData(
           data.copyWith(
             loadingSections: true,

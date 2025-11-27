@@ -1,3 +1,18 @@
+## 5.0.1
+
+**Correcciones**
+
+- Corregido un problema donde renombrar listas de reproducción no funcionaba.
+- Corregido un problema que impedía agregar pistas a listas de reproducción en Android.
+- Corregidos errores que ocurrían al iniciar la aplicación sin conexión a internet.
+- Restaurada la inicialización adecuada de YouTube Music después de reconectar a internet — anteriormente, la aplicación requería reiniciar con una conexión activa para recuperar el acceso.
+
+**Mejoras**
+
+- Agregados iconos de control de ventana (minimizar, maximizar, cerrar) para Windows y Linux, ahora se muestran correctamente al pasar el mouse sobre los botones.
+- Mejorado el monitoreo de conexión para una transición más confiable entre modos en línea y fuera de línea.
+- Mejorada la extracción de audio: la aplicación ahora recupera la más alta calidad de audio disponible de YouTube.
+
 ## 5.0.0
 
 **Nuevas Funcionalidades**

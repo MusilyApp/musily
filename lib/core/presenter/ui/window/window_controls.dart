@@ -66,8 +66,8 @@ class _WindowControlsState extends State<WindowControls> with WindowListener {
         LyWindowCommandButton(
           onPressed: () => windowManager.close(),
           icon: LucideIcons.x,
-          iconSize: 12,
-          iconColor: Colors.transparent,
+          iconSize: 10,
+          iconColor: Colors.black.withValues(alpha: 0.8),
           size: 16,
           isFocused: isFocused,
           backgroundColor: const Color(0xffe8524a),
@@ -76,8 +76,8 @@ class _WindowControlsState extends State<WindowControls> with WindowListener {
         LyWindowCommandButton(
           onPressed: () => windowManager.minimize(),
           icon: LucideIcons.minus,
-          iconSize: 12,
-          iconColor: Colors.transparent,
+          iconSize: 10,
+          iconColor: Colors.black.withValues(alpha: 0.8),
           size: 16,
           isFocused: isFocused,
           backgroundColor: const Color(0xfff0ae1b),
@@ -87,9 +87,9 @@ class _WindowControlsState extends State<WindowControls> with WindowListener {
           onPressed: () => isMaximized
               ? windowManager.unmaximize()
               : windowManager.maximize(),
-          icon: isMaximized ? LucideIcons.copy : LucideIcons.maximize,
-          iconSize: 12,
-          iconColor: Colors.transparent,
+          icon: isMaximized ? LucideIcons.minimize2 : LucideIcons.maximize2,
+          iconSize: 10,
+          iconColor: Colors.black.withValues(alpha: 0.8),
           size: 16,
           isFocused: isFocused,
           backgroundColor: const Color(0xff59c836),

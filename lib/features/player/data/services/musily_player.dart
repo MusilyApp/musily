@@ -104,7 +104,8 @@ class MusilyPlayer implements MusilyAudioHandler {
 
   @override
   void setOnPlayerStateChanged(
-      Function(MusilyPlayerState playerState) callback) {
+      Function(MusilyPlayerState playerState, bool playingPlaceholder)
+          callback) {
     if (_audioHandler != null) {
       _audioHandler!.setOnPlayerStateChanged(callback);
     }

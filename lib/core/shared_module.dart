@@ -138,6 +138,7 @@ class SharedModule extends Module {
         getUpNextUsecase: i.get<GetUpNextUsecaseImpl>(),
         getArtistUsecase: i.get<GetArtistUsecaseImpl>(),
         getPlaylistUsecase: i.get<GetPlaylistUsecaseImpl>(),
+        coreController: i.get<CoreController>(),
       ),
     );
 

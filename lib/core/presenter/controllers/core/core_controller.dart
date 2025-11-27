@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:media_store_plus/media_store_plus.dart';
+import 'package:musily/core/data/repositories/musily_repository_impl.dart';
 import 'package:musily/core/data/services/library_backup_service.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/core/domain/enums/content_origin.dart';
@@ -52,6 +53,8 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   late final BackupService backupService;
   StreamSubscription<InternetStatus>? _connectionSubscription;
   final InternetConnection _connectionChecker = InternetConnection();
+
+  final List<Future<dynamic> Function()> networkListeners = [];
 
   CoreController({
     required this.playerController,
@@ -113,6 +116,15 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
         _connectionChecker.onStatusChange.listen((status) {
       final isOffline = status == InternetStatus.disconnected;
       updateData(data.copyWith(offlineMode: isOffline));
+      if (!isOffline) {
+        MusilyRepositoryImpl().initialize().then((value) async {
+          libraryController.methods.getLibraryItems();
+          libraryController.methods.loadFavorites();
+          for (final listener in networkListeners) {
+            await listener();
+          }
+        });
+      }
     });
   }
 

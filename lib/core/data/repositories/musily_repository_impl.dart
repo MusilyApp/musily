@@ -20,9 +20,33 @@ class MusilyRepositoryImpl implements MusilyRepository {
   late final YoutubeDatasource youtubeDatasource;
 
   Future<void> initialize() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    youtubeDatasource = YoutubeDatasource();
-    await youtubeDatasource.initialize();
+    if (!hasSharedPreferencesInitialized()) {
+      sharedPreferences = await SharedPreferences.getInstance();
+    }
+    if (!hasYoutubeDatasourceInitialized()) {
+      youtubeDatasource = YoutubeDatasource();
+    }
+    if (hasYoutubeDatasourceInitialized()) {
+      await youtubeDatasource.initialize();
+    }
+  }
+
+  bool hasSharedPreferencesInitialized() {
+    try {
+      sharedPreferences;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool hasYoutubeDatasourceInitialized() {
+    try {
+      youtubeDatasource;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
