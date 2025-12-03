@@ -345,5 +345,8 @@
   "changelogNotAvailable": "Dziennik zmian niedostępny",
   "later": "Później",
   "updateAvailableDescription": "Dostępna jest nowa wersja Musily. Zaktualizuj teraz, aby uzyskać najnowsze funkcje i ulepszenia.",
-  "recommendations": "Rekomendacje"
+  "recommendations": "Rekomendacje",
+  "dropFileOrFolderHere": "Upuść plik lub folder tutaj",
+  "dropFileOrFolderDescription": "Aby przywrócić kopię zapasową biblioteki lub zaimportować lokalny folder.",
+  "onlyOneItemAtATime": "Jednocześnie można przetworzyć tylko jeden element."
 }

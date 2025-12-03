@@ -344,5 +344,8 @@
   "changelogNotAvailable": "سجل التغييرات غير متاح",
   "later": "لاحقاً",
   "updateAvailableDescription": "هناك إصدار جديد من Musily متاح. قم بالتحديث للحصول على أحدث الميزات والتحسينات.",
-  "recommendations": "التوصيات"
+  "recommendations": "التوصيات",
+  "dropFileOrFolderHere": "أسقط الملف أو المجلد هنا",
+  "dropFileOrFolderDescription": "لاستعادة نسخة احتياطية من المكتبة أو استيراد مجلد محلي.",
+  "onlyOneItemAtATime": "يمكن معالجة عنصر واحد فقط في كل مرة."
 }

@@ -345,5 +345,8 @@
   "changelogNotAvailable": "変更履歴は利用できません",
   "later": "後で",
   "updateAvailableDescription": "Musily の新しいバージョンが利用可能です。最新の機能と改善を手に入れましょう。",
-  "recommendations": "おすすめ"
+  "recommendations": "おすすめ",
+  "dropFileOrFolderHere": "ファイルまたはフォルダをここにドロップ",
+  "dropFileOrFolderDescription": "ライブラリのバックアップを復元するか、ローカルフォルダをインポートします。",
+  "onlyOneItemAtATime": "一度に処理できるアイテムは1つだけです。"
 }

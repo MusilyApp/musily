@@ -334,5 +334,8 @@
   "changelogNotAvailable": "暂无更新日志",
   "later": "稍后",
   "updateAvailableDescription": "Musily 有新版本可用。立即更新以获得最新功能和改进。",
-  "recommendations": "推荐"
+  "recommendations": "推荐",
+  "dropFileOrFolderHere": "将文件或文件夹拖放到此处",
+  "dropFileOrFolderDescription": "用于恢复资料库备份或导入本地文件夹。",
+  "onlyOneItemAtATime": "一次只能处理一个项目。"
 }

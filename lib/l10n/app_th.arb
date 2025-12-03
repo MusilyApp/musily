@@ -345,5 +345,8 @@
   "changelogNotAvailable": "บันทึกการเปลี่ยนแปลงไม่พร้อมใช้งาน",
   "later": "ภายหลัง",
   "updateAvailableDescription": "เวอร์ชันใหม่ของ Musily พร้อมใช้งาน อัปเดตตอนนี้เพื่อรับฟีเจอร์และปรับปรุงล่าสุด",
-  "recommendations": "คำแนะนำ"
+  "recommendations": "คำแนะนำ",
+  "dropFileOrFolderHere": "วางไฟล์หรือโฟลเดอร์ที่นี่",
+  "dropFileOrFolderDescription": "เพื่อกู้คืนข้อมูลสำรองไลบรารีหรือนำเข้าโฟลเดอร์ท้องถิ่น",
+  "onlyOneItemAtATime": "สามารถประมวลผลได้ครั้งละหนึ่งรายการเท่านั้น"
 }

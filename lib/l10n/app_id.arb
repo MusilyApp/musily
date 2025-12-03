@@ -345,5 +345,8 @@
   "changelogNotAvailable": "Catatan perubahan tidak tersedia",
   "later": "Nanti",
   "updateAvailableDescription": "Versi baru Musily tersedia. Perbarui sekarang untuk mendapatkan fitur dan peningkatan terbaru.",
-  "recommendations": "Rekomendasi"
+  "recommendations": "Rekomendasi",
+  "dropFileOrFolderHere": "Letakkan File atau Folder di Sini",
+  "dropFileOrFolderDescription": "Untuk memulihkan cadangan pustaka atau mengimpor folder lokal.",
+  "onlyOneItemAtATime": "Hanya satu item yang dapat diproses dalam satu waktu."
 }

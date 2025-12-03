@@ -345,5 +345,8 @@
   "changelogNotAvailable": "Registro modifiche non disponibile",
   "later": "Più tardi",
   "updateAvailableDescription": "È disponibile una nuova versione di Musily. Aggiorna ora per ottenere le ultime funzionalità e miglioramenti.",
-  "recommendations": "Raccomandazioni"
+  "recommendations": "Raccomandazioni",
+  "dropFileOrFolderHere": "Rilascia il file o la cartella qui",
+  "dropFileOrFolderDescription": "Per ripristinare il backup della libreria o importare una cartella locale.",
+  "onlyOneItemAtATime": "È possibile elaborare un solo elemento alla volta."
 }

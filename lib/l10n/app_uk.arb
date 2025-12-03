@@ -337,5 +337,8 @@
   "changelogNotAvailable": "Зміни недоступні",
   "later": "Пізніше",
   "updateAvailableDescription": "Доступна нова версія Musily. Оновіть зараз, щоб отримати останні функції та покращення.",
-  "recommendations": "Рекомендації"
+  "recommendations": "Рекомендації",
+  "dropFileOrFolderHere": "Перетягніть файл або папку сюди",
+  "dropFileOrFolderDescription": "Щоб відновити резервну копію бібліотеки або імпортувати локальну папку.",
+  "onlyOneItemAtATime": "За один раз можна обробити лише один елемент."
 }

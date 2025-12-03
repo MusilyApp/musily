@@ -345,5 +345,8 @@
   "changelogNotAvailable": "चेंजलॉग उपलब्ध नहीं है",
   "later": "बाद में",
   "updateAvailableDescription": "Musily का एक नया संस्करण उपलब्ध है। नवीनतम सुविधाओं और सुधारों को प्राप्त करने के लिए अभी अपडेट करें।",
-  "recommendations": "सिफारिशें"
+  "recommendations": "सिफारिशें",
+  "dropFileOrFolderHere": "फ़ाइल या फ़ोल्डर यहाँ छोड़ें",
+  "dropFileOrFolderDescription": "लाइब्रेरी बैकअप को पुनर्स्थापित करने या स्थानीय फ़ोल्डर आयात करने के लिए।",
+  "onlyOneItemAtATime": "एक समय में केवल एक आइटम संसाधित किया जा सकता है।"
 }

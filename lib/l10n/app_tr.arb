@@ -345,5 +345,8 @@
   "changelogNotAvailable": "Değişiklik günlüğü mevcut değil",
   "later": "Sonra",
   "updateAvailableDescription": "Musily'nin yeni bir sürümü mevcut. En son özellikler ve iyileştirmeleri almak için şimdi güncelleyin.",
-  "recommendations": "Öneriler"
+  "recommendations": "Öneriler",
+  "dropFileOrFolderHere": "Dosyayı veya Klasörü Buraya Bırakın",
+  "dropFileOrFolderDescription": "Kütüphane yedeğini geri yüklemek veya yerel bir klasör içe aktarmak için.",
+  "onlyOneItemAtATime": "Aynı anda yalnızca bir öğe işlenebilir."
 }

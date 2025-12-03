@@ -337,5 +337,8 @@
   "changelogNotAvailable": "Изменения недоступны",
   "later": "Позже",
   "updateAvailableDescription": "Доступна новая версия Musily. Обновите сейчас, чтобы получить последние функции и улучшения.",
-  "recommendations": "Рекомендации"
+  "recommendations": "Рекомендации",
+  "dropFileOrFolderHere": "Перетащите файл или папку сюда",
+  "dropFileOrFolderDescription": "Чтобы восстановить резервную копию библиотеки или импортировать локальную папку.",
+  "onlyOneItemAtATime": "За один раз можно обработать только один элемент."
 }
