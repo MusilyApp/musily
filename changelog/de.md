@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Fehlerbehebungen**
+- Behoben: Ein kritisches Problem im Zufallsmodus, bei dem der aktuelle Titel eine Dauer von 0 anzeigen konnte, was verhinderte, dass die Wiedergabe automatisch zum nächsten Titel wechselte.
+
+**Funktionen**
+- Hinzugefügt: Drag-and-Drop-Unterstützung auf dem Desktop für Backup-Dateien und Ordner, was es einfacher macht, Ihre Bibliothek wiederherzustellen oder lokale Ordner direkt aus Ihrem Dateimanager hinzuzufügen.
+
 ## 5.0.1
 
 **Fehlerbehebungen**

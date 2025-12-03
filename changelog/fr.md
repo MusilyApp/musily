@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Corrections**
+- Résolu un problème critique en mode aléatoire où la piste actuelle pouvait afficher une durée de 0, empêchant la lecture de passer automatiquement à la piste suivante.
+
+**Fonctionnalités**
+- Ajout du support du glisser-déposer sur bureau pour les fichiers de sauvegarde et les dossiers, facilitant la restauration de votre bibliothèque ou l'ajout de dossiers locaux directement depuis votre gestionnaire de fichiers.
+
 ## 5.0.1
 
 **Corrections**

@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Düzeltmeler**
+- Karışık modda mevcut parçanın 0 süre gösterebileceği ve oynatmanın otomatik olarak bir sonraki parçaya geçmesini engelleyen kritik bir sorun çözüldü.
+
+**Özellikler**
+- Yedek dosyaları ve klasörler için masaüstü sürükle-bırak desteği eklendi, kitaplığınızı geri yüklemeyi veya doğrudan dosya yöneticinizden yerel klasörler eklemeyi kolaylaştırıyor.
+
 ## 5.0.1
 
 **Düzeltmeler**

@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Correcciones**
+- Resuelto un problema crítico en el modo aleatorio donde la pista actual podía mostrar una duración de 0, impidiendo que la reproducción avanzara automáticamente a la siguiente pista.
+
+**Características**
+- Añadido soporte de arrastrar y soltar en escritorio para archivos de respaldo y carpetas, facilitando restaurar tu biblioteca o añadir carpetas locales directamente desde tu administrador de archivos.
+
 ## 5.0.1
 
 **Correcciones**

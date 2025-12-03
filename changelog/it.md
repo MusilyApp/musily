@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Correzioni**
+- Risolto un problema critico in modalità casuale in cui la traccia corrente poteva mostrare una durata di 0, impedendo alla riproduzione di avanzare automaticamente alla traccia successiva.
+
+**Funzionalità**
+- Aggiunto supporto drag-and-drop su desktop per file di backup e cartelle, rendendo più facile ripristinare la tua libreria o aggiungere cartelle locali direttamente dal tuo file manager.
+
 ## 5.0.1
 
 **Correzioni**

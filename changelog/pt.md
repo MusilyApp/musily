@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Correções**
+- Resolvido um problema crítico no modo aleatório onde a faixa atual poderia exibir uma duração de 0, impedindo que a reprodução avançasse automaticamente para a próxima faixa.
+
+**Recursos**
+- Adicionado suporte a arrastar e soltar no desktop para arquivos de backup e pastas, facilitando a restauração da sua biblioteca ou a adição de pastas locais diretamente do seu gerenciador de arquivos.
+
 ## 5.0.1
 
 **Correções**

@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Fixes**
+- Resolved a critical issue in shuffle mode where the current track could display a duration of 0, preventing playback from automatically advancing to the next track.
+
+**Features**
+- Added desktop drag-and-drop support for backup files and folders, making it easier to restore your library or add local folders directly from your file manager.
+
 ## 5.0.1
 
 **Fixes**

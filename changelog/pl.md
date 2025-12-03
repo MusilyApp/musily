@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Poprawki**
+- Rozwiązano krytyczny problem w trybie losowym, gdzie bieżący utwór mógł wyświetlać czas trwania 0, uniemożliwiając automatyczne przejście do następnego utworu.
+
+**Funkcje**
+- Dodano obsługę przeciągania i upuszczania na pulpicie dla plików kopii zapasowych i folderów, ułatwiając przywracanie biblioteki lub dodawanie lokalnych folderów bezpośrednio z menedżera plików.
+
 ## 5.0.1
 
 **Poprawki**

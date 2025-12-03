@@ -1,3 +1,11 @@
+## 5.0.2
+
+**Perbaikan**
+- Menyelesaikan masalah kritis dalam mode acak di mana trek saat ini dapat menampilkan durasi 0, mencegah pemutaran secara otomatis melanjutkan ke trek berikutnya.
+
+**Fitur**
+- Menambahkan dukungan seret dan lepas di desktop untuk file cadangan dan folder, memudahkan untuk memulihkan perpustakaan Anda atau menambahkan folder lokal langsung dari pengelola file Anda.
+
 ## 5.0.1
 
 **Perbaikan**
