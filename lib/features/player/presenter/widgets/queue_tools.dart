@@ -153,7 +153,7 @@ class _QueueToolsState extends State<QueueTools> {
                           ),
                           builder: (context, color, child) {
                             return Icon(
-                              CupertinoIcons.wand_stars,
+                              LucideIcons.sparkles,
                               size: 20,
                               color: color,
                             );

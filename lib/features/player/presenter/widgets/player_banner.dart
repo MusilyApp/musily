@@ -315,7 +315,7 @@ class _PlayerBannerState extends State<PlayerBanner> {
                     ),
                     child: Center(
                       child: Icon(
-                        CupertinoIcons.wand_stars,
+                        LucideIcons.sparkles,
                         color: context.themeData.colorScheme.onPrimary,
                         size: 60,
                       ),
