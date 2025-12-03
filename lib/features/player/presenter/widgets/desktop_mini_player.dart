@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -103,6 +104,8 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                   children: [
                     _AlbumArtwork(
                       isLocal: track.isLocal,
+                      isFromSmartQueue:
+                          data.tracksFromSmartQueue.contains(track.hash),
                       onTap: () {
                         LyNavigator.push(
                           context.showingPageContext,
@@ -218,6 +221,20 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                         ],
                       ),
                     ),
+                    if (data.tracksFromSmartQueue.contains(track.hash))
+                      IconButton(
+                        onPressed: () {
+                          widget.libraryController.methods.addTracksToPlaylist(
+                            widget.playerController.data.playingId,
+                            [track],
+                          );
+                        },
+                        color: context.themeData.colorScheme.primary,
+                        icon: const Icon(
+                          LucideIcons.circlePlus,
+                          size: 20,
+                        ),
+                      ),
                     if (!track.isLocal)
                       FavoriteButton(
                         libraryController: widget.libraryController,
@@ -715,6 +732,7 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
 
 class _AlbumArtwork extends StatelessWidget {
   final bool isLocal;
+  final bool isFromSmartQueue;
   final VoidCallback onTap;
   final Widget child;
 
@@ -722,17 +740,48 @@ class _AlbumArtwork extends StatelessWidget {
     required this.isLocal,
     required this.onTap,
     required this.child,
+    this.isFromSmartQueue = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final artwork = Stack(
+      children: [
+        child,
+        if (isFromSmartQueue)
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    context.themeData.colorScheme.primary,
+                    context.themeData.colorScheme.primary
+                        .withValues(alpha: 0.2),
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  LucideIcons.sparkles,
+                  color: context.themeData.colorScheme.onPrimary,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+
     if (isLocal) {
-      return child;
+      return artwork;
     }
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
-      child: child,
+      child: artwork,
     );
   }
 }
