@@ -353,6 +353,7 @@ https://musily.app/album/${album.id}
                           .firstOrNull;
                       if (track != null) {
                         playerController.methods.addToQueue([track]);
+                        playerController.methods.queueJumpTo(track.id);
                       }
                     }
                     return;
@@ -402,9 +403,20 @@ https://musily.app/album/${album.id}
                   );
                 }
                 break;
+              case 'song':
+                if (id != null) {
+                  final track = await getTrackUsecase.exec(id);
+                  if (track != null) {
+                    playerController.methods.addToQueue([track]);
+                    playerController.methods.queueJumpTo(track.id);
+                  }
+                }
+                break;
               default:
                 break;
             }
+
+            WindowService.focus();
           }
         } catch (e) {
           catchError(e);
