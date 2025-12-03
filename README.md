@@ -64,8 +64,6 @@ Make sure you have the correct Flutter version and system dependencies installed
 
 ### Linux Setup
 
-> **Note:** The system tray feature requires `libayatana-appindicator3` (or `libappindicator-gtk3`). This has been tested on Debian 13 (GNOME). Functionality on other desktop environments or distributions may vary.
-
 Musily is compatible with most Linux-based distributions. To ensure the app functions properly when building or running from source, please install the following required dependencies.
 
 **Required Dependencies**:
@@ -89,13 +87,13 @@ sudo apt update && sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev gn
 - **Fedora/RHEL (Not Tested)**:
 
 ```bash
-sudo dnf update && sudo dnf install mpv-devel libsecret-devel jsoncpp-devel gnome-keyring libappindicator-gtk3-devel
+sudo dnf update && sudo dnf install mpv-devel libsecret-devel jsoncpp-devel gnome-keyring libayatana-appindicator-gtk3
 ```
 
 - **Arch/Manjaro (Not Tested)**:
 
 ```bash
-sudo pacman -Syu mpv libsecret jsoncpp gnome-keyring libappindicator-gtk3
+sudo pacman -Syu mpv libsecret jsoncpp gnome-keyring libappindicator-gtk3 libayatana-appindicator
 ```
 
 ---
