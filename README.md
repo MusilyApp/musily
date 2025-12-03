@@ -87,7 +87,7 @@ sudo apt update && sudo apt install libmpv-dev libsecret-1-dev libjsoncpp-dev gn
 - **Fedora/RHEL (Not Tested)**:
 
 ```bash
-sudo dnf update && sudo dnf install mpv-devel libsecret-devel jsoncpp-devel gnome-keyring libayatana-appindicator-gtk3
+sudo dnf update && sudo dnf install mpv-devel libsecret-devel jsoncpp-devel gnome-keyring libayatana-appindicator-gtk3-devel
 ```
 
 - **Arch/Manjaro (Not Tested)**:
