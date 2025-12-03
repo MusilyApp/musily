@@ -1,3 +1,5 @@
+import 'package:desktop_drop/desktop_drop.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -26,6 +28,7 @@ import 'package:musily/features/artist/presenter/widgets/artist_tile.dart';
 import 'package:musily/features/downloader/presenter/controllers/downloader/downloader_controller.dart';
 import 'package:musily/features/player/domain/enums/player_mode.dart';
 import 'package:musily/features/player/presenter/controllers/player/player_controller.dart';
+import 'package:musily/features/player/presenter/widgets/in_context_dialog.dart';
 import 'package:musily/features/playlist/domain/entities/playlist_entity.dart';
 import 'package:musily/features/playlist/domain/usecases/get_playlist_usecase.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_creator.dart';
@@ -518,9 +521,85 @@ class _DCorePageState extends State<DCorePage> {
           ),
           // Main Content Area
           Expanded(
-            child: Container(
-              color: context.themeData.scaffoldBackgroundColor,
-              child: const RouterOutlet(),
+            child: DropTarget(
+              onDragEntered: (details) {
+                widget.coreController.methods.updateDragAndDropFiles(true, []);
+              },
+              onDragExited: (details) {
+                widget.coreController.methods.updateDragAndDropFiles(false, []);
+              },
+              onDragDone: (details) {
+                widget.coreController.methods
+                    .updateDragAndDropFiles(false, details.files);
+              },
+              child: Container(
+                color: context.themeData.scaffoldBackgroundColor,
+                child: Stack(
+                  children: [
+                    const RouterOutlet(),
+                    widget.coreController.builder(builder: (context, data) {
+                      return InContextDialog(
+                          duration: const Duration(milliseconds: 100),
+                          show: data.showDropFiles,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: DottedBorder(
+                              options: RoundedRectDottedBorderOptions(
+                                radius: const Radius.circular(16),
+                                color: context.themeData.colorScheme.onSurface
+                                    .withValues(alpha: 0.6),
+                                strokeWidth: 1,
+                                dashPattern: const [8, 4],
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color:
+                                      context.themeData.scaffoldBackgroundColor,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        LucideIcons.arrowBigDownDash,
+                                        size: 48,
+                                        color: context
+                                            .themeData.colorScheme.onSurface,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        context
+                                            .localization.dropFileOrFolderHere,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: context
+                                              .themeData.colorScheme.onSurface,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        context.localization
+                                            .dropFileOrFolderDescription,
+                                        style: TextStyle(
+                                          color: context
+                                              .themeData.colorScheme.onSurface
+                                              .withValues(alpha: 0.6),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ));
+                    })
+                  ],
+                ),
+              ),
             ),
           ),
           Container(

@@ -100,6 +100,7 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
       isPlayerExpanded: false,
       hadlingDeepLink: false,
       backupInProgress: false,
+      showDropFiles: false,
       backupFileDir: '',
       isMaximized: false,
       windowTitle: 'Musily',
@@ -137,6 +138,41 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
   @override
   CoreMethods defineMethods() {
     return CoreMethods(
+      updateDragAndDropFiles: (showDragDialog, files) {
+        updateData(data.copyWith(
+          showDropFiles: showDragDialog,
+        ));
+        if (files.isNotEmpty) {
+          WindowService.focus();
+          if (files.length > 1) {
+            LySnackbar.showError(
+              coreContext!.localization.onlyOneItemAtATime,
+            );
+            return;
+          }
+          final backupFile =
+              files.firstWhereOrNull((e) => e.path.endsWith('.lybak'));
+          if (backupFile != null) {
+            updateData(data.copyWith(
+              backupFileDir: backupFile.path,
+            ));
+            methods.restoreLibraryBackup();
+          }
+
+          final folder =
+              files.firstWhereOrNull((e) => Directory(e.path).existsSync());
+          if (folder != null) {
+            LyNavigator.push(
+              coreContext!.showingPageContext,
+              LocalPlaylistAdderPage(
+                libraryController: libraryController,
+                coreController: this,
+                initialFolderPath: folder.path,
+              ),
+            );
+          }
+        }
+      },
       loadWindowProperties: () async {
         data.isMaximized = WindowService().isMaximized;
         data.windowTitle = WindowService().currentTitle;

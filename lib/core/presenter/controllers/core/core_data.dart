@@ -9,6 +9,7 @@ class CoreData extends BaseControllerData {
   String windowTitle;
   bool isMaximized;
   bool offlineMode;
+  bool showDropFiles;
 
   CoreData({
     required this.isShowingDialog,
@@ -18,6 +19,7 @@ class CoreData extends BaseControllerData {
     required this.backupFileDir,
     required this.isMaximized,
     required this.windowTitle,
+    this.showDropFiles = false,
     this.offlineMode = false,
   });
 
@@ -31,6 +33,7 @@ class CoreData extends BaseControllerData {
     String? windowTitle,
     bool? isMaximized,
     bool? offlineMode,
+    bool? showDropFiles,
   }) {
     return CoreData(
       isShowingDialog: isShowingDialog ?? this.isShowingDialog,
@@ -41,6 +44,7 @@ class CoreData extends BaseControllerData {
       windowTitle: windowTitle ?? this.windowTitle,
       isMaximized: isMaximized ?? this.isMaximized,
       offlineMode: offlineMode ?? this.offlineMode,
+      showDropFiles: showDropFiles ?? this.showDropFiles,
     );
   }
 }

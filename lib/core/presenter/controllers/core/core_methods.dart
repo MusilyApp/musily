@@ -12,6 +12,8 @@ class CoreMethods {
   final Future<void> Function() pickBackupfile;
   final Future<void> Function(TrackEntity track) saveTrackToDownload;
   final Future<void> Function() loadWindowProperties;
+  final void Function(bool showDragDialog, List<XFile> files)
+      updateDragAndDropFiles;
 
   CoreMethods({
     required this.handleDeepLink,
@@ -23,5 +25,6 @@ class CoreMethods {
     required this.pickBackupfile,
     required this.saveTrackToDownload,
     required this.loadWindowProperties,
+    required this.updateDragAndDropFiles,
   });
 }

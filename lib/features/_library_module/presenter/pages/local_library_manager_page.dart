@@ -42,6 +42,8 @@ class LocalLibraryManagerPage extends StatefulWidget {
   final GetPlaylistUsecase getPlaylistUsecase;
   final GetTrackUsecase getTrackUsecase;
 
+  final String? initialFolderPath;
+
   const LocalLibraryManagerPage({
     super.key,
     required this.libraryController,
@@ -56,6 +58,7 @@ class LocalLibraryManagerPage extends StatefulWidget {
     required this.getArtistSinglesUsecase,
     required this.getPlaylistUsecase,
     required this.getTrackUsecase,
+    this.initialFolderPath,
   });
 
   @override
@@ -124,6 +127,7 @@ class _LocalLibraryManagerPageState extends State<LocalLibraryManagerPage> {
       LocalPlaylistAdderPage(
         libraryController: widget.libraryController,
         coreController: widget.coreController,
+        initialFolderPath: widget.initialFolderPath,
       ),
     );
 
@@ -207,10 +211,13 @@ class LocalPlaylistAdderPage extends StatefulWidget {
   final LibraryController libraryController;
   final CoreController coreController;
 
+  final String? initialFolderPath;
+
   const LocalPlaylistAdderPage({
     super.key,
     required this.libraryController,
     required this.coreController,
+    this.initialFolderPath,
   });
 
   @override
@@ -226,6 +233,14 @@ class _LocalPlaylistAdderPageState extends State<LocalPlaylistAdderPage> {
   void dispose() {
     _nameController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialFolderPath != null) {
+      _selectedPath = widget.initialFolderPath;
+    }
   }
 
   @override

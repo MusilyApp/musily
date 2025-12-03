@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   audio_service_win
   connectivity_plus
   dart_ipc
+  desktop_drop
   dynamic_color
   isar_flutter_libs
   media_kit_libs_windows_audio

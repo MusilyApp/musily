@@ -144,6 +144,10 @@ class WindowService {
     windowManager.focus();
   }
 
+  static Future<void> focus() async {
+    windowManager.focus();
+  }
+
   static Future<void> setWindowTitle(
     String title, {
     bool defaultTitle = false,
