@@ -1,6 +1,7 @@
 import 'package:musily/features/album/domain/entities/album_entity.dart';
 import 'package:musily/features/artist/domain/entitites/artist_entity.dart';
 import 'package:musily/features/track/domain/entities/track_entity.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CoreMethods {
   final Future<void> Function(Uri uri) handleDeepLink;

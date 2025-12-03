@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -14,10 +15,12 @@ import 'package:musily/core/domain/usecases/get_playable_item_usecase.dart';
 import 'package:musily/core/presenter/controllers/core/core_data.dart';
 import 'package:musily/core/presenter/controllers/core/core_methods.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
-import 'package:musily/core/presenter/ui/buttons/ly_filled_button.dart';
+import 'package:musily/core/presenter/ui/ly_properties/ly_density.dart';
 import 'package:musily/core/presenter/ui/utils/ly_snackbar.dart';
 import 'package:musily/core/presenter/ui/utils/ly_navigator.dart';
 import 'package:musily/features/_library_module/presenter/controllers/library/library_controller.dart';
+import 'package:musily/features/_library_module/presenter/pages/local_library_manager_page.dart';
+import 'package:musily/features/_library_module/presenter/widgets/library_restore.dart';
 import 'package:musily/features/album/domain/usecases/get_album_usecase.dart';
 import 'package:musily/features/album/presenter/pages/album_page.dart';
 import 'package:musily/features/artist/domain/usecases/get_artist_albums_usecase.dart';
@@ -202,36 +205,26 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
         }
       },
       restoreLibraryBackup: () async {
+        final backupFile = File(data.backupFileDir);
         LyNavigator.showLyCardDialog(
+          density: LyDensity.dense,
           context: coreContext!,
-          actions: (context) => [
-            LyFilledButton(
-              onPressed: () {
-                LyNavigator.pop(context);
-              },
-              child: Text(context.localization.cancel),
-            ),
-            LyFilledButton(
-              onPressed: () async {
-                LyNavigator.pop(context);
-                updateData(data.copyWith(
-                  backupInProgress: true,
-                ));
-                final backupFile = File(data.backupFileDir);
-                await backupService.restoreLibraryBackup(backupFile);
-                await libraryController.methods.getLibraryItems();
-                updateData(data.copyWith(
-                  backupInProgress: false,
-                ));
-                LySnackbar.showSuccess(
-                  coreContext!.localization.backupRestoredSuccessfully,
-                );
-              },
-              child: Text(context.localization.restore),
-            ),
-          ],
-          builder: (context) => const SizedBox.shrink(),
-          title: Text(coreContext!.localization.doYouWantToRestoreThisBackup),
+          builder: (context) => LibraryRestore(
+            backupFile: backupFile,
+            onRestore: () async {
+              updateData(data.copyWith(
+                backupInProgress: true,
+              ));
+              await backupService.restoreLibraryBackup(backupFile);
+              await libraryController.methods.getLibraryItems();
+              updateData(data.copyWith(
+                backupInProgress: false,
+              ));
+              LySnackbar.showSuccess(
+                coreContext!.localization.backupRestoredSuccessfully,
+              );
+            },
+          ),
         );
       },
       requestStoragePermission: () async {
@@ -239,16 +232,14 @@ class CoreController extends BaseController<CoreData, CoreMethods> {
           Permission.storage,
         ];
 
-        // On Android 11+ (API 30+), request MANAGE_EXTERNAL_STORAGE for full directory access
         if (Platform.isAndroid) {
           try {
             final androidInfo = await DeviceInfoPlugin().androidInfo;
             if (androidInfo.version.sdkInt >= 30) {
-              // Request manage external storage permission for Android 11+
               permissions.add(Permission.manageExternalStorage);
             }
           } catch (e) {
-            // If we can't determine SDK version, just request storage
+            //
           }
         }
 
@@ -294,6 +285,10 @@ https://musily.app/album/${album.id}
       },
       handleDeepLink: (uri) async {
         try {
+          if (uri.toString().endsWith('.lybak')) {
+            methods.restoreLibraryBackup();
+            return;
+          }
           updateData(
             data.copyWith(
               hadlingDeepLink: true,
