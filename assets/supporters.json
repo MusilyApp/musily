@@ -74,5 +74,10 @@
     "name": "Mateus Gomes Ferreira",
     "amount": 2,
     "currency": "BRL"
+  },
+  {
+    "name": "Gabriele Ferreira Prado",
+    "amount": 0.15,
+    "currency": "BRL"
   }
 ]
