@@ -102,6 +102,8 @@ dependencies:
   collection: ^1.19.1
   audio_metadata_reader: ^0.0.11
   desktop_drop: ^0.7.0
+  google_fonts: ^6.3.2
+  screenshot: ^3.0.0
 
 # Development Dependencies
 dev_dependencies:
@@ -109,7 +111,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
   isar_generator: ^3.1.0+1
-  build_runner: ^2.4.11
+  build_runner: ^2.4.13
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: any
   args: ^2.7.0
