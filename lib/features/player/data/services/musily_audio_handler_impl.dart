@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musily/core/data/services/window_service.dart';
 import 'package:musily/features/player/data/mappers/media_mapper.dart';
+import 'package:musily/features/player/data/services/playback_history_service.dart';
 import 'package:musily/features/player/data/services/player_persistence_service.dart';
 import 'package:musily/features/player/domain/entities/musily_audio_handler.dart';
 import 'package:musily/features/player/domain/enums/musily_player_action.dart';
@@ -32,6 +33,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   final _audioPlayer = AudioPlayer();
   final _persistenceService = PlayerPersistenceService();
+  final _historyService = PlaybackHistoryService();
 
   List<TrackEntity> _queue = [];
   List<TrackEntity> _shuffledQueue = [];
@@ -62,6 +64,8 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
   late StreamSubscription<int?> _currentIndexSubscription;
   late StreamSubscription<SequenceState?> _sequenceStateSubscription;
   late StreamSubscription<Duration?> _positionChangeSubscription;
+
+  int _lastRecordedSecond = -1;
 
   final _processingStateMap = {
     ProcessingState.idle: AudioProcessingState.idle,
@@ -129,6 +133,13 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     _positionChangeSubscription = _audioPlayer.positionStream.listen(
       (duration) {
         _onPositionChanged?.call(duration);
+        final currentSecond = duration.inSeconds;
+        if (currentSecond > 0 &&
+            currentSecond % 3 == 0 &&
+            currentSecond != _lastRecordedSecond) {
+          _lastRecordedSecond = currentSecond;
+          _historyService.updateProgress(duration);
+        }
       },
     );
   }
@@ -406,6 +417,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       return;
     }
     await _audioPlayer.pause();
+    await _historyService.pauseTracking();
     _onAction?.call(MusilyPlayerAction.pause);
   }
 
@@ -420,6 +432,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       return;
     }
     await _audioPlayer.play();
+    _historyService.resumeTracking();
     _onAction?.call(MusilyPlayerAction.play);
   }
 
@@ -650,6 +663,9 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     _onActiveTrackChanged = (track) {
       callback(track);
       updateWindowTitle(track);
+      if (track != null) {
+        unawaited(_historyService.startTracking(track));
+      }
     };
   }
 
@@ -776,6 +792,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
     late final List<TrackEntity> queue = getQueue();
     if (queue.any((element) => element.id == trackId)) {
       final newTrack = queue.firstWhere((element) => element.id == trackId);
+      _lastRecordedSecond = -1; // Reset para nova música
       await playTrack(newTrack);
     }
   }
@@ -786,6 +803,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
       return;
     }
     await _audioPlayer.stop();
+    await _historyService.stopTracking();
     _onAction?.call(MusilyPlayerAction.stop);
     hasStopped = true;
     unawaited(_persistPlayerState());
@@ -823,6 +841,7 @@ class MusilyAudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> onTaskRemoved() async {
+    await _historyService.stopTracking();
     await _audioPlayer.stop().then((_) => _audioPlayer.dispose());
 
     await _playbackEventSubscription.cancel();
