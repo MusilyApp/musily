@@ -18,6 +18,9 @@ class _DraggableBoxState extends State<DraggableBox> with WindowListener {
   bool isMaximized = false;
   @override
   void initState() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      return;
+    }
     windowManager.setTitleBarStyle(TitleBarStyle.hidden);
     windowManager.addListener(this);
     super.initState();
@@ -25,6 +28,10 @@ class _DraggableBoxState extends State<DraggableBox> with WindowListener {
 
   @override
   void dispose() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      super.dispose();
+      return;
+    }
     windowManager.removeListener(this);
     super.dispose();
   }
