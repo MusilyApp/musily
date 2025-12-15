@@ -29,6 +29,7 @@ import 'package:musily/features/downloader/presenter/controllers/downloader/down
 import 'package:musily/features/playlist/presenter/pages/playlist_page.dart';
 import 'package:musily/features/playlist/presenter/widgets/playlist_item.dart';
 import 'package:musily/features/track/domain/usecases/get_track_usecase.dart';
+import 'package:musily/features/wrapped/presenter/widgets/wrapped_banner.dart';
 import 'package:responsive_breakpoint/core/responsive_value.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -270,6 +271,9 @@ class MSectionsPage extends StatelessWidget {
                             }
                             return Container();
                           },
+                        ),
+                        WrappedBanner(
+                          coreController: coreController,
                         ),
                         if (coreData.offlineMode)
                           Container(
