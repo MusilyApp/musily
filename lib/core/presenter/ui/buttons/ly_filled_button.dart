@@ -120,10 +120,10 @@ class _LyFilledButtonState extends State<LyFilledButton> {
                 )
               : _ButtonContent(
                   icon: widget.icon,
-                  child: widget.child,
                   isDisabled: isDisabled,
                   hasFocus: hasFocus,
                   color: widget.color,
+                  child: widget.child,
                 ),
         ),
       ),

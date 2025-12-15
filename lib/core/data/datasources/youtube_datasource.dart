@@ -297,14 +297,12 @@ class YoutubeDatasource {
   }
 
   Future<PlaylistEntity?> getPlaylist(String playlistId) async {
-    print('Getting playlist $playlistId...');
     final explode = YoutubeExplode();
 
     try {
       final videos = await explode.playlists.getVideos(playlistId).toList();
 
       final playlist = await explode.playlists.get(playlistId);
-      print('playlist found: ${playlist.title}');
 
       final tracks = videos
           .map(
@@ -331,7 +329,6 @@ class YoutubeDatasource {
         trackCount: tracks.length,
       );
     } catch (e) {
-      print('error getting playlist: $e');
       return null;
     } finally {
       explode.close();

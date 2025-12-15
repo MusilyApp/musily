@@ -1004,9 +1004,11 @@ class LibraryController extends BaseController<LibraryData, LibraryMethods> {
               final contextStack = ContextManager().contextStack;
               if (contextStack.isNotEmpty) {
                 final context = contextStack.last.context;
-                LySnackbar.showSuccess(
-                  context.localization.backupRestoredSuccessfully,
-                );
+                if (context.mounted) {
+                  LySnackbar.showSuccess(
+                    context.localization.backupRestoredSuccessfully,
+                  );
+                }
               }
             }
           });

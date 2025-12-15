@@ -106,9 +106,9 @@ class _LyOutlinedButtonState extends State<LyOutlinedButton> {
               }()),
           child: _ButtonContent(
             icon: widget.icon,
-            child: widget.child,
             isDisabled: isDisabled,
             hasFocus: hasFocus,
+            child: widget.child,
           ),
         ),
       ),

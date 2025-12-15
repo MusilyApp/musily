@@ -158,7 +158,9 @@ class _AboutActions extends StatelessWidget {
                   text: '4c7837e6-18b3-4892-87c4-d44d1759e611',
                 ),
               );
-              LySnackbar.showInfo(context.localization.copiedToClipboard);
+              if (context.mounted) {
+                LySnackbar.showInfo(context.localization.copiedToClipboard);
+              }
             },
             child: const Icon(Icons.pix),
           ),

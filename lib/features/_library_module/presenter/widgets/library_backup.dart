@@ -51,7 +51,9 @@ class _LibraryBackupState extends State<LibraryBackup> {
       setState(() {
         isLoading = false;
       });
-      LyNavigator.pop(context);
+      if (mounted) {
+        LyNavigator.pop(context);
+      }
     }
   }
 

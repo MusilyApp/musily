@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:musily/core/presenter/extensions/build_context.dart';
@@ -672,6 +671,9 @@ class _DesktopMiniPlayerState extends State<DesktopMiniPlayer> {
                         await windowManager.setFullScreen(true);
                         await windowManager.show();
                         await windowManager.focus();
+                        if (!context.mounted) {
+                          return;
+                        }
                         LyNavigator.push(
                           context,
                           DesktopFullPlayer(

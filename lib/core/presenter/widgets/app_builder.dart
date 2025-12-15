@@ -35,7 +35,7 @@ class _AppBuilderState<D, E> extends State<AppBuilder<D, E>> {
             _data = output;
           });
         }
-        if (output is E) {
+        if (output is E && mounted) {
           widget.listener?.call(context, output);
         }
       });

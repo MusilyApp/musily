@@ -144,7 +144,7 @@ class _VersionManagerPageState extends State<VersionManagerPage> {
                       return ListView(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         children: [
-                          _AppHeader(),
+                          const _AppHeader(),
                           const SizedBox(height: 32),
                           _VersionSelector(
                             controller: widget.controller,

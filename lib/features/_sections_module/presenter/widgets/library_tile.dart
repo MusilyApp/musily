@@ -93,7 +93,7 @@ class _LibraryTileState extends State<LibraryTile> {
                       );
                     },
                   )
-                : _PlaylistIcon(),
+                : const _PlaylistIcon(),
           );
         }
         if (widget.item.artist != null) {

@@ -70,7 +70,9 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
             playlistId,
           );
         } catch (e) {
-          LySnackbar.showError(context.localization.playlistNotFound);
+          if (context.mounted) {
+            LySnackbar.showError(context.localization.playlistNotFound);
+          }
           return;
         }
         if (retrievedPlaylist != null) {
@@ -81,7 +83,9 @@ class _PlaylistCreatorState extends State<PlaylistCreator> {
             tracks: retrievedPlaylist.tracks,
           );
         } else {
-          LySnackbar.showError(context.localization.playlistNotFound);
+          if (context.mounted) {
+            LySnackbar.showError(context.localization.playlistNotFound);
+          }
           return;
         }
       } else {

@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:toastification/toastification.dart';
 
 Future<Map<String, int>> _processImageColors(String imageUrl) async {
   ui.Image? originalImage;
@@ -42,8 +43,8 @@ Future<Map<String, int>> _processImageColors(String imageUrl) async {
     originalImage.dispose();
 
     return {
-      'backgroundColor': dominantColor.value,
-      'textColor': textColor.value,
+      'backgroundColor': dominantColor.intValue,
+      'textColor': textColor.intValue,
     };
   } catch (e) {
     log('Error processing image colors: $e');
@@ -52,8 +53,8 @@ Future<Map<String, int>> _processImageColors(String imageUrl) async {
     }
     originalImage?.dispose();
     return {
-      'backgroundColor': const Color(0xFFD8B4FA).value,
-      'textColor': Colors.black.value,
+      'backgroundColor': const Color(0xFFD8B4FA).intValue,
+      'textColor': Colors.black.intValue,
     };
   }
 }
@@ -174,8 +175,8 @@ Future<List<Map<String, int>>> processMultipleImageColors(
   for (final imageUrl in imageUrls) {
     if (imageUrl.isEmpty) {
       results.add({
-        'backgroundColor': const Color(0xFFD8B4FA).value,
-        'textColor': Colors.black.value,
+        'backgroundColor': const Color(0xFFD8B4FA).intValue,
+        'textColor': Colors.black.intValue,
       });
       continue;
     }
@@ -186,8 +187,8 @@ Future<List<Map<String, int>>> processMultipleImageColors(
     } catch (e) {
       log('Error processing image colors: $e');
       results.add({
-        'backgroundColor': const Color(0xFFD8B4FA).value,
-        'textColor': Colors.black.value,
+        'backgroundColor': const Color(0xFFD8B4FA).intValue,
+        'textColor': Colors.black.intValue,
       });
     }
   }
