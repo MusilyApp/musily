@@ -348,5 +348,140 @@
   "recommendations": "คำแนะนำ",
   "dropFileOrFolderHere": "วางไฟล์หรือโฟลเดอร์ที่นี่",
   "dropFileOrFolderDescription": "เพื่อกู้คืนข้อมูลสำรองไลบรารีหรือนำเข้าโฟลเดอร์ท้องถิ่น",
-  "onlyOneItemAtATime": "สามารถประมวลผลได้ครั้งละหนึ่งรายการเท่านั้น"
+  "onlyOneItemAtATime": "สามารถประมวลผลได้ทีละรายการเท่านั้น",
+
+  "wrapped": "สรุป",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "รุ่น",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "ย้อนอดีต",
+  "wrappedSwipeUp": "ปัดขึ้น",
+  "wrappedShare": "แชร์",
+  "wrappedPreparingImage": "กำลังเตรียมรูปภาพ...",
+  "wrappedShareError": "การแชร์ผิดพลาด: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "ไม่สามารถจับภาพได้",
+  "wrappedShareSubject": "Musily Wrapped ของฉัน",
+  "wrappedShareText": "ดูปีแห่งเสียงเพลงของฉันบน Musily! 🎵\n\nดาวน์โหลดที่ musily.app",
+  
+  "wrappedBannerYourRetrospective": "ย้อนอดีตของคุณ",
+  "wrappedBannerMusical": "ทางดนตรี",
+  
+  "wrappedWelcome1": "สวัสดี คนรักดนตรี",
+  "wrappedWelcome2": "ปีแห่งเสียงของคุณ",
+  "wrappedWelcome3": "มาทบทวนกันไหม?",
+  "wrappedWelcome4": "เร่งเสียงขึ้น",
+  "wrappedWelcome5": "การเดินทางทางเสียงของคุณ",
+  "wrappedWelcome6": "สิ่งที่ขับเคลื่อนคุณ",
+  "wrappedWelcome7": "ช่วงเวลาที่ไม่เหมือนใคร",
+  
+  "wrappedTotalTime": "เวลาทั้งหมด",
+  "wrappedMinutes": "นาที",
+  "wrappedMinutesMessage1": "เพลงประกอบชีวิตของคุณ",
+  "wrappedMinutesMessage2": "นั่นคือเพลงจำนวนมาก",
+  "wrappedMinutesMessage3": "คุณใช้ชีวิตโดยการฟังเพลง",
+  "wrappedMinutesMessage4": "ทุกนาทีบอกเล่าเรื่องราว",
+  "wrappedMinutesMessage5": "ถ้าดนตรีเป็นเชื้อเพลิง คุณคงไปได้ไกล",
+  "wrappedMinutesMessage6": "ความเงียบไม่ใช่ทางเลือก",
+  "wrappedMinutesMessage7": "นักวิ่งมาราธอนเสียง",
+  
+  "wrappedDiversity": "ความหลากหลาย",
+  "wrappedYouDiscovered": "คุณค้นพบ",
+  "wrappedUniqueTracks": "เพลงที่ไม่ซ้ำกัน",
+  "wrappedTracksMessage1": "ความอยากรู้อยากเห็นของคุณไม่มีขีดจำกัด",
+  "wrappedTracksMessage2": "ซ้ำเยอะมาก! แต่คุณก็เปลี่ยนไปเยอะ",
+  "wrappedTracksMessage3": "คอลเลกชันเสียงที่น่าอิจฉา",
+  "wrappedTracksMessage4": "จากเพลงฮิตไปจนถึงหน้า B คุณฟังทุกอย่าง",
+  "wrappedTracksMessage5": "ห้องสมุดของคุณเติบโตและแสดงตัวตน",
+  "wrappedTracksMessage6": "นักสำรวจความถี่",
+  "wrappedTracksMessage7": "เสียงมากมาย ความทรงจำมากมาย",
+  
+  "wrappedTopTracksTitle1": "5 อันดับแรก",
+  "wrappedTopTracksTitle2": "เล่นซ้ำ",
+  "wrappedTopTracksTitle3": "ชั้นยอด",
+  "wrappedTopTracksTitle4": "เสพติด",
+  "wrappedTopTracksTitle5": "5 อันดับแรก",
+  "wrappedTopTracksTitle6": "บรรยากาศของคุณ",
+  "wrappedRanking": "อันดับ",
+  
+  "wrappedMostListenedTrackTitle1": "เพลงยอดนิยม",
+  "wrappedMostListenedTrackTitle2": "อันดับ 1",
+  "wrappedMostListenedTrackTitle3": "เล่นซ้ำ",
+  "wrappedMostListenedTrackTitle4": "ทองคำ",
+  "wrappedMostListenedTrackTitle5": "รายการโปรด",
+  "wrappedMostListenedTrackTitle6": "ผู้ถูกเลือก",
+  "wrappedPlays": "การเล่น",
+  "wrappedTotalTimeLabel": "เวลาทั้งหมด",
+  
+  "wrappedYourCollection": "คอลเลกชันของคุณ",
+  "wrappedYouExplored": "คุณสำรวจ",
+  "wrappedCompleteAlbums": "อัลบั้มเต็ม",
+  "wrappedAlbumsMessage1": "ผลงานที่สมบูรณ์ตั้งแต่ต้นจนจบ",
+  "wrappedAlbumsMessage2": "คุณให้คุณค่ากับแนวคิด ไม่ใช่แค่ซิงเกิล",
+  "wrappedAlbumsMessage3": "นักสะสมเรื่องราวเสียง",
+  "wrappedAlbumsMessage4": "อัลบั้มที่กำหนดฤดูกาลของคุณ",
+  "wrappedAlbumsMessage5": "จากเล่นจนถึงหยุด โดยไม่ข้ามเพลง",
+  
+  "wrappedTopAlbumsTitle1": "อัลบั้มยอดนิยม",
+  "wrappedTopAlbumsTitle2": "ผลงานชิ้นเอก",
+  "wrappedTopAlbumsTitle3": "สิ่งจำเป็น",
+  "wrappedTopAlbumsTitle4": "ชั้นยอด",
+  "wrappedTopAlbumsTitle5": "5 อันดับแรกของคุณ",
+  "wrappedTopAlbumsTitle6": "การคัดเลือก",
+  
+  "wrappedMostListenedAlbumTitle1": "อัลบั้ม #1",
+  "wrappedMostListenedAlbumTitle2": "ผลงานชิ้นเอกของคุณ",
+  "wrappedMostListenedAlbumTitle3": "ตั้งแต่ต้นจนจบ",
+  "wrappedMostListenedAlbumTitle4": "เล่นซ้ำ",
+  "wrappedMostListenedAlbumTitle5": "อัลบั้มแห่งปี",
+  "wrappedMinutesLabel": "นาที",
+  "wrappedPlaysLabel": "การเล่น",
+  
+  "wrappedYourLineup": "รายชื่อของคุณ",
+  "wrappedYouTunedInto": "คุณเปิดฟัง",
+  "wrappedArtists": "ศิลปิน",
+  "wrappedArtistsMessage1": "กลุ่มดาวแห่งความสามารถที่แท้จริง",
+  "wrappedArtistsMessage2": "จากอินดี้สู่กระแสหลัก คุณได้ยินทุกอย่าง",
+  "wrappedArtistsMessage3": "รายชื่อแขกของคุณเต็มแล้ว",
+  "wrappedArtistsMessage4": "รสนิยมทางดนตรีของคุณไม่มีพรมแดน",
+  "wrappedArtistsMessage5": "คุณเปลี่ยนหูฟังของคุณให้เป็นเวทีระดับโลก",
+  "wrappedArtistsMessage6": "รายชื่อที่น่าเคารพ",
+  
+  "wrappedTopArtistsTitle1": "ศิลปินยอดนิยม",
+  "wrappedTopArtistsTitle2": "ไอดอลของคุณ",
+  "wrappedTopArtistsTitle3": "เฮดไลเนอร์",
+  "wrappedTopArtistsTitle4": "หอเกียรติยศ",
+  "wrappedTopArtistsTitle5": "เสียงแห่งปี",
+  
+  "wrappedMostListenedArtistTitle1": "ศิลปิน #1",
+  "wrappedMostListenedArtistTitle2": "ไอดอลของคุณ",
+  "wrappedMostListenedArtistTitle3": "เสียงแห่งปี",
+  "wrappedMostListenedArtistTitle4": "อันดับ 1",
+  "wrappedMostListenedArtistTitle5": "ตัวเอก",
+  
+  "wrappedThankYouTitle1": "ขอบคุณ",
+  "wrappedThankYouTitle2": "ขอบใจ",
+  "wrappedThankYouTitle3": "มันยอดเยี่ยมมาก",
+  "wrappedThankYouTitle4": "เจอกัน",
+  "wrappedThankYouTitle5": "นั่นคือทั้งหมด",
+  "wrappedThankYouTitle6": "จบ",
+  "wrappedThankYouMessage1": "ที่ฟังกับเรา",
+  "wrappedThankYouMessage2": "ขอบคุณที่อยู่เป็นเพื่อน",
+  "wrappedThankYouMessage3": "เจอกันเร็วๆ นี้",
+  "wrappedThankYouMessage4": "เสียงหยุดไม่ได้",
+  "wrappedThankYouMessage5": "เจอกันปีหน้า",
+  "wrappedThankYouMessage6": "เปิดเสียงให้ดังเข้าไว้"
 }

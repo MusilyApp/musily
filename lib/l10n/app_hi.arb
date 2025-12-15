@@ -348,5 +348,140 @@
   "recommendations": "सिफारिशें",
   "dropFileOrFolderHere": "फ़ाइल या फ़ोल्डर यहाँ छोड़ें",
   "dropFileOrFolderDescription": "लाइब्रेरी बैकअप को पुनर्स्थापित करने या स्थानीय फ़ोल्डर आयात करने के लिए।",
-  "onlyOneItemAtATime": "एक समय में केवल एक आइटम संसाधित किया जा सकता है।"
+  "onlyOneItemAtATime": "एक समय में केवल एक आइटम संसाधित किया जा सकता है।",
+
+  "wrapped": "सारांश",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "संस्करण",
+  "wrappedVolume": "खंड {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "पुनरावलोकन",
+  "wrappedSwipeUp": "ऊपर स्वाइप करें",
+  "wrappedShare": "साझा करें",
+  "wrappedPreparingImage": "छवि तैयार हो रही है...",
+  "wrappedShareError": "साझा करने में त्रुटि: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "छवि कैप्चर करने में असमर्थ",
+  "wrappedShareSubject": "मेरा Musily Wrapped",
+  "wrappedShareText": "Musily पर मेरा संगीत वर्ष देखें! 🎵\n\nmusily.app पर डाउनलोड करें",
+  
+  "wrappedBannerYourRetrospective": "आपका पुनरावलोकन",
+  "wrappedBannerMusical": "संगीत",
+  
+  "wrappedWelcome1": "नमस्ते, संगीत प्रेमी।",
+  "wrappedWelcome2": "ध्वनि में आपका वर्ष।",
+  "wrappedWelcome3": "क्या हम याद करें?",
+  "wrappedWelcome4": "आवाज़ बढ़ाएं।",
+  "wrappedWelcome5": "आपकी ध्वनि यात्रा।",
+  "wrappedWelcome6": "आपको किस चीज़ ने प्रेरित किया।",
+  "wrappedWelcome7": "अद्वितीय क्षण।",
+  
+  "wrappedTotalTime": "कुल समय",
+  "wrappedMinutes": "मिनट",
+  "wrappedMinutesMessage1": "आपके जीवन का साउंडट्रैक।",
+  "wrappedMinutesMessage2": "यह बहुत संगीत है।",
+  "wrappedMinutesMessage3": "आपने संगीत सुनते हुए जीवन जिया।",
+  "wrappedMinutesMessage4": "हर मिनट ने एक कहानी कही।",
+  "wrappedMinutesMessage5": "अगर संगीत ईंधन होता, तो आप बहुत दूर जाते।",
+  "wrappedMinutesMessage6": "मौन कोई विकल्प नहीं था।",
+  "wrappedMinutesMessage7": "ऑडियो मैराथन धावक।",
+  
+  "wrappedDiversity": "विविधता",
+  "wrappedYouDiscovered": "आपने खोजा",
+  "wrappedUniqueTracks": "अद्वितीय ट्रैक",
+  "wrappedTracksMessage1": "आपकी जिज्ञासा की कोई सीमा नहीं है।",
+  "wrappedTracksMessage2": "बहुत दोहराव! लेकिन आपने बहुत विविधता भी दिखाई।",
+  "wrappedTracksMessage3": "ध्वनियों का एक ईर्ष्यापूर्ण संग्रह।",
+  "wrappedTracksMessage4": "हिट्स से लेकर बी-साइड्स तक, आपने सब कुछ सुना।",
+  "wrappedTracksMessage5": "आपकी लाइब्रेरी बढ़ी और खुद को दिखाया।",
+  "wrappedTracksMessage6": "आवृत्ति अन्वेषक।",
+  "wrappedTracksMessage7": "इतनी सारी ध्वनियां, इतनी सारी यादें।",
+  
+  "wrappedTopTracksTitle1": "शीर्ष 5",
+  "wrappedTopTracksTitle2": "दोहराव पर",
+  "wrappedTopTracksTitle3": "कुलीन",
+  "wrappedTopTracksTitle4": "लत",
+  "wrappedTopTracksTitle5": "शीर्ष 5",
+  "wrappedTopTracksTitle6": "आपका वाइब",
+  "wrappedRanking": "रैंकिंग",
+  
+  "wrappedMostListenedTrackTitle1": "शीर्ष ट्रैक",
+  "wrappedMostListenedTrackTitle2": "नंबर 1",
+  "wrappedMostListenedTrackTitle3": "दोहराव पर",
+  "wrappedMostListenedTrackTitle4": "सुनहरा",
+  "wrappedMostListenedTrackTitle5": "पसंदीदा",
+  "wrappedMostListenedTrackTitle6": "चुना हुआ",
+  "wrappedPlays": "प्ले",
+  "wrappedTotalTimeLabel": "कुल समय",
+  
+  "wrappedYourCollection": "आपका संग्रह",
+  "wrappedYouExplored": "आपने अन्वेषण किया",
+  "wrappedCompleteAlbums": "पूर्ण एल्बम",
+  "wrappedAlbumsMessage1": "शुरू से अंत तक पूर्ण कार्य।",
+  "wrappedAlbumsMessage2": "आपने अवधारणा को महत्व दिया, न कि केवल एकल को।",
+  "wrappedAlbumsMessage3": "ध्वनि कहानियों का संग्रहकर्ता।",
+  "wrappedAlbumsMessage4": "एल्बम जिन्होंने आपके मौसम को परिभाषित किया।",
+  "wrappedAlbumsMessage5": "प्ले से स्टॉप तक, बिना ट्रैक छोड़े।",
+  
+  "wrappedTopAlbumsTitle1": "शीर्ष एल्बम",
+  "wrappedTopAlbumsTitle2": "मास्टरपीस",
+  "wrappedTopAlbumsTitle3": "आवश्यक",
+  "wrappedTopAlbumsTitle4": "कुलीन",
+  "wrappedTopAlbumsTitle5": "आपका शीर्ष 5",
+  "wrappedTopAlbumsTitle6": "चयन",
+  
+  "wrappedMostListenedAlbumTitle1": "एल्बम #1",
+  "wrappedMostListenedAlbumTitle2": "आपका मास्टरपीस",
+  "wrappedMostListenedAlbumTitle3": "शुरू से अंत तक",
+  "wrappedMostListenedAlbumTitle4": "दोहराव पर",
+  "wrappedMostListenedAlbumTitle5": "वर्ष का एल्बम",
+  "wrappedMinutesLabel": "मिनट",
+  "wrappedPlaysLabel": "प्ले",
+  
+  "wrappedYourLineup": "आपका लाइनअप",
+  "wrappedYouTunedInto": "आपने सुना",
+  "wrappedArtists": "कलाकार",
+  "wrappedArtistsMessage1": "प्रतिभा का एक सच्चा नक्षत्र।",
+  "wrappedArtistsMessage2": "इंडी से लेकर मेनस्ट्रीम तक, आपने सब कुछ सुना।",
+  "wrappedArtistsMessage3": "आपकी अतिथि सूची भरी हुई है।",
+  "wrappedArtistsMessage4": "आपके संगीत स्वाद की कोई सीमा नहीं है।",
+  "wrappedArtistsMessage5": "आपने अपने हेडफ़ोन को विश्व मंच में बदल दिया।",
+  "wrappedArtistsMessage6": "सम्मान के योग्य लाइनअप।",
+  
+  "wrappedTopArtistsTitle1": "शीर्ष कलाकार",
+  "wrappedTopArtistsTitle2": "आपके आदर्श",
+  "wrappedTopArtistsTitle3": "हेडलाइनर",
+  "wrappedTopArtistsTitle4": "हॉल ऑफ फेम",
+  "wrappedTopArtistsTitle5": "वर्ष की आवाज़ें",
+  
+  "wrappedMostListenedArtistTitle1": "कलाकार #1",
+  "wrappedMostListenedArtistTitle2": "आपका आदर्श",
+  "wrappedMostListenedArtistTitle3": "वर्ष की आवाज़",
+  "wrappedMostListenedArtistTitle4": "शीर्ष 1",
+  "wrappedMostListenedArtistTitle5": "नायक",
+  
+  "wrappedThankYouTitle1": "धन्यवाद",
+  "wrappedThankYouTitle2": "शुक्रिया",
+  "wrappedThankYouTitle3": "यह अद्भुत था",
+  "wrappedThankYouTitle4": "फिर मिलेंगे",
+  "wrappedThankYouTitle5": "बस इतना ही",
+  "wrappedThankYouTitle6": "समाप्त",
+  "wrappedThankYouMessage1": "हमारे साथ सुनने के लिए।",
+  "wrappedThankYouMessage2": "साथ देने के लिए धन्यवाद।",
+  "wrappedThankYouMessage3": "जल्द ही फिर मिलेंगे।",
+  "wrappedThankYouMessage4": "ध्वनि रुक नहीं सकती।",
+  "wrappedThankYouMessage5": "अगले साल मिलते हैं।",
+  "wrappedThankYouMessage6": "आवाज़ तेज़ रखें।"
 }

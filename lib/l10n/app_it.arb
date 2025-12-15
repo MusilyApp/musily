@@ -348,5 +348,140 @@
   "recommendations": "Raccomandazioni",
   "dropFileOrFolderHere": "Rilascia il file o la cartella qui",
   "dropFileOrFolderDescription": "Per ripristinare il backup della libreria o importare una cartella locale.",
-  "onlyOneItemAtATime": "È possibile elaborare un solo elemento alla volta."
+  "onlyOneItemAtATime": "È possibile elaborare un solo elemento alla volta.",
+
+  "wrapped": "Riepilogo",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDIZIONE",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RETROSPETTIVA",
+  "wrappedSwipeUp": "Scorri verso l'alto",
+  "wrappedShare": "Condividi",
+  "wrappedPreparingImage": "Preparazione immagine...",
+  "wrappedShareError": "Errore durante la condivisione: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Impossibile catturare l'immagine",
+  "wrappedShareSubject": "Il mio Musily Wrapped",
+  "wrappedShareText": "Guarda il mio anno in musica su Musily! 🎵\n\nScarica su musily.app",
+  
+  "wrappedBannerYourRetrospective": "La tua retrospettiva",
+  "wrappedBannerMusical": "musicale",
+  
+  "wrappedWelcome1": "Ciao, amante della musica.",
+  "wrappedWelcome2": "Il tuo anno in suono.",
+  "wrappedWelcome3": "Ricordiamo?",
+  "wrappedWelcome4": "Alza il volume.",
+  "wrappedWelcome5": "Il tuo viaggio sonoro.",
+  "wrappedWelcome6": "Cosa ti ha emozionato.",
+  "wrappedWelcome7": "Momenti unici.",
+  
+  "wrappedTotalTime": "TEMPO TOTALE",
+  "wrappedMinutes": "minuti",
+  "wrappedMinutesMessage1": "La colonna sonora della tua vita.",
+  "wrappedMinutesMessage2": "È molta musica.",
+  "wrappedMinutesMessage3": "Hai vissuto ascoltando musica.",
+  "wrappedMinutesMessage4": "Ogni minuto ha raccontato una storia.",
+  "wrappedMinutesMessage5": "Se la musica fosse carburante, saresti andato lontano.",
+  "wrappedMinutesMessage6": "Il silenzio non era un'opzione.",
+  "wrappedMinutesMessage7": "Maratoneta audio.",
+  
+  "wrappedDiversity": "DIVERSITÀ",
+  "wrappedYouDiscovered": "Hai scoperto",
+  "wrappedUniqueTracks": "TRACCE UNICHE",
+  "wrappedTracksMessage1": "La tua curiosità non ha limiti.",
+  "wrappedTracksMessage2": "È molta ripetizione! Ma hai variato molto.",
+  "wrappedTracksMessage3": "Una collezione invidiabile di suoni.",
+  "wrappedTracksMessage4": "Dalle hit ai lati B, hai ascoltato tutto.",
+  "wrappedTracksMessage5": "La tua biblioteca è cresciuta e si è mostrata.",
+  "wrappedTracksMessage6": "Esploratore di frequenze.",
+  "wrappedTracksMessage7": "Tanti suoni, tanti ricordi.",
+  
+  "wrappedTopTracksTitle1": "LA TOP 5",
+  "wrappedTopTracksTitle2": "IN RIPETIZIONE",
+  "wrappedTopTracksTitle3": "ÉLITE",
+  "wrappedTopTracksTitle4": "DIPENDENZA",
+  "wrappedTopTracksTitle5": "TOP 5",
+  "wrappedTopTracksTitle6": "LA TUA VIBE",
+  "wrappedRanking": "CLASSIFICA",
+  
+  "wrappedMostListenedTrackTitle1": "TRACCIA TOP",
+  "wrappedMostListenedTrackTitle2": "LA #1",
+  "wrappedMostListenedTrackTitle3": "IN RIPETIZIONE",
+  "wrappedMostListenedTrackTitle4": "D'ORO",
+  "wrappedMostListenedTrackTitle5": "PREFERITA",
+  "wrappedMostListenedTrackTitle6": "LA PRESCELTA",
+  "wrappedPlays": "RIPRODUZIONI",
+  "wrappedTotalTimeLabel": "TEMPO TOTALE",
+  
+  "wrappedYourCollection": "LA TUA COLLEZIONE",
+  "wrappedYouExplored": "Hai esplorato",
+  "wrappedCompleteAlbums": "ALBUM COMPLETI",
+  "wrappedAlbumsMessage1": "Opere complete dall'inizio alla fine.",
+  "wrappedAlbumsMessage2": "Hai apprezzato il concetto, non solo il singolo.",
+  "wrappedAlbumsMessage3": "Collezionista di storie sonore.",
+  "wrappedAlbumsMessage4": "Album che hanno definito la tua stagione.",
+  "wrappedAlbumsMessage5": "Dal play allo stop, senza saltare tracce.",
+  
+  "wrappedTopAlbumsTitle1": "TOP ALBUM",
+  "wrappedTopAlbumsTitle2": "CAPOLAVORI",
+  "wrappedTopAlbumsTitle3": "ESSENZIALI",
+  "wrappedTopAlbumsTitle4": "ÉLITE",
+  "wrappedTopAlbumsTitle5": "LA TUA TOP 5",
+  "wrappedTopAlbumsTitle6": "LA SELEZIONE",
+  
+  "wrappedMostListenedAlbumTitle1": "ALBUM #1",
+  "wrappedMostListenedAlbumTitle2": "IL TUO CAPOLAVORO",
+  "wrappedMostListenedAlbumTitle3": "DALL'INIZIO ALLA FINE",
+  "wrappedMostListenedAlbumTitle4": "IN RIPETIZIONE",
+  "wrappedMostListenedAlbumTitle5": "ALBUM DELL'ANNO",
+  "wrappedMinutesLabel": "MINUTI",
+  "wrappedPlaysLabel": "RIPRODUZIONI",
+  
+  "wrappedYourLineup": "LA TUA LINE-UP",
+  "wrappedYouTunedInto": "Ti sei sintonizzato",
+  "wrappedArtists": "ARTISTI",
+  "wrappedArtistsMessage1": "Una vera costellazione di talenti.",
+  "wrappedArtistsMessage2": "Dall'indie al mainstream, hai sentito tutto.",
+  "wrappedArtistsMessage3": "La tua lista degli invitati è piena.",
+  "wrappedArtistsMessage4": "Il tuo gusto musicale non ha confini.",
+  "wrappedArtistsMessage5": "Hai trasformato le tue cuffie in un palcoscenico mondiale.",
+  "wrappedArtistsMessage6": "Una line-up di rispetto.",
+  
+  "wrappedTopArtistsTitle1": "TOP ARTISTI",
+  "wrappedTopArtistsTitle2": "I TUOI IDOLI",
+  "wrappedTopArtistsTitle3": "HEADLINER",
+  "wrappedTopArtistsTitle4": "HALL OF FAME",
+  "wrappedTopArtistsTitle5": "VOCI DELL'ANNO",
+  
+  "wrappedMostListenedArtistTitle1": "ARTISTA #1",
+  "wrappedMostListenedArtistTitle2": "IL TUO IDOLO",
+  "wrappedMostListenedArtistTitle3": "VOCE DELL'ANNO",
+  "wrappedMostListenedArtistTitle4": "TOP 1",
+  "wrappedMostListenedArtistTitle5": "IL PROTAGONISTA",
+  
+  "wrappedThankYouTitle1": "GRAZIE",
+  "wrappedThankYouTitle2": "GRAZIE MILLE",
+  "wrappedThankYouTitle3": "È STATO FANTASTICO",
+  "wrappedThankYouTitle4": "A PRESTO",
+  "wrappedThankYouTitle5": "QUESTO È TUTTO",
+  "wrappedThankYouTitle6": "CHIUSURA",
+  "wrappedThankYouMessage1": "per aver ascoltato con noi.",
+  "wrappedThankYouMessage2": "grazie per la compagnia.",
+  "wrappedThankYouMessage3": "ci vediamo presto.",
+  "wrappedThankYouMessage4": "il suono non può fermarsi.",
+  "wrappedThankYouMessage5": "al prossimo anno.",
+  "wrappedThankYouMessage6": "tieni il volume alto."
 }

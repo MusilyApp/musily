@@ -337,5 +337,140 @@
   "recommendations": "推荐",
   "dropFileOrFolderHere": "将文件或文件夹拖放到此处",
   "dropFileOrFolderDescription": "用于恢复资料库备份或导入本地文件夹。",
-  "onlyOneItemAtATime": "一次只能处理一个项目。"
+  "onlyOneItemAtATime": "一次只能处理一个项目。",
+
+  "wrapped": "年度回顾",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "版本",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "回顾",
+  "wrappedSwipeUp": "向上滑动",
+  "wrappedShare": "分享",
+  "wrappedPreparingImage": "正在准备图片...",
+  "wrappedShareError": "分享错误：{error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "无法捕捉图片",
+  "wrappedShareSubject": "我的 Musily Wrapped",
+  "wrappedShareText": "在 Musily 上查看我的音乐年度回顾！🎵\n\n在 musily.app 下载",
+  
+  "wrappedBannerYourRetrospective": "你的回顾",
+  "wrappedBannerMusical": "音乐",
+  
+  "wrappedWelcome1": "你好，音乐爱好者。",
+  "wrappedWelcome2": "你的声音之年。",
+  "wrappedWelcome3": "让我们回顾一下？",
+  "wrappedWelcome4": "调大音量。",
+  "wrappedWelcome5": "你的声音之旅。",
+  "wrappedWelcome6": "什么打动了你。",
+  "wrappedWelcome7": "独特的时刻。",
+  
+  "wrappedTotalTime": "总时间",
+  "wrappedMinutes": "分钟",
+  "wrappedMinutesMessage1": "你生活的原声带。",
+  "wrappedMinutesMessage2": "好多音乐。",
+  "wrappedMinutesMessage3": "你伴随着音乐生活。",
+  "wrappedMinutesMessage4": "每一分钟都讲述了一个故事。",
+  "wrappedMinutesMessage5": "如果音乐是燃料，你会走得很远。",
+  "wrappedMinutesMessage6": "沉默不是选项。",
+  "wrappedMinutesMessage7": "音频马拉松选手。",
+  
+  "wrappedDiversity": "多样性",
+  "wrappedYouDiscovered": "你发现了",
+  "wrappedUniqueTracks": "独特曲目",
+  "wrappedTracksMessage1": "你的好奇心没有极限。",
+  "wrappedTracksMessage2": "很多重复！但你变化很大。",
+  "wrappedTracksMessage3": "令人羡慕的声音收藏。",
+  "wrappedTracksMessage4": "从热门歌曲到 B 面，你都听了。",
+  "wrappedTracksMessage5": "你的资料库成长并展现了自己。",
+  "wrappedTracksMessage6": "频率探索者。",
+  "wrappedTracksMessage7": "这么多声音，这么多回忆。",
+  
+  "wrappedTopTracksTitle1": "前 5 名",
+  "wrappedTopTracksTitle2": "循环播放",
+  "wrappedTopTracksTitle3": "精英",
+  "wrappedTopTracksTitle4": "上瘾",
+  "wrappedTopTracksTitle5": "前 5 名",
+  "wrappedTopTracksTitle6": "你的氛围",
+  "wrappedRanking": "排名",
+  
+  "wrappedMostListenedTrackTitle1": "热门曲目",
+  "wrappedMostListenedTrackTitle2": "第一名",
+  "wrappedMostListenedTrackTitle3": "循环播放",
+  "wrappedMostListenedTrackTitle4": "黄金",
+  "wrappedMostListenedTrackTitle5": "最爱",
+  "wrappedMostListenedTrackTitle6": "天选之子",
+  "wrappedPlays": "播放次数",
+  "wrappedTotalTimeLabel": "总时间",
+  
+  "wrappedYourCollection": "你的收藏",
+  "wrappedYouExplored": "你探索了",
+  "wrappedCompleteAlbums": "完整专辑",
+  "wrappedAlbumsMessage1": "从头到尾的完整作品。",
+  "wrappedAlbumsMessage2": "你重视概念，而不仅仅是单曲。",
+  "wrappedAlbumsMessage3": "声音故事收藏家。",
+  "wrappedAlbumsMessage4": "定义你季节的专辑。",
+  "wrappedAlbumsMessage5": "从播放到停止，不跳过曲目。",
+  
+  "wrappedTopAlbumsTitle1": "热门专辑",
+  "wrappedTopAlbumsTitle2": "杰作",
+  "wrappedTopAlbumsTitle3": "必备",
+  "wrappedTopAlbumsTitle4": "精英",
+  "wrappedTopAlbumsTitle5": "你的前 5 名",
+  "wrappedTopAlbumsTitle6": "精选",
+  
+  "wrappedMostListenedAlbumTitle1": "专辑 #1",
+  "wrappedMostListenedAlbumTitle2": "你的杰作",
+  "wrappedMostListenedAlbumTitle3": "从头到尾",
+  "wrappedMostListenedAlbumTitle4": "循环播放",
+  "wrappedMostListenedAlbumTitle5": "年度专辑",
+  "wrappedMinutesLabel": "分钟",
+  "wrappedPlaysLabel": "播放次数",
+  
+  "wrappedYourLineup": "你的阵容",
+  "wrappedYouTunedInto": "你收听了",
+  "wrappedArtists": "艺术家",
+  "wrappedArtistsMessage1": "真正的人才星座。",
+  "wrappedArtistsMessage2": "从独立到主流，你都听到了。",
+  "wrappedArtistsMessage3": "你的嘉宾名单已满。",
+  "wrappedArtistsMessage4": "你的音乐品味没有国界。",
+  "wrappedArtistsMessage5": "你把耳机变成了世界舞台。",
+  "wrappedArtistsMessage6": "值得尊敬的阵容。",
+  
+  "wrappedTopArtistsTitle1": "热门艺术家",
+  "wrappedTopArtistsTitle2": "你的偶像",
+  "wrappedTopArtistsTitle3": "头条",
+  "wrappedTopArtistsTitle4": "名人堂",
+  "wrappedTopArtistsTitle5": "年度之声",
+  
+  "wrappedMostListenedArtistTitle1": "艺术家 #1",
+  "wrappedMostListenedArtistTitle2": "你的偶像",
+  "wrappedMostListenedArtistTitle3": "年度之声",
+  "wrappedMostListenedArtistTitle4": "第一名",
+  "wrappedMostListenedArtistTitle5": "主角",
+  
+  "wrappedThankYouTitle1": "谢谢",
+  "wrappedThankYouTitle2": "感谢",
+  "wrappedThankYouTitle3": "太棒了",
+  "wrappedThankYouTitle4": "再见",
+  "wrappedThankYouTitle5": "就这样",
+  "wrappedThankYouTitle6": "结束",
+  "wrappedThankYouMessage1": "感谢与我们一起聆听。",
+  "wrappedThankYouMessage2": "感谢陪伴。",
+  "wrappedThankYouMessage3": "再见。",
+  "wrappedThankYouMessage4": "声音不能停止。",
+  "wrappedThankYouMessage5": "明年见。",
+  "wrappedThankYouMessage6": "保持高音量。"
 }

@@ -348,5 +348,140 @@
   "recommendations": "おすすめ",
   "dropFileOrFolderHere": "ファイルまたはフォルダをここにドロップ",
   "dropFileOrFolderDescription": "ライブラリのバックアップを復元するか、ローカルフォルダをインポートします。",
-  "onlyOneItemAtATime": "一度に処理できるアイテムは1つだけです。"
+  "onlyOneItemAtATime": "一度に処理できるアイテムは1つだけです。",
+
+  "wrapped": "まとめ",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "エディション",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "振り返り",
+  "wrappedSwipeUp": "上にスワイプ",
+  "wrappedShare": "共有",
+  "wrappedPreparingImage": "画像を準備中...",
+  "wrappedShareError": "共有エラー: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "画像をキャプチャできませんでした",
+  "wrappedShareSubject": "私のMusily Wrapped",
+  "wrappedShareText": "Musilyで私の音楽の1年をチェック！ 🎵\n\nmusily.appでダウンロード",
+  
+  "wrappedBannerYourRetrospective": "あなたの振り返り",
+  "wrappedBannerMusical": "音楽の",
+  
+  "wrappedWelcome1": "こんにちは、音楽愛好家。",
+  "wrappedWelcome2": "あなたの音の1年。",
+  "wrappedWelcome3": "振り返ってみましょうか？",
+  "wrappedWelcome4": "音量を上げて。",
+  "wrappedWelcome5": "あなたの音の旅。",
+  "wrappedWelcome6": "あなたを動かしたもの。",
+  "wrappedWelcome7": "ユニークな瞬間。",
+  
+  "wrappedTotalTime": "合計時間",
+  "wrappedMinutes": "分",
+  "wrappedMinutesMessage1": "あなたの人生のサウンドトラック。",
+  "wrappedMinutesMessage2": "たくさんの音楽ですね。",
+  "wrappedMinutesMessage3": "音楽を聴いて生きてきました。",
+  "wrappedMinutesMessage4": "すべての分が物語を語りました。",
+  "wrappedMinutesMessage5": "音楽が燃料なら、あなたは遠くまで行けたでしょう。",
+  "wrappedMinutesMessage6": "沈黙は選択肢ではありませんでした。",
+  "wrappedMinutesMessage7": "オーディオマラソンランナー。",
+  
+  "wrappedDiversity": "多様性",
+  "wrappedYouDiscovered": "あなたが発見した",
+  "wrappedUniqueTracks": "ユニークなトラック",
+  "wrappedTracksMessage1": "あなたの好奇心には限界がありません。",
+  "wrappedTracksMessage2": "リピートが多いですね！でも、かなり変化をつけました。",
+  "wrappedTracksMessage3": "うらやましいほどの音のコレクション。",
+  "wrappedTracksMessage4": "ヒット曲からB面まで、すべて聴きました。",
+  "wrappedTracksMessage5": "あなたのライブラリは成長し、姿を現しました。",
+  "wrappedTracksMessage6": "周波数の探検家。",
+  "wrappedTracksMessage7": "たくさんの音、たくさんの思い出。",
+  
+  "wrappedTopTracksTitle1": "トップ5",
+  "wrappedTopTracksTitle2": "リピート中",
+  "wrappedTopTracksTitle3": "エリート",
+  "wrappedTopTracksTitle4": "中毒",
+  "wrappedTopTracksTitle5": "トップ5",
+  "wrappedTopTracksTitle6": "あなたのバイブス",
+  "wrappedRanking": "ランキング",
+  
+  "wrappedMostListenedTrackTitle1": "トップトラック",
+  "wrappedMostListenedTrackTitle2": "ナンバーワン",
+  "wrappedMostListenedTrackTitle3": "リピート中",
+  "wrappedMostListenedTrackTitle4": "ゴールデン",
+  "wrappedMostListenedTrackTitle5": "お気に入り",
+  "wrappedMostListenedTrackTitle6": "選ばれしもの",
+  "wrappedPlays": "再生回数",
+  "wrappedTotalTimeLabel": "合計時間",
+  
+  "wrappedYourCollection": "あなたのコレクション",
+  "wrappedYouExplored": "あなたが探索した",
+  "wrappedCompleteAlbums": "完全なアルバム",
+  "wrappedAlbumsMessage1": "最初から最後までの完全な作品。",
+  "wrappedAlbumsMessage2": "シングルだけでなく、コンセプトを評価しました。",
+  "wrappedAlbumsMessage3": "音の物語の収集家。",
+  "wrappedAlbumsMessage4": "あなたの季節を定義したアルバム。",
+  "wrappedAlbumsMessage5": "再生から停止まで、トラックをスキップせずに。",
+  
+  "wrappedTopAlbumsTitle1": "トップアルバム",
+  "wrappedTopAlbumsTitle2": "傑作",
+  "wrappedTopAlbumsTitle3": "エッセンシャル",
+  "wrappedTopAlbumsTitle4": "エリート",
+  "wrappedTopAlbumsTitle5": "あなたのトップ5",
+  "wrappedTopAlbumsTitle6": "セレクション",
+  
+  "wrappedMostListenedAlbumTitle1": "アルバム #1",
+  "wrappedMostListenedAlbumTitle2": "あなたの傑作",
+  "wrappedMostListenedAlbumTitle3": "最初から最後まで",
+  "wrappedMostListenedAlbumTitle4": "リピート中",
+  "wrappedMostListenedAlbumTitle5": "今年のアルバム",
+  "wrappedMinutesLabel": "分",
+  "wrappedPlaysLabel": "再生回数",
+  
+  "wrappedYourLineup": "あなたのラインナップ",
+  "wrappedYouTunedInto": "あなたが聴いた",
+  "wrappedArtists": "アーティスト",
+  "wrappedArtistsMessage1": "才能の真の星座。",
+  "wrappedArtistsMessage2": "インディーズからメジャーまで、すべて聴きました。",
+  "wrappedArtistsMessage3": "ゲストリストはいっぱいです。",
+  "wrappedArtistsMessage4": "あなたの音楽の好みには国境がありません。",
+  "wrappedArtistsMessage5": "ヘッドフォンを世界のステージに変えました。",
+  "wrappedArtistsMessage6": "尊敬に値するラインナップ。",
+  
+  "wrappedTopArtistsTitle1": "トップアーティスト",
+  "wrappedTopArtistsTitle2": "あなたのアイドル",
+  "wrappedTopArtistsTitle3": "ヘッドライナー",
+  "wrappedTopArtistsTitle4": "殿堂入り",
+  "wrappedTopArtistsTitle5": "今年の声",
+  
+  "wrappedMostListenedArtistTitle1": "アーティスト #1",
+  "wrappedMostListenedArtistTitle2": "あなたのアイドル",
+  "wrappedMostListenedArtistTitle3": "今年の声",
+  "wrappedMostListenedArtistTitle4": "トップ1",
+  "wrappedMostListenedArtistTitle5": "主人公",
+  
+  "wrappedThankYouTitle1": "ありがとう",
+  "wrappedThankYouTitle2": "感謝",
+  "wrappedThankYouTitle3": "素晴らしかった",
+  "wrappedThankYouTitle4": "またね",
+  "wrappedThankYouTitle5": "以上です",
+  "wrappedThankYouTitle6": "終了",
+  "wrappedThankYouMessage1": "一緒に聴いてくれてありがとう。",
+  "wrappedThankYouMessage2": "付き合ってくれてありがとう。",
+  "wrappedThankYouMessage3": "またすぐに会いましょう。",
+  "wrappedThankYouMessage4": "音は止められません。",
+  "wrappedThankYouMessage5": "また来年。",
+  "wrappedThankYouMessage6": "音量を上げたままにして。"
 }

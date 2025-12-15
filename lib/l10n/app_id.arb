@@ -348,5 +348,140 @@
   "recommendations": "Rekomendasi",
   "dropFileOrFolderHere": "Letakkan File atau Folder di Sini",
   "dropFileOrFolderDescription": "Untuk memulihkan cadangan pustaka atau mengimpor folder lokal.",
-  "onlyOneItemAtATime": "Hanya satu item yang dapat diproses dalam satu waktu."
+  "onlyOneItemAtATime": "Hanya satu item yang dapat diproses dalam satu waktu.",
+
+  "wrapped": "Kilas Balik",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDISI",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RETROSPEKTIF",
+  "wrappedSwipeUp": "Geser ke atas",
+  "wrappedShare": "Bagikan",
+  "wrappedPreparingImage": "Menyiapkan gambar...",
+  "wrappedShareError": "Gagal membagikan: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Tidak dapat mengambil gambar",
+  "wrappedShareSubject": "Musily Wrapped Saya",
+  "wrappedShareText": "Lihat tahun musik saya di Musily! 🎵\n\nUnduh di musily.app",
+  
+  "wrappedBannerYourRetrospective": "Retrospektif Anda",
+  "wrappedBannerMusical": "musik",
+  
+  "wrappedWelcome1": "Halo, pecinta musik.",
+  "wrappedWelcome2": "Tahun Anda dalam suara.",
+  "wrappedWelcome3": "Mari kita kenang?",
+  "wrappedWelcome4": "Besarkan volume.",
+  "wrappedWelcome5": "Perjalanan sonik Anda.",
+  "wrappedWelcome6": "Apa yang menggerakkan Anda.",
+  "wrappedWelcome7": "Momen unik.",
+  
+  "wrappedTotalTime": "TOTAL WAKTU",
+  "wrappedMinutes": "menit",
+  "wrappedMinutesMessage1": "Soundtrack hidup Anda.",
+  "wrappedMinutesMessage2": "Itu banyak musik.",
+  "wrappedMinutesMessage3": "Anda hidup mendengarkan musik.",
+  "wrappedMinutesMessage4": "Setiap menit menceritakan sebuah kisah.",
+  "wrappedMinutesMessage5": "Jika musik adalah bahan bakar, Anda akan pergi jauh.",
+  "wrappedMinutesMessage6": "Diam bukanlah pilihan.",
+  "wrappedMinutesMessage7": "Pelari maraton audio.",
+  
+  "wrappedDiversity": "KEANEKARAGAMAN",
+  "wrappedYouDiscovered": "Anda menemukan",
+  "wrappedUniqueTracks": "LAGU UNIK",
+  "wrappedTracksMessage1": "Keingintahuan Anda tidak memiliki batas.",
+  "wrappedTracksMessage2": "Banyak pengulangan! Tapi Anda sangat bervariasi.",
+  "wrappedTracksMessage3": "Koleksi suara yang patut ditiru.",
+  "wrappedTracksMessage4": "Dari hits hingga B-sides, Anda mendengar semuanya.",
+  "wrappedTracksMessage5": "Perpustakaan Anda tumbuh dan muncul.",
+  "wrappedTracksMessage6": "Penjelajah frekuensi.",
+  "wrappedTracksMessage7": "Begitu banyak suara, begitu banyak kenangan.",
+  
+  "wrappedTopTracksTitle1": "5 TERATAS",
+  "wrappedTopTracksTitle2": "DIPUTAR ULANG",
+  "wrappedTopTracksTitle3": "ELITE",
+  "wrappedTopTracksTitle4": "KECANDUAN",
+  "wrappedTopTracksTitle5": "5 TERATAS",
+  "wrappedTopTracksTitle6": "VIBE ANDA",
+  "wrappedRanking": "PERINGKAT",
+  
+  "wrappedMostListenedTrackTitle1": "LAGU TERATAS",
+  "wrappedMostListenedTrackTitle2": "NOMOR 1",
+  "wrappedMostListenedTrackTitle3": "DIPUTAR ULANG",
+  "wrappedMostListenedTrackTitle4": "EMAS",
+  "wrappedMostListenedTrackTitle5": "FAVORIT",
+  "wrappedMostListenedTrackTitle6": "YANG TERPILIH",
+  "wrappedPlays": "PEMUTARAN",
+  "wrappedTotalTimeLabel": "TOTAL WAKTU",
+  
+  "wrappedYourCollection": "KOLEKSI ANDA",
+  "wrappedYouExplored": "Anda menjelajahi",
+  "wrappedCompleteAlbums": "ALBUM LENGKAP",
+  "wrappedAlbumsMessage1": "Karya lengkap dari awal hingga akhir.",
+  "wrappedAlbumsMessage2": "Anda menghargai konsepnya, bukan hanya singelnya.",
+  "wrappedAlbumsMessage3": "Kolektor cerita suara.",
+  "wrappedAlbumsMessage4": "Album yang mendefinisikan musim Anda.",
+  "wrappedAlbumsMessage5": "Dari putar hingga berhenti, tanpa melewatkan lagu.",
+  
+  "wrappedTopAlbumsTitle1": "ALBUM TERATAS",
+  "wrappedTopAlbumsTitle2": "KARYA AGUNG",
+  "wrappedTopAlbumsTitle3": "PENTING",
+  "wrappedTopAlbumsTitle4": "ELITE",
+  "wrappedTopAlbumsTitle5": "5 TERATAS ANDA",
+  "wrappedTopAlbumsTitle6": "PILIHAN",
+  
+  "wrappedMostListenedAlbumTitle1": "ALBUM #1",
+  "wrappedMostListenedAlbumTitle2": "KARYA AGUNG ANDA",
+  "wrappedMostListenedAlbumTitle3": "DARI AWAL HINGGA AKHIR",
+  "wrappedMostListenedAlbumTitle4": "DIPUTAR ULANG",
+  "wrappedMostListenedAlbumTitle5": "ALBUM TAHUN INI",
+  "wrappedMinutesLabel": "MENIT",
+  "wrappedPlaysLabel": "PEMUTARAN",
+  
+  "wrappedYourLineup": "LINE-UP ANDA",
+  "wrappedYouTunedInto": "Anda mendengarkan",
+  "wrappedArtists": "ARTIS",
+  "wrappedArtistsMessage1": "Konstelasi bakat yang sejati.",
+  "wrappedArtistsMessage2": "Dari indie hingga mainstream, Anda mendengar semuanya.",
+  "wrappedArtistsMessage3": "Daftar tamu Anda penuh.",
+  "wrappedArtistsMessage4": "Selera musik Anda tidak memiliki batas.",
+  "wrappedArtistsMessage5": "Anda mengubah headphone Anda menjadi panggung dunia.",
+  "wrappedArtistsMessage6": "Line-up yang patut dihormati.",
+  
+  "wrappedTopArtistsTitle1": "ARTIS TERATAS",
+  "wrappedTopArtistsTitle2": "IDOLA ANDA",
+  "wrappedTopArtistsTitle3": "BINTANG UTAMA",
+  "wrappedTopArtistsTitle4": "HALL OF FAME",
+  "wrappedTopArtistsTitle5": "SUARA TAHUN INI",
+  
+  "wrappedMostListenedArtistTitle1": "ARTIS #1",
+  "wrappedMostListenedArtistTitle2": "IDOLA ANDA",
+  "wrappedMostListenedArtistTitle3": "SUARA TAHUN INI",
+  "wrappedMostListenedArtistTitle4": "NOMOR 1",
+  "wrappedMostListenedArtistTitle5": "SANG PROTAGONIS",
+  
+  "wrappedThankYouTitle1": "TERIMA KASIH",
+  "wrappedThankYouTitle2": "MAKASIH",
+  "wrappedThankYouTitle3": "LUAR BIASA",
+  "wrappedThankYouTitle4": "SAMPAI JUMPA",
+  "wrappedThankYouTitle5": "ITU SAJA",
+  "wrappedThankYouTitle6": "SELESAI",
+  "wrappedThankYouMessage1": "telah mendengarkan bersama kami.",
+  "wrappedThankYouMessage2": "terima kasih atas kebersamaannya.",
+  "wrappedThankYouMessage3": "sampai jumpa lagi.",
+  "wrappedThankYouMessage4": "suara tidak bisa berhenti.",
+  "wrappedThankYouMessage5": "sampai tahun depan.",
+  "wrappedThankYouMessage6": "tetap besarkan volume."
 }

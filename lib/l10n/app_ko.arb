@@ -348,5 +348,140 @@
   "recommendations": "추천",
   "dropFileOrFolderHere": "파일 또는 폴더를 여기에 놓으세요",
   "dropFileOrFolderDescription": "라이브러리 백업을 복원하거나 로컬 폴더를 가져옵니다.",
-  "onlyOneItemAtATime": "한 번에 하나의 항목만 처리할 수 있습니다."
+  "onlyOneItemAtATime": "한 번에 하나의 항목만 처리할 수 있습니다.",
+
+  "wrapped": "결산",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "에디션",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "회고",
+  "wrappedSwipeUp": "위로 스와이프",
+  "wrappedShare": "공유",
+  "wrappedPreparingImage": "이미지 준비 중...",
+  "wrappedShareError": "공유 오류: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "이미지를 캡처할 수 없습니다",
+  "wrappedShareSubject": "나의 Musily Wrapped",
+  "wrappedShareText": "Musily에서 나의 음악 1년을 확인하세요! 🎵\n\nmusily.app에서 다운로드",
+  
+  "wrappedBannerYourRetrospective": "당신의 회고",
+  "wrappedBannerMusical": "음악적",
+  
+  "wrappedWelcome1": "안녕하세요, 음악 애호가님.",
+  "wrappedWelcome2": "당신의 소리의 해.",
+  "wrappedWelcome3": "되돌아볼까요?",
+  "wrappedWelcome4": "볼륨을 높이세요.",
+  "wrappedWelcome5": "당신의 소리 여행.",
+  "wrappedWelcome6": "당신을 움직인 것.",
+  "wrappedWelcome7": "특별한 순간들.",
+  
+  "wrappedTotalTime": "총 시간",
+  "wrappedMinutes": "분",
+  "wrappedMinutesMessage1": "당신의 인생 사운드트랙.",
+  "wrappedMinutesMessage2": "정말 많은 음악이네요.",
+  "wrappedMinutesMessage3": "음악을 들으며 살았습니다.",
+  "wrappedMinutesMessage4": "모든 분이 이야기를 들려주었습니다.",
+  "wrappedMinutesMessage5": "음악이 연료였다면, 당신은 멀리 갔을 것입니다.",
+  "wrappedMinutesMessage6": "침묵은 선택 사항이 아니었습니다.",
+  "wrappedMinutesMessage7": "오디오 마라토너.",
+  
+  "wrappedDiversity": "다양성",
+  "wrappedYouDiscovered": "당신이 발견한",
+  "wrappedUniqueTracks": "고유 트랙",
+  "wrappedTracksMessage1": "당신의 호기심에는 한계가 없습니다.",
+  "wrappedTracksMessage2": "반복이 많네요! 하지만 다양하게 들었습니다.",
+  "wrappedTracksMessage3": "부러운 소리 컬렉션.",
+  "wrappedTracksMessage4": "히트곡부터 B-side까지, 모든 것을 들었습니다.",
+  "wrappedTracksMessage5": "당신의 라이브러리가 성장하고 모습을 드러냈습니다.",
+  "wrappedTracksMessage6": "주파수 탐험가.",
+  "wrappedTracksMessage7": "수많은 소리, 수많은 추억.",
+  
+  "wrappedTopTracksTitle1": "TOP 5",
+  "wrappedTopTracksTitle2": "반복 재생",
+  "wrappedTopTracksTitle3": "엘리트",
+  "wrappedTopTracksTitle4": "중독",
+  "wrappedTopTracksTitle5": "TOP 5",
+  "wrappedTopTracksTitle6": "당신의 바이브",
+  "wrappedRanking": "랭킹",
+  
+  "wrappedMostListenedTrackTitle1": "최고의 트랙",
+  "wrappedMostListenedTrackTitle2": "1위",
+  "wrappedMostListenedTrackTitle3": "반복 재생",
+  "wrappedMostListenedTrackTitle4": "골든",
+  "wrappedMostListenedTrackTitle5": "최애",
+  "wrappedMostListenedTrackTitle6": "선택된 곡",
+  "wrappedPlays": "재생",
+  "wrappedTotalTimeLabel": "총 시간",
+  
+  "wrappedYourCollection": "당신의 컬렉션",
+  "wrappedYouExplored": "당신이 탐험한",
+  "wrappedCompleteAlbums": "완전한 앨범",
+  "wrappedAlbumsMessage1": "처음부터 끝까지 완전한 작품.",
+  "wrappedAlbumsMessage2": "싱글뿐만 아니라 컨셉을 소중히 여겼습니다.",
+  "wrappedAlbumsMessage3": "소리 이야기 수집가.",
+  "wrappedAlbumsMessage4": "당신의 계절을 정의한 앨범.",
+  "wrappedAlbumsMessage5": "재생부터 정지까지, 트랙 건너뛰기 없이.",
+  
+  "wrappedTopAlbumsTitle1": "최고의 앨범",
+  "wrappedTopAlbumsTitle2": "걸작",
+  "wrappedTopAlbumsTitle3": "필수",
+  "wrappedTopAlbumsTitle4": "엘리트",
+  "wrappedTopAlbumsTitle5": "당신의 TOP 5",
+  "wrappedTopAlbumsTitle6": "선택",
+  
+  "wrappedMostListenedAlbumTitle1": "앨범 #1",
+  "wrappedMostListenedAlbumTitle2": "당신의 걸작",
+  "wrappedMostListenedAlbumTitle3": "처음부터 끝까지",
+  "wrappedMostListenedAlbumTitle4": "반복 재생",
+  "wrappedMostListenedAlbumTitle5": "올해의 앨범",
+  "wrappedMinutesLabel": "분",
+  "wrappedPlaysLabel": "재생",
+  
+  "wrappedYourLineup": "당신의 라인업",
+  "wrappedYouTunedInto": "당신이 청취한",
+  "wrappedArtists": "아티스트",
+  "wrappedArtistsMessage1": "진정한 재능의 별자리.",
+  "wrappedArtistsMessage2": "인디부터 메인스트림까지, 모든 것을 들었습니다.",
+  "wrappedArtistsMessage3": "게스트 목록이 가득 찼습니다.",
+  "wrappedArtistsMessage4": "당신의 음악 취향에는 국경이 없습니다.",
+  "wrappedArtistsMessage5": "헤드폰을 세계 무대로 바꿨습니다.",
+  "wrappedArtistsMessage6": "존경할 만한 라인업.",
+  
+  "wrappedTopArtistsTitle1": "최고의 아티스트",
+  "wrappedTopArtistsTitle2": "당신의 아이돌",
+  "wrappedTopArtistsTitle3": "헤드라이너",
+  "wrappedTopArtistsTitle4": "명예의 전당",
+  "wrappedTopArtistsTitle5": "올해의 목소리",
+  
+  "wrappedMostListenedArtistTitle1": "아티스트 #1",
+  "wrappedMostListenedArtistTitle2": "당신의 아이돌",
+  "wrappedMostListenedArtistTitle3": "올해의 목소리",
+  "wrappedMostListenedArtistTitle4": "TOP 1",
+  "wrappedMostListenedArtistTitle5": "주인공",
+  
+  "wrappedThankYouTitle1": "감사합니다",
+  "wrappedThankYouTitle2": "고마워요",
+  "wrappedThankYouTitle3": "놀라웠습니다",
+  "wrappedThankYouTitle4": "또 만나요",
+  "wrappedThankYouTitle5": "여기까지입니다",
+  "wrappedThankYouTitle6": "종료",
+  "wrappedThankYouMessage1": "함께 들어주셔서 감사합니다.",
+  "wrappedThankYouMessage2": "함께 해주셔서 고마워요.",
+  "wrappedThankYouMessage3": "곧 다시 만나요.",
+  "wrappedThankYouMessage4": "소리는 멈출 수 없습니다.",
+  "wrappedThankYouMessage5": "내년에 만나요.",
+  "wrappedThankYouMessage6": "볼륨을 높여 두세요."
 }

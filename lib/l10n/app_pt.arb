@@ -341,5 +341,145 @@
   "recommendations": "Recomendações",
   "dropFileOrFolderHere": "Solte o Arquivo ou Pasta Aqui",
   "dropFileOrFolderDescription": "Para restaurar o backup da biblioteca ou importar uma pasta local.",
-  "onlyOneItemAtATime": "Apenas um item pode ser processado por vez."
+  "onlyOneItemAtATime": "Apenas um item pode ser processado por vez.",
+
+  "wrapped": "Retrospectiva",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDIÇÃO",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RETROSPECTIVA",
+  "wrappedSwipeUp": "Deslize para cima",
+  "wrappedShare": "Compartilhar",
+  "wrappedPreparingImage": "Preparando imagem...",
+  "wrappedShareError": "Erro ao compartilhar: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Não foi possível capturar a imagem",
+  "wrappedShareSubject": "Meu Musily Wrapped",
+  "wrappedShareText": "Confira meu ano em música no Musily! 🎵\n\nBaixe em musily.app",
+  
+  "wrappedBannerYourRetrospective": "Sua retrospectiva",
+  "wrappedBannerMusical": "musical",
+  
+  "wrappedWelcome1": "Olá, amante da música.",
+  "wrappedWelcome2": "Seu ano em som.",
+  "wrappedWelcome3": "Vamos relembrar?",
+  "wrappedWelcome4": "Aumente o volume.",
+  "wrappedWelcome5": "Sua jornada sonora.",
+  "wrappedWelcome6": "O que te moveu.",
+  "wrappedWelcome7": "Momentos únicos.",
+  
+  "wrappedTotalTime": "TEMPO TOTAL",
+  "wrappedMinutes": "minutos",
+  "wrappedMinutesMessage1": "A trilha sonora da sua vida.",
+  "wrappedMinutesMessage2": "É muita música.",
+  "wrappedMinutesMessage3": "Você viveu ouvindo música.",
+  "wrappedMinutesMessage4": "Cada minuto contou uma história.",
+  "wrappedMinutesMessage5": "Se música fosse combustível, você teria ido longe.",
+  "wrappedMinutesMessage6": "Silêncio não foi uma opção.",
+  "wrappedMinutesMessage7": "Maratonista de áudio.",
+  
+  "wrappedDiversity": "DIVERSIDADE",
+  "wrappedYouDiscovered": "Você descobriu",
+  "wrappedUniqueTracks": "FAIXAS ÚNICAS",
+  "wrappedTracksMessage1": "Sua curiosidade não tem limites.",
+  "wrappedTracksMessage2": "É muita repetição! Mas você variou bastante.",
+  "wrappedTracksMessage3": "Uma coleção invejável de sons.",
+  "wrappedTracksMessage4": "Dos hits aos lados B, você ouviu de tudo.",
+  "wrappedTracksMessage5": "Sua biblioteca cresceu e apareceu.",
+  "wrappedTracksMessage6": "Explorador de frequências.",
+  "wrappedTracksMessage7": "Tantos sons, tantas memórias.",
+  
+  "wrappedTopTracksTitle1": "O TOP 5",
+  "wrappedTopTracksTitle2": "NO REPEAT",
+  "wrappedTopTracksTitle3": "ELITE",
+  "wrappedTopTracksTitle4": "VÍCIO",
+  "wrappedTopTracksTitle5": "TOP 5",
+  "wrappedTopTracksTitle6": "SUA VIBE",
+  "wrappedRanking": "RANKING",
+  
+  "wrappedMostListenedTrackTitle1": "FAIXA TOP",
+  "wrappedMostListenedTrackTitle2": "A #1",
+  "wrappedMostListenedTrackTitle3": "NO REPEAT",
+  "wrappedMostListenedTrackTitle4": "DE OURO",
+  "wrappedMostListenedTrackTitle5": "FAVORITA",
+  "wrappedMostListenedTrackTitle6": "A ESCOLHIDA",
+  "wrappedPlays": "REPRODUÇÕES",
+  "wrappedTotalTimeLabel": "TEMPO TOTAL",
+  
+  "wrappedYourCollection": "SUA COLEÇÃO",
+  "wrappedYouExplored": "Você explorou",
+  "wrappedCompleteAlbums": "ÁLBUNS COMPLETOS",
+  "wrappedAlbumsMessage1": "Obras completas do início ao fim.",
+  "wrappedAlbumsMessage2": "Você valorizou o conceito, não apenas o single.",
+  "wrappedAlbumsMessage3": "Colecionador de histórias sonoras.",
+  "wrappedAlbumsMessage4": "Álbuns que definiram sua temporada.",
+  "wrappedAlbumsMessage5": "Do play ao stop, sem pular faixas.",
+  
+  "wrappedTopAlbumsTitle1": "TOP ÁLBUNS",
+  "wrappedTopAlbumsTitle2": "OBRAS-PRIMAS",
+  "wrappedTopAlbumsTitle3": "ESSENCIAIS",
+  "wrappedTopAlbumsTitle4": "ELITE",
+  "wrappedTopAlbumsTitle5": "SEU TOP 5",
+  "wrappedTopAlbumsTitle6": "A SELEÇÃO",
+  
+  "wrappedMostListenedAlbumTitle1": "ÁLBUM #1",
+  "wrappedMostListenedAlbumTitle2": "SUA OBRA-PRIMA",
+  "wrappedMostListenedAlbumTitle3": "DO INÍCIO AO FIM",
+  "wrappedMostListenedAlbumTitle4": "NO REPEAT",
+  "wrappedMostListenedAlbumTitle5": "ÁLBUM DO ANO",
+  "wrappedMinutesLabel": "MINUTOS",
+  "wrappedPlaysLabel": "REPRODUÇÕES",
+  
+  "wrappedYourLineup": "SEU LINE-UP",
+  "wrappedYouTunedInto": "Você sintonizou",
+  "wrappedArtists": "ARTISTAS",
+  "wrappedArtistsMessage1": "Uma verdadeira constelação de talentos.",
+  "wrappedArtistsMessage2": "Do indie ao mainstream, você ouviu de tudo.",
+  "wrappedArtistsMessage3": "Sua lista de convidados está cheia.",
+  "wrappedArtistsMessage4": "Seu gosto musical não tem fronteiras.",
+  "wrappedArtistsMessage5": "Você transformou seus fones em um palco mundial.",
+  "wrappedArtistsMessage6": "Um lineup de respeito.",
+  
+  "wrappedTopArtistsTitle1": "TOP ARTISTAS",
+  "wrappedTopArtistsTitle2": "SEUS ÍDOLOS",
+  "wrappedTopArtistsTitle3": "HEADLINERS",
+  "wrappedTopArtistsTitle4": "HALL DA FAMA",
+  "wrappedTopArtistsTitle5": "VOZES DO ANO",
+  
+  "wrappedMostListenedArtistTitle1": "ARTISTA #1",
+  "wrappedMostListenedArtistTitle2": "SEU ÍDOLO",
+  "wrappedMostListenedArtistTitle3": "VOZ DO ANO",
+  "wrappedMostListenedArtistTitle4": "TOP 1",
+  "wrappedMostListenedArtistTitle5": "O PROTAGONISTA",
+  
+  "wrappedThankYouTitle1": "OBRIGADO",
+  "wrappedThankYouTitle2": "VALEU",
+  "wrappedThankYouTitle3": "FOI INCRÍVEL",
+  "wrappedThankYouTitle4": "ATÉ MAIS",
+  "wrappedThankYouTitle5": "É ISSO",
+  "wrappedThankYouTitle6": "ENCERRANDO",
+  "wrappedThankYouMessage1": "por ouvir com a gente.",
+  "wrappedThankYouMessage2": "obrigado pela companhia.",
+  "wrappedThankYouMessage3": "nos vemos em breve.",
+  "wrappedThankYouMessage4": "o som não pode parar.",
+  "wrappedThankYouMessage5": "até o ano que vem.",
+  "wrappedThankYouMessage6": "mantenha o volume alto.",
+
+  "wrappedGenerating": "Gerando seu Wrapped...",
+  "wrappedLoadError": "Erro ao carregar Wrapped",
+  "wrappedNoData": "Nenhum dado encontrado",
+  "wrappedNoDataDescription": "Ouça mais músicas para gerar seu Wrapped"
 }

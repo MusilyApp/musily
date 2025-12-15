@@ -348,5 +348,140 @@
   "recommendations": "Empfehlungen",
   "dropFileOrFolderHere": "Datei oder Ordner hier ablegen",
   "dropFileOrFolderDescription": "Um die Bibliothekssicherung wiederherzustellen oder einen lokalen Ordner zu importieren.",
-  "onlyOneItemAtATime": "Es kann jeweils nur ein Element verarbeitet werden."
+  "onlyOneItemAtATime": "Es kann jeweils nur ein Element verarbeitet werden.",
+
+  "wrapped": "Rückblick",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDITION",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RÜCKBLICK",
+  "wrappedSwipeUp": "Nach oben wischen",
+  "wrappedShare": "Teilen",
+  "wrappedPreparingImage": "Bild wird vorbereitet...",
+  "wrappedShareError": "Fehler beim Teilen: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Bild konnte nicht aufgenommen werden",
+  "wrappedShareSubject": "Mein Musily Wrapped",
+  "wrappedShareText": "Schau dir mein Musikjahr auf Musily an! 🎵\n\nDownload unter musily.app",
+  
+  "wrappedBannerYourRetrospective": "Dein Rückblick",
+  "wrappedBannerMusical": "musikalischer",
+  
+  "wrappedWelcome1": "Hallo, Musikliebhaber.",
+  "wrappedWelcome2": "Dein Jahr im Sound.",
+  "wrappedWelcome3": "Wollen wir uns erinnern?",
+  "wrappedWelcome4": "Dreh auf.",
+  "wrappedWelcome5": "Deine Klangreise.",
+  "wrappedWelcome6": "Was dich bewegt hat.",
+  "wrappedWelcome7": "Einzigartige Momente.",
+  
+  "wrappedTotalTime": "GESAMTZEIT",
+  "wrappedMinutes": "Minuten",
+  "wrappedMinutesMessage1": "Der Soundtrack deines Lebens.",
+  "wrappedMinutesMessage2": "Das ist eine Menge Musik.",
+  "wrappedMinutesMessage3": "Du hast gelebt, während du Musik gehört hast.",
+  "wrappedMinutesMessage4": "Jede Minute erzählte eine Geschichte.",
+  "wrappedMinutesMessage5": "Wenn Musik Treibstoff wäre, wärst du weit gekommen.",
+  "wrappedMinutesMessage6": "Stille war keine Option.",
+  "wrappedMinutesMessage7": "Audio-Marathonläufer.",
+  
+  "wrappedDiversity": "VIELFALT",
+  "wrappedYouDiscovered": "Du hast entdeckt",
+  "wrappedUniqueTracks": "EINZIGARTIGE TITEL",
+  "wrappedTracksMessage1": "Deine Neugier kennt keine Grenzen.",
+  "wrappedTracksMessage2": "Viel Wiederholung! Aber du hast viel variiert.",
+  "wrappedTracksMessage3": "Eine beneidenswerte Klangsammlung.",
+  "wrappedTracksMessage4": "Von Hits bis zu B-Seiten, du hast alles gehört.",
+  "wrappedTracksMessage5": "Deine Bibliothek ist gewachsen und hat sich gezeigt.",
+  "wrappedTracksMessage6": "Frequenz-Entdecker.",
+  "wrappedTracksMessage7": "So viele Klänge, so viele Erinnerungen.",
+  
+  "wrappedTopTracksTitle1": "TOP 5",
+  "wrappedTopTracksTitle2": "AUF WIEDERHOLUNG",
+  "wrappedTopTracksTitle3": "ELITE",
+  "wrappedTopTracksTitle4": "SUCHT",
+  "wrappedTopTracksTitle5": "TOP 5",
+  "wrappedTopTracksTitle6": "DEIN VIBE",
+  "wrappedRanking": "RANG",
+  
+  "wrappedMostListenedTrackTitle1": "TOP-TITEL",
+  "wrappedMostListenedTrackTitle2": "NUMMER 1",
+  "wrappedMostListenedTrackTitle3": "AUF WIEDERHOLUNG",
+  "wrappedMostListenedTrackTitle4": "GOLDEN",
+  "wrappedMostListenedTrackTitle5": "FAVORIT",
+  "wrappedMostListenedTrackTitle6": "DER AUSERWÄHLTE",
+  "wrappedPlays": "WIEDERGABEN",
+  "wrappedTotalTimeLabel": "GESAMTZEIT",
+  
+  "wrappedYourCollection": "DEINE SAMMLUNG",
+  "wrappedYouExplored": "Du hast erkundet",
+  "wrappedCompleteAlbums": "KOMPLETTE ALBEN",
+  "wrappedAlbumsMessage1": "Komplette Werke von Anfang bis Ende.",
+  "wrappedAlbumsMessage2": "Du hast das Konzept geschätzt, nicht nur die Single.",
+  "wrappedAlbumsMessage3": "Sammler von Klanggeschichten.",
+  "wrappedAlbumsMessage4": "Alben, die deine Saison definiert haben.",
+  "wrappedAlbumsMessage5": "Von Play bis Stop, ohne Titel zu überspringen.",
+  
+  "wrappedTopAlbumsTitle1": "TOP-ALBEN",
+  "wrappedTopAlbumsTitle2": "MEISTERWERKE",
+  "wrappedTopAlbumsTitle3": "ESSENTIALS",
+  "wrappedTopAlbumsTitle4": "ELITE",
+  "wrappedTopAlbumsTitle5": "DEINE TOP 5",
+  "wrappedTopAlbumsTitle6": "DIE AUSWAHL",
+  
+  "wrappedMostListenedAlbumTitle1": "ALBUM #1",
+  "wrappedMostListenedAlbumTitle2": "DEIN MEISTERWERK",
+  "wrappedMostListenedAlbumTitle3": "VON ANFANG BIS ENDE",
+  "wrappedMostListenedAlbumTitle4": "AUF WIEDERHOLUNG",
+  "wrappedMostListenedAlbumTitle5": "ALBUM DES JAHRES",
+  "wrappedMinutesLabel": "MINUTEN",
+  "wrappedPlaysLabel": "WIEDERGABEN",
+  
+  "wrappedYourLineup": "DEIN LINE-UP",
+  "wrappedYouTunedInto": "Du hast gehört",
+  "wrappedArtists": "KÜNSTLER",
+  "wrappedArtistsMessage1": "Eine wahre Konstellation von Talenten.",
+  "wrappedArtistsMessage2": "Von Indie bis Mainstream, du hast alles gehört.",
+  "wrappedArtistsMessage3": "Deine Gästeliste ist voll.",
+  "wrappedArtistsMessage4": "Dein Musikgeschmack kennt keine Grenzen.",
+  "wrappedArtistsMessage5": "Du hast deine Kopfhörer in eine Weltbühne verwandelt.",
+  "wrappedArtistsMessage6": "Ein Line-up, das Respekt verdient.",
+  
+  "wrappedTopArtistsTitle1": "TOP-KÜNSTLER",
+  "wrappedTopArtistsTitle2": "DEINE IDOLE",
+  "wrappedTopArtistsTitle3": "HEADLINER",
+  "wrappedTopArtistsTitle4": "HALL OF FAME",
+  "wrappedTopArtistsTitle5": "STIMMEN DES JAHRES",
+  
+  "wrappedMostListenedArtistTitle1": "KÜNSTLER #1",
+  "wrappedMostListenedArtistTitle2": "DEIN IDOL",
+  "wrappedMostListenedArtistTitle3": "STIMME DES JAHRES",
+  "wrappedMostListenedArtistTitle4": "TOP 1",
+  "wrappedMostListenedArtistTitle5": "DER PROTAGONIST",
+  
+  "wrappedThankYouTitle1": "DANKE",
+  "wrappedThankYouTitle2": "DANKE DIR",
+  "wrappedThankYouTitle3": "ES WAR FANTASTISCH",
+  "wrappedThankYouTitle4": "BIS BALD",
+  "wrappedThankYouTitle5": "DAS IST ALLES",
+  "wrappedThankYouTitle6": "ENDE",
+  "wrappedThankYouMessage1": "dass du mit uns gehört hast.",
+  "wrappedThankYouMessage2": "danke für die Gesellschaft.",
+  "wrappedThankYouMessage3": "bis bald.",
+  "wrappedThankYouMessage4": "der Sound kann nicht aufhören.",
+  "wrappedThankYouMessage5": "bis nächstes Jahr.",
+  "wrappedThankYouMessage6": "halt die Lautstärke oben."
 }

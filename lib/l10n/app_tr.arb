@@ -348,5 +348,140 @@
   "recommendations": "Öneriler",
   "dropFileOrFolderHere": "Dosyayı veya Klasörü Buraya Bırakın",
   "dropFileOrFolderDescription": "Kütüphane yedeğini geri yüklemek veya yerel bir klasör içe aktarmak için.",
-  "onlyOneItemAtATime": "Aynı anda yalnızca bir öğe işlenebilir."
+  "onlyOneItemAtATime": "Aynı anda yalnızca bir öğe işlenebilir.",
+
+  "wrapped": "Özet",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDİSYON",
+  "wrappedVolume": "CİLT {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RETROSPEKTİF",
+  "wrappedSwipeUp": "Yukarı kaydır",
+  "wrappedShare": "Paylaş",
+  "wrappedPreparingImage": "Görüntü hazırlanıyor...",
+  "wrappedShareError": "Paylaşım hatası: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Görüntü yakalanamadı",
+  "wrappedShareSubject": "Musily Özetim",
+  "wrappedShareText": "Musily'deki müzik yılıma göz at! 🎵\n\nmusily.app adresinden indir",
+  
+  "wrappedBannerYourRetrospective": "Senin özetin",
+  "wrappedBannerMusical": "müzikal",
+  
+  "wrappedWelcome1": "Merhaba, müzik aşığı.",
+  "wrappedWelcome2": "Sesle dolu yılın.",
+  "wrappedWelcome3": "Hatırlayalım mı?",
+  "wrappedWelcome4": "Sesi aç.",
+  "wrappedWelcome5": "Ses yolculuğun.",
+  "wrappedWelcome6": "Seni harekete geçiren şey.",
+  "wrappedWelcome7": "Eşsiz anlar.",
+  
+  "wrappedTotalTime": "TOPLAM SÜRE",
+  "wrappedMinutes": "dakika",
+  "wrappedMinutesMessage1": "Hayatının film müziği.",
+  "wrappedMinutesMessage2": "Bu çok fazla müzik.",
+  "wrappedMinutesMessage3": "Müzik dinleyerek yaşadın.",
+  "wrappedMinutesMessage4": "Her dakika bir hikaye anlattı.",
+  "wrappedMinutesMessage5": "Müzik yakıt olsaydı, çok uzağa giderdin.",
+  "wrappedMinutesMessage6": "Sessizlik bir seçenek değildi.",
+  "wrappedMinutesMessage7": "Ses maratoncusu.",
+  
+  "wrappedDiversity": "ÇEŞİTLİLİK",
+  "wrappedYouDiscovered": "Keşfettin",
+  "wrappedUniqueTracks": "EŞSİZ PARÇALAR",
+  "wrappedTracksMessage1": "Merakının sınırı yok.",
+  "wrappedTracksMessage2": "Çok tekrar! Ama çok çeşitlendirdin.",
+  "wrappedTracksMessage3": "Kıskanılacak bir ses koleksiyonu.",
+  "wrappedTracksMessage4": "Hitlerden B yüzlerine, her şeyi dinledin.",
+  "wrappedTracksMessage5": "Kütüphanen büyüdü ve kendini gösterdi.",
+  "wrappedTracksMessage6": "Frekans kaşifi.",
+  "wrappedTracksMessage7": "Bu kadar ses, bu kadar anı.",
+  
+  "wrappedTopTracksTitle1": "İLK 5",
+  "wrappedTopTracksTitle2": "TEKRARDA",
+  "wrappedTopTracksTitle3": "ELİT",
+  "wrappedTopTracksTitle4": "BAĞIMLILIK",
+  "wrappedTopTracksTitle5": "İLK 5",
+  "wrappedTopTracksTitle6": "SENİN TARZIN",
+  "wrappedRanking": "SIRALAMA",
+  
+  "wrappedMostListenedTrackTitle1": "EN İYİ PARÇA",
+  "wrappedMostListenedTrackTitle2": "1 NUMARA",
+  "wrappedMostListenedTrackTitle3": "TEKRARDA",
+  "wrappedMostListenedTrackTitle4": "ALTIN",
+  "wrappedMostListenedTrackTitle5": "FAVORİ",
+  "wrappedMostListenedTrackTitle6": "SEÇİLMİŞ",
+  "wrappedPlays": "ÇALMA",
+  "wrappedTotalTimeLabel": "TOPLAM SÜRE",
+  
+  "wrappedYourCollection": "KOLEKSİYONUN",
+  "wrappedYouExplored": "Keşfettin",
+  "wrappedCompleteAlbums": "TAM ALBÜMLER",
+  "wrappedAlbumsMessage1": "Baştan sona tam eserler.",
+  "wrappedAlbumsMessage2": "Sadece teklileri değil, konsepti de takdir ettin.",
+  "wrappedAlbumsMessage3": "Ses hikayeleri koleksiyoncusu.",
+  "wrappedAlbumsMessage4": "Sezonunu tanımlayan albümler.",
+  "wrappedAlbumsMessage5": "Çal'dan dur'a, parça atlamadan.",
+  
+  "wrappedTopAlbumsTitle1": "EN İYİ ALBÜMLER",
+  "wrappedTopAlbumsTitle2": "BAŞYAPITLAR",
+  "wrappedTopAlbumsTitle3": "TEMELLER",
+  "wrappedTopAlbumsTitle4": "ELİT",
+  "wrappedTopAlbumsTitle5": "SENİN İLK 5'İN",
+  "wrappedTopAlbumsTitle6": "SEÇKİ",
+  
+  "wrappedMostListenedAlbumTitle1": "ALBÜM #1",
+  "wrappedMostListenedAlbumTitle2": "BAŞYAPITIN",
+  "wrappedMostListenedAlbumTitle3": "BAŞTAN SONA",
+  "wrappedMostListenedAlbumTitle4": "TEKRARDA",
+  "wrappedMostListenedAlbumTitle5": "YILIN ALBÜMÜ",
+  "wrappedMinutesLabel": "DAKİKA",
+  "wrappedPlaysLabel": "ÇALMA",
+  
+  "wrappedYourLineup": "KADRON",
+  "wrappedYouTunedInto": "Dinledin",
+  "wrappedArtists": "SANATÇILAR",
+  "wrappedArtistsMessage1": "Gerçek bir yetenek takımyıldızı.",
+  "wrappedArtistsMessage2": "Indie'den ana akıma, her şeyi duydun.",
+  "wrappedArtistsMessage3": "Davetli listen dolu.",
+  "wrappedArtistsMessage4": "Müzik zevkinin sınırı yok.",
+  "wrappedArtistsMessage5": "Kulaklıklarını dünya sahnesine dönüştürdün.",
+  "wrappedArtistsMessage6": "Saygı duyulacak bir kadro.",
+  
+  "wrappedTopArtistsTitle1": "EN İYİ SANATÇILAR",
+  "wrappedTopArtistsTitle2": "İDOLLERİN",
+  "wrappedTopArtistsTitle3": "BAŞROL OYUNCULARI",
+  "wrappedTopArtistsTitle4": "ŞÖHRETLER KULÜBÜ",
+  "wrappedTopArtistsTitle5": "YILIN SESLERİ",
+  
+  "wrappedMostListenedArtistTitle1": "SANATÇI #1",
+  "wrappedMostListenedArtistTitle2": "İDOLÜN",
+  "wrappedMostListenedArtistTitle3": "YILIN SESİ",
+  "wrappedMostListenedArtistTitle4": "1 NUMARA",
+  "wrappedMostListenedArtistTitle5": "BAŞROL",
+  
+  "wrappedThankYouTitle1": "TEŞEKKÜRLER",
+  "wrappedThankYouTitle2": "SAĞ OL",
+  "wrappedThankYouTitle3": "HARİKAYDI",
+  "wrappedThankYouTitle4": "GÖRÜŞÜRÜZ",
+  "wrappedThankYouTitle5": "BU KADAR",
+  "wrappedThankYouTitle6": "KAPANIŞ",
+  "wrappedThankYouMessage1": "bizimle dinlediğin için.",
+  "wrappedThankYouMessage2": "eşlik ettiğin için teşekkürler.",
+  "wrappedThankYouMessage3": "yakında görüşürüz.",
+  "wrappedThankYouMessage4": "ses duramaz.",
+  "wrappedThankYouMessage5": "seneye görüşürüz.",
+  "wrappedThankYouMessage6": "sesi yüksek tut."
 }

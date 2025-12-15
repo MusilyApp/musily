@@ -348,5 +348,139 @@
   "recommendations": "Rekomendacje",
   "dropFileOrFolderHere": "Upuść plik lub folder tutaj",
   "dropFileOrFolderDescription": "Aby przywrócić kopię zapasową biblioteki lub zaimportować lokalny folder.",
-  "onlyOneItemAtATime": "Jednocześnie można przetworzyć tylko jeden element."
+  "onlyOneItemAtATime": "Tylko jeden element może być przetwarzany jednocześnie.",
+  "wrapped": "Podsumowanie",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDYCJA",
+  "wrappedVolume": "TOM {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RETROSPEKTYWA",
+  "wrappedSwipeUp": "Przesuń w górę",
+  "wrappedShare": "Udostępnij",
+  "wrappedPreparingImage": "Przygotowywanie obrazu...",
+  "wrappedShareError": "Błąd udostępniania: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Nie udało się przechwycić obrazu",
+  "wrappedShareSubject": "Mój Musily Wrapped",
+  "wrappedShareText": "Sprawdź mój rok w muzyce na Musily! 🎵\n\nPobierz na musily.app",
+  
+  "wrappedBannerYourRetrospective": "Twoja retrospektywa",
+  "wrappedBannerMusical": "muzyczna",
+  
+  "wrappedWelcome1": "Cześć, miłośniku muzyki.",
+  "wrappedWelcome2": "Twój rok w dźwięku.",
+  "wrappedWelcome3": "Powspominamy?",
+  "wrappedWelcome4": "Podgłośnij.",
+  "wrappedWelcome5": "Twoja dźwiękowa podróż.",
+  "wrappedWelcome6": "Co Cię poruszyło.",
+  "wrappedWelcome7": "Wyjątkowe chwile.",
+  
+  "wrappedTotalTime": "CAŁKOWITY CZAS",
+  "wrappedMinutes": "minut",
+  "wrappedMinutesMessage1": "Ścieżka dźwiękowa Twojego życia.",
+  "wrappedMinutesMessage2": "To dużo muzyki.",
+  "wrappedMinutesMessage3": "Żyłeś słuchając muzyki.",
+  "wrappedMinutesMessage4": "Każda minuta opowiedziała historię.",
+  "wrappedMinutesMessage5": "Gdyby muzyka była paliwem, zajechałbyś daleko.",
+  "wrappedMinutesMessage6": "Cisza nie była opcją.",
+  "wrappedMinutesMessage7": "Maratończyk audio.",
+  
+  "wrappedDiversity": "RÓŻNORODNOŚĆ",
+  "wrappedYouDiscovered": "Odkryłeś",
+  "wrappedUniqueTracks": "UNIKALNE UTWORY",
+  "wrappedTracksMessage1": "Twoja ciekawość nie ma granic.",
+  "wrappedTracksMessage2": "Dużo powtórzeń! Ale urozmaicałeś.",
+  "wrappedTracksMessage3": "Godna pozazdroszczenia kolekcja dźwięków.",
+  "wrappedTracksMessage4": "Od hitów po B-side'y, słuchałeś wszystkiego.",
+  "wrappedTracksMessage5": "Twoja biblioteka urosła i pokazała się.",
+  "wrappedTracksMessage6": "Odkrywca częstotliwości.",
+  "wrappedTracksMessage7": "Tyle dźwięków, tyle wspomnień.",
+  
+  "wrappedTopTracksTitle1": "TOP 5",
+  "wrappedTopTracksTitle2": "NA POWTÓRZENIU",
+  "wrappedTopTracksTitle3": "ELITA",
+  "wrappedTopTracksTitle4": "UZALEŻNIENIE",
+  "wrappedTopTracksTitle5": "TOP 5",
+  "wrappedTopTracksTitle6": "TWÓJ VIBE",
+  "wrappedRanking": "RANKING",
+  
+  "wrappedMostListenedTrackTitle1": "TOP UTWÓR",
+  "wrappedMostListenedTrackTitle2": "NR 1",
+  "wrappedMostListenedTrackTitle3": "NA POWTÓRZENIU",
+  "wrappedMostListenedTrackTitle4": "ZŁOTY",
+  "wrappedMostListenedTrackTitle5": "ULUBIONY",
+  "wrappedMostListenedTrackTitle6": "WYBRANIEC",
+  "wrappedPlays": "ODTW ARZANIA",
+  "wrappedTotalTimeLabel": "CAŁKOWITY CZAS",
+  
+  "wrappedYourCollection": "TWOJA KOLEKCJA",
+  "wrappedYouExplored": "Zbadałeś",
+  "wrappedCompleteAlbums": "PEŁNE ALBUMY",
+  "wrappedAlbumsMessage1": "Pełne dzieła od początku do końca.",
+  "wrappedAlbumsMessage2": "Doceniłeś koncept, nie tylko singiel.",
+  "wrappedAlbumsMessage3": "Kolekcjoner dźwiękowych historii.",
+  "wrappedAlbumsMessage4": "Albumy, które zdefiniowały Twój sezon.",
+  "wrappedAlbumsMessage5": "Od play do stop, bez pomijania utworów.",
+  
+  "wrappedTopAlbumsTitle1": "TOP ALBUMY",
+  "wrappedTopAlbumsTitle2": "ARCYDZIEŁA",
+  "wrappedTopAlbumsTitle3": "NIEZBĘDNIKI",
+  "wrappedTopAlbumsTitle4": "ELITA",
+  "wrappedTopAlbumsTitle5": "TWÓJ TOP 5",
+  "wrappedTopAlbumsTitle6": "SELEKCJA",
+  
+  "wrappedMostListenedAlbumTitle1": "ALBUM NR 1",
+  "wrappedMostListenedAlbumTitle2": "TWOJE ARCYDZIEŁO",
+  "wrappedMostListenedAlbumTitle3": "OD POCZĄTKU DO KOŃCA",
+  "wrappedMostListenedAlbumTitle4": "NA POWTÓRZENIU",
+  "wrappedMostListenedAlbumTitle5": "ALBUM ROKU",
+  "wrappedMinutesLabel": "MINUTY",
+  "wrappedPlaysLabel": "ODTWARZANIA",
+  
+  "wrappedYourLineup": "TWÓJ LINE-UP",
+  "wrappedYouTunedInto": "Włączyłeś",
+  "wrappedArtists": "ARTYŚCI",
+  "wrappedArtistsMessage1": "Prawdziwa konstelacja talentów.",
+  "wrappedArtistsMessage2": "Od indie po mainstream, słyszałeś wszystko.",
+  "wrappedArtistsMessage3": "Twoja lista gości jest pełna.",
+  "wrappedArtistsMessage4": "Twój gust muzyczny nie ma granic.",
+  "wrappedArtistsMessage5": "Zmieniłeś swoje słuchawki w światową scenę.",
+  "wrappedArtistsMessage6": "Line-up godny szacunku.",
+  
+  "wrappedTopArtistsTitle1": "TOP ARTYŚCI",
+  "wrappedTopArtistsTitle2": "TWOI IDOLE",
+  "wrappedTopArtistsTitle3": "HEADLINERZY",
+  "wrappedTopArtistsTitle4": "HALL OF FAME",
+  "wrappedTopArtistsTitle5": "GŁOSY ROKU",
+  
+  "wrappedMostListenedArtistTitle1": "ARTYSTA NR 1",
+  "wrappedMostListenedArtistTitle2": "TWÓJ IDOL",
+  "wrappedMostListenedArtistTitle3": "GŁOS ROKU",
+  "wrappedMostListenedArtistTitle4": "TOP 1",
+  "wrappedMostListenedArtistTitle5": "PROTAGONISTA",
+  
+  "wrappedThankYouTitle1": "DZIĘKUJĘ",
+  "wrappedThankYouTitle2": "DZIĘKI",
+  "wrappedThankYouTitle3": "BYŁO NIESAMOWICIE",
+  "wrappedThankYouTitle4": "DO ZOBACZENIA",
+  "wrappedThankYouTitle5": "TO WSZYSTKO",
+  "wrappedThankYouTitle6": "KONIEC",
+  "wrappedThankYouMessage1": "za słuchanie z nami.",
+  "wrappedThankYouMessage2": "dzięki za towarzystwo.",
+  "wrappedThankYouMessage3": "do zobaczenia wkrótce.",
+  "wrappedThankYouMessage4": "dźwięk nie może się zatrzymać.",
+  "wrappedThankYouMessage5": "do przyszłego roku.",
+  "wrappedThankYouMessage6": "trzymaj głośność wysoko."
 }

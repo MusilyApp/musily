@@ -340,5 +340,139 @@
   "recommendations": "Рекомендации",
   "dropFileOrFolderHere": "Перетащите файл или папку сюда",
   "dropFileOrFolderDescription": "Чтобы восстановить резервную копию библиотеки или импортировать локальную папку.",
-  "onlyOneItemAtATime": "За один раз можно обработать только один элемент."
+  "onlyOneItemAtATime": "Только один элемент может быть обработан за раз.",
+  "wrapped": "Итоги",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "ИЗДАНИЕ",
+  "wrappedVolume": "ТОМ {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "РЕТРОСПЕКТИВА",
+  "wrappedSwipeUp": "Свайп вверх",
+  "wrappedShare": "Поделиться",
+  "wrappedPreparingImage": "Подготовка изображения...",
+  "wrappedShareError": "Ошибка при публикации: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Не удалось захватить изображение",
+  "wrappedShareSubject": "Мой Musily Wrapped",
+  "wrappedShareText": "Посмотри мой музыкальный год в Musily! 🎵\n\nСкачать на musily.app",
+  
+  "wrappedBannerYourRetrospective": "Твоя ретроспектива",
+  "wrappedBannerMusical": "музыкальная",
+  
+  "wrappedWelcome1": "Привет, меломан.",
+  "wrappedWelcome2": "Твой год в звуке.",
+  "wrappedWelcome3": "Вспомним?",
+  "wrappedWelcome4": "Сделай громче.",
+  "wrappedWelcome5": "Твое звуковое путешествие.",
+  "wrappedWelcome6": "Что тебя тронуло.",
+  "wrappedWelcome7": "Уникальные моменты.",
+  
+  "wrappedTotalTime": "ОБЩЕЕ ВРЕМЯ",
+  "wrappedMinutes": "минут",
+  "wrappedMinutesMessage1": "Саундтрек твоей жизни.",
+  "wrappedMinutesMessage2": "Это много музыки.",
+  "wrappedMinutesMessage3": "Ты жил, слушая музыку.",
+  "wrappedMinutesMessage4": "Каждая минута рассказала историю.",
+  "wrappedMinutesMessage5": "Если бы музыка была топливом, ты бы уехал далеко.",
+  "wrappedMinutesMessage6": "Тишина была не вариантом.",
+  "wrappedMinutesMessage7": "Аудио-марафонец.",
+  
+  "wrappedDiversity": "РАЗНООБРАЗИЕ",
+  "wrappedYouDiscovered": "Ты открыл",
+  "wrappedUniqueTracks": "УНИКАЛЬНЫХ ТРЕКОВ",
+  "wrappedTracksMessage1": "Твое любопытство не знает границ.",
+  "wrappedTracksMessage2": "Много повторов! Но ты разнообразил.",
+  "wrappedTracksMessage3": "Завидная коллекция звуков.",
+  "wrappedTracksMessage4": "От хитов до би-сайдов, ты слушал все.",
+  "wrappedTracksMessage5": "Твоя библиотека выросла и показала себя.",
+  "wrappedTracksMessage6": "Исследователь частот.",
+  "wrappedTracksMessage7": "Столько звуков, столько воспоминаний.",
+  
+  "wrappedTopTracksTitle1": "ТОП 5",
+  "wrappedTopTracksTitle2": "НА ПОВТОРЕ",
+  "wrappedTopTracksTitle3": "ЭЛИТА",
+  "wrappedTopTracksTitle4": "ЗАВИСИМОСТЬ",
+  "wrappedTopTracksTitle5": "ТОП 5",
+  "wrappedTopTracksTitle6": "ТВОЙ ВАЙБ",
+  "wrappedRanking": "РЕЙТИНГ",
+  
+  "wrappedMostListenedTrackTitle1": "ТОП ТРЕК",
+  "wrappedMostListenedTrackTitle2": "#1",
+  "wrappedMostListenedTrackTitle3": "НА ПОВТОРЕ",
+  "wrappedMostListenedTrackTitle4": "ЗОЛОТОЙ",
+  "wrappedMostListenedTrackTitle5": "ЛЮБИМЫЙ",
+  "wrappedMostListenedTrackTitle6": "ИЗБРАННЫЙ",
+  "wrappedPlays": "ПРОСЛУШИВАНИЙ",
+  "wrappedTotalTimeLabel": "ОБЩЕЕ ВРЕМЯ",
+  
+  "wrappedYourCollection": "ТВОЯ КОЛЛЕКЦИЯ",
+  "wrappedYouExplored": "Ты исследовал",
+  "wrappedCompleteAlbums": "ПОЛНЫЕ АЛЬБОМЫ",
+  "wrappedAlbumsMessage1": "Полные работы от начала до конца.",
+  "wrappedAlbumsMessage2": "Ты оценил концепцию, а не только сингл.",
+  "wrappedAlbumsMessage3": "Коллекционер звуковых историй.",
+  "wrappedAlbumsMessage4": "Альбомы, определившие твой сезон.",
+  "wrappedAlbumsMessage5": "От play до stop, не пропуская треков.",
+  
+  "wrappedTopAlbumsTitle1": "ТОП АЛЬБОМЫ",
+  "wrappedTopAlbumsTitle2": "ШЕДЕВРЫ",
+  "wrappedTopAlbumsTitle3": "ГЛАВНОЕ",
+  "wrappedTopAlbumsTitle4": "ЭЛИТА",
+  "wrappedTopAlbumsTitle5": "ТВОЙ ТОП 5",
+  "wrappedTopAlbumsTitle6": "ВЫБОРКА",
+  
+  "wrappedMostListenedAlbumTitle1": "АЛЬБОМ #1",
+  "wrappedMostListenedAlbumTitle2": "ТВОЙ ШЕДЕВР",
+  "wrappedMostListenedAlbumTitle3": "ОТ НАЧАЛА ДО КОНЦА",
+  "wrappedMostListenedAlbumTitle4": "НА ПОВТОРЕ",
+  "wrappedMostListenedAlbumTitle5": "АЛЬБОМ ГОДА",
+  "wrappedMinutesLabel": "МИНУТЫ",
+  "wrappedPlaysLabel": "ПРОСЛУШИВАНИЙ",
+  
+  "wrappedYourLineup": "ТВОЙ ЛАЙНАП",
+  "wrappedYouTunedInto": "Ты включил",
+  "wrappedArtists": "АРТИСТЫ",
+  "wrappedArtistsMessage1": "Настоящее созвездие талантов.",
+  "wrappedArtistsMessage2": "От инди до мейнстрима, ты слышал все.",
+  "wrappedArtistsMessage3": "Твой список гостей полон.",
+  "wrappedArtistsMessage4": "Твой музыкальный вкус не имеет границ.",
+  "wrappedArtistsMessage5": "Ты превратил свои наушники в мировую сцену.",
+  "wrappedArtistsMessage6": "Лайнап, достойный уважения.",
+  
+  "wrappedTopArtistsTitle1": "ТОП АРТИСТЫ",
+  "wrappedTopArtistsTitle2": "ТВОИ КУМИРЫ",
+  "wrappedTopArtistsTitle3": "ХЕДЛАЙНЕРЫ",
+  "wrappedTopArtistsTitle4": "ЗАЛ СЛАВЫ",
+  "wrappedTopArtistsTitle5": "ГОЛОСА ГОДА",
+  
+  "wrappedMostListenedArtistTitle1": "АРТИСТ #1",
+  "wrappedMostListenedArtistTitle2": "ТВОЙ КУМИР",
+  "wrappedMostListenedArtistTitle3": "ГОЛОС ГОДА",
+  "wrappedMostListenedArtistTitle4": "ТОП 1",
+  "wrappedMostListenedArtistTitle5": "ПРОТАГОНИСТ",
+  
+  "wrappedThankYouTitle1": "СПАСИБО",
+  "wrappedThankYouTitle2": "БЛАГОДАРИМ",
+  "wrappedThankYouTitle3": "ЭТО БЫЛО КРУТО",
+  "wrappedThankYouTitle4": "ДО СКОРОГО",
+  "wrappedThankYouTitle5": "ЭТО ВСЕ",
+  "wrappedThankYouTitle6": "ФИНАЛ",
+  "wrappedThankYouMessage1": "что слушал с нами.",
+  "wrappedThankYouMessage2": "спасибо за компанию.",
+  "wrappedThankYouMessage3": "до скорой встречи.",
+  "wrappedThankYouMessage4": "звук не может остановиться.",
+  "wrappedThankYouMessage5": "до следующего года.",
+  "wrappedThankYouMessage6": "держи громкость на высоте."
 }

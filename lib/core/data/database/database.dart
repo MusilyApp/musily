@@ -5,7 +5,11 @@ import 'package:musily/core/data/database/collections/database_library.dart';
 import 'package:musily/core/data/database/collections/download_queue.dart';
 import 'package:musily/core/data/database/collections/library.dart';
 import 'package:musily/core/data/database/collections/player_state.dart';
+import 'package:musily/core/data/database/collections/playback_track_stats.dart';
+import 'package:musily/core/data/database/collections/playback_album_stats.dart';
+import 'package:musily/core/data/database/collections/playback_artist_stats.dart';
 import 'package:musily/core/data/database/collections/user_tracks.dart';
+import 'package:musily/core/data/database/collections/wrapped.dart';
 import 'package:musily/core/data/services/user_service.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -32,6 +36,10 @@ class Database {
         DownloadQueueItemSchema,
         PlayerStateSchema,
         QueueTrackSchema,
+        PlaybackTrackStatsSchema,
+        PlaybackAlbumStatsSchema,
+        PlaybackArtistStatsSchema,
+        WrappedSchema,
       ],
       directory: databaseDirectory.path,
     );

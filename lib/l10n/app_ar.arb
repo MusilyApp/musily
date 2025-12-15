@@ -347,5 +347,140 @@
   "recommendations": "التوصيات",
   "dropFileOrFolderHere": "أسقط الملف أو المجلد هنا",
   "dropFileOrFolderDescription": "لاستعادة نسخة احتياطية من المكتبة أو استيراد مجلد محلي.",
-  "onlyOneItemAtATime": "يمكن معالجة عنصر واحد فقط في كل مرة."
+  "onlyOneItemAtATime": "يمكن معالجة عنصر واحد فقط في كل مرة.",
+
+  "wrapped": "ملخص",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "إصدار",
+  "wrappedVolume": "مجلد {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "استعادية",
+  "wrappedSwipeUp": "اسحب للأعلى",
+  "wrappedShare": "مشاركة",
+  "wrappedPreparingImage": "جاري تحضير الصورة...",
+  "wrappedShareError": "خطأ في المشاركة: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "تعذر التقاط الصورة",
+  "wrappedShareSubject": "Musily Wrapped الخاص بي",
+  "wrappedShareText": "تحقق من سنتي الموسيقية على Musily! 🎵\n\nقم بالتنزيل على musily.app",
+  
+  "wrappedBannerYourRetrospective": "استعادتك",
+  "wrappedBannerMusical": "الموسيقية",
+  
+  "wrappedWelcome1": "مرحبًا، يا محب الموسيقى.",
+  "wrappedWelcome2": "سنتك في الصوت.",
+  "wrappedWelcome3": "هل نتذكر؟",
+  "wrappedWelcome4": "ارفع الصوت.",
+  "wrappedWelcome5": "رحلتك الصوتية.",
+  "wrappedWelcome6": "ما حرك مشاعرك.",
+  "wrappedWelcome7": "لحظات فريدة.",
+  
+  "wrappedTotalTime": "إجمالي الوقت",
+  "wrappedMinutes": "دقيقة",
+  "wrappedMinutesMessage1": "الموسيقى التصويرية لحياتك.",
+  "wrappedMinutesMessage2": "هذه موسيقى كثيرة.",
+  "wrappedMinutesMessage3": "لقد عشت تستمع إلى الموسيقى.",
+  "wrappedMinutesMessage4": "كل دقيقة روت قصة.",
+  "wrappedMinutesMessage5": "لو كانت الموسيقى وقودًا، لذهبت بعيدًا.",
+  "wrappedMinutesMessage6": "الصمت لم يكن خيارًا.",
+  "wrappedMinutesMessage7": "عداء ماراثون صوتي.",
+  
+  "wrappedDiversity": "تنوع",
+  "wrappedYouDiscovered": "لقد اكتشفت",
+  "wrappedUniqueTracks": "مقطوعات فريدة",
+  "wrappedTracksMessage1": "فضولك لا حدود له.",
+  "wrappedTracksMessage2": "تكرار كثير! لكنك نوعت كثيرًا.",
+  "wrappedTracksMessage3": "مجموعة أصوات تحسد عليها.",
+  "wrappedTracksMessage4": "من الأغاني الناجحة إلى الجوانب الثانوية، سمعت كل شيء.",
+  "wrappedTracksMessage5": "مكتبتك نمت وأظهرت نفسها.",
+  "wrappedTracksMessage6": "مستكشف الترددات.",
+  "wrappedTracksMessage7": "أصوات كثيرة، ذكريات كثيرة.",
+  
+  "wrappedTopTracksTitle1": "أفضل 5",
+  "wrappedTopTracksTitle2": "قيد التكرار",
+  "wrappedTopTracksTitle3": "النخبة",
+  "wrappedTopTracksTitle4": "إدمان",
+  "wrappedTopTracksTitle5": "أفضل 5",
+  "wrappedTopTracksTitle6": "أجواؤك",
+  "wrappedRanking": "تصنيف",
+  
+  "wrappedMostListenedTrackTitle1": "أفضل مقطوعة",
+  "wrappedMostListenedTrackTitle2": "رقم 1",
+  "wrappedMostListenedTrackTitle3": "قيد التكرار",
+  "wrappedMostListenedTrackTitle4": "ذهبي",
+  "wrappedMostListenedTrackTitle5": "مفضل",
+  "wrappedMostListenedTrackTitle6": "المختار",
+  "wrappedPlays": "تشغيل",
+  "wrappedTotalTimeLabel": "إجمالي الوقت",
+  
+  "wrappedYourCollection": "مجموعتك",
+  "wrappedYouExplored": "لقد استكشفت",
+  "wrappedCompleteAlbums": "ألبومات كاملة",
+  "wrappedAlbumsMessage1": "أعمال كاملة من البداية إلى النهاية.",
+  "wrappedAlbumsMessage2": "لقد قدرت المفهوم، وليس فقط الأغنية المنفردة.",
+  "wrappedAlbumsMessage3": "جامع قصص صوتية.",
+  "wrappedAlbumsMessage4": "الألبومات التي حددت موسمك.",
+  "wrappedAlbumsMessage5": "من التشغيل إلى الإيقاف، دون تخطي المقطوعات.",
+  
+  "wrappedTopAlbumsTitle1": "أفضل الألبومات",
+  "wrappedTopAlbumsTitle2": "روائع",
+  "wrappedTopAlbumsTitle3": "أساسيات",
+  "wrappedTopAlbumsTitle4": "النخبة",
+  "wrappedTopAlbumsTitle5": "أفضل 5 لديك",
+  "wrappedTopAlbumsTitle6": "الاختيار",
+  
+  "wrappedMostListenedAlbumTitle1": "ألبوم #1",
+  "wrappedMostListenedAlbumTitle2": "تحفتك الفنية",
+  "wrappedMostListenedAlbumTitle3": "من البداية إلى النهاية",
+  "wrappedMostListenedAlbumTitle4": "قيد التكرار",
+  "wrappedMostListenedAlbumTitle5": "ألبوم العام",
+  "wrappedMinutesLabel": "دقيقة",
+  "wrappedPlaysLabel": "تشغيل",
+  
+  "wrappedYourLineup": "تشكيلتك",
+  "wrappedYouTunedInto": "لقد استمعت إلى",
+  "wrappedArtists": "فنانون",
+  "wrappedArtistsMessage1": "كوكبة حقيقية من المواهب.",
+  "wrappedArtistsMessage2": "من المستقل إلى السائد، سمعت كل شيء.",
+  "wrappedArtistsMessage3": "قائمة ضيوفك ممتلئة.",
+  "wrappedArtistsMessage4": "ذوقك الموسيقي لا حدود له.",
+  "wrappedArtistsMessage5": "لقد حولت سماعات الرأس الخاصة بك إلى مسرح عالمي.",
+  "wrappedArtistsMessage6": "تشكيلة تستحق الاحترام.",
+  
+  "wrappedTopArtistsTitle1": "أفضل الفنانين",
+  "wrappedTopArtistsTitle2": "أصنامك",
+  "wrappedTopArtistsTitle3": "المتصدرون",
+  "wrappedTopArtistsTitle4": "قاعة المشاهير",
+  "wrappedTopArtistsTitle5": "أصوات العام",
+  
+  "wrappedMostListenedArtistTitle1": "فنان #1",
+  "wrappedMostListenedArtistTitle2": "صنمك",
+  "wrappedMostListenedArtistTitle3": "صوت العام",
+  "wrappedMostListenedArtistTitle4": "أفضل 1",
+  "wrappedMostListenedArtistTitle5": "البطل",
+  
+  "wrappedThankYouTitle1": "شكرًا",
+  "wrappedThankYouTitle2": "ممتن",
+  "wrappedThankYouTitle3": "كان رائعًا",
+  "wrappedThankYouTitle4": "أراك",
+  "wrappedThankYouTitle5": "هذا كل شيء",
+  "wrappedThankYouTitle6": "نهاية",
+  "wrappedThankYouMessage1": "للاستماع معنا.",
+  "wrappedThankYouMessage2": "شكرًا على الصحبة.",
+  "wrappedThankYouMessage3": "أراك قريبًا.",
+  "wrappedThankYouMessage4": "الصوت لا يمكن أن يتوقف.",
+  "wrappedThankYouMessage5": "أراك العام المقبل.",
+  "wrappedThankYouMessage6": "ابق الصوت مرتفعًا."
 }

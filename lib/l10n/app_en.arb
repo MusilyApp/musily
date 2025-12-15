@@ -348,5 +348,145 @@
   "recommendations": "Recommendations",
   "dropFileOrFolderHere": "Drop the File or Folder Here",
   "dropFileOrFolderDescription": "To restore the library backup or import a local folder.",
-  "onlyOneItemAtATime": "Only one item can be handled at a time."
+  "onlyOneItemAtATime": "Only one item can be handled at a time.",
+  
+  "wrapped": "Wrapped",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "EDITION",
+  "wrappedVolume": "VOL. {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "RETROSPECTIVE",
+  "wrappedSwipeUp": "Swipe up",
+  "wrappedShare": "Share",
+  "wrappedPreparingImage": "Preparing image...",
+  "wrappedShareError": "Error sharing: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Could not capture image",
+  "wrappedShareSubject": "My Musily Wrapped",
+  "wrappedShareText": "Check out my year in music on Musily! 🎵\n\nDownload at musily.app",
+  
+  "wrappedBannerYourRetrospective": "Your retrospective",
+  "wrappedBannerMusical": "musical",
+  
+  "wrappedWelcome1": "Hello, music lover.",
+  "wrappedWelcome2": "Your year in sound.",
+  "wrappedWelcome3": "Let's look back?",
+  "wrappedWelcome4": "Turn up the volume.",
+  "wrappedWelcome5": "Your sonic journey.",
+  "wrappedWelcome6": "What moved you.",
+  "wrappedWelcome7": "Unique moments.",
+  
+  "wrappedTotalTime": "TOTAL TIME",
+  "wrappedMinutes": "minutes",
+  "wrappedMinutesMessage1": "The soundtrack of your life.",
+  "wrappedMinutesMessage2": "That's a lot of music.",
+  "wrappedMinutesMessage3": "You lived listening to music.",
+  "wrappedMinutesMessage4": "Every minute told a story.",
+  "wrappedMinutesMessage5": "If music were fuel, you'd have gone far.",
+  "wrappedMinutesMessage6": "Silence was not an option.",
+  "wrappedMinutesMessage7": "Audio marathoner.",
+  
+  "wrappedDiversity": "DIVERSITY",
+  "wrappedYouDiscovered": "You discovered",
+  "wrappedUniqueTracks": "UNIQUE TRACKS",
+  "wrappedTracksMessage1": "Your curiosity has no limits.",
+  "wrappedTracksMessage2": "That's a lot of repeat! But you varied a lot.",
+  "wrappedTracksMessage3": "An enviable collection of sounds.",
+  "wrappedTracksMessage4": "From hits to B-sides, you heard it all.",
+  "wrappedTracksMessage5": "Your library grew and showed up.",
+  "wrappedTracksMessage6": "Frequency explorer.",
+  "wrappedTracksMessage7": "So many sounds, so many memories.",
+  
+  "wrappedTopTracksTitle1": "THE TOP 5",
+  "wrappedTopTracksTitle2": "ON REPEAT",
+  "wrappedTopTracksTitle3": "ELITE",
+  "wrappedTopTracksTitle4": "ADDICTION",
+  "wrappedTopTracksTitle5": "TOP 5",
+  "wrappedTopTracksTitle6": "YOUR VIBE",
+  "wrappedRanking": "RANKING",
+  
+  "wrappedMostListenedTrackTitle1": "TOP TRACK",
+  "wrappedMostListenedTrackTitle2": "THE #1",
+  "wrappedMostListenedTrackTitle3": "ON REPEAT",
+  "wrappedMostListenedTrackTitle4": "GOLDEN",
+  "wrappedMostListenedTrackTitle5": "FAVORITE",
+  "wrappedMostListenedTrackTitle6": "THE ONE",
+  "wrappedPlays": "PLAYS",
+  "wrappedTotalTimeLabel": "TOTAL TIME",
+  
+  "wrappedYourCollection": "YOUR COLLECTION",
+  "wrappedYouExplored": "You explored",
+  "wrappedCompleteAlbums": "COMPLETE ALBUMS",
+  "wrappedAlbumsMessage1": "Complete works from start to finish.",
+  "wrappedAlbumsMessage2": "You valued the concept, not just the single.",
+  "wrappedAlbumsMessage3": "Collector of sound stories.",
+  "wrappedAlbumsMessage4": "Albums that defined your season.",
+  "wrappedAlbumsMessage5": "From play to stop, without skipping tracks.",
+  
+  "wrappedTopAlbumsTitle1": "TOP ALBUMS",
+  "wrappedTopAlbumsTitle2": "MASTERPIECES",
+  "wrappedTopAlbumsTitle3": "ESSENTIALS",
+  "wrappedTopAlbumsTitle4": "ELITE",
+  "wrappedTopAlbumsTitle5": "YOUR TOP 5",
+  "wrappedTopAlbumsTitle6": "THE SELECTION",
+  
+  "wrappedMostListenedAlbumTitle1": "ALBUM #1",
+  "wrappedMostListenedAlbumTitle2": "YOUR MASTERPIECE",
+  "wrappedMostListenedAlbumTitle3": "FROM START TO FINISH",
+  "wrappedMostListenedAlbumTitle4": "ON REPEAT",
+  "wrappedMostListenedAlbumTitle5": "ALBUM OF THE YEAR",
+  "wrappedMinutesLabel": "MINUTES",
+  "wrappedPlaysLabel": "PLAYS",
+  
+  "wrappedYourLineup": "YOUR LINE-UP",
+  "wrappedYouTunedInto": "You tuned into",
+  "wrappedArtists": "ARTISTS",
+  "wrappedArtistsMessage1": "A true constellation of talents.",
+  "wrappedArtistsMessage2": "From indie to mainstream, you heard it all.",
+  "wrappedArtistsMessage3": "Your party guest list is full.",
+  "wrappedArtistsMessage4": "Your musical taste has no borders.",
+  "wrappedArtistsMessage5": "You turned your headphones into a world stage.",
+  "wrappedArtistsMessage6": "A lineup to respect.",
+  
+  "wrappedTopArtistsTitle1": "TOP ARTISTS",
+  "wrappedTopArtistsTitle2": "YOUR IDOLS",
+  "wrappedTopArtistsTitle3": "HEADLINERS",
+  "wrappedTopArtistsTitle4": "HALL OF FAME",
+  "wrappedTopArtistsTitle5": "VOICES OF THE YEAR",
+  
+  "wrappedMostListenedArtistTitle1": "ARTIST #1",
+  "wrappedMostListenedArtistTitle2": "YOUR IDOL",
+  "wrappedMostListenedArtistTitle3": "VOICE OF THE YEAR",
+  "wrappedMostListenedArtistTitle4": "TOP 1",
+  "wrappedMostListenedArtistTitle5": "THE PROTAGONIST",
+  
+  "wrappedThankYouTitle1": "THANK YOU",
+  "wrappedThankYouTitle2": "THANKS",
+  "wrappedThankYouTitle3": "IT WAS AMAZING",
+  "wrappedThankYouTitle4": "SEE YOU",
+  "wrappedThankYouTitle5": "THAT'S ALL",
+  "wrappedThankYouTitle6": "THAT'S A WRAP",
+  "wrappedThankYouMessage1": "for listening with us.",
+  "wrappedThankYouMessage2": "thanks for the company.",
+  "wrappedThankYouMessage3": "see you soon.",
+  "wrappedThankYouMessage4": "the sound can't stop.",
+  "wrappedThankYouMessage5": "until next year.",
+  "wrappedThankYouMessage6": "keep the volume up.",
+
+  "wrappedGenerating": "Generating your Wrapped...",
+  "wrappedLoadError": "Error loading Wrapped",
+  "wrappedNoData": "No data found",
+  "wrappedNoDataDescription": "Listen to more music to generate your Wrapped"
 }

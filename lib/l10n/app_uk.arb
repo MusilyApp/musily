@@ -340,5 +340,140 @@
   "recommendations": "Рекомендації",
   "dropFileOrFolderHere": "Перетягніть файл або папку сюди",
   "dropFileOrFolderDescription": "Щоб відновити резервну копію бібліотеки або імпортувати локальну папку.",
-  "onlyOneItemAtATime": "За один раз можна обробити лише один елемент."
+  "onlyOneItemAtATime": "Лише один елемент може бути оброблений за раз.",
+
+  "wrapped": "Підсумки",
+  "wrappedTitle": "MUSILY WRAPPED",
+  "wrappedEdition": "ВИДАННЯ",
+  "wrappedVolume": "ТОМ {year}",
+  "@wrappedVolume": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "wrappedRetrospective": "РЕТРОСПЕКТИВА",
+  "wrappedSwipeUp": "Свайп вгору",
+  "wrappedShare": "Поділитися",
+  "wrappedPreparingImage": "Підготовка зображення...",
+  "wrappedShareError": "Помилка при поширенні: {error}",
+  "@wrappedShareError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wrappedCaptureError": "Не вдалося захопити зображення",
+  "wrappedShareSubject": "Мій Musily Wrapped",
+  "wrappedShareText": "Подивись мій музичний рік у Musily! 🎵\n\nЗавантажити на musily.app",
+  
+  "wrappedBannerYourRetrospective": "Твоя ретроспектива",
+  "wrappedBannerMusical": "музична",
+  
+  "wrappedWelcome1": "Привіт, меломане.",
+  "wrappedWelcome2": "Твій рік у звуці.",
+  "wrappedWelcome3": "Згадаємо?",
+  "wrappedWelcome4": "Зроби гучніше.",
+  "wrappedWelcome5": "Твоя звукова подорож.",
+  "wrappedWelcome6": "Що тебе зворушило.",
+  "wrappedWelcome7": "Унікальні моменти.",
+  
+  "wrappedTotalTime": "ЗАГАЛЬНИЙ ЧАС",
+  "wrappedMinutes": "хвилин",
+  "wrappedMinutesMessage1": "Саундтрек твого життя.",
+  "wrappedMinutesMessage2": "Це багато музики.",
+  "wrappedMinutesMessage3": "Ти жив, слухаючи музику.",
+  "wrappedMinutesMessage4": "Кожна хвилина розповіла історію.",
+  "wrappedMinutesMessage5": "Якби музика була паливом, ти б поїхав далеко.",
+  "wrappedMinutesMessage6": "Тиша була не варіантом.",
+  "wrappedMinutesMessage7": "Аудіо-марафонець.",
+  
+  "wrappedDiversity": "РІЗНОМАНІТТЯ",
+  "wrappedYouDiscovered": "Ти відкрив",
+  "wrappedUniqueTracks": "УНІКАЛЬНИХ ТРЕКІВ",
+  "wrappedTracksMessage1": "Твоя цікавість не знає меж.",
+  "wrappedTracksMessage2": "Багато повторів! Але ти урізноманітнив.",
+  "wrappedTracksMessage3": "Заздрісна колекція звуків.",
+  "wrappedTracksMessage4": "Від хітів до бі-сайдів, ти слухав усе.",
+  "wrappedTracksMessage5": "Твоя бібліотека виросла і показала себе.",
+  "wrappedTracksMessage6": "Дослідник частот.",
+  "wrappedTracksMessage7": "Стільки звуків, стільки спогадів.",
+  
+  "wrappedTopTracksTitle1": "ТОП 5",
+  "wrappedTopTracksTitle2": "НА ПОВТОРІ",
+  "wrappedTopTracksTitle3": "ЕЛІТА",
+  "wrappedTopTracksTitle4": "ЗАЛЕЖНІСТЬ",
+  "wrappedTopTracksTitle5": "ТОП 5",
+  "wrappedTopTracksTitle6": "ТВІЙ ВАЙБ",
+  "wrappedRanking": "РЕЙТИНГ",
+  
+  "wrappedMostListenedTrackTitle1": "ТОП ТРЕК",
+  "wrappedMostListenedTrackTitle2": "#1",
+  "wrappedMostListenedTrackTitle3": "НА ПОВТОРІ",
+  "wrappedMostListenedTrackTitle4": "ЗОЛОТИЙ",
+  "wrappedMostListenedTrackTitle5": "УЛЮБЛЕНИЙ",
+  "wrappedMostListenedTrackTitle6": "ОБРАНИЙ",
+  "wrappedPlays": "ПРОСЛУХОВУВАНЬ",
+  "wrappedTotalTimeLabel": "ЗАГАЛЬНИЙ ЧАС",
+  
+  "wrappedYourCollection": "ТВОЯ КОЛЕКЦІЯ",
+  "wrappedYouExplored": "Ти дослідив",
+  "wrappedCompleteAlbums": "ПОВНІ АЛЬБОМИ",
+  "wrappedAlbumsMessage1": "Повні роботи від початку до кінця.",
+  "wrappedAlbumsMessage2": "Ти оцінив концепцію, а не тільки сингл.",
+  "wrappedAlbumsMessage3": "Колекціонер звукових історій.",
+  "wrappedAlbumsMessage4": "Альбоми, що визначили твій сезон.",
+  "wrappedAlbumsMessage5": "Від play до stop, не пропускаючи треків.",
+  
+  "wrappedTopAlbumsTitle1": "ТОП АЛЬБОМИ",
+  "wrappedTopAlbumsTitle2": "ШЕДЕВРИ",
+  "wrappedTopAlbumsTitle3": "ГОЛОВНЕ",
+  "wrappedTopAlbumsTitle4": "ЕЛІТА",
+  "wrappedTopAlbumsTitle5": "ТВІЙ ТОП 5",
+  "wrappedTopAlbumsTitle6": "ВИБІРКА",
+  
+  "wrappedMostListenedAlbumTitle1": "АЛЬБОМ #1",
+  "wrappedMostListenedAlbumTitle2": "ТВІЙ ШЕДЕВР",
+  "wrappedMostListenedAlbumTitle3": "ВІД ПОЧАТКУ ДО КІНЦЯ",
+  "wrappedMostListenedAlbumTitle4": "НА ПОВТОРІ",
+  "wrappedMostListenedAlbumTitle5": "АЛЬБОМ РОКУ",
+  "wrappedMinutesLabel": "ХВИЛИНИ",
+  "wrappedPlaysLabel": "ПРОСЛУХОВУВАНЬ",
+  
+  "wrappedYourLineup": "ТВІЙ ЛАЙНАП",
+  "wrappedYouTunedInto": "Ти увімкнув",
+  "wrappedArtists": "АРТИСТИ",
+  "wrappedArtistsMessage1": "Справжнє сузір'я талантів.",
+  "wrappedArtistsMessage2": "Від інді до мейнстріму, ти чув усе.",
+  "wrappedArtistsMessage3": "Твій список гостей повний.",
+  "wrappedArtistsMessage4": "Твій музичний смак не має кордонів.",
+  "wrappedArtistsMessage5": "Ти перетворив свої навушники на світову сцену.",
+  "wrappedArtistsMessage6": "Лайнап, гідний поваги.",
+  
+  "wrappedTopArtistsTitle1": "ТОП АРТИСТИ",
+  "wrappedTopArtistsTitle2": "ТВОЇ КУМИРИ",
+  "wrappedTopArtistsTitle3": "ХЕДЛАЙНЕРИ",
+  "wrappedTopArtistsTitle4": "ЗАЛ СЛАВИ",
+  "wrappedTopArtistsTitle5": "ГОЛОСИ РОКУ",
+  
+  "wrappedMostListenedArtistTitle1": "АРТИСТ #1",
+  "wrappedMostListenedArtistTitle2": "ТВІЙ КУМИР",
+  "wrappedMostListenedArtistTitle3": "ГОЛОС РОКУ",
+  "wrappedMostListenedArtistTitle4": "ТОП 1",
+  "wrappedMostListenedArtistTitle5": "ПРОТАГОНІСТ",
+  
+  "wrappedThankYouTitle1": "ДЯКУЮ",
+  "wrappedThankYouTitle2": "ВДЯЧНІ",
+  "wrappedThankYouTitle3": "ЦЕ БУЛО КРУТО",
+  "wrappedThankYouTitle4": "ДО ЗУСТРІЧІ",
+  "wrappedThankYouTitle5": "ЦЕ ВСЕ",
+  "wrappedThankYouTitle6": "ФІНАЛ",
+  "wrappedThankYouMessage1": "що слухав з нами.",
+  "wrappedThankYouMessage2": "дякую за компанію.",
+  "wrappedThankYouMessage3": "до скорої зустрічі.",
+  "wrappedThankYouMessage4": "звук не може зупинитися.",
+  "wrappedThankYouMessage5": "до наступного року.",
+  "wrappedThankYouMessage6": "тримай гучність на висоті."
 }
