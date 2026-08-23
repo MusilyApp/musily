@@ -3,6 +3,19 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    // androidx.core 1.17.0+ declares minCompileSdk=36 and needs AGP 8.9.1+, while
+    // this project builds against compileSdk 35 with AGP 8.7.0. Plugins pull
+    // androidx.core transitively with no upper bound, so resolution drifts to a
+    // release the toolchain cannot consume. Pin to 1.16.0, the last version with
+    // minCompileSdk=35 (and minAndroidGradlePluginVersion=8.6.0).
+    // Remove once compileSdk and AGP are bumped.
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.16.0'
+            force 'androidx.core:core-ktx:1.16.0'
+        }
+    }
     subprojects {
         afterEvaluate { project ->
           if (project.plugins.hasPlugin("com.android.application") ||
