@@ -14,7 +14,6 @@ Future<String?> _getYoutubeAudioUrl(String ytId) async {
     final manifest = await yt.videos.streamsClient.getManifest(
       VideoId(ytId),
       requireWatchPage: true,
-      ytClients: [YoutubeApiClient.androidVr],
     );
     final audioStreamInfo = manifest.audioOnly.withHighestBitrate();
     final url = audioStreamInfo.url.toString();

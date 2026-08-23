@@ -25,8 +25,8 @@ dependencies:
   # YouTube APIs
   youtube_explode_dart:
     git:
-      url: https://github.com/Hexer10/youtube_explode_dart.git
-      ref: 78d716afa9bccd117020a1983361ebf4fffaaf28
+      url: https://github.com/its-ashutosh-pathak/youtube_explode_dart.git
+      ref: edad2760cc7998bcc18013dc9880c052ad32598f
   dart_ytmusic_api:
     git: https://github.com/MusilyApp/dart_ytmusic_api
 
