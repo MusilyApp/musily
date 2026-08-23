@@ -31,7 +31,7 @@ jobs:
     needs: metadata
     strategy:
       matrix:
-        os: [ubuntu-22.04, windows-latest, macos-latest]
+        os: [ubuntu-22.04, windows-2022, macos-latest]
     runs-on: ${{ matrix.os }}
 
     env:
@@ -156,31 +156,31 @@ jobs:
           rm -rf build/zip
 
       - name: Build Windows
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: flutter build windows --release
 
       - name: Set up Python
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
       - name: Install Inno Setup
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: choco install innosetup --yes
 
       - name: Create iss File
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: |
           dart run create_iss_file.dart --version "${{ needs.metadata.outputs.version }}"
 
       - name: Generate Windows Installer with Inno Setup
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: |
           iscc musily_installer.iss
 
       - name: Move installer to build folder
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2022'
         run: |
           mv Output/musily-installer.exe build/musily-windows-installer.exe
 
