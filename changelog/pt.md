@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Correções**
+- Reprodução restaurada. O YouTube alterou a forma de acesso aos streams de áudio, deixando o app sem conseguir obtê-los. Esta versão contorna a mudança para que as faixas voltem a tocar.
+
+**Problemas conhecidos**
+- Faixas com restrição de idade não são reproduzidas. O acesso a elas exige uma sessão autenticada do YouTube, que o app não utiliza.
+- Esta versão é uma solução temporária e pode deixar de funcionar a qualquer momento. A correção definitiva depende de mudanças na biblioteca de extração.
+
 ## 5.0.2
 
 **Correções**

@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Corrections**
+- Lecture rétablie. YouTube a modifié la façon d'accéder aux flux audio, empêchant l'application de les récupérer. Cette version contourne ce changement afin que les titres soient à nouveau lus.
+
+**Problèmes connus**
+- Les titres soumis à une restriction d'âge ne sont pas lus. Y accéder nécessite une session YouTube connectée, que l'application n'utilise pas.
+- Cette version est une solution temporaire et peut cesser de fonctionner à tout moment. Une correction durable dépend de modifications dans la bibliothèque d'extraction.
+
 ## 5.0.2
 
 **Corrections**

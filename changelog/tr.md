@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Düzeltmeler**
+- Oynatma geri getirildi. YouTube ses akışlarına erişim biçimini değiştirdi ve uygulama bunları alamaz hale geldi. Bu sürüm değişikliği aşarak parçaların yeniden çalmasını sağlıyor.
+
+**Bilinen sorunlar**
+- Yaş kısıtlamalı parçalar çalınmıyor. Bunlara erişim, uygulamanın kullanmadığı oturum açılmış bir YouTube oturumu gerektiriyor.
+- Bu sürüm geçici bir çözümdür ve herhangi bir anda çalışmayı durdurabilir. Kalıcı bir düzeltme, çıkarma kitaplığındaki değişikliklere bağlıdır.
+
 ## 5.0.2
 
 **Düzeltmeler**

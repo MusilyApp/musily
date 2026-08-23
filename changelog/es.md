@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Correcciones**
+- Reproducción restaurada. YouTube cambió la forma de acceder a los streams de audio, dejando a la aplicación sin poder obtenerlos. Esta versión sortea el cambio para que las pistas vuelvan a reproducirse.
+
+**Problemas conocidos**
+- Las pistas con restricción de edad no se reproducen. Acceder a ellas requiere una sesión de YouTube con inicio de sesión, que la aplicación no utiliza.
+- Esta versión es una solución temporal y puede dejar de funcionar en cualquier momento. Una corrección definitiva depende de cambios en la biblioteca de extracción.
+
 ## 5.0.2
 
 **Correcciones**

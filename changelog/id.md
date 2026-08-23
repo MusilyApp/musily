@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Perbaikan**
+- Pemutaran dipulihkan. YouTube mengubah cara akses ke stream audio, sehingga aplikasi tidak dapat mengambilnya. Versi ini menyiasati perubahan tersebut agar lagu dapat diputar kembali.
+
+**Masalah yang diketahui**
+- Lagu dengan batasan usia tidak dapat diputar. Mengaksesnya memerlukan sesi YouTube yang sudah masuk, yang tidak digunakan aplikasi ini.
+- Versi ini adalah solusi sementara dan dapat berhenti berfungsi kapan saja. Perbaikan jangka panjang bergantung pada perubahan di pustaka ekstraksi.
+
 ## 5.0.2
 
 **Perbaikan**

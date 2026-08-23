@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Poprawki**
+- Przywrócono odtwarzanie. YouTube zmienił sposób dostępu do strumieni audio, przez co aplikacja nie mogła ich pobrać. Ta wersja omija tę zmianę, dzięki czemu utwory znów są odtwarzane.
+
+**Znane problemy**
+- Utwory z ograniczeniem wiekowym nie są odtwarzane. Dostęp do nich wymaga zalogowanej sesji YouTube, z której aplikacja nie korzysta.
+- Ta wersja jest rozwiązaniem tymczasowym i może przestać działać w dowolnym momencie. Trwała poprawka zależy od zmian w bibliotece ekstrakcji.
+
 ## 5.0.2
 
 **Poprawki**

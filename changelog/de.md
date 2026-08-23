@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Fehlerbehebungen**
+- Wiedergabe wiederhergestellt. YouTube hat den Zugriff auf Audio-Streams geändert, wodurch die App sie nicht mehr abrufen konnte. Diese Version umgeht die Änderung, sodass Titel wieder abgespielt werden.
+
+**Bekannte Probleme**
+- Altersbeschränkte Titel werden nicht abgespielt. Der Zugriff erfordert eine angemeldete YouTube-Sitzung, die die App nicht verwendet.
+- Diese Version ist eine vorübergehende Lösung und kann jederzeit nicht mehr funktionieren. Eine dauerhafte Behebung hängt von Änderungen in der Extraktionsbibliothek ab.
+
 ## 5.0.2
 
 **Fehlerbehebungen**

@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Correzioni**
+- Riproduzione ripristinata. YouTube ha modificato il modo di accedere agli stream audio, impedendo all'app di recuperarli. Questa versione aggira la modifica in modo che i brani tornino a essere riprodotti.
+
+**Problemi noti**
+- I brani con restrizioni di età non vengono riprodotti. L'accesso richiede una sessione YouTube autenticata, che l'app non utilizza.
+- Questa versione è una soluzione temporanea e potrebbe smettere di funzionare in qualsiasi momento. Una correzione definitiva dipende da modifiche nella libreria di estrazione.
+
 ## 5.0.2
 
 **Correzioni**

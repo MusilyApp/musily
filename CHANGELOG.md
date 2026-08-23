@@ -1,3 +1,12 @@
+## 5.0.3
+
+**Fixes**
+- Restored playback. YouTube changed how audio streams are accessed, which left the app unable to retrieve them. This release works around the change so tracks play again.
+
+**Known issues**
+- Age-restricted tracks do not play. Accessing them requires a signed-in YouTube session, which the app does not use.
+- This release is a temporary workaround and may stop working at any time. A longer-term fix depends on upstream changes to the extraction library.
+
 ## 5.0.2
 
 **Fixes**
